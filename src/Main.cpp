@@ -103,8 +103,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		AEGfxSetBackgroundColor(0, 0, 0);
 
 		// Draw boi
-		Image::Draw_Default(TEST, 255);
-		Image::Draw_Default(logo, 255);
+		//Image::Draw_Default(TEST, 255);
+		counter -= 2;
+		if (counter < 0)
+			counter = 255;
+		Image::Draw_Default(logo, counter);
 	
 		char strBuffer[100];
 		memset(strBuffer, 0, 100 * sizeof(char));
