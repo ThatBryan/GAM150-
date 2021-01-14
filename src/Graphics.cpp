@@ -7,10 +7,10 @@ Rect Graphics::Set_Rect(Rect rect, const f32 posX, const f32 posY, const f32 wid
 	rect.pos.y = posY;
 	rect.width = width;
 	rect.height = height;
-	rect.r = 255.0f;
-	rect.g = 255.0f;
-	rect.b = 255.0f;
-	rect.alpha = 255.0f;
+	rect.color.r = 255.0f;
+	rect.color.g = 255.0f;
+	rect.color.b = 255.0f;
+	rect.color.alpha = 255.0f;
 
 	rect.pMesh = Graphics::Mesh_Rectangle(rect);
 	AE_ASSERT_MESG(rect.pMesh, "Failed to create mesh!");
@@ -42,7 +42,7 @@ void Graphics::Draw_Rect(const Rect shape)
 
 	AEGfxTextureSet(NULL, 0.0f, 0.0f);
 
-	AEGfxSetTintColor(shape.r, shape.g , shape.b, shape.alpha / colorcodeMax);
+	AEGfxSetTintColor(shape.color.r, shape.color.g , shape.color.b, shape.color.alpha / colorcodeMax);
 
 	AEGfxSetBlendMode(AE_GFX_BM_NONE);
 	AEGfxMeshDraw(shape.pMesh, AE_GFX_MDM_TRIANGLES);
@@ -50,9 +50,9 @@ void Graphics::Draw_Rect(const Rect shape)
 
 void Graphics::Set_Color(Rect* rect, const u32 r, const u32 g, const u32 b)
 {
-	rect->r = (f32)(r / colorcodeMax);
-	rect->g = (f32)(g / colorcodeMax);
-	rect->b = (f32)(b / colorcodeMax);
+	rect->color.r = (f32)(r / colorcodeMax);
+	rect->color.g = (f32)(g / colorcodeMax);
+	rect->color.b = (f32)(b / colorcodeMax);
 }
 void Graphics::FreeEntities(Rect rect)
 {

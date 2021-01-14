@@ -1,14 +1,19 @@
 #pragma once
 #include "../Extern/AlphaEngine_V3.08/include/AEEngine.h"
 
+typedef struct Color
+{
+	u32 r, g, b, alpha;
+}Color;
 
 typedef struct Rect
 {
+	Color color;
 	AEVec2 pos;
 	f32 height, width;
-	f32 r, g, b, alpha;
 	AEGfxVertexList* pMesh;
 }shapes;
+
 
 namespace Graphics
 {
