@@ -72,12 +72,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	/// Test init functions
 
 	const char* logofile = "../Assets/Logo/DigiPen_RED.png";
-	img logo = { 0 };
+	Img logo;
 	logo = Image::Initialize(logo, logofile, 400, 300, AEGetWindowWidth() - 50.0f, AEGetWindowHeight() / 2.0f);
 
-	Rect lol = { 0 };
+	Rect lol;
 	lol = Graphics::Set_Rect(lol, AEGetWindowWidth() / 2.0f, AEGetWindowHeight() / 2.0f, 100.0f, 100.0f);
-	Graphics::Set_Color(&lol, 255, 0, 0);
+	Graphics::Rect_SetColor(&lol, 0, 255, 255, 255);
+
+	Img boi;
+	const char* boiFile = "../Assets/Art/boi.png";
+	boi = Image::Initialize(boi, boiFile, 200.0f, 200.0f, 100.0f, 100.0f);
 
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;
 
@@ -103,11 +107,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		AEGfxSetBackgroundColor(0, 0, 0);
 
 		// Draw boi
-		counter -= 2;
+		counter -= 4;
 		if (counter < 0)
 			counter = 255;
 		Image::Draw_Default(logo, counter);
-
+		Image::Draw_Tinted(boi, 255, 0, 0, 255);
 		Graphics::Draw_Rect(lol);
 	
 		char strBuffer[100];
@@ -131,6 +135,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	AEGfxDestroyFont(fontId);
 	Image::FreeEntities(logo);
+	Image::FreeEntities(boi);
 	Graphics::FreeEntities(lol);
 	// free the system
 	AESysExit();

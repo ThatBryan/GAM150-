@@ -3,9 +3,16 @@
 #include <string>
 #include <iostream>
 
+Img::Img()
+{
+	this->height = 0;
+	this->pos = { 0, 0 };
+	this->width = 0;
+	this->pMesh = nullptr;
+	this->pTex = nullptr;
+}
 
-
-img Image::Initialize(img image, const char* filepath, const f32 posX, const f32 posY, const f32 width, const f32 height)
+Img Image::Initialize(Img image, const char* filepath, const f32 posX, const f32 posY, const f32 width, const f32 height)
 {
 	image.pos.x = posX;
 	image.pos.y = posY;
@@ -18,11 +25,11 @@ img Image::Initialize(img image, const char* filepath, const f32 posX, const f32
 	image.pMesh = Image::Mesh_Rectangle(image);
 	AE_ASSERT_MESG(image.pMesh, "Failed to create mesh!");
 
-	std::cout << "\nTexture" << filepath << "Successfully loaded" << std::endl;
+	std::cout << "\nTexture" << filepath << " successfully loaded" << std::endl;
 	return image;
 }
 
-AEGfxVertexList* Image::Mesh_Rectangle(img image)
+AEGfxVertexList* Image::Mesh_Rectangle(Img image)
 {
 	AEGfxMeshStart();
 	AEGfxTriAdd(
@@ -45,7 +52,7 @@ AEGfxVertexList* Image::Mesh_Rectangle(img image)
 	return AEGfxMeshEnd();
 }
 
-void Image::Draw_Default(const img image, const u32 alpha)
+void Image::Draw_Default(const Img image, const u32 alpha)
 {
 	// Assumed texture since function is expected to use to draw images
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
@@ -57,31 +64,32 @@ void Image::Draw_Default(const img image, const u32 alpha)
 
 	// No Tint
 	AEGfxSetTintColor(1.0, 1.0, 1.0f, 1.0f);
-	AEGfxSetTransparency((float)alpha / colorcodeMax);
+	AEGfxSetTransparency((f32)alpha / colorcodeMax);
 
 	// Drawing the mesh (list of triangles)
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(image.pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-void Image::Draw_Tinted(const img image, const u32 r, const u32 g, const u32 b, const u32 alpha)
+void Image::Draw_Tinted(const Img image, const u32 r, const u32 g, const u32 b, const u32 alpha)
 {
+	//std::cout << "Boi width: " << image.width << "\tBoi height: " << image.height << std::endl;
+
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 
 	AEGfxSetPosition(image.pos.x - AEGetWindowWidth() / 2.0f, image.pos.y - AEGetWindowHeight() / 2.0f);
 
-	// Set texture
 	AEGfxTextureSet(image.pTex, 0.0f, 0.0f);
 
 	// Set tint color
-	AEGfxSetTintColor((float)r / colorcodeMax, (float)g / colorcodeMax, (float)b / colorcodeMax, (float)alpha / colorcodeMax);
+	AEGfxSetTintColor((f32)r / colorcodeMax, (f32)g / colorcodeMax, (f32)b / colorcodeMax, (f32)alpha / colorcodeMax);
+	AEGfxSetTransparency((f32)alpha / colorcodeMax);
 
-	// Drawing the mesh (list of triangles)
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(image.pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-void Image::FreeEntities(img image)
+void Image::FreeEntities(Img image)
 {
 	AEGfxMeshFree(image.pMesh);
 	AEGfxTextureUnload(image.pTex);

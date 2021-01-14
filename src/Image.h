@@ -1,22 +1,34 @@
 #pragma once
 #include "../Extern/AlphaEngine_V3.08/include/AEEngine.h"
 
-const int colorcodeMax = 255;
+const float colorcodeMax = 255;
 
-typedef struct img
+class Img
 {
+	public:
 	AEVec2 pos;
 	f32 height, width;
 	AEGfxVertexList* pMesh;
 	AEGfxTexture* pTex;
-}img;
+
+	// Constructor
+	Img();
+};
 
 namespace Image
 {
 	// Initialize variables of the struct img
-	struct img Initialize(img image, const char* filepath, const f32 posX, const f32 posY, const f32 width, const f32 height);
-	AEGfxVertexList* Mesh_Rectangle(img image);
-	void Draw_Tinted(const img image, const u32 r, const u32 g, const u32 b, const u32 alpha);
-	void Draw_Default(const img image, const u32 alpha);
-	void FreeEntities(img image);
+	Img Initialize(Img image, const char* filepath, const f32 posX, const f32 posY, const f32 width, const f32 height);
+
+	// Sets the mesh for a rectangle and returns a pointer to the AEGfxVertexList
+	AEGfxVertexList* Mesh_Rectangle(Img image);
+	
+	// Draw tinted image 
+	void Draw_Tinted(const Img image, const u32 r, const u32 g, const u32 b, const u32 alpha);
+
+	// Draw image with no tint
+	void Draw_Default(const Img image, const u32 alpha);
+
+	// Frees the mesh and texture
+	void FreeEntities(Img image);
 }
