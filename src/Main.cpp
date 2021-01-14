@@ -22,6 +22,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	int gGameRunning = 1;
 	s8 fontId = 0;
+	int counter = 255;
 	// Variable declaration end
 	///////////////////////////
 
@@ -70,9 +71,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	/// Test init functions
 
-	//const char* logofile = "../Assets/Art/Logo/DigiPen_RED.png";
-	//img logo = { 0 };
-	//logo = Image::Initialize(logo, logofile, 400, 300, 100.0f, 100.0f);
+	const char* logofile = "../Assets/Logo/DigiPen_RED.png";
+	img logo = { 0 };
+	logo = Image::Initialize(logo, logofile, 400, 300, AEGetWindowWidth() - 50.0f, AEGetWindowHeight() / 2.0f);
 
 	const char* filepath = "../Assets/Art/boi.png";
 	img TEST = { 0 };
@@ -103,7 +104,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		// Draw boi
 		Image::Draw_Default(TEST, 255);
-		//Image::Draw_Default(logo, 255);
+		Image::Draw_Default(logo, 255);
 	
 		char strBuffer[100];
 		memset(strBuffer, 0, 100 * sizeof(char));
@@ -126,7 +127,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	AEGfxDestroyFont(fontId);
 	Image::Free(TEST);
-	//Image::Free(logo);
+	Image::Free(logo);
 	// free the system
 	AESysExit();
 }

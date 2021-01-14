@@ -12,12 +12,13 @@ img Image::Initialize(img image, const char* filepath, const f32 posX, const f32
 	image.width = width;
 	image.height = height;
 	
-	std::cout << "Texture" << filepath << "Successfully loaded" << std::endl;
 	image.pTex = AEGfxTextureLoad(filepath);
 	AE_ASSERT_MESG(image.pTex, "Failed to create texture!");
 
 	image.pMesh = Image::Mesh_Rectangle(image);
 	AE_ASSERT_MESG(image.pMesh, "Failed to create mesh!");
+
+	std::cout << "\nTexture" << filepath << "Successfully loaded" << std::endl;
 	return image;
 }
 
