@@ -14,5 +14,8 @@ namespace Graphics
 {
 	Rect Set_Rect(Rect rect, const f32 posX, const f32 posY, const f32 width, const f32 height);
 	AEGfxVertexList* Mesh_Rectangle(Rect rect);
+
+	void Set_Color(Rect* rect, const u32 r, const u32 g, const u32 b);
 	void Draw_Rect(const Rect rect);
+	void FreeEntities(Rect rect);
 }

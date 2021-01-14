@@ -1,5 +1,6 @@
 #include "Graphics.h"
 #include "Image.h"
+#include <iostream>
 Rect Graphics::Set_Rect(Rect rect, const f32 posX, const f32 posY, const f32 width, const f32 height)
 {
 	rect.pos.x = posX;
@@ -30,19 +31,30 @@ AEGfxVertexList* Graphics::Mesh_Rectangle(Rect rect)
 		rect.width * 0.5f, rect.height * 0.5f, 0x00FFFFFF, 1.0f, 0.0f,
 		-rect.width * 0.5f, rect.height * 0.5f, 0x00FFFFFF, 0.0f, 0.0f);
 
-	return AEGfxMeshEnd();
+	return AEGfxMeshEnd();	
 }
 
 void Graphics::Draw_Rect(const Rect shape)
 {
-	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 
 	AEGfxSetPosition(shape.pos.x - AEGetWindowWidth() / 2.0f, shape.pos.y - AEGetWindowHeight() / 2.0f);
 
 	AEGfxTextureSet(NULL, 0.0f, 0.0f);
 
-	AEGfxSetTintColor(shape.r / colorcodeMax, shape.g / colorcodeMax, shape.b / colorcodeMax, shape.alpha / colorcodeMax);
+	AEGfxSetTintColor(shape.r, shape.g , shape.b, shape.alpha / colorcodeMax);
 
 	AEGfxSetBlendMode(AE_GFX_BM_NONE);
 	AEGfxMeshDraw(shape.pMesh, AE_GFX_MDM_TRIANGLES);
+}
+
+void Graphics::Set_Color(Rect* rect, const u32 r, const u32 g, const u32 b)
+{
+	rect->r = (f32)(r / colorcodeMax);
+	rect->g = (f32)(g / colorcodeMax);
+	rect->b = (f32)(b / colorcodeMax);
+}
+void Graphics::FreeEntities(Rect rect)
+{
+	AEGfxMeshFree(rect.pMesh);
 }

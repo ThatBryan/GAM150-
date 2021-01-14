@@ -18,5 +18,5 @@ namespace Image
 	AEGfxVertexList* Mesh_Rectangle(img image);
 	void Draw_Tinted(const img image, const u32 r, const u32 g, const u32 b, const u32 alpha);
 	void Draw_Default(const img image, const u32 alpha);
-	void Free(img image);
+	void FreeEntities(img image);
 }

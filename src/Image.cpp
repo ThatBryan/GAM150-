@@ -81,7 +81,8 @@ void Image::Draw_Tinted(const img image, const u32 r, const u32 g, const u32 b, 
 	AEGfxMeshDraw(image.pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-void Image::Free(img image)
+void Image::FreeEntities(img image)
 {
+	AEGfxMeshFree(image.pMesh);
 	AEGfxTextureUnload(image.pTex);
 }

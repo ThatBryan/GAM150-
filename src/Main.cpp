@@ -75,10 +75,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	img logo = { 0 };
 	logo = Image::Initialize(logo, logofile, 400, 300, AEGetWindowWidth() - 50.0f, AEGetWindowHeight() / 2.0f);
 
-	const char* filepath = "../Assets/Art/boi.png";
-	img TEST = { 0 };
-	TEST = Image::Initialize(TEST, filepath, 400, 300, 100.0f, 100.0f);
-
+	Rect lol = { 0 };
+	lol = Graphics::Set_Rect(lol, AEGetWindowWidth() / 2.0f, AEGetWindowHeight() / 2.0f, 100.0f, 100.0f);
+	Graphics::Set_Color(&lol, 255, 0, 0);
 
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;
 
@@ -104,12 +103,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		AEGfxSetBackgroundColor(0, 0, 0);
 
 		// Draw boi
-
-		Image::Draw_Default(TEST, 255);
 		counter -= 2;
 		if (counter < 0)
 			counter = 255;
 		Image::Draw_Default(logo, counter);
+
+		Graphics::Draw_Rect(lol);
 	
 		char strBuffer[100];
 		memset(strBuffer, 0, 100 * sizeof(char));
@@ -131,8 +130,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	}
 
 	AEGfxDestroyFont(fontId);
-	Image::Free(TEST);
-	Image::Free(logo);
+	Image::FreeEntities(logo);
+	Graphics::FreeEntities(lol);
 	// free the system
 	AESysExit();
 }
