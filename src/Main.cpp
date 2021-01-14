@@ -5,7 +5,7 @@
 #include <iostream>
 #include "Image.h"
 #include "Utilities.h"
-
+#include "Graphics.h"
 // ---------------------------------------------------------------------------
 // main
 
@@ -79,6 +79,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	img TEST = { 0 };
 	TEST = Image::Initialize(TEST, filepath, 400, 300, 100.0f, 100.0f);
 
+
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;
 
 	// Game Loop
@@ -103,7 +104,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		AEGfxSetBackgroundColor(0, 0, 0);
 
 		// Draw boi
-		//Image::Draw_Default(TEST, 255);
+
+		Image::Draw_Default(TEST, 255);
 		counter -= 2;
 		if (counter < 0)
 			counter = 255;

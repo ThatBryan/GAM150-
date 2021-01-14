@@ -68,7 +68,7 @@ void Image::Draw_Tinted(const img image, const u32 r, const u32 g, const u32 b, 
 {
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 
-	AEGfxSetPosition(image.pos.x, image.pos.y);
+	AEGfxSetPosition(image.pos.x - AEGetWindowWidth() / 2.0f, image.pos.y - AEGetWindowHeight() / 2.0f);
 
 	// Set texture
 	AEGfxTextureSet(image.pTex, 0.0f, 0.0f);
