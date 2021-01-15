@@ -12,10 +12,8 @@ Img::Img()
 	this->pTex = nullptr;
 }
 
-Img Image::Initialize(Img image, const char* filepath, const f32 posX, const f32 posY, const f32 width, const f32 height)
+Img Image::Initialize(Img image, const char* filepath, const f32 width, const f32 height)
 {
-	image.pos.x = posX;
-	image.pos.y = posY;
 	image.width = width;
 	image.height = height;
 	
@@ -52,11 +50,13 @@ AEGfxVertexList* Image::Mesh_Rectangle(Img image)
 	return AEGfxMeshEnd();
 }
 
-void Image::Draw_Default(const Img image, const u32 alpha)
+void Image::Draw_Default(Img image, const AEVec2 pos, const u32 alpha)
 {
 	// Assumed texture since function is expected to use to draw images
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-
+	
+	image.pos.x = pos.x;
+	image.pos.y = pos.y;
 	AEGfxSetPosition(image.pos.x - AEGetWindowWidth() / 2.0f, image.pos.y - AEGetWindowHeight() / 2.0f);
 
 	// Set texture. No translation for texture.
@@ -71,12 +71,14 @@ void Image::Draw_Default(const Img image, const u32 alpha)
 	AEGfxMeshDraw(image.pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-void Image::Draw_Tinted(const Img image, const u32 r, const u32 g, const u32 b, const u32 alpha)
+void Image::Draw_Tinted(Img image, const AEVec2 pos, const u32 r, const u32 g, const u32 b, const u32 alpha)
 {
 	//std::cout << "Boi width: " << image.width << "\tBoi height: " << image.height << std::endl;
 
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 
+	image.pos.x = pos.x;
+	image.pos.y = pos.y;
 	AEGfxSetPosition(image.pos.x - AEGetWindowWidth() / 2.0f, image.pos.y - AEGetWindowHeight() / 2.0f);
 
 	AEGfxTextureSet(image.pTex, 0.0f, 0.0f);

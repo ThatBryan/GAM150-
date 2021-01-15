@@ -4,20 +4,23 @@
 
 Rect::Rect()
 {
-	this->color.r = 255.0f;
-	this->color.g = 255.0f;
-	this->color.b = 255.0f;
-	this->color.alpha = 255.0f;
+	Rect::Set_Color(this, 255.0f, 255.0f, 255.0f, 255.0f);
 
 	this->height = 0;
 	this->width = 0;
 	this->pos = { 0, 0 };
 	this->pMesh = nullptr;
 }
-Rect Graphics::Set_Rect(Rect rect, const f32 posX, const f32 posY, const f32 width, const f32 height)
+
+void Rect::Set_Color(Rect* rect, const u32 r, const u32 g, const u32 b, const u32 alpha)
 {
-	rect.pos.x = posX;
-	rect.pos.y = posY;
+	rect->color.r = (f32)(r / colorcodeMax);
+	rect->color.g = (f32)(g / colorcodeMax);
+	rect->color.b = (f32)(b / colorcodeMax);
+	rect->color.alpha = (f32)(alpha / colorcodeMax);
+}
+Rect Graphics::Set_Rect(Rect rect, const f32 width, const f32 height)
+{
 	rect.width = width;
 	rect.height = height;
 
@@ -43,10 +46,12 @@ AEGfxVertexList* Graphics::Mesh_Rectangle(Rect rect)
 	return AEGfxMeshEnd();	
 }
 
-void Graphics::Draw_Rect(const Rect shape)
+void Graphics::Draw_Rect(Rect shape, const AEVec2 pos)
 {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 
+	shape.pos.x = pos.x;
+	shape.pos.y = pos.y;
 	AEGfxSetPosition(shape.pos.x - AEGetWindowWidth() / 2.0f, shape.pos.y - AEGetWindowHeight() / 2.0f);
 
 	AEGfxTextureSet(NULL, 0.0f, 0.0f);
@@ -67,4 +72,46 @@ void Graphics::Rect_SetColor(Rect* rect, const u32 r, const u32 g, const u32 b, 
 void Graphics::FreeEntities(Rect rect)
 {
 	AEGfxMeshFree(rect.pMesh);
+}
+
+Text::Text()
+{
+	Text::Set_Color(this, 255.0f, 255.0f, 255.0f, 255.0f);
+	this->fontId = 0;
+	this->pos = { 0, 0 };
+	this->pStr = nullptr;
+	this->TextHeight = 0;
+	this->TextWidth = 0;
+	this->Scale = 0;
+}
+
+void Text::Set_Color(Text* text, const u32 r, const u32 g, const u32 b, const u32 alpha)
+{
+	text->color.r = (f32)(r / colorcodeMax);
+	text->color.g = (f32)(g / colorcodeMax);
+	text->color.b = (f32)(b / colorcodeMax);
+	text->color.alpha = (f32)(alpha / colorcodeMax);
+}
+Text Graphics::Set_Text(Text text, const s8 fontId, s8* strBuffer, const f32 scale)
+{
+	text.fontId = fontId;
+	text.pStr = strBuffer;
+	text.Scale = scale;
+	return text;
+}
+
+void Graphics::Draw_Text(Text text, AEVec2 pos)
+{
+	text.pos.x = pos.x;
+	text.pos.y = pos.y;
+	AEGfxGetPrintSize(text.fontId, text.pStr, text.Scale, text.TextWidth, text.TextHeight);
+
+	f32 screenX = (f32)(AEGetWindowWidth());
+	screenX = text.pos.x / screenX - text.TextWidth;	
+
+	f32 screenY = (f32)(AEGetWindowHeight());
+	screenY = text.pos.y / screenY - text.TextHeight;
+
+	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	AEGfxPrint(text.fontId, text.pStr, screenX, screenY, text.Scale, text.color.r, text.color.g, text.color.b);
 }

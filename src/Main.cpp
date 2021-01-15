@@ -73,15 +73,23 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	const char* logofile = "../Assets/Logo/DigiPen_RED.png";
 	Img logo;
-	logo = Image::Initialize(logo, logofile, 400, 300, AEGetWindowWidth() - 50.0f, AEGetWindowHeight() / 2.0f);
+	logo = Image::Initialize(logo, logofile, AEGetWindowWidth() - 50.0f, AEGetWindowHeight() / 2.0f);
+	AEVec2 logoPos = { 0, 0 };
 
 	Rect lol;
-	lol = Graphics::Set_Rect(lol, AEGetWindowWidth() / 2.0f, AEGetWindowHeight() / 2.0f, 100.0f, 100.0f);
-	Graphics::Rect_SetColor(&lol, 0, 255, 255, 255);
+	lol = Graphics::Set_Rect(lol, 50.0f, 50.0f);
+	lol.Set_Color(&lol, 0, 255, 255, 255);
 
+	AEVec2 lolPos = { 0, 0 };
 	Img boi;
 	const char* boiFile = "../Assets/Art/boi.png";
-	boi = Image::Initialize(boi, boiFile, 200.0f, 200.0f, 100.0f, 100.0f);
+	boi = Image::Initialize(boi, boiFile, 100.0f, 100.0f);
+	AEVec2 boiPos = { 0, 0 };
+
+	char strBuffer[100];
+	Text testText;
+	testText = Graphics::Set_Text(testText, fontId, strBuffer, 1.0f);
+	AEVec2 lmao = { 0, 0 };
 
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;
 
@@ -110,17 +118,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		counter -= 4;
 		if (counter < 0)
 			counter = 255;
-		Image::Draw_Default(logo, counter);
-		Image::Draw_Tinted(boi, 255, 0, 0, 255);
-		Graphics::Draw_Rect(lol);
-	
-		char strBuffer[100];
-		memset(strBuffer, 0, 100 * sizeof(char));
-		sprintf_s(strBuffer, "Frame Time:  %.6f", AEFrameRateControllerGetFrameTime());
 
-		f32 TextWidth, TextHeight;
-		AEGfxGetPrintSize(fontId, strBuffer, 1.0f, TextWidth, TextHeight);
-		AEGfxPrint(fontId, strBuffer, 0.99 - TextWidth, 0.99 - TextHeight, 1.0f, 0, 0, 0);
+		Image::Draw_Default(logo, Utilities::Vector_Set(logoPos, 400.0f, 300.0f),counter);
+		for (int i = 0; i < 5; i++)
+		{
+			Image::Draw_Tinted(boi, Utilities::Vector_Set(boiPos, 200.0f + i * boi.width, 200.0f), 255, 0, 0, 255);
+			Graphics::Draw_Rect(lol, Utilities::Vector_Set(lolPos, 60 * i + (AEGetWindowWidth() / 2.0f), (AEGetWindowHeight() / 2.0f)));
+		}
+	
+
+		memset(strBuffer, 0, 100 * sizeof(char));
+		sprintf_s(strBuffer, "Frame Time:  %.6f", AEFrameRateControllerGetFrameRate());
+		Graphics::Draw_Text(testText, Utilities::Vector_Set(lmao, AEGetWindowWidth(), AEGetWindowHeight()));
 
 		// Game loop draw end
 		/////////////////////
