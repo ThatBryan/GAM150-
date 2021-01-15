@@ -89,6 +89,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	char strBuffer[100];
 	Text testText;
 	testText = Graphics::Set_Text(testText, fontId, strBuffer, 1.0f);
+	testText.Set_Color(&testText, 0, 255, 0, 255);
 	AEVec2 lmao = { 0, 0 };
 
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;
@@ -125,8 +126,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			Image::Draw_Tinted(boi, Utilities::Vector_Set(boiPos, 200.0f + i * boi.width, 200.0f), 255, 0, 0, 255);
 			Graphics::Draw_Rect(lol, Utilities::Vector_Set(lolPos, 60 * i + (AEGetWindowWidth() / 2.0f), (AEGetWindowHeight() / 2.0f)));
 		}
-	
-
 		memset(strBuffer, 0, 100 * sizeof(char));
 		sprintf_s(strBuffer, "Frame Time:  %.6f", AEFrameRateControllerGetFrameRate());
 		Graphics::Draw_Text(testText, Utilities::Vector_Set(lmao, AEGetWindowWidth(), AEGetWindowHeight()));

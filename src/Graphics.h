@@ -18,6 +18,7 @@ class Rect
 	f32 height, width;
 	AEGfxVertexList* pMesh;
 
+	// Method which sets changes rect color
 	void Set_Color(Rect* rect, const u32 r, const u32 g, const u32 b, const u32 alpha);
 	private:
 };
@@ -25,6 +26,7 @@ class Rect
 class Text
 {
 	public:
+	// Constructor
 	Text();
 		Color color;
 		f32 TextWidth, TextHeight, Scale;
@@ -32,6 +34,7 @@ class Text
 		s8* pStr;
 		AEVec2 pos;
 
+	// Method which sets changes text color
 	void Set_Color(Text* rect, const u32 r, const u32 g, const u32 b, const u32 alpha);
 	private:
 };
@@ -53,8 +56,10 @@ namespace Graphics
 	// Frees the mesh that forms the rectangle
 	void FreeEntities(Rect rect);
 
+	// Sets the variables for the class Text.
 	Text Set_Text(Text text, const s8 fontId, s8* strBuffer, const f32 scale);
 
+	// Draws to screen the text. pos being the location on screen to start drawing from.
 	void Draw_Text(Text text, AEVec2 pos);
 }
 
