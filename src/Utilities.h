@@ -6,5 +6,6 @@ namespace Utilities
 	int RandomRangeInt(const s32 lowerBound, const s32 upperBound);
 	AEVec2 Vector_Set(AEVec2 Vector, const f32 x, const f32 y);
 	void Set_FullScreen(void);
-	//float RandomRangeFloat(const f32 lowerBound, const f32 upperBound);
+	f32 Get_HalfWindowWidth(void);
+	f32 Get_HalfWindowHeight(void);
 }

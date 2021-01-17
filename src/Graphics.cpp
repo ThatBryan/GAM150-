@@ -1,6 +1,7 @@
 #include "Graphics.h"
 #include "Image.h"
 #include <iostream>
+#include "Utilities.h"
 
 Rect::Rect()
 {
@@ -52,7 +53,8 @@ void Graphics::Draw_Rect(Rect shape, const AEVec2 pos)
 
 	shape.pos.x = pos.x;
 	shape.pos.y = pos.y;
-	AEGfxSetPosition(shape.pos.x - AEGetWindowWidth() / 2.0f, shape.pos.y - AEGetWindowHeight() / 2.0f);
+	AEGfxSetPosition(shape.pos.x - Utilities::Get_HalfWindowWidth(), shape.pos.y - Utilities::Get_HalfWindowHeight());
+
 
 	AEGfxTextureSet(NULL, 0.0f, 0.0f);
 
@@ -100,18 +102,40 @@ Text Graphics::Set_Text(Text text, const s8 fontId, s8* strBuffer, const f32 sca
 	return text;
 }
 
-void Graphics::Draw_Text(Text text, AEVec2 pos)
+void Graphics::Draw_Text(Text text, const AEVec2 pos)
 {
 	text.pos.x = pos.x;
 	text.pos.y = pos.y;
 	AEGfxGetPrintSize(text.fontId, text.pStr, text.Scale, text.TextWidth, text.TextHeight);
 
-	f32 screenX = (f32)(AEGetWindowWidth());
-	screenX = text.pos.x / screenX - text.TextWidth;	
-
-	f32 screenY = (f32)(AEGetWindowHeight());
-	screenY = text.pos.y / screenY - text.TextHeight;
-
+	AEVec2 drawPos = Graphics::Calculate_DrawTextOffset(text);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxPrint(text.fontId, text.pStr, screenX, screenY, text.Scale, text.color.r, text.color.g, text.color.b);
+	AEGfxPrint(text.fontId, text.pStr, drawPos.x, drawPos.y, text.Scale, text.color.r, text.color.g, text.color.b);
+}
+
+AEVec2 Graphics::Calculate_DrawTextOffset(const Text text)
+{
+	AEVec2 Offset = {0, 0};
+
+	// < Half window width / height
+	if (text.pos.x < Utilities::Get_HalfWindowWidth())
+	{
+		Offset.x = Utilities::Get_HalfWindowWidth()/ (-Utilities::Get_HalfWindowWidth() - text.pos.x);
+	}
+	if (text.pos.y < Utilities::Get_HalfWindowHeight())
+	{
+		Offset.y = Utilities::Get_HalfWindowHeight() / (-Utilities::Get_HalfWindowHeight() - text.pos.y);
+	}
+
+
+	// > Half Window Width / Height
+	if (text.pos.x > Utilities::Get_HalfWindowWidth())
+	{
+		Offset.x = text.pos.x / (f32)(AEGetWindowWidth());
+	}
+	if (text.pos.y > Utilities::Get_HalfWindowHeight())
+	{
+		Offset.y = text.pos.y / (f32)(AEGetWindowHeight());
+	}
+	return Offset;
 }

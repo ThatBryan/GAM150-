@@ -24,11 +24,13 @@ namespace Image
 	AEGfxVertexList* Mesh_Rectangle(Img image);
 	
 	// Draw tinted image 
-	void Draw_Tinted(Img image, const AEVec2 pos, const u32 r, const u32 g, const u32 b, const u32 alpha);
+	void Draw_Tinted(Img& image, const AEVec2 pos, const u32 r, const u32 g, const u32 b, const u32 alpha);
 
 	// Draw image with no tint
-	void Draw_Default(Img image, const AEVec2 pos, const u32 alpha);
+	void Draw_Default(Img& image, const AEVec2 pos, const u32 alpha);
 
 	// Frees the mesh and texture
 	void FreeEntities(Img image);
+
+	void Update_Position(Img& image);
 }

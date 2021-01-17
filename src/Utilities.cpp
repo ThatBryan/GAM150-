@@ -20,7 +20,7 @@ AEVec2 Utilities::Vector_Set(AEVec2 Vector, const f32 x, const f32 y)
 void Utilities::Set_FullScreen(void)
 {
 	static bool fullscreen = false;
-	if (AEInputCheckCurr(AEVK_LALT) && AEInputCheckCurr(AEVK_RETURN))
+	if (AEInputCheckCurr(AEVK_LALT) && AEInputCheckTriggered(AEVK_RETURN))
 	{
 		if (fullscreen)
 		{
@@ -32,5 +32,13 @@ void Utilities::Set_FullScreen(void)
 		}
 		AEToogleFullScreen(fullscreen);
 	}
-	// testing again
+}
+
+f32 Utilities::Get_HalfWindowWidth(void)
+{
+	return (f32)(AEGetWindowWidth() / 2.0f);
+}
+f32 Utilities::Get_HalfWindowHeight(void)
+{
+	return (f32)(AEGetWindowHeight() / 2.0f);
 }

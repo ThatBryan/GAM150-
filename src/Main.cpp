@@ -88,9 +88,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	char strBuffer[100];
 	Text testText;
-	testText = Graphics::Set_Text(testText, fontId, strBuffer, 1.0f);
+	testText = Graphics::Set_Text(testText, fontId, strBuffer, 2.0f);
 	testText.Set_Color(&testText, 0, 255, 0, 255);
-	AEVec2 lmao = { 0, 0 };
+	AEVec2 lmao = { -400, 0 };
 
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;
 
@@ -128,7 +128,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		}
 		memset(strBuffer, 0, 100 * sizeof(char));
 		sprintf_s(strBuffer, "Frame Time:  %.6f", AEFrameRateControllerGetFrameRate());
-		Graphics::Draw_Text(testText, Utilities::Vector_Set(lmao, AEGetWindowWidth(), AEGetWindowHeight()));
+		Graphics::Draw_Text(testText, Utilities::Vector_Set(lmao, 0, 0));
 
 		// Game loop draw end
 		/////////////////////

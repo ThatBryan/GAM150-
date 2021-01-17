@@ -59,8 +59,12 @@ namespace Graphics
 	// Sets the variables for the class Text.
 	Text Set_Text(Text text, const s8 fontId, s8* strBuffer, const f32 scale);
 
-	// Draws to screen the text. pos being the location on screen to start drawing from.
-	void Draw_Text(Text text, AEVec2 pos);
+	// Draws to screen the text. pos being the starting location on screen to start drawing from.
+	// Assumed pos.x goes from left to right. pos.y goes from down to up
+	void Draw_Text(Text text, const AEVec2 pos);
+
+	// Calculates the X and Y offset
+	AEVec2 Calculate_DrawTextOffset(const Text text);
 }
 
 

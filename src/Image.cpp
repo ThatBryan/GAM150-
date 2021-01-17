@@ -50,14 +50,14 @@ AEGfxVertexList* Image::Mesh_Rectangle(Img image)
 	return AEGfxMeshEnd();
 }
 
-void Image::Draw_Default(Img image, const AEVec2 pos, const u32 alpha)
+void Image::Draw_Default(Img& image, const AEVec2 pos, const u32 alpha)
 {
 	// Assumed texture since function is expected to use to draw images
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 	
 	image.pos.x = pos.x;
 	image.pos.y = pos.y;
-	AEGfxSetPosition(image.pos.x - AEGetWindowWidth() / 2.0f, image.pos.y - AEGetWindowHeight() / 2.0f);
+	AEGfxSetPosition(image.pos.x - Utilities::Get_HalfWindowWidth(), image.pos.y - Utilities::Get_HalfWindowHeight());
 
 	// Set texture. No translation for texture.
 	AEGfxTextureSet(image.pTex, 0, 0);
@@ -71,15 +71,14 @@ void Image::Draw_Default(Img image, const AEVec2 pos, const u32 alpha)
 	AEGfxMeshDraw(image.pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-void Image::Draw_Tinted(Img image, const AEVec2 pos, const u32 r, const u32 g, const u32 b, const u32 alpha)
+void Image::Draw_Tinted(Img& image, const AEVec2 pos, const u32 r, const u32 g, const u32 b, const u32 alpha)
 {
-	//std::cout << "Boi width: " << image.width << "\tBoi height: " << image.height << std::endl;
-
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 
 	image.pos.x = pos.x;
 	image.pos.y = pos.y;
-	AEGfxSetPosition(image.pos.x - AEGetWindowWidth() / 2.0f, image.pos.y - AEGetWindowHeight() / 2.0f);
+	Image::Update_Position(image);
+	AEGfxSetPosition(image.pos.x - Utilities::Get_HalfWindowWidth(), image.pos.y - Utilities::Get_HalfWindowHeight());
 
 	AEGfxTextureSet(image.pTex, 0.0f, 0.0f);
 
@@ -95,4 +94,29 @@ void Image::FreeEntities(Img image)
 {
 	AEGfxMeshFree(image.pMesh);
 	AEGfxTextureUnload(image.pTex);
+}
+
+// Fix
+void Image::Update_Position(Img& image)
+{
+	int mouseX = 0;
+	int mouseY = 0;
+	AEInputGetCursorPosition(&mouseX, &mouseY);
+	AEVec2 mouse = { 0, 0 };
+
+	mouse = Utilities::Vector_Set(mouse, mouseX, mouseY);
+	static double dt = 0;
+	dt += AEFrameRateControllerGetFrameTime();
+	//printf("X: %d\t Y: %d\n", mouseX, mouseY);
+	//printf("image: %.2f\t %.2f\n", image.pos.x, image.pos.y);
+
+	if (AETestPointToRect(&mouse, &image.pos, image.width, image.height))
+	{
+		if (AEInputCheckCurr(AEVK_LBUTTON))
+		{
+			//printf("%.2f\n", dt);
+			image.pos.x = mouseX;
+			image.pos.y = mouseY;
+		}
+	}
 }
