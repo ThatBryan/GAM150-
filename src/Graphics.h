@@ -5,9 +5,26 @@ class Color
 {
 	public:
 	f32 r, g, b, alpha;
-	void SetColor(f32 r, f32 g, f32 b, f32 alpha);
+	void SetColor(const f32 r, const f32 g, const f32 b, const f32 alpha);
 
 	private:
+};
+
+class Line
+{
+	public:
+		Line(const AEVec2 pos1, const AEVec2 pos2);
+
+		Color color;
+		AEVec2 pos1, pos2;
+		void SetWidth(const u32 width) { this->width = width; }
+
+		AEGfxVertexList* GetMesh(void) { return this->pMesh; }
+		void SetMesh(AEGfxVertexList* Mesh) { this->pMesh = Mesh; }
+
+	private:
+		AEGfxVertexList* pMesh;
+		s32 width;
 };
 
 class Rect

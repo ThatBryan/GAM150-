@@ -14,7 +14,7 @@ Rect::Rect(const f32 width, const f32 height)
 	AE_ASSERT_MESG(this->pMesh, "Failed to create mesh!");
 }
 
-void Color::SetColor(f32 r, f32 g, f32 b, f32 alpha)
+void Color::SetColor(const f32 r, const f32 g, const f32 b, const f32 alpha)
 {
 	this->r = r;
 	this->g = g;
