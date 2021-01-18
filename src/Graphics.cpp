@@ -3,103 +3,72 @@
 #include <iostream>
 #include "Utilities.h"
 
-Rect::Rect()
+Rect::Rect(const f32 width, const f32 height)
 {
-	Rect::Set_Color(this, 255.0f, 255.0f, 255.0f, 255.0f);
+	this->color.SetColor(255, 255, 255, 255);
 
-	this->height = 0;
-	this->width = 0;
+	this->width = width;
+	this->height = height;
 	this->pos = { 0, 0 };
-	this->pMesh = nullptr;
+	this->pMesh = Graphics::Mesh_Rectangle(this);
+	AE_ASSERT_MESG(this->pMesh, "Failed to create mesh!");
 }
 
-void Rect::Set_Color(Rect* rect, const u32 r, const u32 g, const u32 b, const u32 alpha)
+void Color::SetColor(f32 r, f32 g, f32 b, f32 alpha)
 {
-	rect->color.r = (f32)(r / colorcodeMax);
-	rect->color.g = (f32)(g / colorcodeMax);
-	rect->color.b = (f32)(b / colorcodeMax);
-	rect->color.alpha = (f32)(alpha / colorcodeMax);
-}
-Rect Graphics::Set_Rect(Rect rect, const f32 width, const f32 height)
-{
-	rect.width = width;
-	rect.height = height;
-
-	rect.pMesh = Graphics::Mesh_Rectangle(rect);
-	AE_ASSERT_MESG(rect.pMesh, "Failed to create mesh!");
-
-	return rect;
+	this->r = r;
+	this->g = g;
+	this->b = b;
+	this->alpha = alpha;
 }
 
-AEGfxVertexList* Graphics::Mesh_Rectangle(Rect rect)
+AEGfxVertexList* Graphics::Mesh_Rectangle(Rect* rect)
 {
 	AEGfxMeshStart();
 	AEGfxTriAdd(
-		-rect.width * 0.5f, -rect.height * 0.5f, 0x00FFFFFF, 0.0f, 0.0f,
-		rect.width * 0.5f, -rect.height * 0.5f, 0x00FFFFFF, 0.0f, 0.0f,
-		-rect.width * 0.5f, rect.height * 0.5f, 0x00FFFFFF, 0.0f, 0.0f);
+		-rect->width * 0.5f, -rect->height * 0.5f, 0x00FFFFFF, 0.0f, 0.0f,
+		rect->width * 0.5f, -rect->height * 0.5f, 0x00FFFFFF, 0.0f, 0.0f,
+		-rect->width * 0.5f, rect->height * 0.5f, 0x00FFFFFF, 0.0f, 0.0f);
 
 	AEGfxTriAdd(
-		rect.width * 0.5f, -rect.height * 0.5f, 0x00FFFFFF, 0.0f, 0.0f,
-		rect.width * 0.5f, rect.height * 0.5f, 0x00FFFFFF, 0.0f, 0.0f,
-		-rect.width * 0.5f, rect.height * 0.5f, 0x00FFFFFF, 0.0f, 0.0f);
+		rect->width * 0.5f, -rect->height * 0.5f, 0x00FFFFFF, 0.0f, 0.0f,
+		rect->width * 0.5f, rect->height * 0.5f, 0x00FFFFFF, 0.0f, 0.0f,
+		-rect->width * 0.5f, rect->height * 0.5f, 0x00FFFFFF, 0.0f, 0.0f);
 
 	return AEGfxMeshEnd();	
 }
 
-void Graphics::Draw_Rect(Rect shape, const AEVec2 pos)
+void Graphics::Draw_Rect(Rect rect, const AEVec2 pos)
 {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 
-	shape.pos.x = pos.x;
-	shape.pos.y = pos.y;
-	AEGfxSetPosition(shape.pos.x - Utilities::Get_HalfWindowWidth(), shape.pos.y - Utilities::Get_HalfWindowHeight());
+	rect.pos.x = pos.x;
+	rect.pos.y = pos.y;
+	AEGfxSetPosition(rect.pos.x - Utilities::Get_HalfWindowWidth(), rect.pos.y - Utilities::Get_HalfWindowHeight());
 
 
 	AEGfxTextureSet(NULL, 0.0f, 0.0f);
 
-	AEGfxSetTintColor(shape.color.r, shape.color.g , shape.color.b, shape.color.alpha);
+	AEGfxSetTintColor(rect.color.r, rect.color.g , rect.color.b, rect.color.alpha);
 
 	AEGfxSetBlendMode(AE_GFX_BM_NONE);
-	AEGfxMeshDraw(shape.pMesh, AE_GFX_MDM_TRIANGLES);
+	AEGfxMeshDraw(rect.GetMesh(), AE_GFX_MDM_TRIANGLES);
 }
 
-void Graphics::Rect_SetColor(Rect* rect, const u32 r, const u32 g, const u32 b, const u32 alpha)
-{
-	rect->color.r = (f32)(r / colorcodeMax);
-	rect->color.g = (f32)(g / colorcodeMax);
-	rect->color.b = (f32)(b / colorcodeMax);
-	rect->color.alpha = (f32)(alpha / colorcodeMax);
-}
 void Graphics::FreeEntities(Rect rect)
 {
-	AEGfxMeshFree(rect.pMesh);
+	AEGfxMeshFree(rect.GetMesh());
 }
 
-Text::Text()
+Text::Text(const s8* filepath, s8* textBuffer, const s32 fontSize, const f32 scale)
 {
-	Text::Set_Color(this, 255.0f, 255.0f, 255.0f, 255.0f);
-	this->fontId = 0;
+	this->fontId = AEGfxCreateFont(filepath, fontSize);
+	this->pStr = textBuffer;
+	this->Scale = scale;
 	this->pos = { 0, 0 };
-	this->pStr = nullptr;
 	this->TextHeight = 0;
 	this->TextWidth = 0;
-	this->Scale = 0;
-}
-
-void Text::Set_Color(Text* text, const u32 r, const u32 g, const u32 b, const u32 alpha)
-{
-	text->color.r = (f32)(r / colorcodeMax);
-	text->color.g = (f32)(g / colorcodeMax);
-	text->color.b = (f32)(b / colorcodeMax);
-	text->color.alpha = (f32)(alpha / colorcodeMax);
-}
-Text Graphics::Set_Text(Text text, const s8 fontId, s8* strBuffer, const f32 scale)
-{
-	text.fontId = fontId;
-	text.pStr = strBuffer;
-	text.Scale = scale;
-	return text;
+	Text::color.SetColor(255.0f, 255.0f, 255.0f, 255.0f);
 }
 
 void Graphics::Draw_Text(Text text, const AEVec2 pos)
@@ -117,7 +86,7 @@ AEVec2 Graphics::Calculate_DrawTextOffset(const Text text)
 {
 	AEVec2 Offset = {0, 0};
 
-	// < Half window width / height
+	// Drawpos < Half window width / height
 	if (text.pos.x < Utilities::Get_HalfWindowWidth())
 	{
 		Offset.x = Utilities::Get_HalfWindowWidth()/ (-Utilities::Get_HalfWindowWidth() - text.pos.x);
@@ -127,8 +96,7 @@ AEVec2 Graphics::Calculate_DrawTextOffset(const Text text)
 		Offset.y = Utilities::Get_HalfWindowHeight() / (-Utilities::Get_HalfWindowHeight() - text.pos.y);
 	}
 
-
-	// > Half Window Width / Height
+	// Drawpos> Half Window Width / Height
 	if (text.pos.x > Utilities::Get_HalfWindowWidth())
 	{
 		Offset.x = text.pos.x / (f32)(AEGetWindowWidth());

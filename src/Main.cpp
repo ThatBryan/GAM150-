@@ -21,7 +21,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// Variable declaration
 
 	int gGameRunning = 1;
-	s8 fontId = 0;
 	int counter = 255;
 	// Variable declaration end
 	///////////////////////////
@@ -41,56 +40,20 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// reset the system modules
 	AESysReset();
 
-	// Initialization end
-	/////////////////////
-
-
-
-	////////////////////////////////
-	// Creating the objects (Shapes)
-
-	// Creating the objects (Shapes) end
-	////////////////////////////////////
-
-
-	////////////////////////////
-	// Loading textures (images)
-
-	// Texture 1: From file
-
-	// Loading textures (images) end
-	//////////////////////////////////
-
-	//////////////////////////////////
-	// Creating Fonts	
-
-	fontId = AEGfxCreateFont("../Assets/Font/Roboto-Regular.ttf", 12);
-
-	// Creating Fonts end
-	//////////////////////////////////
-
 	/// Test init functions
 
-	const char* logofile = "../Assets/Logo/DigiPen_RED.png";
-	Img logo;
-	logo = Image::Initialize(logo, logofile, AEGetWindowWidth() - 50.0f, AEGetWindowHeight() / 2.0f);
-	AEVec2 logoPos = { 0, 0 };
+	Img logo("../Assets/Logo/DigiPen_RED.png", AEGetWindowWidth() - 50.0f, AEGetWindowHeight() / 2.0f);
 
-	Rect lol;
-	lol = Graphics::Set_Rect(lol, 50.0f, 50.0f);
-	lol.Set_Color(&lol, 0, 255, 255, 255);
+	Rect lol(50.0f, 50.0f);
+	lol.color.SetColor(0, 0, 255, 255);
 
-	AEVec2 lolPos = { 0, 0 };
-	Img boi;
-	const char* boiFile = "../Assets/Art/boi.png";
-	boi = Image::Initialize(boi, boiFile, 100.0f, 100.0f);
-	AEVec2 boiPos = { 0, 0 };
+	Img boi("../Assets/Art/boi.png", 100.0f, 100.0f);
+
+	Img boi2 = boi;
 
 	char strBuffer[100];
-	Text testText;
-	testText = Graphics::Set_Text(testText, fontId, strBuffer, 2.0f);
-	testText.Set_Color(&testText, 0, 255, 0, 255);
-	AEVec2 lmao = { -400, 0 };
+	Text testText("../Assets/Font/Roboto-Regular.ttf", strBuffer, 15, 1.0f);
+	testText.color.SetColor(0, 255, 0, 255);
 
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;
 
@@ -106,7 +69,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		///////////////////
 		// Game loop update
 
-		Utilities::Set_FullScreen();
 		// Game loop update end
 		///////////////////////
 
@@ -114,21 +76,24 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		//////////////////
 		// Game loop draw
 		AEGfxSetBackgroundColor(0, 0, 0);
+		Utilities::Set_FullScreen();
 
 		// Draw boi
 		counter -= 4;
 		if (counter < 0)
 			counter = 255;
 
-		Image::Draw_Default(logo, Utilities::Vector_Set(logoPos, 400.0f, 300.0f),counter);
+		Image::Draw_Default(logo, Utilities::Vector_Set(400.0f, 300.0f),counter);
 		for (int i = 0; i < 5; i++)
 		{
-			Image::Draw_Tinted(boi, Utilities::Vector_Set(boiPos, 200.0f + i * boi.width, 200.0f), 255, 0, 0, 255);
-			Graphics::Draw_Rect(lol, Utilities::Vector_Set(lolPos, 60 * i + (AEGetWindowWidth() / 2.0f), (AEGetWindowHeight() / 2.0f)));
+			Image::Draw_Tinted(boi, Utilities::Vector_Set(200.0f + i * boi.width, 200.0f), 255, 0, 0, 255);
+			Image::Draw_Tinted(boi2, Utilities::Vector_Set(200.0f + i * boi.width, 400.0f), 0, 255, 0, 255);
+			Graphics::Draw_Rect(lol, Utilities::Vector_Set(60 * i + (AEGetWindowWidth() / 2.0f), (AEGetWindowHeight() / 2.0f)));
 		}
+
 		memset(strBuffer, 0, 100 * sizeof(char));
-		sprintf_s(strBuffer, "Frame Time:  %.6f", AEFrameRateControllerGetFrameRate());
-		Graphics::Draw_Text(testText, Utilities::Vector_Set(lmao, 0, 0));
+		sprintf_s(strBuffer, "Frame Rate:  %.2f", AEFrameRateControllerGetFrameRate());
+		Graphics::Draw_Text(testText, Utilities::Vector_Set(0, 0));
 
 		// Game loop draw end
 		/////////////////////
@@ -141,10 +106,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			gGameRunning = 0;
 	}
 
-	AEGfxDestroyFont(fontId);
+	AEGfxDestroyFont(testText.fontId);
 	Image::FreeEntities(logo);
 	Image::FreeEntities(boi);
 	Graphics::FreeEntities(lol);
-	// free the system
 	AESysExit();
 }

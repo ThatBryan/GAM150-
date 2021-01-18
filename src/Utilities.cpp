@@ -11,10 +11,9 @@ int Utilities::RandomRangeInt(const s32 lowerBound, const s32 upperBound)
 //	return (lowerBound + rand() % (upperBound - 1 - lowerBound));
 //}
 
-AEVec2 Utilities::Vector_Set(AEVec2 Vector, const f32 x, const f32 y)
+AEVec2 Utilities::Vector_Set(const f32 x, const f32 y)
 {
-	AEVec2Set(&Vector, x, y);
-	return Vector;
+	return AEVec2{ x, y };
 }
 
 void Utilities::Set_FullScreen(void)
@@ -41,4 +40,12 @@ f32 Utilities::Get_HalfWindowWidth(void)
 f32 Utilities::Get_HalfWindowHeight(void)
 {
 	return (f32)(AEGetWindowHeight() / 2.0f);
+}
+
+AEVec2 Utilities::GetMousePos(void)
+{
+	int mouseX = 0;
+	int mouseY = 0;
+	AEInputGetCursorPosition(&mouseX, &mouseY);
+	return Utilities::Vector_Set(mouseX, AEGetWindowHeight() - mouseY);
 }
