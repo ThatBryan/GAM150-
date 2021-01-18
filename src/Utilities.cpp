@@ -17,6 +17,11 @@ AEVec2 Utilities::Vector_Add(const AEVec2 vec1, const AEVec2 vec2)
 	return AEVec2{ vec1.x + vec2.x, vec1.y + vec2.y };
 }
 
+AEVec2 Utilities::Vector_Sub(const AEVec2 vec1, const AEVec2 vec2)
+{
+	return AEVec2{ vec1.x - vec2.x, vec1.y - vec2.y };
+}
+
 void Utilities::Set_FullScreen(void)
 {
 	static bool fullscreen = false;

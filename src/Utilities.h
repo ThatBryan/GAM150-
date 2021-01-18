@@ -12,6 +12,8 @@ namespace Utilities
 	// Returns the sum of two 2D-vectors.
 	AEVec2 Vector_Add(const AEVec2 vec1, const AEVec2 vec2);
 
+	AEVec2 Vector_Sub(const AEVec2 vec1, const AEVec2 vec2);
+
 	// Set window to full screen with L ALT + Enter.
 	void Set_FullScreen(void);
 

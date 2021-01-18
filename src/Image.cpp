@@ -95,21 +95,3 @@ void Image::Draw_Tinted(Img& image, const AEVec2 pos, const u32 r, const u32 g, 
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(image.GetMesh(), AE_GFX_MDM_TRIANGLES);
 }
-
-void Image::FreeEntities(Img image)
-{
-	AEGfxMeshFree(image.GetMesh());
-	AEGfxTextureUnload(image.GetTexture());
-}
-
-//void Image::Update_Position(Img& image)
-//{
-//	AEVec2 Mouse = Utilities::GetMousePos();
-//	//printf("MouseX: %.2f\tMouseY: %.2f\n", Mouse.x, Mouse.y);
-//
-//	if (AETestPointToRect(&Mouse, &image.pos, image.width, image.height))
-//	{
-//		if (AEInputCheckCurr(AEVK_LBUTTON))
-//			image.pos = Mouse;
-//	}
-//}

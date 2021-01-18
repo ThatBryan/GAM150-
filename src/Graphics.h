@@ -17,10 +17,13 @@ class Line
 
 		Color color;
 		AEVec2 pos1, pos2;
+		
 		void SetWidth(const u32 width) { this->width = width; }
+		s32 GetWidth(void) { return width; }
 
 		AEGfxVertexList* GetMesh(void) { return this->pMesh; }
-		void SetMesh(AEGfxVertexList* Mesh) { this->pMesh = Mesh; }
+		void SetMesh(Line* line);
+		void Free(void) { AEGfxMeshFree(GetMesh()); }
 
 	private:
 		AEGfxVertexList* pMesh;
@@ -39,7 +42,7 @@ class Rect
 
 
 	AEGfxVertexList* GetMesh(void) { return this->pMesh; }
-	void SetMesh(AEGfxVertexList* Mesh) { this->pMesh = Mesh; }
+	void Free(void) { AEGfxMeshFree(GetMesh()); }
 
 	private:
 		AEGfxVertexList* pMesh;
@@ -56,6 +59,8 @@ class Text
 
 		s8 GetFontID(void) { return this->fontId; }
 		s8* GetBuffer(void) { return this->pStr; }
+		void Free(void) { AEGfxDestroyFont(GetFontID()); }
+
 	private:
 		s8 fontId;
 		s8* pStr;
@@ -71,15 +76,14 @@ namespace Graphics
 	// Draws the rectangle to screen
 	void Draw_Rect(Rect rect, const AEVec2 pos);
 
-	// Frees the mesh that forms the rectangle
-	void FreeEntities(Rect rect);
-
 	// Draws to screen the text. pos being the starting location on screen to start drawing from.
 	// Assumed pos.x goes from left to right. pos.y goes from down to up
 	void Draw_Text(Text text, const AEVec2 pos);
 
 	// Calculates the X and Y offset
 	AEVec2 Calculate_DrawTextOffset(const Text text);
+
+	void Draw_Line(Line& line);
 }
 
 

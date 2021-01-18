@@ -15,10 +15,15 @@ class Img
 
 	void SetMesh(AEGfxVertexList* pMesh) { this->pMesh = pMesh; }
 	void SetTexture(AEGfxTexture* pTex) { this->pTex = pTex; }
+
 	void Update_Position(void);
 
 	AEGfxVertexList* GetMesh(void) { return this->pMesh; }
 	AEGfxTexture* GetTexture(void) { return this->pTex; }
+	void Free(void) {
+		AEGfxMeshFree(GetMesh());
+		AEGfxTextureUnload(GetTexture());
+	}
 
 	private:
 	AEGfxVertexList* pMesh;
@@ -36,9 +41,4 @@ namespace Image
 
 	// Draw image with no tint
 	void Draw_Default(Img& image, const AEVec2 pos, const u32 alpha);
-
-	// Frees the mesh and texture
-	void FreeEntities(Img image);
-
-	//void Update_Position(Img& image);
 }
