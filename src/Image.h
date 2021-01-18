@@ -9,12 +9,13 @@ class Img
 	// Constructor
 	Img(const s8* filepath, const f32 width, const f32 height);
 
-	AEVec2 pos;
 	f32 height, width;
+	AEVec2 pos;
 
 
 	void SetMesh(AEGfxVertexList* pMesh) { this->pMesh = pMesh; }
 	void SetTexture(AEGfxTexture* pTex) { this->pTex = pTex; }
+	void Update_Position(void);
 
 	AEGfxVertexList* GetMesh(void) { return this->pMesh; }
 	AEGfxTexture* GetTexture(void) { return this->pTex; }
@@ -39,5 +40,5 @@ namespace Image
 	// Frees the mesh and texture
 	void FreeEntities(Img image);
 
-	void Update_Position(Img& image, AEVec2 pos);
+	//void Update_Position(Img& image);
 }

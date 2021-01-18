@@ -75,11 +75,11 @@ void Graphics::Draw_Text(Text text, const AEVec2 pos)
 {
 	text.pos.x = pos.x;
 	text.pos.y = pos.y;
-	AEGfxGetPrintSize(text.fontId, text.pStr, text.Scale, text.TextWidth, text.TextHeight);
+	AEGfxGetPrintSize(text.GetFontID(), text.GetBuffer(), text.Scale, text.TextWidth, text.TextHeight);
 
 	AEVec2 drawPos = Graphics::Calculate_DrawTextOffset(text);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxPrint(text.fontId, text.pStr, drawPos.x, drawPos.y, text.Scale, text.color.r, text.color.g, text.color.b);
+	AEGfxPrint(text.GetFontID(), text.GetBuffer(), drawPos.x, drawPos.y, text.Scale, text.color.r, text.color.g, text.color.b);
 }
 
 AEVec2 Graphics::Calculate_DrawTextOffset(const Text text)

@@ -51,6 +51,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	Img boi2 = boi;
 
+	boi2.pos = { 400, 300 };
+
+	boi.pos = { 200, 400 };
 	char strBuffer[100];
 	Text testText("../Assets/Font/Roboto-Regular.ttf", strBuffer, 15, 1.0f);
 	testText.color.SetColor(0, 255, 0, 255);
@@ -84,10 +87,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			counter = 255;
 
 		Image::Draw_Default(logo, Utilities::Vector_Set(400.0f, 300.0f),counter);
+		
+		boi2.Update_Position();
+		Image::Draw_Tinted(boi2, boi2.pos, 0, 255, 0, 255);
+		
+		boi.Update_Position();
 		for (int i = 0; i < 5; i++)
 		{
-			Image::Draw_Tinted(boi, Utilities::Vector_Set(200.0f + i * boi.width, 200.0f), 255, 0, 0, 255);
-			Image::Draw_Tinted(boi2, Utilities::Vector_Set(200.0f + i * boi.width, 400.0f), 0, 255, 0, 255);
+			//Image::Draw_Tinted(boi, Utilities::Vector_Add(boi.pos, Utilities::Vector_Set(50.0f * i, 10.0)), 255, 0, 0, 255);
+			Image::Draw_Tinted(boi, Utilities::Vector_Set(boi.pos.x + i * boi.width, boi.pos.y), 255, 0, 0, 255);
 			Graphics::Draw_Rect(lol, Utilities::Vector_Set(60 * i + (AEGetWindowWidth() / 2.0f), (AEGetWindowHeight() / 2.0f)));
 		}
 
@@ -106,7 +114,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			gGameRunning = 0;
 	}
 
-	AEGfxDestroyFont(testText.fontId);
+	AEGfxDestroyFont(testText.GetFontID());
 	Image::FreeEntities(logo);
 	Image::FreeEntities(boi);
 	Graphics::FreeEntities(lol);

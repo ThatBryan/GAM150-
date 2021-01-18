@@ -26,7 +26,6 @@ class Rect
 
 	private:
 		AEGfxVertexList* pMesh;
-		
 };
 
 class Text
@@ -36,11 +35,13 @@ class Text
 	Text(const s8* filepath, s8* textBuffer, const s32 fontSize, const f32 scale);
 		Color color;
 		f32 TextWidth, TextHeight, Scale;
-		s8 fontId;
-		s8* pStr;
 		AEVec2 pos;
 
+		s8 GetFontID(void) { return this->fontId; }
+		s8* GetBuffer(void) { return this->pStr; }
 	private:
+		s8 fontId;
+		s8* pStr;
 };
 
 namespace Graphics

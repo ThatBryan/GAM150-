@@ -39,14 +39,34 @@ AEGfxVertexList* Image::Mesh_Rectangle(Img* image)
 	return AEGfxMeshEnd();
 }
 
+void Img::Update_Position(void)
+{
+	if (AEInputCheckCurr(AEVK_W))
+		this->pos.y += 5.0f;
+
+	if(AEInputCheckCurr(AEVK_S))
+		this->pos.y -= 5.0f;
+	
+	if(AEInputCheckCurr(AEVK_D))
+		this->pos.x += 5.0f;
+
+	if(AEInputCheckCurr(AEVK_A))
+		this->pos.x -= 5.0f;
+
+	AEVec2 Mouse = Utilities::GetMousePos();
+
+	if (AETestPointToRect(&Mouse, &this->pos, this->width, this->height))
+	{
+		if (AEInputCheckCurr(AEVK_LBUTTON))
+			this->pos = Mouse;
+	}
+}
 void Image::Draw_Default(Img& image, const AEVec2 pos, const u32 alpha)
 {
 	// Assumed texture since function is expected to use to draw images
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-	
-	image.pos.x = pos.x;
-	image.pos.y = pos.y;
-	AEGfxSetPosition(image.pos.x - Utilities::Get_HalfWindowWidth(), image.pos.y - Utilities::Get_HalfWindowHeight());
+
+	AEGfxSetPosition(pos.x - Utilities::Get_HalfWindowWidth(), pos.y - Utilities::Get_HalfWindowHeight());
 
 	// Set texture. No translation for texture.
 	AEGfxTextureSet(image.GetTexture(), 0, 0);
@@ -64,8 +84,7 @@ void Image::Draw_Tinted(Img& image, const AEVec2 pos, const u32 r, const u32 g, 
 {
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 
-	Image::Update_Position(image, pos);
-	AEGfxSetPosition(image.pos.x - Utilities::Get_HalfWindowWidth(), image.pos.y - Utilities::Get_HalfWindowHeight());
+	AEGfxSetPosition(pos.x - Utilities::Get_HalfWindowWidth(), pos.y - Utilities::Get_HalfWindowHeight());
 
 	AEGfxTextureSet(image.GetTexture(), 0.0f, 0.0f);
 
@@ -83,16 +102,14 @@ void Image::FreeEntities(Img image)
 	AEGfxTextureUnload(image.GetTexture());
 }
 
-void Image::Update_Position(Img& image, AEVec2 pos)
-{
-	AEVec2 Mouse = Utilities::GetMousePos();
-	//printf("MouseX: %.2f\tMouseY: %.2f\n", Mouse.x, Mouse.y);
-
-	image.pos = pos;
-
-	if (AETestPointToRect(&Mouse, &image.pos, image.width, image.height))
-	{
-		if (AEInputCheckCurr(AEVK_LBUTTON))
-			image.pos = Mouse;
-	}
-}
+//void Image::Update_Position(Img& image)
+//{
+//	AEVec2 Mouse = Utilities::GetMousePos();
+//	//printf("MouseX: %.2f\tMouseY: %.2f\n", Mouse.x, Mouse.y);
+//
+//	if (AETestPointToRect(&Mouse, &image.pos, image.width, image.height))
+//	{
+//		if (AEInputCheckCurr(AEVK_LBUTTON))
+//			image.pos = Mouse;
+//	}
+//}

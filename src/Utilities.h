@@ -5,6 +5,7 @@ namespace Utilities
 {
 	int RandomRangeInt(const s32 lowerBound, const s32 upperBound);
 	AEVec2 Vector_Set(const f32 x, const f32 y);
+	AEVec2 Vector_Add(const AEVec2 vec1, const AEVec2 vec2);
 	void Set_FullScreen(void);
 	f32 Get_HalfWindowWidth(void);
 	f32 Get_HalfWindowHeight(void);
