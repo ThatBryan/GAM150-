@@ -33,10 +33,10 @@ Text::Text(const s8* filepath, s8* textBuffer, const s32 fontSize, const f32 sca
 	Text::color.SetColor(255.0f, 255.0f, 255.0f, 255.0f);
 }
 
-Line::Line(const AEVec2 pos1, const AEVec2 pos2)
+Line::Line(const AEVec2 pos1, const AEVec2 pos2, const f32 width)
 {
 	this->color.SetColor(255.0f, 255.0f, 255.0f, 255.0f);
-	this->width = 1.0f;
+	this->width = width;
 	this->pos1 = pos1;
 	this->pos2 = pos2;
 	this->SetMesh(this);
@@ -44,22 +44,32 @@ Line::Line(const AEVec2 pos1, const AEVec2 pos2)
 
 void Line::SetMesh(Line* line)
 {
-	AEVec2 width = Utilities::Vector_Sub(line->pos1, line->pos2);
-	f32 displaceY1 = line->pos1.y / 2.0f;
+	//(0, 0)		(800, 600)
+	f32 displaceX1 = line->pos1.x / 2.0f - Utilities::Get_HalfWindowWidth();
+	f32 displaceY1 = line->pos1.y / 2.0f + Utilities::Get_HalfWindowHeight();
+
+	f32 displaceX2 = line->pos2.x / 2.0f;
 	f32 displaceY2 = line->pos2.y / 2.0f;
+	printf("x1: %.2f\ty1: %.2f\tx2: %.2f\ty2: %.2f\n", displaceX1, displaceY1, displaceX2, displaceY2);
 
 	AEGfxMeshStart();
 
-	//AEGfxVertexAdd();
-	AEGfxTriAdd(
-		-width.x * 0.5f, line->GetWidth() * 0.5f + 300.0f, 0x00FFFFFF, 0.0f, 0.0f,
-		-width.x * 0.5f, -line->GetWidth() * 0.5f, 0x00FFFFFF, 0.0f, 0.0f,
-		width.x * 0.5f, -line->GetWidth() * 0.5f - 300.0f, 0x00FFFFFF, 0.0f, 0.0f);
+	AEGfxVertexAdd(displaceX1, -displaceY1 + line->width * 0.5f, 0x00FFFFFF, 0.0f, 0.0f);
+	AEGfxVertexAdd(displaceX1 + line->width / 2.0f, -displaceY1, 0x00FFFFFF, 0.0f, 0.0f);
 
-	AEGfxTriAdd(
-		width.x * 0.5f, -line->GetWidth() * 0.5f, 0x00FFFFFF, 0.0f, 0.0f,
-		width.x * 0.5f, line->GetWidth() * 0.5f, 0x00FFFFFF, 0.0f, 0.0f,
-		-width.x * 0.5f, line->GetWidth() * 0.5f, 0x00FFFFFF, 0.0f, 0.0f);
+	AEGfxVertexAdd(displaceX2 - line->width, displaceY2, 0x00FFFFFF, 0.0f, 0.0f);
+	AEGfxVertexAdd(displaceX2, displaceY2 - line->width / 2.0f, 0x00FFFFFF, 0.0f, 0.0f);
+
+
+	//AEGfxTriAdd(
+	//	-width.x * 0.5f, line->GetWidth() * 0.5f + 300.0f, 0x00FFFFFF, 0.0f, 0.0f,
+	//	-width.x * 0.5f, -line->GetWidth() * 0.5f, 0x00FFFFFF, 0.0f, 0.0f,
+	//	width.x * 0.5f, -line->GetWidth() * 0.5f - 300.0f, 0x00FFFFFF, 0.0f, 0.0f);
+
+	//AEGfxTriAdd(
+	//	width.x * 0.5f, -line->GetWidth() * 0.5f, 0x00FFFFFF, 0.0f, 0.0f,
+	//	width.x * 0.5f, line->GetWidth() * 0.5f, 0x00FFFFFF, 0.0f, 0.0f,
+	//	-width.x * 0.5f, line->GetWidth() * 0.5f, 0x00FFFFFF, 0.0f, 0.0f);
 
 	this->pMesh = AEGfxMeshEnd();
 	AE_ASSERT_MESG(this->pMesh, "Failed to create mesh!");

@@ -13,21 +13,17 @@ class Color
 class Line
 {
 	public:
-		Line(const AEVec2 pos1, const AEVec2 pos2);
+		Line(const AEVec2 pos1, const AEVec2 pos2, const f32 width);
 
 		Color color;
+		f32 width;
 		AEVec2 pos1, pos2;
 		
-		void SetWidth(const u32 width) { this->width = width; }
-		s32 GetWidth(void) { return width; }
-
 		AEGfxVertexList* GetMesh(void) { return this->pMesh; }
 		void SetMesh(Line* line);
 		void Free(void) { AEGfxMeshFree(GetMesh()); }
-
 	private:
 		AEGfxVertexList* pMesh;
-		s32 width;
 };
 
 class Rect

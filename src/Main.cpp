@@ -4,6 +4,7 @@
 #include "../Extern/AlphaEngine_V3.08/include/AEEngine.h"
 #include <iostream>
 #include "Image.h"
+#include <ctime>
 #include "Utilities.h"
 #include "Graphics.h"
 // ---------------------------------------------------------------------------
@@ -27,6 +28,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	/////////////////
 	// Initialization
+	srand(time(NULL));
 	AEGfxSetBackgroundColor(1.0f, 0, 0.0f);
 
 
@@ -48,14 +50,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	lol.color.SetColor(0, 0, 255, 255);
 
 	Img boi("../Assets/Art/boi.png", 100.0f, 100.0f);
-
-	Img boi2 = boi;
+	Img boi2("../Assets/Art/boi.png", 100.0f, 100.0f);
 
 	boi2.pos = { 400, 300 };
 
 	boi.pos = { 200, 400 };
 
-	Line linetest(Utilities::Vector_Set(0, 0), Utilities::Vector_Set(AEGetWindowWidth(), AEGetWindowHeight()));
+	Line linetest(Utilities::Vector_Set(0, 0), Utilities::Vector_Set(800, 600), 5.0f);
 
 
 	char strBuffer[100];
@@ -122,6 +123,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	testText.Free();
 	logo.Free();
 	boi.Free();
+	boi2.Free();
 	lol.Free();
 	linetest.Free();
 	AESysExit();
