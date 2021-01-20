@@ -7,17 +7,17 @@ int Utilities::RandomRangeInt(const s32 lowerBound, const s32 upperBound)
 	return (lowerBound + rand() % (upperBound - lowerBound + 1));
 }
 
-AEVec2 Utilities::Vector_Set(const f32 x, const f32 y)
+AEVec2 AEVector2::Set(const f32 x, const f32 y)
 {
 	return AEVec2{ x, y };
 }
 
-AEVec2 Utilities::Vector_Add(const AEVec2 vec1, const AEVec2 vec2)
+AEVec2 AEVector2::Add(const AEVec2 vec1, const AEVec2 vec2)
 {
 	return AEVec2{ vec1.x + vec2.x, vec1.y + vec2.y };
 }
 
-AEVec2 Utilities::Vector_Sub(const AEVec2 vec1, const AEVec2 vec2)
+AEVec2 AEVector2::Sub(const AEVec2 vec1, const AEVec2 vec2)
 {
 	return AEVec2{ vec1.x - vec2.x, vec1.y - vec2.y };
 }
@@ -53,5 +53,5 @@ AEVec2 Utilities::GetMousePos(void)
 	int mouseX = 0;
 	int mouseY = 0;
 	AEInputGetCursorPosition(&mouseX, &mouseY);
-	return Utilities::Vector_Set(mouseX, AEGetWindowHeight() - mouseY);
+	return AEVector2::Set(mouseX, AEGetWindowHeight() - mouseY);
 }

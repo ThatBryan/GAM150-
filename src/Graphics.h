@@ -10,76 +10,71 @@ class Color
 	private:
 };
 
-class Line
-{
-	public:
-		Line(const AEVec2 pos1, const AEVec2 pos2, const f32 width);
-
-		Color color;
-		f32 width;
-		AEVec2 pos1, pos2;
-		
-		AEGfxVertexList* GetMesh(void) { return this->pMesh; }
-		void SetMesh(Line* line);
-		void Free(void) { AEGfxMeshFree(GetMesh()); }
-	private:
-		AEGfxVertexList* pMesh;
-};
-
-class Rect
-{
-	public:
-	// Constructor
-	Rect(const f32 width, const f32 height);
-
-	Color color;
-	AEVec2 pos;
-	f32 height, width;
-
-
-	AEGfxVertexList* GetMesh(void) { return this->pMesh; }
-	void Free(void) { AEGfxMeshFree(GetMesh()); }
-
-	private:
-		AEGfxVertexList* pMesh;
-};
-
-class Text
-{
-	public:
-	// Constructor
-	Text(const s8* filepath, s8* textBuffer, const s32 fontSize, const f32 scale);
-		Color color;
-		f32 TextWidth, TextHeight, Scale;
-		AEVec2 pos;
-
-		s8 GetFontID(void) { return this->fontId; }
-		s8* GetBuffer(void) { return this->pStr; }
-		void Free(void) { AEGfxDestroyFont(GetFontID()); }
-
-	private:
-		s8 fontId;
-		s8* pStr;
-};
 
 namespace Graphics
 {
-	// Sets the variables for the class rect.
+	class Line
+	{
+		public:
+			Line(const AEVec2 pos1, const AEVec2 pos2, const f32 width);
 
+			Color color;
+			f32 width;
+			AEVec2 pos1, pos2;
+
+			void Draw_Line(Line& line);
+			inline AEGfxVertexList* GetMesh(void) { return this->pMesh; }
+			inline void SetMesh(Line* line);
+			inline void Free(void) { AEGfxMeshFree(GetMesh()); }
+		private:
+			AEGfxVertexList* pMesh;
+	};
+
+	class Rect
+	{
+		public:
+		// Constructor
+		Rect(const f32 width, const f32 height);
+
+		Color color;
+		AEVec2 pos;
+		f32 height, width;
+
+		void Draw_Rect(Rect rect, const AEVec2 pos);
+		inline AEGfxVertexList* GetMesh(void) { return this->pMesh; }
+		inline void Free(void) { AEGfxMeshFree(GetMesh()); }
+
+		private:
+			AEGfxVertexList* pMesh;
+	};
+
+	class Text
+	{
+		public:
+		// Constructor
+		Text(const s8* filepath, s8* textBuffer, const s32 fontSize, const f32 scale);
+			Color color;
+			f32 TextWidth, TextHeight, Scale;
+			AEVec2 pos;
+
+			// Calculates the X and Y offset
+			AEVec2 Calculate_DrawTextOffset(const Text text);
+			void Draw_Text(Text text, const AEVec2 pos);
+			inline s8 GetFontID(void) { return this->fontId; }
+			inline s8* GetBuffer(void) { return this->pStr; }
+			inline void Free(void) { AEGfxDestroyFont(GetFontID()); }
+
+		private:
+			s8 fontId;
+			s8* pStr;
+	};
+
+}
+
+namespace Graphics
+{
 	// Sets the mesh for a rectangle and returns a pointer to the AEGfxVertexList
 	AEGfxVertexList* Mesh_Rectangle(Rect* rect);
-
-	// Draws the rectangle to screen
-	void Draw_Rect(Rect rect, const AEVec2 pos);
-
-	// Draws to screen the text. pos being the starting location on screen to start drawing from.
-	// Assumed pos.x goes from left to right. pos.y goes from down to up
-	void Draw_Text(Text text, const AEVec2 pos);
-
-	// Calculates the X and Y offset
-	AEVec2 Calculate_DrawTextOffset(const Text text);
-
-	void Draw_Line(Line& line);
 }
 
 

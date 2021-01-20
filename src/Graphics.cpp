@@ -5,13 +5,13 @@
 
 void Color::SetColor(const f32 r, const f32 g, const f32 b, const f32 alpha)
 {
-	this->r = r;
-	this->g = g;
-	this->b = b;
-	this->alpha = alpha;
+	this->r = r / colorcodeMax;
+	this->g = g / colorcodeMax;
+	this->b = b / colorcodeMax;
+	this->alpha = alpha / colorcodeMax;
 }
 
-Rect::Rect(const f32 width, const f32 height)
+Graphics::Rect::Rect(const f32 width, const f32 height)
 {
 
 	this->width = width;
@@ -22,7 +22,7 @@ Rect::Rect(const f32 width, const f32 height)
 	this->color.SetColor(255, 255, 255, 255);
 }
 
-Text::Text(const s8* filepath, s8* textBuffer, const s32 fontSize, const f32 scale)
+Graphics::Text::Text(const s8* filepath, s8* textBuffer, const s32 fontSize, const f32 scale)
 {
 	this->fontId = AEGfxCreateFont(filepath, fontSize);
 	this->pStr = textBuffer;
@@ -33,7 +33,7 @@ Text::Text(const s8* filepath, s8* textBuffer, const s32 fontSize, const f32 sca
 	Text::color.SetColor(255.0f, 255.0f, 255.0f, 255.0f);
 }
 
-Line::Line(const AEVec2 pos1, const AEVec2 pos2, const f32 width)
+Graphics::Line::Line(const AEVec2 pos1, const AEVec2 pos2, const f32 width)
 {
 	this->color.SetColor(255.0f, 255.0f, 255.0f, 255.0f);
 	this->width = width;
@@ -42,7 +42,7 @@ Line::Line(const AEVec2 pos1, const AEVec2 pos2, const f32 width)
 	this->SetMesh(this);
 }
 
-void Line::SetMesh(Line* line)
+void Graphics::Line::SetMesh(Line* line)
 {
 	//(0, 0)		(800, 600)
 	f32 displaceX1 = line->pos1.x / 2.0f - Utilities::Get_HalfWindowWidth();
@@ -92,7 +92,7 @@ AEGfxVertexList* Graphics::Mesh_Rectangle(Rect* rect)
 	return AEGfxMeshEnd();	
 }
 
-void Graphics::Draw_Rect(Rect rect, const AEVec2 pos)
+void Graphics::Rect::Draw_Rect(Rect rect, const AEVec2 pos)
 {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 
@@ -106,18 +106,18 @@ void Graphics::Draw_Rect(Rect rect, const AEVec2 pos)
 	AEGfxMeshDraw(rect.GetMesh(), AE_GFX_MDM_TRIANGLES);
 }
 
-void Graphics::Draw_Text(Text text, const AEVec2 pos)
+void Graphics::Text::Draw_Text(Text text, const AEVec2 pos)
 {
 	text.pos.x = pos.x;
 	text.pos.y = pos.y;
 	AEGfxGetPrintSize(text.GetFontID(), text.GetBuffer(), text.Scale, text.TextWidth, text.TextHeight);
 
-	AEVec2 drawPos = Graphics::Calculate_DrawTextOffset(text);
+	AEVec2 drawPos = Graphics::Text::Calculate_DrawTextOffset(text);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxPrint(text.GetFontID(), text.GetBuffer(), drawPos.x, drawPos.y, text.Scale, text.color.r, text.color.g, text.color.b);
 }
 
-void Graphics::Draw_Line(Line& line)
+void Graphics::Line::Draw_Line(Line& line)
 {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 
@@ -130,7 +130,7 @@ void Graphics::Draw_Line(Line& line)
 	AEGfxMeshDraw(line.GetMesh(), AE_GFX_MDM_TRIANGLES);
 }
 
-AEVec2 Graphics::Calculate_DrawTextOffset(const Text text)
+AEVec2 Graphics::Text::Calculate_DrawTextOffset(const Text text)
 {
 	AEVec2 Offset = {0, 0};
 

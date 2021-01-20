@@ -3,27 +3,31 @@
 
 const float colorcodeMax = 255.0f;
 
-class Img
+class Image
 {
 	public:
 	// Constructor
-	Img(const s8* filepath, const f32 width, const f32 height);
+	Image(const s8* filepath, const f32 width, const f32 height);
 
 	f32 height, width;
 	AEVec2 pos;
 
 
-	void SetMesh(AEGfxVertexList* pMesh) { this->pMesh = pMesh; }
-	void SetTexture(AEGfxTexture* pTex) { this->pTex = pTex; }
+	inline void SetMesh(AEGfxVertexList* pMesh) { this->pMesh = pMesh; }
+	inline void SetTexture(AEGfxTexture* pTex) { this->pTex = pTex; }
+	AEGfxVertexList* Mesh_Rectangle(Image* image);
+
+
+	inline AEGfxVertexList* GetMesh(void) { return this->pMesh; }
+	inline AEGfxTexture* GetTexture(void) { return this->pTex; }
+	inline void Free(void) {AEGfxMeshFree(GetMesh()); AEGfxTextureUnload(GetTexture());}
+
 
 	void Update_Position(void);
+	void Draw_Tinted(Image& image, const AEVec2 pos, const u32 r, const u32 g, const u32 b, const u32 alpha);
+	void Draw_Default(Image& image, const AEVec2 pos, const u32 alpha);
 
-	AEGfxVertexList* GetMesh(void) { return this->pMesh; }
-	AEGfxTexture* GetTexture(void) { return this->pTex; }
-	void Free(void) {
-		AEGfxMeshFree(GetMesh());
-		AEGfxTextureUnload(GetTexture());
-	}
+	// Sets the mesh for a rectangle and returns a pointer to the AEGfxVertexList
 
 	private:
 	AEGfxVertexList* pMesh;
@@ -31,14 +35,14 @@ class Img
 
 };
 
-namespace Image
+namespace Img
 {
 	// Sets the mesh for a rectangle and returns a pointer to the AEGfxVertexList
-	AEGfxVertexList* Mesh_Rectangle(Img* image);
+	//AEGfxVertexList* Mesh_Rectangle(Image* image);
 	
-	// Draw tinted image 
-	void Draw_Tinted(Img& image, const AEVec2 pos, const u32 r, const u32 g, const u32 b, const u32 alpha);
+	//// Draw tinted image 
+	//void Draw_Tinted(Image& image, const AEVec2 Image, const u32 r, const u32 g, const u32 b, const u32 alpha);
 
-	// Draw image with no tint
-	void Draw_Default(Img& image, const AEVec2 pos, const u32 alpha);
+	//// Draw image with no tint
+	//void Draw_Default(Image& image, const AEVec2 Image, const u32 alpha);
 }
