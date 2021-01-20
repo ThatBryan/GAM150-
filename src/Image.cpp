@@ -41,18 +41,39 @@ AEGfxVertexList* Image::Mesh_Rectangle(Image* image)
 
 void Image::Update_Position(void)
 {
+	static f32 HeightLimit = (f32)AEGetWindowHeight();
+	static f32 WidthLimit = (f32)AEGetWindowWidth();
+	static float speed = 5.0f;
+
+
 	if (AEInputCheckCurr(AEVK_W))
-		this->pos.y += 5.0f;
-
-	if(AEInputCheckCurr(AEVK_S))
-		this->pos.y -= 5.0f;
-	
-	if(AEInputCheckCurr(AEVK_D))
-		this->pos.x += 5.0f;
-
-	if(AEInputCheckCurr(AEVK_A))
-		this->pos.x -= 5.0f;
-
+	{
+		if(this->pos.y + this->height / 2 <= HeightLimit )
+		{ 
+			this->pos.y += speed;
+		}
+	}
+	if (AEInputCheckCurr(AEVK_S))
+	{
+		if (this->pos.y - this->height / 2 >= 0)
+		{
+			this->pos.y -= speed;
+		}
+	}
+	if (AEInputCheckCurr(AEVK_D))
+	{
+		if (this->pos.x + this->width / 2 <= WidthLimit)
+		{
+			this->pos.x += speed;
+		}
+	}
+	if (AEInputCheckCurr(AEVK_A))
+	{
+		if (this->pos.x - this->width / 2 >= 0)
+		{
+			this->pos.x -= speed;
+		}
+	}
 	AEVec2 Mouse = Utilities::GetMousePos();
 
 	if (AETestPointToRect(&Mouse, &this->pos, this->width, this->height))

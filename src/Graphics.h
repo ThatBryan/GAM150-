@@ -1,6 +1,7 @@
 #pragma once
 #include "../Extern/AlphaEngine_V3.08/include/AEEngine.h"
 
+//https://htmlcolorcodes.com/
 class Color
 {
 	public:

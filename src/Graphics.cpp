@@ -42,6 +42,7 @@ Graphics::Line::Line(const AEVec2 pos1, const AEVec2 pos2, const f32 width)
 	this->SetMesh(this);
 }
 
+// NOT working
 void Graphics::Line::SetMesh(Line* line)
 {
 	//(0, 0)		(800, 600)
@@ -50,7 +51,6 @@ void Graphics::Line::SetMesh(Line* line)
 
 	f32 displaceX2 = line->pos2.x / 2.0f;
 	f32 displaceY2 = line->pos2.y / 2.0f;
-	printf("x1: %.2f\ty1: %.2f\tx2: %.2f\ty2: %.2f\n", displaceX1, displaceY1, displaceX2, displaceY2);
 
 	AEGfxMeshStart();
 
