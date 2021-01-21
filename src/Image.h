@@ -32,17 +32,4 @@ class Image
 	private:
 	AEGfxVertexList* pMesh;
 	AEGfxTexture* pTex;
-
 };
-
-namespace Img
-{
-	// Sets the mesh for a rectangle and returns a pointer to the AEGfxVertexList
-	//AEGfxVertexList* Mesh_Rectangle(Image* image);
-	
-	//// Draw tinted image 
-	//void Draw_Tinted(Image& image, const AEVec2 Image, const u32 r, const u32 g, const u32 b, const u32 alpha);
-
-	//// Draw image with no tint
-	//void Draw_Default(Image& image, const AEVec2 Image, const u32 alpha);
-}

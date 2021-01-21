@@ -40,7 +40,16 @@ void DemoUpdate(void)
 
 	for (int i = 0; i < Demo_Tiles.size(); i++)
 	{
+		if (Demo_Tiles[i].active == false)
+			continue;
+
+		Demo_Tiles[i].Collapse();
 		Demo_Tiles[i].image.Draw_Default(Demo_Tiles[i].image, Demo_Tiles[i].image.pos, 255);
+		if (AETestRectToRect(&Demo_Tiles[i].image.pos, Demo_Tiles[i].image.width, Demo_Tiles[i].image.height, &Demo_Player[0].pos, Demo_Player[0].width, Demo_Player[0].height))
+		{
+			if (AEInputCheckTriggered(AEVK_SPACE))
+				Demo_Tiles[i].collapsing = true;
+		}
 	}
 
 	Demo_Player[0].Update_Position();
