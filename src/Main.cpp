@@ -46,7 +46,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	Image logo("../Assets/Logo/DigiPen_RED.png", 750.0f, 300.0f);
 
-	DemoInit();
+	Demo::Init();
 
 	char strBuffer[100];
 	Graphics::Text testText("../Assets/Font/Roboto-Regular.ttf", strBuffer, 15, 1.0f);
@@ -80,7 +80,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			counter = 255;
 		
 		logo.Draw_Default(logo, AEVector2::Set(400.0f, 300.0f), counter);
-		DemoUpdate();
+		Demo::Update();
 		memset(strBuffer, 0, 100 * sizeof(char));
 		sprintf_s(strBuffer, "Frame Rate:  %.2f", AEFrameRateControllerGetFrameRate());
 		testText.Draw_Text(testText, AEVector2::Set(0, 570));
@@ -99,7 +99,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	testText.Free();
 	logo.Free();
-	DemoExit();
+	Demo::Exit();
 
 	AESysExit();
 }

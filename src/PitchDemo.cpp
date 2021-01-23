@@ -5,64 +5,90 @@
 
 Color background;
 std::vector <Tiles> Demo_Tiles;
+std::vector <Tiles> Demo_Tiles2;
+std::vector <Tiles> Demo_Tiles3;
 std::vector <Image> Demo_Player;
 
 
 #define TILE_SIZE 100.0f
-
-void DemoInit(void)
+#define BOI_SIZE 50.0f
+void Demo::Init(void)
 {
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 
-	for (int i = 0; i < AEGetWindowWidth() / TILE_SIZE; i++)
-	{
-		Demo_Tiles.push_back(Tiles("../Assets/Art/tile.png", TILE_SIZE, TILE_SIZE));
-		Demo_Tiles[i].image.pos = AEVector2::Set(Demo_Tiles[0].image.width / 2 + i * Demo_Tiles[0].image.width, Demo_Tiles[0].image.height / 2);
-	}
 
-	size_t vector_size = Demo_Tiles.size();
-	for (size_t i = vector_size; i < AEGetWindowWidth() / TILE_SIZE + vector_size; i++)
-	{
-		static int j = 0;
-		Demo_Tiles.push_back(Tiles("../Assets/Art/tile.png", TILE_SIZE, TILE_SIZE));
-		Demo_Tiles[i].image.pos = AEVector2::Set(Demo_Tiles[0].image.width / 2 + j * Demo_Tiles[0].image.width, 200 + Demo_Tiles[0].image.height / 2);
-		j++;
-	}
+	Demo_Tiles = Demo::AddTileRow(Demo_Tiles, "../Assets/Art/tile.png", TILE_SIZE, AEVec2{ TILE_SIZE / 2,TILE_SIZE / 2 });
+	Demo_Tiles2 = Demo::AddTileRow(Demo_Tiles2, "../Assets/Art/tile.png", TILE_SIZE, AEVec2{ TILE_SIZE / 2, 200 + TILE_SIZE / 2 });
 
-	Demo_Player.push_back(Image("../Assets/Art/boi.png", 75.0f, 75.0f));
+	for (s8 i = 0; i < (s8)Demo_Tiles2.size(); i++)
+	{
+		Demo_Tiles2[i].ID = i;
+	}
+	Demo_Tiles3 = Demo::AddTileRow(Demo_Tiles3, "../Assets/Art/tile.png", TILE_SIZE, AEVec2{ TILE_SIZE / 2, 300 + TILE_SIZE / 2 });
+
+	Demo_Player.push_back(Image("../Assets/Art/boi.png", BOI_SIZE, BOI_SIZE));
 	Demo_Player[0].pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
 }
 
 
-void DemoUpdate(void)
+void Demo::Update(void)
 {
-
-	for (int i = 0; i < Demo_Tiles.size(); i++)
-	{
-		if (Demo_Tiles[i].active == false)
-			continue;
-
-		Demo_Tiles[i].Collapse();
-		Demo_Tiles[i].image.Draw_Default(Demo_Tiles[i].image, Demo_Tiles[i].image.pos, 255);
-		if (AETestRectToRect(&Demo_Tiles[i].image.pos, Demo_Tiles[i].image.width, Demo_Tiles[i].image.height, &Demo_Player[0].pos, Demo_Player[0].width, Demo_Player[0].height))
-		{
-			if (AEInputCheckTriggered(AEVK_SPACE))
-				Demo_Tiles[i].collapsing = true;
-		}
-	}
-
 	Demo_Player[0].Update_Position();
+
+	Demo::UpdateCollision(Demo_Tiles, Demo_Player);
+	Demo::UpdateCollision(Demo_Tiles2, Demo_Player);
+	Demo::UpdateCollision(Demo_Tiles3, Demo_Player);
+	Demo::Draw(Demo_Tiles);
+	Demo::Draw(Demo_Tiles2);
+	Demo::Draw(Demo_Tiles3);
 	Demo_Player[0].Draw_Default(Demo_Player[0], Demo_Player[0].pos, 255);
 }
-void DemoExit(void)
+void Demo::Exit(void)
 {
-	for (int i = 0; i < Demo_Tiles.size(); i++)
+	Demo::Free(Demo_Tiles);
+	Demo::Free(Demo_Tiles2);
+	Demo::Free(Demo_Tiles3);
+}
+
+
+void Demo::Draw(std::vector <Tiles> tiles)
+{
+	for (size_t i = 0; i < tiles.size(); i++)
 	{
-		Demo_Tiles[i].image.Free();
+		if (tiles[i].active == false)
+			continue;
+
+		tiles[i].image.Draw_Default(tiles[i].image, tiles[i].image.pos, 255);
 	}
-	for (int i = 0; i < Demo_Player.size(); i++)
+}
+
+void Demo::Free(std::vector <Tiles> tiles)
+{
+	for (size_t i = 0; i < tiles.size(); i++)
 	{
-		Demo_Player[i].Free();
+		tiles[i].image.Free();
+	}
+}
+
+std::vector <Tiles> Demo::AddTileRow(std::vector <Tiles> tile, const s8* filepath, const f32 width, const AEVec2 pos)
+{
+	for (int i = 0; i < AEGetWindowWidth() / width; i++)
+	{
+		tile.push_back(Tiles(filepath, width, width));
+		tile[i].image.pos = AEVector2::Set(pos.x + tile[0].image.width * i, pos.y + tile[0].image.height / 2 + 10* i);
+	}
+	return tile;
+}
+
+void Demo::UpdateCollision(std::vector <Tiles>& tiles, std::vector <Image> player)
+{
+	for (size_t i = 0; i < tiles.size(); i++)
+	{
+		if (tiles[i].active == false)
+			continue;
+
+		tiles[i].CheckPlayerCollision(player);
+		tiles[i].Collapse();
 	}
 }
