@@ -9,8 +9,7 @@ void Player::Update_Position(void)
 	static f32 HeightLimit = (f32)AEGetWindowHeight();
 	static f32 WidthLimit = (f32)AEGetWindowWidth();
 	static float speed = 5.0f;
-	static float speedx = 5.0f;
-	static float speedy = 5.0f;
+	static float jumpspeed_y = 10.0f;
 	static bool jump = FALSE;
 
 	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP) && jump == FALSE)
@@ -21,13 +20,14 @@ void Player::Update_Position(void)
 	{
 		if (this->sprite.pos.y + this->sprite.height / 2 <= HeightLimit)
 		{
-			this->sprite.pos.y += speedy;
 
-			speedy -= 1.0f;
-			if (speedy < -10.0f)
+			this->sprite.pos.y += jumpspeed_y;
+
+			jumpspeed_y -= 1.0f;
+			if (jumpspeed_y < -10.0f)
 			{
 				jump = FALSE;
-				speedy = 10.0f;
+				jumpspeed_y = 10.0f;
 			}
 		}
 
