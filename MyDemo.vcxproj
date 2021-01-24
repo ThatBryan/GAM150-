@@ -15,6 +15,7 @@
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Graphics.cpp" />
     <ClCompile Include="src\PitchDemo.cpp" />
+    <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Tiles.cpp" />
     <ClCompile Include="src\Utilities.cpp" />
   </ItemGroup>
@@ -22,6 +23,7 @@
     <ClInclude Include="src\Image.h" />
     <ClInclude Include="src\Graphics.h" />
     <ClInclude Include="src\PitchDemo.h" />
+    <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Tiles.h" />
     <ClInclude Include="src\Utilities.h" />
   </ItemGroup>

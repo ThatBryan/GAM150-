@@ -21,9 +21,9 @@ void Tiles::Collapse(void)
 	}
 }
 
-void Tiles::CheckPlayerCollision(std::vector <Image> Demo_Player)
+void Tiles::CheckPlayerCollision(std::vector <Player> Demo_Player)
 {
-	if (AETestRectToRect(&this->image.pos, this->image.width, this->image.height, &Demo_Player[0].pos, Demo_Player[0].width, Demo_Player[0].height))
+	if (AETestRectToRect(&this->image.pos, this->image.width, this->image.height, &Demo_Player[0].sprite.pos, Demo_Player[0].sprite.width, Demo_Player[0].sprite.height))
 	{
 		if (AEInputCheckTriggered(AEVK_SPACE))
 		{

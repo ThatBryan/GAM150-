@@ -1,7 +1,8 @@
 #pragma once
-#include "Image.h"
-#include <vector>
 #include "../Extern/AlphaEngine_V3.08/include/AEEngine.h"
+#include <vector>
+#include "Image.h"
+#include "Player.h"
 
 class Tiles
 {
@@ -13,5 +14,5 @@ class Tiles
 		Image image;
 		void Collapse(void);
 		void DecreaseLifespan(void);
-		void CheckPlayerCollision(std::vector <Image> Demo_Player);
+		void CheckPlayerCollision(std::vector <Player> Demo_Player);
 };

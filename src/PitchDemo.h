@@ -1,6 +1,7 @@
 #pragma once
 #include "../Extern/AlphaEngine_V3.08/include/AEEngine.h"
 #include "Tiles.h"
+#include "Player.h"
 
 
 namespace Demo
@@ -13,7 +14,7 @@ namespace Demo
 
 	void AssignID(std::vector <Tiles>& tiles);
 	void CollapseNext(std::vector <Tiles>& tiles);
-	void CollisionManager(std::vector <Tiles>& tiles, std::vector <Image> player);
+	void CollisionManager(std::vector <Tiles>& tiles, std::vector <Player> player);
 
 	void Restart(void);
 	std::vector <Tiles> AddTileRow(std::vector < Tiles> tile, const s8* filepath, const f32 width, const AEVec2 pos);
