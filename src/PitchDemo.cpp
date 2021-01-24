@@ -36,10 +36,12 @@ void Demo::Init(void)
 	Demo::AssignID(Demo_Tiles3);
 
 	player.push_back(Player("../Assets/Art/boi.png", BOI_SIZE, BOI_SIZE));
-	enemy.push_back(Enemy("../Assets/Art/boi.png", BOI_SIZE, BOI_SIZE));
+
+	Demo::AddNewEnemy("../Assets/Art/boi.png", AEVector2::Set(Utilities::Get_HalfWindowWidth(), 200.0f), BOI_SIZE, BOI_SIZE);
+	Demo::AddNewEnemy("../Assets/Art/boi.png", AEVector2::Set(Utilities::Get_HalfWindowWidth(), 400.0f), BOI_SIZE, BOI_SIZE);
 
 	player[0].sprite.pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
-	enemy[0].sprite.pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), 200.0f);
+
 }
 
 
@@ -48,16 +50,10 @@ void Demo::Update(void)
 	player[0].Update_Position();
 	player[0].CheckEnemyCollision(enemy);
 
-	Demo::CollisionManager(Demo_Tiles, player);
-	Demo::CollisionManager(Demo_Tiles2, player);
-	Demo::CollisionManager(Demo_Tiles3, player);
-
-	Demo::Draw(Demo_Tiles);
-	Demo::Draw(Demo_Tiles2);
-	Demo::Draw(Demo_Tiles3);
-
-	player[0].sprite.Draw_Default(player[0].sprite, player[0].sprite.pos, 255);
-	enemy[0].sprite.Draw_Tinted(enemy[0].sprite, enemy[0].sprite.pos, 255, 0, 0, 255);
+	
+	Demo::CollisionManager();
+	Demo::CollapsingManager();
+	Demo::DrawingManager();
 
 	if (AEInputCheckTriggered(AEVK_R) || !player[0].active)
 		Demo::Restart();
@@ -68,7 +64,11 @@ void Demo::Exit(void)
 	Demo::Free(Demo_Tiles2);
 	Demo::Free(Demo_Tiles3);
 	player[0].sprite.Free();
-	enemy[0].sprite.Free();
+
+	for (size_t i = 0; i < enemy.size(); i++)
+	{
+		enemy[i].sprite.Free();
+	}
 }
 
 
@@ -127,14 +127,31 @@ void Demo::Restart(void)
 		Demo_Tiles2[i].delay = 0.5f;
 		Demo_Tiles3[i].delay = 0.5f;
 	}
+	player[player.size() - 1].active = true;
 }
 
-void Demo::CollisionManager(std::vector <Tiles>& tiles, std::vector <Player> player)
+void Demo::DrawingManager(void)
 {
-	Demo::CollapseNext(Demo_Tiles);
-	Demo::CollapseNext(Demo_Tiles2);
-	Demo::CollapseNext(Demo_Tiles3);
+	Demo::Draw(Demo_Tiles);
+	Demo::Draw(Demo_Tiles2);
+	Demo::Draw(Demo_Tiles3);
 
+	player[0].sprite.Draw_Default(player[0].sprite, player[0].sprite.pos, 255.0f);
+
+	for (size_t i = 0; i < enemy.size(); i++)
+	{
+		enemy[i].sprite.Draw_Tinted(enemy[i].sprite, enemy[i].sprite.pos, 255.0f, 0, 0, 255.0f);
+	}
+}
+
+void Demo::CollisionManager(void)
+{
+	Demo::CheckCollisionTilesPlayer(Demo_Tiles, player);
+	Demo::CheckCollisionTilesPlayer(Demo_Tiles2, player);
+	Demo::CheckCollisionTilesPlayer(Demo_Tiles3, player);
+}
+void Demo::CheckCollisionTilesPlayer(std::vector <Tiles>& tiles, std::vector <Player> player)
+{
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
 		if (tiles[i].active == false)
@@ -143,7 +160,13 @@ void Demo::CollisionManager(std::vector <Tiles>& tiles, std::vector <Player> pla
 		tiles[i].CheckPlayerCollision(player);
 		tiles[i].Collapse();
 	}
+}
 
+void Demo::CollapsingManager(void)
+{
+	Demo::CollapseNext(Demo_Tiles);
+	Demo::CollapseNext(Demo_Tiles2);
+	Demo::CollapseNext(Demo_Tiles3);
 }
 
 void Demo::CollapseNext(std::vector <Tiles>& tiles)
@@ -164,4 +187,10 @@ void Demo::CollapseNext(std::vector <Tiles>& tiles)
 			}
 		}
 	}
+}
+
+void Demo::AddNewEnemy(const s8* filepath, const AEVec2 pos, const f32 width, const f32 height)
+{
+	enemy.push_back(Enemy(filepath, width, height));
+	enemy[enemy.size() - 1].sprite.pos = pos;
 }
