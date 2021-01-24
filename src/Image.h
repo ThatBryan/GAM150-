@@ -22,8 +22,8 @@ class Image
 	inline AEGfxTexture* GetTexture(void) { return this->pTex; }
 	inline void Free(void) {AEGfxMeshFree(GetMesh()); AEGfxTextureUnload(GetTexture());}
 
-	void Draw_Tinted(Image& image, const AEVec2 pos, const u32 r, const u32 g, const u32 b, const u32 alpha);
-	void Draw_Default(Image& image, const AEVec2 pos, const u32 alpha);
+	void Draw_Tinted(Image& image, const AEVec2 pos, const f32 r, const f32 g, const f32 b, const f32 alpha);
+	void Draw_Default(Image& image, const AEVec2 pos, const f32 alpha);
 
 	// Sets the mesh for a rectangle and returns a pointer to the AEGfxVertexList
 

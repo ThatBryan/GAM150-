@@ -39,7 +39,7 @@ AEGfxVertexList* Image::Mesh_Rectangle(Image* image)
 	return AEGfxMeshEnd();
 }
 
-void Image::Draw_Default(Image& image, const AEVec2 pos, const u32 alpha)
+void Image::Draw_Default(Image& image, const AEVec2 pos, const f32 alpha)
 {
 	// Assumed texture since function is expected to use to draw images
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
@@ -51,14 +51,14 @@ void Image::Draw_Default(Image& image, const AEVec2 pos, const u32 alpha)
 
 	// No Tint
 	AEGfxSetTintColor(1.0, 1.0, 1.0f, 1.0f);
-	AEGfxSetTransparency((f32)alpha / colorcodeMax);
+	AEGfxSetTransparency(alpha / colorcodeMax);
 
 	// Drawing the mesh (list of triangles)
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(image.GetMesh(), AE_GFX_MDM_TRIANGLES);
 }
 
-void Image::Draw_Tinted(Image& image, const AEVec2 pos, const u32 r, const u32 g, const u32 b, const u32 alpha)
+void Image::Draw_Tinted(Image& image, const AEVec2 pos, const f32 r, const f32 g, const f32 b, const f32 alpha)
 {
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 
@@ -67,8 +67,8 @@ void Image::Draw_Tinted(Image& image, const AEVec2 pos, const u32 r, const u32 g
 	AEGfxTextureSet(image.GetTexture(), 0.0f, 0.0f);
 
 	// Set tint color
-	AEGfxSetTintColor((f32)r / colorcodeMax, (f32)g / colorcodeMax, (f32)b / colorcodeMax, (f32)alpha / colorcodeMax);
-	AEGfxSetTransparency((f32)alpha / colorcodeMax);
+	AEGfxSetTintColor(r / colorcodeMax, g / colorcodeMax, b / colorcodeMax, alpha / colorcodeMax);
+	AEGfxSetTransparency(alpha / colorcodeMax);
 
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(image.GetMesh(), AE_GFX_MDM_TRIANGLES);

@@ -4,12 +4,14 @@
 #include "Graphics.h"
 #include <iostream>
 #include "Player.h"
+#include "Enemy.h"
 
 Color background;
 std::vector <Tiles> Demo_Tiles;
 std::vector <Tiles> Demo_Tiles2;
 std::vector <Tiles> Demo_Tiles3;
 std::vector <Player> player;
+std::vector <Enemy> enemy;
 
 #define TILE_SIZE 100.0f
 #define BOI_SIZE 50.0f
@@ -34,14 +36,17 @@ void Demo::Init(void)
 	Demo::AssignID(Demo_Tiles3);
 
 	player.push_back(Player("../Assets/Art/boi.png", BOI_SIZE, BOI_SIZE));
+	enemy.push_back(Enemy("../Assets/Art/boi.png", BOI_SIZE, BOI_SIZE));
 
 	player[0].sprite.pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
+	enemy[0].sprite.pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), 200.0f);
 }
 
 
 void Demo::Update(void)
 {
 	player[0].Update_Position();
+	player[0].CheckEnemyCollision(enemy);
 
 	Demo::CollisionManager(Demo_Tiles, player);
 	Demo::CollisionManager(Demo_Tiles2, player);
@@ -50,9 +55,11 @@ void Demo::Update(void)
 	Demo::Draw(Demo_Tiles);
 	Demo::Draw(Demo_Tiles2);
 	Demo::Draw(Demo_Tiles3);
-	player[0].sprite.Draw_Default(player[0].sprite, player[0].sprite.pos, 255);
 
-	if (AEInputCheckTriggered(AEVK_R))
+	player[0].sprite.Draw_Default(player[0].sprite, player[0].sprite.pos, 255);
+	enemy[0].sprite.Draw_Tinted(enemy[0].sprite, enemy[0].sprite.pos, 255, 0, 0, 255);
+
+	if (AEInputCheckTriggered(AEVK_R) || !player[0].active)
 		Demo::Restart();
 }
 void Demo::Exit(void)
@@ -61,6 +68,7 @@ void Demo::Exit(void)
 	Demo::Free(Demo_Tiles2);
 	Demo::Free(Demo_Tiles3);
 	player[0].sprite.Free();
+	enemy[0].sprite.Free();
 }
 
 

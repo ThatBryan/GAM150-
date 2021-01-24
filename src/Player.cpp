@@ -47,3 +47,14 @@ void Player::Update_Position(void)
 			this->sprite.pos = Mouse;
 	}
 }
+
+void Player::CheckEnemyCollision(std::vector <Enemy> enemy)
+{
+	for (size_t i = 0; i < enemy.size(); i++)
+	{
+		if (AETestRectToRect(&this->sprite.pos, this->sprite.width, this->sprite.height, &enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height))
+		{
+			this->active = false;
+		}
+	}
+}

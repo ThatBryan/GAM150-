@@ -3,6 +3,7 @@
 #include "Utilities.h"
 #include <vector>
 #include "../Extern/AlphaEngine_V3.08/include/AEEngine.h"
+#include "Enemy.h"
 
 class Player
 {
@@ -12,4 +13,5 @@ public:
 	Image sprite;
 
 	void Update_Position(void);
+	void CheckEnemyCollision(std::vector <Enemy> enemy);
 };
