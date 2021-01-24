@@ -9,8 +9,6 @@ void Player::Update_Position(void)
 	static f32 HeightLimit = (f32)AEGetWindowHeight();
 	static f32 WidthLimit = (f32)AEGetWindowWidth();
 	static float speed = 5.0f;
-	static float gravity = 2.5f;
-	static bool onAir = false;
 
 	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP))
 	{

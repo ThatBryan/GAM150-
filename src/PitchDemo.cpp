@@ -13,13 +13,14 @@ std::vector <Tiles> Demo_Tiles3;
 std::vector <Player> player;
 std::vector <Enemy> enemy;
 
-#define TILE_SIZE 100.0f
+#define TILE_WIDTTH 100.0f
+#define TILE_HEIGHT 50.0f
 #define BOI_SIZE 50.0f
 
-#define startingX TILE_SIZE / 2.0f
-#define startingY1 TILE_SIZE / 2.0f
-#define startingY2 150 + TILE_SIZE / 2.0f
-#define startingY3 300 + TILE_SIZE / 2.0f
+#define startingX TILE_WIDTTH / 2.0f
+#define startingY1 TILE_HEIGHT / 2.0f
+#define startingY2 150 + TILE_HEIGHT / 2.0f
+#define startingY3 300 + TILE_HEIGHT / 2.0f
 
 void Demo::Init(void)
 {
@@ -27,9 +28,9 @@ void Demo::Init(void)
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 
 
-	Demo_Tiles = Demo::AddTileRow(Demo_Tiles, "../Assets/Art/tile.png", TILE_SIZE, AEVec2{ startingX, startingY1 });
-	Demo_Tiles2 = Demo::AddTileRow(Demo_Tiles2, "../Assets/Art/tile.png", TILE_SIZE, AEVec2{ startingX, startingY2});
-	Demo_Tiles3 = Demo::AddTileRow(Demo_Tiles3, "../Assets/Art/tile.png", TILE_SIZE, AEVec2{ startingX, startingY3});
+	Demo_Tiles = Demo::AddTileRow(Demo_Tiles, "../Assets/Art/tile.png", TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
+	Demo_Tiles2 = Demo::AddTileRow(Demo_Tiles2, "../Assets/Art/tile.png", TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
+	Demo_Tiles3 = Demo::AddTileRow(Demo_Tiles3, "../Assets/Art/tile.png", TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 
 	Demo::AssignID(Demo_Tiles);
 	Demo::AssignID(Demo_Tiles2);
@@ -38,7 +39,7 @@ void Demo::Init(void)
 	player.push_back(Player("../Assets/Art/boi.png", BOI_SIZE, BOI_SIZE));
 
 	Demo::AddNewEnemy("../Assets/Art/boi.png", AEVector2::Set(Utilities::Get_HalfWindowWidth(), 200.0f), BOI_SIZE, BOI_SIZE);
-	Demo::AddNewEnemy("../Assets/Art/boi.png", AEVector2::Set(Utilities::Get_HalfWindowWidth(), 400.0f), BOI_SIZE, BOI_SIZE);
+	Demo::AddNewEnemy("../Assets/Art/PlanetTexture.png", AEVector2::Set(Utilities::Get_HalfWindowWidth(), 400.0f), BOI_SIZE, BOI_SIZE);
 
 	player[0].sprite.pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
 
@@ -90,11 +91,11 @@ void Demo::Free(std::vector <Tiles> tiles)
 	}
 }
 
-std::vector <Tiles> Demo::AddTileRow(std::vector <Tiles> tile, const s8* filepath, const f32 width, const AEVec2 pos)
+std::vector <Tiles> Demo::AddTileRow(std::vector <Tiles> tile, const s8* filepath, const f32 width, const f32 height, const AEVec2 pos)
 {
 	for (u32 i = 0; i < AEGetWindowWidth() / width; i++)
 	{
-		tile.push_back(Tiles(filepath, width, width));
+		tile.push_back(Tiles(filepath, width, height));
 		tile[i].image.pos = AEVector2::Set(pos.x + tile[0].image.width * i, pos.y + tile[0].image.height / 2 + 10* i);
 	}
 	return tile;
@@ -123,9 +124,9 @@ void Demo::Restart(void)
 		Demo_Tiles2[i].collapsing = false;
 		Demo_Tiles3[i].collapsing = false;
 
-		Demo_Tiles[i].delay = 0.5f;
-		Demo_Tiles2[i].delay = 0.5f;
-		Demo_Tiles3[i].delay = 0.5f;
+		Demo_Tiles[i].collapseDelay = 0.5f;
+		Demo_Tiles2[i].collapseDelay = 0.5f;
+		Demo_Tiles3[i].collapseDelay = 0.5f;
 	}
 	player[player.size() - 1].active = true;
 }
@@ -173,7 +174,7 @@ void Demo::CollapseNext(std::vector <Tiles>& tiles)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
-		if (tiles[i].collapsing && (tiles[i].delay <= 0))
+		if (tiles[i].collapsing && (tiles[i].collapseDelay <= 0))
 		{
 			if (tiles[i].ID + 1 < (int)tiles.size())
 			{
