@@ -26,6 +26,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	int gGameRunning = 1;
 	int counter = 255;
+	bool paused = false;
 	// Variable declaration end
 	///////////////////////////
 
@@ -43,8 +44,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	AESysReset();
 
 	/// Test init functions
-
-	Image logo("../Assets/Logo/DigiPen_RED.png", 750.0f, 300.0f);
 
 	Demo::Init();
 
@@ -79,8 +78,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		if (counter < 0)
 			counter = 255;
 		
-		logo.Draw_Default(logo, AEVector2::Set(400.0f, 300.0f), counter);
+
 		Demo::Update();
+
+
 		memset(strBuffer, 0, 100 * sizeof(char));
 		sprintf_s(strBuffer, "Frame Rate:  %.2f", AEFrameRateControllerGetFrameRate());
 		testText.Draw_Text(testText, AEVector2::Set(0, 570));
@@ -98,7 +99,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	}
 
 	testText.Free();
-	logo.Free();
 	Demo::Exit();
 
 	AESysExit();

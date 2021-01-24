@@ -55,3 +55,4 @@ AEVec2 Utilities::GetMousePos(void)
 	AEInputGetCursorPosition(&mouseX, &mouseY);
 	return AEVector2::Set(mouseX, AEGetWindowHeight() - mouseY);
 }
+

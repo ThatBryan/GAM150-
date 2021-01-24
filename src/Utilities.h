@@ -15,6 +15,8 @@ namespace Utilities
 
 	//Returns the position of the mouse in window coordinates.
 	AEVec2 GetMousePos(void);
+
+	void Pause(void);
 }
 
 namespace AEVector2

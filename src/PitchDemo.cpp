@@ -13,6 +13,11 @@ std::vector <Tiles> Demo_Tiles3;
 std::vector <Player> player;
 std::vector <Enemy> enemy;
 
+std::vector <Image> logo;
+
+bool paused;
+#define PAUSE_KEY AEVK_TAB
+
 #define TILE_WIDTTH 100.0f
 #define TILE_HEIGHT 50.0f
 #define BOI_SIZE 50.0f
@@ -27,34 +32,57 @@ void Demo::Init(void)
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 
-
 	Demo_Tiles = Demo::AddTileRow(Demo_Tiles, "../Assets/Art/Grass_Tile.png", COLLAPSIBLE, 8, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
 	Demo_Tiles2 = Demo::AddTileRow(Demo_Tiles2, "../Assets/Art/Grass_Tile.png", COLLAPSIBLE, 7, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
-	Demo_Tiles2 = Demo::AddTileRow(Demo_Tiles2, "../Assets/Art/YellowTexture.png", GOAL, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
+	Demo_Tiles2 = Demo::AddTileRow(Demo_Tiles2, "../Assets/Art/Goal.png", GOAL, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
 	Demo_Tiles3 = Demo::AddTileRow(Demo_Tiles3, "../Assets/Art/Grass_Tile.png", COLLAPSIBLE, 8, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 
-
-
-	Demo::AddNewEnemy("../Assets/Art/Jumperman.png", AEVector2::Set(Utilities::Get_HalfWindowWidth(), 200.0f), BOI_SIZE, BOI_SIZE);
+	Demo::AddNewEnemy("../Assets/Art/Jumperman.png", AEVector2::Set(Utilities::Get_HalfWindowWidth(), 600.0f), BOI_SIZE, BOI_SIZE);
 	Demo::AddNewEnemy("../Assets/Art/WaterSlime.png", AEVector2::Set(Utilities::Get_HalfWindowWidth(), 400.0f), BOI_SIZE, BOI_SIZE);
 
 	player.push_back(Player("../Assets/Art/Jumperman.png", BOI_SIZE, BOI_SIZE));
 	player[0].sprite.pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
+
+	logo.push_back(Image("../Assets/Logo/DigiPen_RED.png", 750.0f, 300.0f));
+	logo[0].pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
+	paused = false;
 }
 
 
 void Demo::Update(void)
 {
-	player[0].Update_Position();
-	player[0].CheckEnemyCollision(enemy);
+	if (AEInputCheckTriggered(PAUSE_KEY))
+	{
+		if (!paused){
+			paused = true;
+		}
+		else{
+			paused = false;
+		}
+	}
+	if (paused)
+	{
+		static float alpha = 255.0f;
+		if (alpha <= 0)
+		{
+			alpha = 255.0f;
+		}
+		logo[logo.size() - 1].Draw_Default(logo[logo.size() - 1], logo[logo.size() - 1].pos, alpha);
+		alpha -= 4.0f;
+	}
 
-	
-	Demo::CollisionManager();
-	Demo::CollapsingManager();
+	if (!paused)
+	{
+		player[0].Update_Position();
+		player[0].CheckEnemyCollision(enemy);
+
+		Demo::CollisionManager();
+		Demo::CollapsingManager();
+
+		if (AEInputCheckTriggered(AEVK_R) || !player[0].active)
+			Demo::Restart();
+	}
 	Demo::DrawingManager();
-
-	if (AEInputCheckTriggered(AEVK_R) || !player[0].active)
-		Demo::Restart();
 }
 void Demo::Exit(void)
 {
@@ -62,6 +90,11 @@ void Demo::Exit(void)
 	Demo::Free(Demo_Tiles2);
 	Demo::Free(Demo_Tiles3);
 	player[0].sprite.Free();
+	
+	for (size_t i = 0; i < logo.size(); i++)
+	{
+		logo[i].Free();
+	}
 
 	for (size_t i = 0; i < enemy.size(); i++)
 	{
@@ -91,7 +124,6 @@ void Demo::Free(std::vector <Tiles> tiles)
 std::vector <Tiles> Demo::AddTileRow(std::vector <Tiles> tile, const s8* filepath, s32 type, size_t num, const f32 width, const f32 height, const AEVec2 pos)
 {
 	static float offset = 10.0f;
-	int j = 0;
 	size_t VectorSize = tile.size();
 
 	for (size_t i = VectorSize; i < VectorSize + num; i++)
@@ -99,8 +131,8 @@ std::vector <Tiles> Demo::AddTileRow(std::vector <Tiles> tile, const s8* filepat
 		tile.push_back(Tiles(filepath, width, height));
 		tile[i].type = type;
 		tile[i].ID = i;
+		tile[i].startingPos = AEVector2::Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2) + ((tile[i].ID - tile[0].ID) * offset));
 		tile[i].image.pos = AEVector2::Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2) + ((tile[i].ID - tile[0].ID) * offset));
-		j++;
 	}
 	return tile;
 }
@@ -109,9 +141,9 @@ void Demo::Restart(void)
 {
 	for (u32 i = 0; i < AEGetWindowWidth() / Demo_Tiles[0].image.width; i++)
 	{
-		Demo_Tiles[i].image.pos = AEVector2::Set(startingX + Demo_Tiles[0].image.width * i, startingY1 + Demo_Tiles[0].image.height / 2 + 10 * i);
-		Demo_Tiles2[i].image.pos = AEVector2::Set(startingX + Demo_Tiles2[0].image.width * i, startingY2 + Demo_Tiles[0].image.height / 2 + 10 * i);
-		Demo_Tiles3[i].image.pos = AEVector2::Set(startingX + Demo_Tiles3[0].image.width * i, startingY3 + Demo_Tiles[0].image.height / 2 + 10 * i);
+		Demo_Tiles[i].image.pos = Demo_Tiles[i].startingPos;
+		Demo_Tiles2[i].image.pos = Demo_Tiles2[i].startingPos;
+		Demo_Tiles3[i].image.pos = Demo_Tiles3[i].startingPos;
 
 		Demo_Tiles[i].active = true;
 		Demo_Tiles2[i].active = true;

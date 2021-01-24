@@ -9,6 +9,7 @@ Tiles::Tiles(const s8* filepath, const f32 width, const f32 height) : image(file
 	this->ID = 0;
 	this->collapseDelay = 0.5f;
 	this->type = 0;
+	this->startingPos = { 0, 0 };
 }
 
 void Tiles::Collapse(void)

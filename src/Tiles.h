@@ -13,6 +13,7 @@ class Tiles
 		s32 ID, type;
 		f64 collapseDelay;
 		bool active, collapsing;
+		AEVec2 startingPos;
 		Image image;
 		void Collapse(void);
 		void DecreaseLifespan(void);
