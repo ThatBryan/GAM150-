@@ -11,19 +11,24 @@ void Player::Update_Position(void)
 	static float speed = 5.0f;
 	static float speedx = 5.0f;
 	static float speedy = 5.0f;
+	static bool jump = FALSE;
 
-
-	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP))
+	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP) && jump == FALSE)
+	{
+		jump = TRUE;
+	}
+	if (jump == TRUE)
 	{
 		if (this->sprite.pos.y + this->sprite.height / 2 <= HeightLimit)
 		{
-			this->sprite.pos.y -= speedy;
+			this->sprite.pos.y += speedy;
 
 			speedy -= 1.0f;
 			if (speedy < -10.0f)
 			{
+				jump = FALSE;
 				speedy = 10.0f;
-			}	
+			}
 		}
 
 		if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
@@ -36,6 +41,7 @@ void Player::Update_Position(void)
 			this->sprite.pos.x -= speed;
 		}
 	}
+
 	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
 	{
 		if (this->sprite.pos.y - this->sprite.height / 2 >= 0)
