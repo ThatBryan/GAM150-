@@ -9,29 +9,48 @@ void Player::Update_Position(void)
 	static f32 HeightLimit = (f32)AEGetWindowHeight();
 	static f32 WidthLimit = (f32)AEGetWindowWidth();
 	static float speed = 5.0f;
+	static float speedx = 5.0f;
+	static float speedy = 5.0f;
+
 
 	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP))
 	{
 		if (this->sprite.pos.y + this->sprite.height / 2 <= HeightLimit)
 		{
-			this->sprite.pos.y += speed;
+			this->sprite.pos.y -= speedy;
+
+			speedy -= 1.0f;
+			if (speedy < -10.0f)
+			{
+				speedy = 10.0f;
+			}	
+		}
+
+		if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
+		{
+			this->sprite.pos.x += speed;
+		}
+
+		if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
+		{
+			this->sprite.pos.x -= speed;
 		}
 	}
-	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN))
+	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
 	{
 		if (this->sprite.pos.y - this->sprite.height / 2 >= 0)
 		{
 			this->sprite.pos.y -= speed;
 		}
 	}
-	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
+	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
 	{
 		if (this->sprite.pos.x + this->sprite.width / 2 <= WidthLimit)
 		{
 			this->sprite.pos.x += speed;
 		}
 	}
-	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
+	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
 	{
 		if (this->sprite.pos.x - this->sprite.width / 2 >= 0)
 		{

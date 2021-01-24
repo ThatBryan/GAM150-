@@ -28,18 +28,18 @@ void Demo::Init(void)
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 
 
-	Demo_Tiles = Demo::AddTileRow(Demo_Tiles, "../Assets/Art/tile.png", COLLAPSIBLE, 8, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
-	Demo_Tiles2 = Demo::AddTileRow(Demo_Tiles2, "../Assets/Art/tile.png", COLLAPSIBLE, 7, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
+	Demo_Tiles = Demo::AddTileRow(Demo_Tiles, "../Assets/Art/Grass_Tile.png", COLLAPSIBLE, 8, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
+	Demo_Tiles2 = Demo::AddTileRow(Demo_Tiles2, "../Assets/Art/Grass_Tile.png", COLLAPSIBLE, 7, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
 	Demo_Tiles2 = Demo::AddTileRow(Demo_Tiles2, "../Assets/Art/YellowTexture.png", GOAL, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
-	Demo_Tiles3 = Demo::AddTileRow(Demo_Tiles3, "../Assets/Art/tile.png", COLLAPSIBLE, 8, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	Demo_Tiles3 = Demo::AddTileRow(Demo_Tiles3, "../Assets/Art/Grass_Tile.png", COLLAPSIBLE, 8, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 
-	player.push_back(Player("../Assets/Art/boi.png", BOI_SIZE, BOI_SIZE));
 
-	Demo::AddNewEnemy("../Assets/Art/boi.png", AEVector2::Set(Utilities::Get_HalfWindowWidth(), 200.0f), BOI_SIZE, BOI_SIZE);
-	Demo::AddNewEnemy("../Assets/Art/PlanetTexture.png", AEVector2::Set(Utilities::Get_HalfWindowWidth(), 400.0f), BOI_SIZE, BOI_SIZE);
 
+	Demo::AddNewEnemy("../Assets/Art/Jumperman.png", AEVector2::Set(Utilities::Get_HalfWindowWidth(), 200.0f), BOI_SIZE, BOI_SIZE);
+	Demo::AddNewEnemy("../Assets/Art/WaterSlime.png", AEVector2::Set(Utilities::Get_HalfWindowWidth(), 400.0f), BOI_SIZE, BOI_SIZE);
+
+	player.push_back(Player("../Assets/Art/Jumperman.png", BOI_SIZE, BOI_SIZE));
 	player[0].sprite.pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
-
 }
 
 
