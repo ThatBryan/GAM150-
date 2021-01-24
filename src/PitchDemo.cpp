@@ -76,6 +76,8 @@ void Demo::Update(void)
 		player[0].Update_Position();
 		player[0].CheckEnemyCollision(enemy);
 
+		enemy[1].Update_Position();
+
 		Demo::CollisionManager();
 		Demo::CollapsingManager();
 

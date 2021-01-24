@@ -11,4 +11,5 @@ public:
 	bool active;
 	Image sprite;
 
+	void Update_Position(void);
 };
