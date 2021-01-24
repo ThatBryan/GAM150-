@@ -4,11 +4,13 @@
 #include "Image.h"
 #include "Player.h"
 
+enum TileType { COLLAPSIBLE = 1, GOAL };
+
 class Tiles
 {
 	public:
 		Tiles(const s8* filepath, const f32 width, const f32 height);
-		s32 ID;
+		s32 ID, type;
 		f64 collapseDelay;
 		bool active, collapsing;
 		Image image;

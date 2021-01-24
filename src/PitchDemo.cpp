@@ -28,13 +28,10 @@ void Demo::Init(void)
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 
 
-	Demo_Tiles = Demo::AddTileRow(Demo_Tiles, "../Assets/Art/tile.png", TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
-	Demo_Tiles2 = Demo::AddTileRow(Demo_Tiles2, "../Assets/Art/tile.png", TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
-	Demo_Tiles3 = Demo::AddTileRow(Demo_Tiles3, "../Assets/Art/tile.png", TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
-
-	Demo::AssignID(Demo_Tiles);
-	Demo::AssignID(Demo_Tiles2);
-	Demo::AssignID(Demo_Tiles3);
+	Demo_Tiles = Demo::AddTileRow(Demo_Tiles, "../Assets/Art/tile.png", COLLAPSIBLE, 8, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
+	Demo_Tiles2 = Demo::AddTileRow(Demo_Tiles2, "../Assets/Art/tile.png", COLLAPSIBLE, 7, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
+	Demo_Tiles2 = Demo::AddTileRow(Demo_Tiles2, "../Assets/Art/YellowTexture.png", GOAL, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
+	Demo_Tiles3 = Demo::AddTileRow(Demo_Tiles3, "../Assets/Art/tile.png", COLLAPSIBLE, 8, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 
 	player.push_back(Player("../Assets/Art/boi.png", BOI_SIZE, BOI_SIZE));
 
@@ -91,21 +88,21 @@ void Demo::Free(std::vector <Tiles> tiles)
 	}
 }
 
-std::vector <Tiles> Demo::AddTileRow(std::vector <Tiles> tile, const s8* filepath, const f32 width, const f32 height, const AEVec2 pos)
+std::vector <Tiles> Demo::AddTileRow(std::vector <Tiles> tile, const s8* filepath, s32 type, size_t num, const f32 width, const f32 height, const AEVec2 pos)
 {
-	for (u32 i = 0; i < AEGetWindowWidth() / width; i++)
+	static float offset = 10.0f;
+	int j = 0;
+	size_t VectorSize = tile.size();
+
+	for (size_t i = VectorSize; i < VectorSize + num; i++)
 	{
 		tile.push_back(Tiles(filepath, width, height));
-		tile[i].image.pos = AEVector2::Set(pos.x + tile[0].image.width * i, pos.y + tile[0].image.height / 2 + 10* i);
+		tile[i].type = type;
+		tile[i].ID = i;
+		tile[i].image.pos = AEVector2::Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2) + ((tile[i].ID - tile[0].ID) * offset));
+		j++;
 	}
 	return tile;
-}
-void Demo::AssignID(std::vector <Tiles>& tiles)
-{
-	for (size_t i = 0; i < tiles.size(); i++)
-	{
-		tiles[i].ID = i;
-	}
 }
 
 void Demo::Restart(void)
@@ -174,11 +171,13 @@ void Demo::CollapseNext(std::vector <Tiles>& tiles)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
+		if (tiles[i].type != COLLAPSIBLE)
+			continue;
+
 		if (tiles[i].collapsing && (tiles[i].collapseDelay <= 0))
 		{
 			if (tiles[i].ID + 1 < (int)tiles.size())
 			{
-				
 				tiles[i + 1].collapsing = true;
 			}
 

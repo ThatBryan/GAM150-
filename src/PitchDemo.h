@@ -22,9 +22,6 @@ namespace Demo
 
 	// Restarts the level (kinda)
 	void Restart(void);
-
-	// Assigning of ID to the tiles during init.
-	void AssignID(std::vector <Tiles>& tiles);
 	
 	// Collapse the tile on its left and right if it exist.
 	void CollapseNext(std::vector <Tiles>& tiles);
@@ -42,5 +39,5 @@ namespace Demo
 	void AddNewEnemy(const s8* filepath, const AEVec2 pos, const f32 width, const f32 height);
 
 	// Add whole new row of tile.
-	std::vector <Tiles> AddTileRow(std::vector < Tiles> tile, const s8* filepath, const f32 width, const f32 height, const AEVec2 pos);
+	std::vector <Tiles> AddTileRow(std::vector < Tiles> tile, const s8* filepath, const s32 type, const size_t num, const f32 width, const f32 height, const AEVec2 pos);
 }
