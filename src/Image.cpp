@@ -39,66 +39,6 @@ AEGfxVertexList* Image::Mesh_Rectangle(Image* image)
 	return AEGfxMeshEnd();
 }
 
-void Image::Update_Position(void)
-{
-	static f32 HeightLimit = (f32)AEGetWindowHeight();
-	static f32 WidthLimit = (f32)AEGetWindowWidth();
-	static float speed = 5.0f;
-	static float gravity = 2.5f;
-	static bool onAir = false;
-
-	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP))
-	{
-		if(this->pos.y + this->height / 2 <= HeightLimit )
-		{ 
-			this->pos.y += speed;
-		}
-	}
-	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN))
-	{
-		if (this->pos.y - this->height / 2 >= 0)
-		{
-			this->pos.y -= speed;
-		}
-	}
-	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
-	{
-		if (this->pos.x + this->width / 2 <= WidthLimit)
-		{
-			this->pos.x += speed;
-		}
-	}
-	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
-	{
-		if (this->pos.x - this->width / 2 >= 0)
-		{
-			this->pos.x -= speed;
-		}
-	}
-
-	//if (AEInputCheckCurr(AEVK_SPACE))
-	//{
-	//	this->pos.y += speed;
-	//	onAir = true;
-	//}
-	//if (onAir)
-	//{
-	//	if(this->pos.y - this->height / 2 >= 0)
-	//		this->pos.y -= gravity;
-	//}
-	//if (onAir)
-	//{
-	//	if (this->pos.y <= 0)
-	//		onAir = false;
-	//}
-
-	AEVec2 Mouse = Utilities::GetMousePos();
-	if (AETestPointToRect(&Mouse, &this->pos, this->width, this->height))
-	{
-		if (AEInputCheckCurr(AEVK_LBUTTON))
-			this->pos = Mouse;
-	}
-}
 void Image::Draw_Default(Image& image, const AEVec2 pos, const u32 alpha)
 {
 	// Assumed texture since function is expected to use to draw images

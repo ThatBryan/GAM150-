@@ -22,8 +22,6 @@ class Image
 	inline AEGfxTexture* GetTexture(void) { return this->pTex; }
 	inline void Free(void) {AEGfxMeshFree(GetMesh()); AEGfxTextureUnload(GetTexture());}
 
-
-	void Update_Position(void);
 	void Draw_Tinted(Image& image, const AEVec2 pos, const u32 r, const u32 g, const u32 b, const u32 alpha);
 	void Draw_Default(Image& image, const AEVec2 pos, const u32 alpha);
 

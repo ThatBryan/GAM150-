@@ -9,8 +9,7 @@ Color background;
 std::vector <Tiles> Demo_Tiles;
 std::vector <Tiles> Demo_Tiles2;
 std::vector <Tiles> Demo_Tiles3;
-std::vector <Image> Demo_Player;
-std::vector <Player> Fucker;
+std::vector <Player> player;
 
 #define TILE_SIZE 100.0f
 #define BOI_SIZE 50.0f
@@ -34,33 +33,24 @@ void Demo::Init(void)
 	Demo::AssignID(Demo_Tiles2);
 	Demo::AssignID(Demo_Tiles3);
 
-	Demo_Player.push_back(Image("../Assets/Art/boi.png", BOI_SIZE, BOI_SIZE));
+	player.push_back(Player("../Assets/Art/boi.png", BOI_SIZE, BOI_SIZE));
 
-	Fucker.push_back(Player("../Assets/Art/boi.png", BOI_SIZE, BOI_SIZE));
-	Demo_Player[0].pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
-
-	Fucker[0].sprite.pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), 200);
+	player[0].sprite.pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
 }
 
 
 void Demo::Update(void)
 {
-	//Demo_Player[0].Update_Position();
+	player[0].Update_Position();
 
-	Fucker[0].Update_Position();
+	Demo::CollisionManager(Demo_Tiles, player);
+	Demo::CollisionManager(Demo_Tiles2, player);
+	Demo::CollisionManager(Demo_Tiles3, player);
 
-	Demo::CollisionManager(Demo_Tiles, Fucker);
-	Demo::CollisionManager(Demo_Tiles2, Fucker);
-	Demo::CollisionManager(Demo_Tiles3, Fucker);
-
-	//Demo::CollisionManager(Demo_Tiles, Demo_Player);
-	//Demo::CollisionManager(Demo_Tiles2, Demo_Player);
-	//Demo::CollisionManager(Demo_Tiles3, Demo_Player);
 	Demo::Draw(Demo_Tiles);
 	Demo::Draw(Demo_Tiles2);
 	Demo::Draw(Demo_Tiles3);
-	Demo_Player[0].Draw_Default(Demo_Player[0], Demo_Player[0].pos, 255);
-	Fucker[0].sprite.Draw_Default(Fucker[0].sprite, Fucker[0].sprite.pos, 255);
+	player[0].sprite.Draw_Default(player[0].sprite, player[0].sprite.pos, 255);
 
 	if (AEInputCheckTriggered(AEVK_R))
 		Demo::Restart();
@@ -70,8 +60,7 @@ void Demo::Exit(void)
 	Demo::Free(Demo_Tiles);
 	Demo::Free(Demo_Tiles2);
 	Demo::Free(Demo_Tiles3);
-	Demo_Player[0].Free();
-	Fucker[0].sprite.Free();
+	player[0].sprite.Free();
 }
 
 
