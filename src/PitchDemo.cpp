@@ -18,7 +18,7 @@ std::vector <Image> logo;
 bool paused;
 #define PAUSE_KEY AEVK_TAB
 
-#define TILE_WIDTTH 100.0f
+#define TILE_WIDTTH 80.0f
 #define TILE_HEIGHT 50.0f
 #define BOI_SIZE 50.0f
 
@@ -38,7 +38,11 @@ void Demo::Init(void)
 	Demo_Tiles3 = Demo::AddTileRow(Demo_Tiles3, "../Assets/Art/Grass_Tile.png", COLLAPSIBLE, 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 
 	Demo::AddNewEnemy("../Assets/Art/Jumperman.png", AEVector2::Set(Utilities::Get_HalfWindowWidth(), 600.0f), BOI_SIZE, BOI_SIZE);
-	Demo::AddNewEnemy("../Assets/Art/WaterSlime.png", AEVector2::Set(Utilities::Get_HalfWindowWidth(), 400.0f), BOI_SIZE, BOI_SIZE);
+	//Demo::AddNewEnemy("../Assets/Art/WaterSlime.png", AEVector2::Set(Utilities::Get_HalfWindowWidth(), 400.0f), BOI_SIZE, BOI_SIZE);
+	AEVec2 DemoEnemyPos = Demo_Tiles2[(Demo_Tiles.size() / 2)].startingPos;
+	DemoEnemyPos.x -= 15.0f;
+	DemoEnemyPos.y += TILE_HEIGHT - 10;
+	Demo::AddNewEnemy("../Assets/Art/WaterSlime.png", DemoEnemyPos, BOI_SIZE, BOI_SIZE);
 
 	player.push_back(Player("../Assets/Art/Jumperman.png", BOI_SIZE, BOI_SIZE));
 	player[0].sprite.pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
@@ -74,21 +78,21 @@ void Demo::Update(void)
 	if (!paused)
 	{
 		player[0].Update_Position();
-		player[0].CheckEnemyCollision(enemy);
 
 		for (size_t i = 0; i < enemy.size(); i++)
 		{
 			if(enemy[i].active)
 				enemy[i].Update_Position();
 		}
+		player[0].CheckEnemyCollision(enemy);
 
 		Demo::CollisionManager();
 		Demo::CollapsingManager();
 
-		if (AEInputCheckTriggered(AEVK_R) || !player[0].active)
-			Demo::Restart();
 	}
 	Demo::DrawingManager();
+	if (AEInputCheckTriggered(AEVK_R))
+		Demo::Restart();
 }
 void Demo::Exit(void)
 {
@@ -129,7 +133,7 @@ void Demo::Free(std::vector <Tiles> tiles)
 
 std::vector <Tiles> Demo::AddTileRow(std::vector <Tiles> tile, const s8* filepath, s32 type, size_t num, const f32 width, const f32 height, const AEVec2 pos)
 {
-	static float offset = 10.0f;
+	static float offset = 0.0f;
 	size_t VectorSize = tile.size();
 
 	for (size_t i = VectorSize; i < VectorSize + num; i++)
@@ -163,7 +167,14 @@ void Demo::Restart(void)
 		Demo_Tiles2[i].collapseDelay = 0.5f;
 		Demo_Tiles3[i].collapseDelay = 0.5f;
 	}
+
 	player[player.size() - 1].active = true;
+
+	for (size_t i = 0; i < enemy.size(); i++)
+	{
+		enemy[i].sprite.pos = enemy[i].startingPos;
+		enemy[i].active = true;
+	}
 }
 
 void Demo::DrawingManager(void)
@@ -176,7 +187,8 @@ void Demo::DrawingManager(void)
 
 	for (size_t i = 0; i < enemy.size(); i++)
 	{
-		enemy[i].sprite.Draw_Tinted(enemy[i].sprite, enemy[i].sprite.pos, 255.0f, 0, 0, 255.0f);
+		if(enemy[i].active)
+			enemy[i].sprite.Draw_Tinted(enemy[i].sprite, enemy[i].sprite.pos, 255.0f, 0, 0, 255.0f);
 	}
 }
 
@@ -194,6 +206,7 @@ void Demo::CheckCollisionTilesPlayer(std::vector <Tiles>& tiles, std::vector <Pl
 			continue;
 		tiles[i].DecreaseLifespan();
 		tiles[i].CheckPlayerCollision(player);
+		tiles[i].CheckEnemyStatus(enemy);
 		tiles[i].Collapse();
 	}
 }
@@ -231,4 +244,5 @@ void Demo::AddNewEnemy(const s8* filepath, const AEVec2 pos, const f32 width, co
 {
 	enemy.push_back(Enemy(filepath, width, height));
 	enemy[enemy.size() - 1].sprite.pos = pos;
+	enemy[enemy.size() - 1].startingPos = pos;
 }

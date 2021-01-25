@@ -9,9 +9,9 @@ class Player
 {
 public:
 	Player(const s8* filepath, const f32 width, const f32 height);
-	bool active;
+	bool active, jump;
 	Image sprite;
 
 	void Update_Position(void);
-	void CheckEnemyCollision(std::vector <Enemy> enemy);
+	void CheckEnemyCollision(std::vector <Enemy>& enemy);
 };

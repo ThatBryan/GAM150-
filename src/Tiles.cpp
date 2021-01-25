@@ -8,7 +8,7 @@ Tiles::Tiles(const s8* filepath, const f32 width, const f32 height) : image(file
 	this->collapsing = false;
 	this->ID = 0;
 	this->collapseDelay = 0.5f;
-	this->type = 0;
+	this->type = NIL;
 	this->startingPos = { 0, 0 };
 }
 
@@ -30,10 +30,10 @@ void Tiles::CheckPlayerCollision(std::vector <Player> Demo_Player)
 {
 	if (AETestRectToRect(&this->image.pos, this->image.width, this->image.height, &Demo_Player[0].sprite.pos, Demo_Player[0].sprite.width, Demo_Player[0].sprite.height))
 	{
-		if (AEInputCheckTriggered(AEVK_SPACE))
-		{
-			this->collapsing = true;
-		}
+		//if (AEInputCheckTriggered(AEVK_SPACE))
+		//{
+		//	this->collapsing = true;
+		//}
 	}
 }
 
@@ -42,5 +42,19 @@ void Tiles::DecreaseLifespan(void)
 	if (this->collapsing && this->active)
 	{
 		this->collapseDelay -= AEFrameRateControllerGetFrameTime();
+	}
+}
+void Tiles::CheckEnemyStatus(std::vector <Enemy> enemy)
+{
+	for (size_t i = 0; i < enemy.size(); i++)
+	{
+		if (AETestRectToRect(&this->image.pos, this->image.width, this->image.height, &enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height))
+		{
+			if (!enemy[i].active)
+			{
+				this->collapsing = true;
+			}
+		}
+		
 	}
 }

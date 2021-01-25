@@ -3,6 +3,7 @@
 Player::Player(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height)
 {
 	this->active = true;
+	this->jump = false;
 }
 void Player::Update_Position(void)
 {
@@ -10,13 +11,12 @@ void Player::Update_Position(void)
 	static f32 WidthLimit = (f32)AEGetWindowWidth();
 	static float speed = 5.0f;
 	static float jumpspeed_y = 10.0f;
-	static bool jump = FALSE;
 
-	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP) && jump == FALSE)
+	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP) && this->jump == FALSE)
 	{
-		jump = TRUE;
+		this->jump = TRUE;
 	}
-	if (jump == TRUE)
+	if (this->jump == TRUE)
 	{
 		if (this->sprite.pos.y + this->sprite.height / 2 <= HeightLimit)
 		{
@@ -26,7 +26,7 @@ void Player::Update_Position(void)
 			jumpspeed_y -= 1.0f;
 			if (jumpspeed_y < -10.0f)
 			{
-				jump = FALSE;
+				this->jump = FALSE;
 				jumpspeed_y = 10.0f;
 			}
 		}
@@ -71,13 +71,24 @@ void Player::Update_Position(void)
 	}
 }
 
-void Player::CheckEnemyCollision(std::vector <Enemy> enemy)
+void Player::CheckEnemyCollision(std::vector <Enemy>& enemy)
 {
 	for (size_t i = 0; i < enemy.size(); i++)
 	{
-		if (AETestRectToRect(&this->sprite.pos, this->sprite.width, this->sprite.height, &enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height))
+		if (enemy[i].active)
 		{
-			this->active = false;
+			if (AETestRectToRect(&this->sprite.pos, this->sprite.width, this->sprite.height, &enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height))
+			{
+				if (this->sprite.pos.y >= enemy[i].sprite.pos.y && this->jump)
+				{
+					enemy[i].active = false;
+				}
+				else
+				{
+					this->active = false;
+				}
+
+			}
 		}
 	}
 }
