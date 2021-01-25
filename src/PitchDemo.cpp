@@ -5,14 +5,14 @@
 #include <iostream>
 #include "Player.h"
 #include "Enemy.h"
+#include "Constants.h"
 
 Color background;
 std::vector <Tiles> Demo_Tiles;
 std::vector <Tiles> Demo_Tiles2;
 std::vector <Tiles> Demo_Tiles3;
 std::vector <Player> player;
-std::vector <Enemy> enemy;
-
+std::vector <Enemies> enemy;
 std::vector <Image> logo;
 std::vector <Image> WinScreen;
 
@@ -33,26 +33,25 @@ void Demo::Init(void)
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 
-	Demo_Tiles = Demo::AddTileRow(Demo_Tiles, "../Assets/Art/Grass_Tile.png", COLLAPSIBLE, 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
-	Demo_Tiles2 = Demo::AddTileRow(Demo_Tiles2, "../Assets/Art/Grass_Tile.png", COLLAPSIBLE, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
-	Demo_Tiles2 = Demo::AddTileRow(Demo_Tiles2, "../Assets/Art/Goal.png", GOAL, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
-	Demo_Tiles3 = Demo::AddTileRow(Demo_Tiles3, "../Assets/Art/Grass_Tile.png", COLLAPSIBLE, 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	Demo_Tiles = Tile::AddTileRow(Demo_Tiles, GrassTile, COLLAPSIBLE, 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
+	Demo_Tiles2 = Tile::AddTileRow(Demo_Tiles2, GrassTile, COLLAPSIBLE, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
+	Demo_Tiles2 = Tile::AddTileRow(Demo_Tiles2, GoalTile, GOAL, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
+	Demo_Tiles3 = Tile::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 
 	AEVec2 DemoEnemyPos = Demo_Tiles2[(Demo_Tiles.size() / 2)].startingPos;
 	DemoEnemyPos.x -= 15.0f;
 	DemoEnemyPos.y += TILE_HEIGHT - 10;
-	Demo::AddNewEnemy("../Assets/Art/WaterSlime.png", DemoEnemyPos, BOI_SIZE, BOI_SIZE);
+	Enemy::AddNew(enemy, WaterSlimeSprite, DemoEnemyPos, BOI_SIZE, BOI_SIZE);
 
-	player.push_back(Player("../Assets/Art/Jumperman.png", BOI_SIZE, BOI_SIZE));
+	player.push_back(Player(PlayerSprite, BOI_SIZE, BOI_SIZE));
 	player[0].startingPos = Demo_Tiles2[0].startingPos;
 	player[0].startingPos.y += TILE_HEIGHT - 10;
-	printf("%.2f\n", player[0].startingPos.y);
 	player[0].sprite.pos = player[0].startingPos;
 
-	logo.push_back(Image("../Assets/Logo/DigiPen_RED.png", 750.0f, 300.0f));
+	logo.push_back(Image(DigipenLogo, 750.0f, 300.0f));
 	logo[0].pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
 	
-	WinScreen.push_back(Image("../Assets/Art/throwaway.png", AEGetWindowWidth(), AEGetWindowHeight()));
+	WinScreen.push_back(Image(VictoryScreen, AEGetWindowWidth(), AEGetWindowHeight()));
 	WinScreen[0].pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
 	paused = false;
 }
@@ -60,15 +59,8 @@ void Demo::Init(void)
 
 void Demo::Update(void)
 {
-	if (AEInputCheckTriggered(PAUSE_KEY))
-	{
-		if (!paused){
-			paused = true;
-		}
-		else{
-			paused = false;
-		}
-	}
+	Demo::CheckPauseInput();
+
 	if (paused)
 	{
 		static float alpha = 255.0f;
@@ -77,7 +69,6 @@ void Demo::Update(void)
 
 		logo[logo.size() - 1].Draw_Default(logo[logo.size() - 1], logo[logo.size() - 1].pos, alpha);	
 		alpha -= 4.0f;
-
 	}
 	if (!paused)
 	{
@@ -99,162 +90,67 @@ void Demo::Update(void)
 		paused = true;
 		WinScreen[WinScreen.size() - 1].Draw_Default(WinScreen[WinScreen.size() - 1], WinScreen[WinScreen.size() - 1].pos, 255.0f);
 	}
+
 	Demo::DrawingManager();
 	if (AEInputCheckTriggered(AEVK_R))
 		Demo::Restart();
 }
 void Demo::Exit(void)
 {
-	Demo::Free(Demo_Tiles);
-	Demo::Free(Demo_Tiles2);
-	Demo::Free(Demo_Tiles3);
+	Tile::Free(Demo_Tiles);
+	Tile::Free(Demo_Tiles2);
+	Tile::Free(Demo_Tiles3);
+	Enemy::Free(enemy);
+
 	player[0].sprite.Free();
 	WinScreen[0].Free();
-	
-	for (size_t i = 0; i < logo.size(); i++)
-	{
-		logo[i].Free();
-	}
-
-	for (size_t i = 0; i < enemy.size(); i++)
-	{
-		enemy[i].sprite.Free();
-	}
-}
-
-void Demo::Draw(std::vector <Tiles> tiles)
-{
-	for (size_t i = 0; i < tiles.size(); i++)
-	{
-		if (tiles[i].active == false)
-			continue;
-
-		tiles[i].image.Draw_Default(tiles[i].image, tiles[i].image.pos, 255);
-	}
-}
-void Demo::Free(std::vector <Tiles> tiles)
-{
-	for (size_t i = 0; i < tiles.size(); i++)
-	{
-		tiles[i].image.Free();
-	}
-}
-
-std::vector <Tiles> Demo::AddTileRow(std::vector <Tiles> tile, const s8* filepath, s32 type, size_t num, const f32 width, const f32 height, const AEVec2 pos)
-{
-	static float offset = 0.0f;
-	size_t VectorSize = tile.size();
-
-	for (size_t i = VectorSize; i < VectorSize + num; i++)
-	{
-		tile.push_back(Tiles(filepath, width, height));
-		tile[i].type = type;
-		tile[i].ID = i;
-		tile[i].startingPos = AEVector2::Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2) + ((tile[i].ID - tile[0].ID) * offset));
-		tile[i].image.pos = AEVector2::Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2) + ((tile[i].ID - tile[0].ID) * offset));
-	}
-	return tile;
+	logo[0].Free();
 }
 
 void Demo::Restart(void)
 {
-	for (u32 i = 0; i < AEGetWindowWidth() / Demo_Tiles[0].image.width; i++)
-	{
-		Demo_Tiles[i].image.pos = Demo_Tiles[i].startingPos;
-		Demo_Tiles2[i].image.pos = Demo_Tiles2[i].startingPos;
-		Demo_Tiles3[i].image.pos = Demo_Tiles3[i].startingPos;
+	Tile::Reset(Demo_Tiles);
+	Tile::Reset(Demo_Tiles2);
+	Tile::Reset(Demo_Tiles3);
+	Enemy::Reset(enemy);
 
-		Demo_Tiles[i].active = true;
-		Demo_Tiles2[i].active = true;
-		Demo_Tiles3[i].active = true;
-
-		Demo_Tiles[i].collapsing = false;
-		Demo_Tiles2[i].collapsing = false;
-		Demo_Tiles3[i].collapsing = false;
-
-		Demo_Tiles[i].collapseDelay = 0.5f;
-		Demo_Tiles2[i].collapseDelay = 0.5f;
-		Demo_Tiles3[i].collapseDelay = 0.5f;
-	}
-
-	player[player.size() - 1].active = true;
-	player[player.size() - 1].ResetWin();
-	player[player.size() - 1].sprite.pos = player[player.size() - 1].startingPos;
-
-	for (size_t i = 0; i < enemy.size(); i++)
-	{
-		enemy[i].sprite.pos = enemy[i].startingPos;
-		enemy[i].active = true;
-	}
+	player[0].Reset();
 	paused = false;
 }
 
 void Demo::DrawingManager(void)
 {
-	Demo::Draw(Demo_Tiles);
-	Demo::Draw(Demo_Tiles2);
-	Demo::Draw(Demo_Tiles3);
+	Tile::Draw(Demo_Tiles);
+	Tile::Draw(Demo_Tiles2);
+	Tile::Draw(Demo_Tiles3);
 
-	player[0].sprite.Draw_Default(player[0].sprite, player[0].sprite.pos, 255.0f);
-
-	for (size_t i = 0; i < enemy.size(); i++)
-	{
-		if(enemy[i].active)
-			enemy[i].sprite.Draw_Tinted(enemy[i].sprite, enemy[i].sprite.pos, 255.0f, 0, 0, 255.0f);
-	}
+	Enemy::Draw(enemy);
+	player[0].Draw();
 }
 
 void Demo::CollisionManager(void)
 {
-	Demo::CheckCollisionTilesPlayer(Demo_Tiles, player);
-	Demo::CheckCollisionTilesPlayer(Demo_Tiles2, player);
-	Demo::CheckCollisionTilesPlayer(Demo_Tiles3, player);
-}
-void Demo::CheckCollisionTilesPlayer(std::vector <Tiles>& tiles, std::vector <Player>& player)
-{
-	for (size_t i = 0; i < tiles.size(); i++)
-	{
-		if (tiles[i].active == false)
-			continue;
-		tiles[i].DecreaseLifespan();
-		tiles[i].CheckEnemyStatus(enemy);
-		tiles[i].Collapse();
-		tiles[i].CheckPlayerGoal(player);
-	}
+	Tile::CheckCollisionTilesPlayer(Demo_Tiles, player, enemy);
+	Tile::CheckCollisionTilesPlayer(Demo_Tiles2, player, enemy);
+	Tile::CheckCollisionTilesPlayer(Demo_Tiles3, player, enemy);
 }
 
 void Demo::CollapsingManager(void)
 {
-	Demo::CollapseNext(Demo_Tiles);
-	Demo::CollapseNext(Demo_Tiles2);
-	Demo::CollapseNext(Demo_Tiles3);
+	Tile::CollapseNext(Demo_Tiles);
+	Tile::CollapseNext(Demo_Tiles2);
+	Tile::CollapseNext(Demo_Tiles3);
 }
 
-void Demo::CollapseNext(std::vector <Tiles>& tiles)
+void Demo::CheckPauseInput(void)
 {
-	for (size_t i = 0; i < tiles.size(); i++)
+	if (AEInputCheckTriggered(PAUSE_KEY))
 	{
-		if (tiles[i].type != COLLAPSIBLE)
-			continue;
-
-		if (tiles[i].collapsing && (tiles[i].collapseDelay <= 0))
-		{
-			if (tiles[i].ID + 1 < (int)tiles.size())
-			{
-				tiles[i + 1].collapsing = true;
-			}
-
-			if ((tiles[i].ID - 1) >= 0)
-			{
-				tiles[i - 1].collapsing = true;
-			}
+		if (!paused) {
+			paused = true;
+		}
+		else {
+			paused = false;
 		}
 	}
-}
-
-void Demo::AddNewEnemy(const s8* filepath, const AEVec2 pos, const f32 width, const f32 height)
-{
-	enemy.push_back(Enemy(filepath, width, height));
-	enemy[enemy.size() - 1].sprite.pos = pos;
-	enemy[enemy.size() - 1].startingPos = pos;
 }

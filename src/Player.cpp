@@ -7,6 +7,19 @@ Player::Player(const s8* filepath, const f32 width, const f32 height) : sprite(f
 	this->win = false;
 	this->startingPos = { 0, 0 };
 }
+
+void Player::Reset(void)
+{
+	this->active = true;
+	this->win = false;
+	this->sprite.pos = this->startingPos;
+}
+
+void Player::Draw(void)
+{
+	this->sprite.Draw_Default(this->sprite, this->sprite.pos, 255.0f);
+}
+
 void Player::Update_Position(void)
 {
 	static f32 HeightLimit = (f32)AEGetWindowHeight();
@@ -73,7 +86,7 @@ void Player::Update_Position(void)
 	}
 }
 
-void Player::CheckEnemyCollision(std::vector <Enemy>& enemy)
+void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 {
 	for (size_t i = 0; i < enemy.size(); i++)
 	{

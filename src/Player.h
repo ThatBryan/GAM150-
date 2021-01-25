@@ -13,9 +13,10 @@ public:
 	Image sprite;
 	AEVec2 startingPos;
 	void Update_Position(void);
-	void CheckEnemyCollision(std::vector <Enemy>& enemy);
+	void CheckEnemyCollision(std::vector <Enemies>& enemy);
+	void Reset(void);
+	void Draw(void);
 	inline void SetWin(void) { this->win = true; }
-	inline void ResetWin(void) { this->win = false; }
 	inline bool GetWinStatus(void) { return this->win; }
 
 private:
