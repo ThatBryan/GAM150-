@@ -26,14 +26,11 @@ void Tiles::Collapse(void)
 	}
 }
 
-void Tiles::CheckPlayerCollision(std::vector <Player> Demo_Player)
+void Tiles::CheckPlayerGoal(std::vector <Player>& Demo_Player)
 {
-	if (AETestRectToRect(&this->image.pos, this->image.width, this->image.height, &Demo_Player[0].sprite.pos, Demo_Player[0].sprite.width, Demo_Player[0].sprite.height))
+	if (AETestRectToRect(&this->image.pos, this->image.width, this->image.height, &Demo_Player[0].sprite.pos, Demo_Player[0].sprite.width, Demo_Player[0].sprite.height) && this->type == GOAL)
 	{
-		//if (AEInputCheckTriggered(AEVK_SPACE))
-		//{
-		//	this->collapsing = true;
-		//}
+		Demo_Player[(Demo_Player.size() - 1)].SetWin();
 	}
 }
 
@@ -55,6 +52,5 @@ void Tiles::CheckEnemyStatus(std::vector <Enemy> enemy)
 				this->collapsing = true;
 			}
 		}
-		
 	}
 }

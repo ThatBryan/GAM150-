@@ -4,6 +4,8 @@ Player::Player(const s8* filepath, const f32 width, const f32 height) : sprite(f
 {
 	this->active = true;
 	this->jump = false;
+	this->win = false;
+	this->startingPos = { 0, 0 };
 }
 void Player::Update_Position(void)
 {
@@ -89,6 +91,7 @@ void Player::CheckEnemyCollision(std::vector <Enemy>& enemy)
 				}
 
 			}
+
 		}
 	}
 }

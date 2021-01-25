@@ -17,6 +17,6 @@ class Tiles
 		Image image;
 		void Collapse(void);
 		void DecreaseLifespan(void);
-		void CheckPlayerCollision(std::vector <Player> Demo_Player);
+		void CheckPlayerGoal(std::vector <Player>& Demo_Player);
 		void CheckEnemyStatus(std::vector <Enemy> enemy);
 };

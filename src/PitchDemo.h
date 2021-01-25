@@ -30,7 +30,7 @@ namespace Demo
 	void CollisionManager(void);
 
 	// Check player collision with tiles.
-	void CheckCollisionTilesPlayer(std::vector <Tiles>& tiles, std::vector <Player> player);
+	void CheckCollisionTilesPlayer(std::vector <Tiles>& tiles, std::vector <Player>& player);
 
 	// Collection of tile collapsing related code.
 	void CollapsingManager(void);
