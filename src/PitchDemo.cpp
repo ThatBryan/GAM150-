@@ -32,10 +32,10 @@ void Demo::Init(void)
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 
-	Demo_Tiles = Demo::AddTileRow(Demo_Tiles, "../Assets/Art/Grass_Tile.png", COLLAPSIBLE, 8, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
-	Demo_Tiles2 = Demo::AddTileRow(Demo_Tiles2, "../Assets/Art/Grass_Tile.png", COLLAPSIBLE, 7, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
+	Demo_Tiles = Demo::AddTileRow(Demo_Tiles, "../Assets/Art/Grass_Tile.png", COLLAPSIBLE, 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
+	Demo_Tiles2 = Demo::AddTileRow(Demo_Tiles2, "../Assets/Art/Grass_Tile.png", COLLAPSIBLE, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
 	Demo_Tiles2 = Demo::AddTileRow(Demo_Tiles2, "../Assets/Art/Goal.png", GOAL, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
-	Demo_Tiles3 = Demo::AddTileRow(Demo_Tiles3, "../Assets/Art/Grass_Tile.png", COLLAPSIBLE, 8, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	Demo_Tiles3 = Demo::AddTileRow(Demo_Tiles3, "../Assets/Art/Grass_Tile.png", COLLAPSIBLE, 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 
 	Demo::AddNewEnemy("../Assets/Art/Jumperman.png", AEVector2::Set(Utilities::Get_HalfWindowWidth(), 600.0f), BOI_SIZE, BOI_SIZE);
 	Demo::AddNewEnemy("../Assets/Art/WaterSlime.png", AEVector2::Set(Utilities::Get_HalfWindowWidth(), 400.0f), BOI_SIZE, BOI_SIZE);
@@ -76,7 +76,11 @@ void Demo::Update(void)
 		player[0].Update_Position();
 		player[0].CheckEnemyCollision(enemy);
 
-		enemy[1].Update_Position();
+		for (size_t i = 0; i < enemy.size(); i++)
+		{
+			if(enemy[i].active)
+				enemy[i].Update_Position();
+		}
 
 		Demo::CollisionManager();
 		Demo::CollapsingManager();
