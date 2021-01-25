@@ -4,7 +4,7 @@
 #include "Image.h"
 #include "Player.h"
 
-enum TileType {NIL, COLLAPSIBLE = 1, GOAL };
+enum TileType {NIL, COLLAPSIBLE = 1, GOAL , GREYTILE};
 
 class Tiles
 {
@@ -17,7 +17,7 @@ class Tiles
 		Image image;
 		void Collapse(void);
 		void DecreaseLifespan(void);
-		void CheckPlayerGoal(std::vector <Player>& Demo_Player);
+		void CheckPlayerGoal(std::vector <Player>& player);
 		void CheckEnemyStatus(std::vector <Enemies> enemy);
 };
 

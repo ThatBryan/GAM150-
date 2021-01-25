@@ -7,3 +7,4 @@ const char* WaterSlimeSprite = "../Assets/Art/WaterSlime.png";
 const char* PlayerSprite = "../Assets/Art/Jumperman.png";
 const char* GrassTile = "../Assets/Art/Grass_Tile.png";
 const char* GoalTile = "../Assets/Art/Goal.png";
+const char* GreyTile = "../Assets/Art/Grey_Tile.png";

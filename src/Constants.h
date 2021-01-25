@@ -7,3 +7,4 @@ extern const char* WaterSlimeSprite;
 extern const char* PlayerSprite;
 extern const char* GrassTile;
 extern const char* GoalTile;
+extern const char* GreyTile;

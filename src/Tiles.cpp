@@ -26,11 +26,13 @@ void Tiles::Collapse(void)
 	}
 }
 
-void Tiles::CheckPlayerGoal(std::vector <Player>& Demo_Player)
+void Tiles::CheckPlayerGoal(std::vector <Player>& player)
 {
-	if (AETestRectToRect(&this->image.pos, this->image.width, this->image.height, &Demo_Player[0].sprite.pos, Demo_Player[0].sprite.width, Demo_Player[0].sprite.height) && this->type == GOAL)
+	if (this->type == GOAL)
 	{
-		Demo_Player[(Demo_Player.size() - 1)].SetWin();
+		static AEVec2 GoalPoint = { this->image.pos.x, this->image.pos.y + this->image.height / 2 };
+		if (AETestPointToRect(&GoalPoint, &player[0].sprite.pos, player[0].sprite.width, player[0].sprite.height))
+			player[(player.size() - 1)].SetWin();
 	}
 }
 

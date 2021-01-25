@@ -36,12 +36,18 @@ void Demo::Init(void)
 	Demo_Tiles = Tile::AddTileRow(Demo_Tiles, GrassTile, COLLAPSIBLE, 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
 	Demo_Tiles2 = Tile::AddTileRow(Demo_Tiles2, GrassTile, COLLAPSIBLE, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
 	Demo_Tiles2 = Tile::AddTileRow(Demo_Tiles2, GoalTile, GOAL, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
-	Demo_Tiles3 = Tile::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	Demo_Tiles3 = Tile::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	Demo_Tiles3 = Tile::AddTileRow(Demo_Tiles3, GreyTile, GREYTILE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	Demo_Tiles3 = Tile::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 
 	AEVec2 DemoEnemyPos = Demo_Tiles2[(Demo_Tiles.size() / 2)].startingPos;
-	DemoEnemyPos.x -= 15.0f;
-	DemoEnemyPos.y += TILE_HEIGHT - 10;
-	Enemy::AddNew(enemy, WaterSlimeSprite, DemoEnemyPos, BOI_SIZE, BOI_SIZE);
+	AEVec2 DemoEnemyPos2 = Demo_Tiles3[2].startingPos;
+	AEVec2 DemoEnemyPos3 = Demo_Tiles3[7].startingPos;
+	AEVec2 Offset = { -15.0f, TILE_HEIGHT - 10.0f };
+
+	Enemy::AddNew(enemy, WaterSlimeSprite, AEVector2::Add(DemoEnemyPos, Offset), BOI_SIZE, BOI_SIZE);
+	Enemy::AddNew(enemy, WaterSlimeSprite, AEVector2::Add(DemoEnemyPos2, Offset), BOI_SIZE, BOI_SIZE);
+	Enemy::AddNew(enemy, WaterSlimeSprite, AEVector2::Add(DemoEnemyPos3, Offset), BOI_SIZE, BOI_SIZE);
 
 	player.push_back(Player(PlayerSprite, BOI_SIZE, BOI_SIZE));
 	player[0].startingPos = Demo_Tiles2[0].startingPos;
@@ -55,7 +61,6 @@ void Demo::Init(void)
 	WinScreen[0].pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
 	paused = false;
 }
-
 
 void Demo::Update(void)
 {
