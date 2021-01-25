@@ -25,8 +25,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// Variable declaration
 
 	int gGameRunning = 1;
-	int counter = 255;
-	bool paused = false;
 	// Variable declaration end
 	///////////////////////////
 
@@ -68,17 +66,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		// Game loop update end
 		///////////////////////
 
-
 		//////////////////
 		// Game loop draw
 		Utilities::Set_FullScreen();
-
-		// Draw boi
-		counter -= 4;
-		if (counter < 0)
-			counter = 255;
-		
-
 		Demo::Update();
 
 
