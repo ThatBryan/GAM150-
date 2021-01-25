@@ -24,7 +24,6 @@ void Player::Update_Position(void)
 {
 	static f32 HeightLimit = (f32)AEGetWindowHeight();
 	static f32 WidthLimit = (f32)AEGetWindowWidth();
-	static float speed = 5.0f;
 	static float jumpspeed_y = 10.0f;
 
 	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP) && this->jump == FALSE)
@@ -48,12 +47,12 @@ void Player::Update_Position(void)
 
 		if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
 		{
-			this->sprite.pos.x += speed;
+			this->sprite.pos.x += player_speed;
 		}
 
 		if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
 		{
-			this->sprite.pos.x -= speed;
+			this->sprite.pos.x -= player_speed;
 		}
 	}
 
@@ -61,21 +60,21 @@ void Player::Update_Position(void)
 	{
 		if (this->sprite.pos.y - this->sprite.height / 2 >= 0)
 		{
-			this->sprite.pos.y -= speed;
+			this->sprite.pos.y -= player_speed;
 		}
 	}
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
 	{
 		if (this->sprite.pos.x + this->sprite.width / 2 <= WidthLimit)
 		{
-			this->sprite.pos.x += speed;
+			this->sprite.pos.x += player_speed;
 		}
 	}
 	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
 	{
 		if (this->sprite.pos.x - this->sprite.width / 2 >= 0)
 		{
-			this->sprite.pos.x -= speed;
+			this->sprite.pos.x -= player_speed;
 		}
 	}
 	AEVec2 Mouse = Utilities::GetMousePos();
@@ -92,9 +91,10 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 	{
 		if (enemy[i].active)
 		{
-			if (AETestRectToRect(&this->sprite.pos, this->sprite.width, this->sprite.height, &enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height))
+			if (AETestCircleToRect(&enemy[i].sprite.pos, enemy[i].sprite.width / 2, &this->sprite.pos, this->sprite.width, this->sprite.height) && !this->jump)
 			{
-				if (this->sprite.pos.y >= enemy[i].sprite.pos.y && this->jump)
+				AEVec2 EnemyTop = { enemy[i].sprite.pos.x, enemy[i].sprite.pos.y + enemy[i].sprite.height / 2 };
+				if (AETestPointToRect(&EnemyTop, &this->sprite.pos, this->sprite.width, this->sprite.height))
 				{
 					enemy[i].active = false;
 				}
@@ -102,9 +102,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 				{
 					this->active = false;
 				}
-
 			}
-
 		}
 	}
 }

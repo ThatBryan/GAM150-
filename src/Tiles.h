@@ -29,7 +29,7 @@ namespace Tile
 	// Collapse the tile on its left and right if it is collapsible.
 	void CollapseNext(std::vector <Tiles>& tiles);
 
-	void CheckCollisionTilesPlayer(std::vector <Tiles>& tiles, std::vector <Player>& player, std::vector <Enemies>& enemy);
+	void CollisionManager(std::vector <Tiles>& tiles, std::vector <Player>& player, std::vector <Enemies>& enemy);
 	
 	void Reset(std::vector <Tiles>& tiles);
 

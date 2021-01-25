@@ -13,8 +13,10 @@ std::vector <Tiles> Demo_Tiles2;
 std::vector <Tiles> Demo_Tiles3;
 std::vector <Player> player;
 std::vector <Enemies> enemy;
-std::vector <Image> logo;
-std::vector <Image> WinScreen;
+std::vector <Image> Images;
+//std::vector <Image> WinScreen;
+
+enum { LOGO = 0, WINSCREEN = 1, DEATHSCREEN = 2};
 
 bool paused;
 #define PAUSE_KEY AEVK_TAB
@@ -54,25 +56,27 @@ void Demo::Init(void)
 	player[0].startingPos.y += TILE_HEIGHT - 10;
 	player[0].sprite.pos = player[0].startingPos;
 
-	logo.push_back(Image(DigipenLogo, 750.0f, 300.0f));
-	logo[0].pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
+	Images.push_back(Image(DigipenLogo, 750.0f, 300.0f));
+	Images[0].pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
 	
-	WinScreen.push_back(Image(VictoryScreen, AEGetWindowWidth(), AEGetWindowHeight()));
-	WinScreen[0].pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
+	Images.push_back(Image(VictoryScreen, AEGetWindowWidth(), AEGetWindowHeight()));
+	Images[WINSCREEN].pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
+
+	Images.push_back(Image(GameoverScreen, AEGetWindowWidth(), AEGetWindowHeight()));
+	Images[DEATHSCREEN].pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
 	paused = false;
 }
 
 void Demo::Update(void)
 {
 	Demo::CheckPauseInput();
-
-	if (paused)
+	if (paused && player[0].active && !player[0].GetWinStatus())
 	{
 		static float alpha = 255.0f;
 		if (alpha <= 0)
 			alpha = 255.0f;
 
-		logo[logo.size() - 1].Draw_Default(logo[logo.size() - 1], logo[logo.size() - 1].pos, alpha);	
+		Images[LOGO].Draw_Default(Images[LOGO], Images[LOGO].pos, alpha);
 		alpha -= 4.0f;
 	}
 	if (!paused)
@@ -82,18 +86,20 @@ void Demo::Update(void)
 		for (size_t i = 0; i < enemy.size(); i++)
 		{
 			if(enemy[i].active)
-				enemy[i].Update_Position();
+				enemy[i].Update_Position();	
 		}
-		player[0].CheckEnemyCollision(enemy);
-
 		Demo::CollisionManager();
 		Demo::CollapsingManager();
 	}
-
+	if (player[0].active == false)
+	{
+		paused = true;
+		Images[DEATHSCREEN].Draw_Default(Images[DEATHSCREEN], Images[DEATHSCREEN].pos, 255);
+	}
 	if (player[0].GetWinStatus())
 	{
 		paused = true;
-		WinScreen[WinScreen.size() - 1].Draw_Default(WinScreen[WinScreen.size() - 1], WinScreen[WinScreen.size() - 1].pos, 255.0f);
+		Images[WINSCREEN].Draw_Default(Images[WINSCREEN], Images[WINSCREEN].pos, 255);
 	}
 
 	Demo::DrawingManager();
@@ -108,8 +114,10 @@ void Demo::Exit(void)
 	Enemy::Free(enemy);
 
 	player[0].sprite.Free();
-	WinScreen[0].Free();
-	logo[0].Free();
+	for (size_t i = 0; i < Images.size(); i++)
+	{
+		Images[i].Free();
+	}
 }
 
 void Demo::Restart(void)
@@ -135,9 +143,10 @@ void Demo::DrawingManager(void)
 
 void Demo::CollisionManager(void)
 {
-	Tile::CheckCollisionTilesPlayer(Demo_Tiles, player, enemy);
-	Tile::CheckCollisionTilesPlayer(Demo_Tiles2, player, enemy);
-	Tile::CheckCollisionTilesPlayer(Demo_Tiles3, player, enemy);
+	Tile::CollisionManager(Demo_Tiles, player, enemy);
+	Tile::CollisionManager(Demo_Tiles2, player, enemy);
+	Tile::CollisionManager(Demo_Tiles3, player, enemy);
+	player[0].CheckEnemyCollision(enemy);
 }
 
 void Demo::CollapsingManager(void)

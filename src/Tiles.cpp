@@ -116,7 +116,7 @@ void Tile::Reset(std::vector <Tiles>& tiles)
 		tiles[i].collapseDelay = 0.5f;
 	}
 }
-void Tile::CheckCollisionTilesPlayer(std::vector <Tiles>& tiles, std::vector <Player>& player, std::vector <Enemies>& enemy)
+void Tile::CollisionManager(std::vector <Tiles>& tiles, std::vector <Player>& player, std::vector <Enemies>& enemy)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
