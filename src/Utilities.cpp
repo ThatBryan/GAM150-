@@ -1,7 +1,6 @@
 #include "Utilities.h"
 #include <iostream>
 
-
 int Utilities::RandomRangeInt(const s32 lowerBound, const s32 upperBound)
 {
 	return (lowerBound + rand() % (upperBound - lowerBound + 1));
@@ -56,3 +55,15 @@ AEVec2 Utilities::GetMousePos(void)
 	return AEVector2::Set(mouseX, AEGetWindowHeight() - mouseY);
 }
 
+void Utilities::CheckPauseInput(void)
+{
+	if (AEInputCheckTriggered(PAUSE_KEY))
+	{
+		if (!paused) {
+			paused = true;
+		}
+		else {
+			paused = false;
+		}
+	}
+}

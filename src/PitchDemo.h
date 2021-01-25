@@ -22,6 +22,4 @@ namespace Demo
 
 	// Collection of tile collapsing related code.
 	void CollapsingManager(void);
-
-	void CheckPauseInput(void);
 }

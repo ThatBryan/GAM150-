@@ -13,3 +13,13 @@ extern const char* GreyTile;
 
 // Player constants
 extern const float player_speed;
+
+
+//Utility constants
+extern const float colorcodeMax;
+
+
+// Miscallenous
+extern bool paused;
+#define PAUSE_KEY AEVK_TAB 
+#define RESTART_KEY AEVK_R

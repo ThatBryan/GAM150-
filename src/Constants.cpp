@@ -13,3 +13,10 @@ const char* GreyTile = "../Assets/Art/Grey_Tile.png";
 
 // Player constants
 const float player_speed = 2.5f;
+
+
+//Utility constants
+const float colorcodeMax = 255.0f;
+
+// Miscallenous
+bool paused = false;

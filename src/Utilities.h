@@ -1,5 +1,6 @@
 #pragma once
 #include "../Extern/AlphaEngine_V3.08/include/AEEngine.h"
+#include "Constants.h"
 
 namespace Utilities 
 {
@@ -16,7 +17,7 @@ namespace Utilities
 	//Returns the position of the mouse in window coordinates.
 	AEVec2 GetMousePos(void);
 
-	void Pause(void);
+	void CheckPauseInput(void);
 }
 
 namespace AEVector2

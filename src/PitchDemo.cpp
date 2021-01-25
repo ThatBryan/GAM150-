@@ -14,12 +14,8 @@ std::vector <Tiles> Demo_Tiles3;
 std::vector <Player> player;
 std::vector <Enemies> enemy;
 std::vector <Image> Images;
-//std::vector <Image> WinScreen;
 
 enum { LOGO = 0, WINSCREEN = 1, DEATHSCREEN = 2};
-
-bool paused;
-#define PAUSE_KEY AEVK_TAB
 
 #define TILE_WIDTTH 80.0f
 #define TILE_HEIGHT 50.0f
@@ -69,7 +65,7 @@ void Demo::Init(void)
 
 void Demo::Update(void)
 {
-	Demo::CheckPauseInput();
+	Utilities::CheckPauseInput();
 	if (paused && player[0].active && !player[0].GetWinStatus())
 	{
 		static float alpha = 255.0f;
@@ -103,7 +99,7 @@ void Demo::Update(void)
 	}
 
 	Demo::DrawingManager();
-	if (AEInputCheckTriggered(AEVK_R))
+	if (AEInputCheckTriggered(RESTART_KEY))
 		Demo::Restart();
 }
 void Demo::Exit(void)
@@ -154,17 +150,4 @@ void Demo::CollapsingManager(void)
 	Tile::CollapseNext(Demo_Tiles);
 	Tile::CollapseNext(Demo_Tiles2);
 	Tile::CollapseNext(Demo_Tiles3);
-}
-
-void Demo::CheckPauseInput(void)
-{
-	if (AEInputCheckTriggered(PAUSE_KEY))
-	{
-		if (!paused) {
-			paused = true;
-		}
-		else {
-			paused = false;
-		}
-	}
 }

@@ -1,7 +1,6 @@
 #pragma once
 #include "../Extern/AlphaEngine_V3.08/include/AEEngine.h"
-
-const float colorcodeMax = 255.0f;
+#include "Constants.h"
 
 class Image
 {
