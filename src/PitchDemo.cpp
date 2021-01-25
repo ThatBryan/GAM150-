@@ -15,7 +15,7 @@ std::vector <Player> player;
 std::vector <Enemies> enemy;
 std::vector <Image> Images;
 
-enum { LOGO = 0, WINSCREEN = 1, DEATHSCREEN = 2};
+enum {LOGO = 0, WINSCREEN = 1, DEATHSCREEN = 2};
 
 #define TILE_WIDTTH 80.0f
 #define TILE_HEIGHT 50.0f

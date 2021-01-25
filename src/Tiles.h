@@ -4,7 +4,7 @@
 #include "Image.h"
 #include "Player.h"
 
-enum TileType {NIL, COLLAPSIBLE = 1, GOAL , GREYTILE};
+enum TileType {NIL, COLLAPSIBLE, GOAL, GREYTILE};
 
 class Tiles
 {
@@ -29,11 +29,15 @@ namespace Tile
 	// Collapse the tile on its left and right if it is collapsible.
 	void CollapseNext(std::vector <Tiles>& tiles);
 
+	// Handles the collision between the enemy and tiles, and enemy with player.
 	void CollisionManager(std::vector <Tiles>& tiles, std::vector <Player>& player, std::vector <Enemies>& enemy);
 	
+	// Resets the level.
 	void Reset(std::vector <Tiles>& tiles);
 
+	// Draws to screen the tiles.
 	void Draw(std::vector <Tiles> tile);
 
+	// Frees the mesh and texture used for the tiles.
 	void Free(std::vector <Tiles>& tiles);
 }
