@@ -14,6 +14,9 @@ extern const char* GreyTile;
 // Player constants
 extern const float player_speed;
 
+// Tile constants
+extern const double TileCollapseDelay;
+extern const float TileCollapseSpeed;
 
 //Utility constants
 extern const float colorcodeMax;
@@ -21,5 +24,9 @@ extern const float colorcodeMax;
 
 // Miscallenous
 extern bool paused;
+
+// Hot key bindings.
 #define PAUSE_KEY AEVK_TAB 
 #define RESTART_KEY AEVK_R
+#define FULLSCREEN_KEY1 AEVK_LALT
+#define FULLSCREEN_KEY2 AEVK_RETURN

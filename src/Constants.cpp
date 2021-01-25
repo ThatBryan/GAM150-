@@ -15,6 +15,11 @@ const char* GreyTile = "../Assets/Art/Grey_Tile.png";
 const float player_speed = 2.5f;
 
 
+// Tile constants
+const double TileCollapseDelay = 0.5f;
+const float TileCollapseSpeed = 5.0f;
+
+
 //Utility constants
 const float colorcodeMax = 255.0f;
 

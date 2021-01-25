@@ -7,19 +7,18 @@ Tiles::Tiles(const s8* filepath, const f32 width, const f32 height) : image(file
 	this->active = true;
 	this->collapsing = false;
 	this->ID = 0;
-	this->collapseDelay = 0.5f;
+	this->collapseDelay = TileCollapseDelay;
 	this->type = NIL;
 	this->startingPos = { 0, 0 };
 }
 
 void Tiles::Collapse(void)
 {
-	static f32 collapse_speed = 5.0f;
 	if (this->type == COLLAPSIBLE)
 	{
 		if (this->collapseDelay <= 0)
 		{
-			this->image.pos.y -= collapse_speed;
+			this->image.pos.y -= TileCollapseSpeed;
 			if (this->image.pos.y <= 0)
 				this->active = false;
 		}

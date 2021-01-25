@@ -17,6 +17,7 @@ namespace Utilities
 	//Returns the position of the mouse in window coordinates.
 	AEVec2 GetMousePos(void);
 
+	// Press Tab to pause the game.
 	void CheckPauseInput(void);
 }
 

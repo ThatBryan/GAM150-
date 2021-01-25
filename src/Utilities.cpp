@@ -24,7 +24,7 @@ AEVec2 AEVector2::Sub(const AEVec2 vec1, const AEVec2 vec2)
 void Utilities::Set_FullScreen(void)
 {
 	static bool fullscreen = false;
-	if (AEInputCheckCurr(AEVK_LALT) && AEInputCheckTriggered(AEVK_RETURN))
+	if (AEInputCheckCurr(FULLSCREEN_KEY1) && AEInputCheckTriggered(FULLSCREEN_KEY2))
 	{
 		if (fullscreen)
 		{

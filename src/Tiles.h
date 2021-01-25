@@ -3,6 +3,7 @@
 #include <vector>
 #include "Image.h"
 #include "Player.h"
+#include "Constants.h"
 
 enum TileType {NIL, COLLAPSIBLE, GOAL, GREYTILE};
 
