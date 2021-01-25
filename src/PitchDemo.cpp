@@ -55,10 +55,10 @@ void Demo::Init(void)
 	Images.push_back(Image(DigipenLogo, 750.0f, 300.0f));
 	Images[0].pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
 	
-	Images.push_back(Image(VictoryScreen, AEGetWindowWidth(), AEGetWindowHeight()));
+	Images.push_back(Image(VictoryScreen, (f32)AEGetWindowWidth(), (f32)AEGetWindowHeight()));
 	Images[WINSCREEN].pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
 
-	Images.push_back(Image(GameoverScreen, AEGetWindowWidth(), AEGetWindowHeight()));
+	Images.push_back(Image(GameoverScreen, (f32)AEGetWindowWidth(), (f32)AEGetWindowHeight()));
 	Images[DEATHSCREEN].pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
 	paused = false;
 }
