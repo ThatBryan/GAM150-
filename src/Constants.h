@@ -13,6 +13,11 @@ extern const char* GreyTile;
 
 // Player constants
 extern const float player_speed;
+extern const float player_width;
+extern const float player_height;
+extern const float enemy_width;
+extern const float enemy_height;
+extern const float gravity_strength;
 
 // Tile constants
 extern const double TileCollapseDelay;

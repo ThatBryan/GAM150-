@@ -19,7 +19,6 @@ enum {LOGO = 0, WINSCREEN = 1, DEATHSCREEN = 2};
 
 #define TILE_WIDTTH 80.0f
 #define TILE_HEIGHT 50.0f
-#define BOI_SIZE 50.0f
 
 #define startingX TILE_WIDTTH / 2.0f
 #define startingY1 TILE_HEIGHT / 2.0f
@@ -42,24 +41,24 @@ void Demo::Init(void)
 	AEVec2 DemoEnemyPos2 = Demo_Tiles3[2].startingPos;
 	AEVec2 DemoEnemyPos3 = Demo_Tiles3[7].startingPos;
 	AEVec2 Offset = { -15.0f, TILE_HEIGHT - 10.0f };
+	
+	Enemies::AddNew(enemy, WaterSlimeSprite, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, WaterSlimeSprite, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, WaterSlimeSprite, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
 
-	Enemies::AddNew(enemy, WaterSlimeSprite, AEVector2::Add(DemoEnemyPos, Offset), BOI_SIZE, BOI_SIZE);
-	Enemies::AddNew(enemy, WaterSlimeSprite, AEVector2::Add(DemoEnemyPos2, Offset), BOI_SIZE, BOI_SIZE);
-	Enemies::AddNew(enemy, WaterSlimeSprite, AEVector2::Add(DemoEnemyPos3, Offset), BOI_SIZE, BOI_SIZE);
-
-	player.push_back(Player(PlayerSprite, BOI_SIZE, BOI_SIZE));
+	player.push_back(Player(PlayerSprite, player_width, player_height));
 	player[0].startingPos = Demo_Tiles2[0].startingPos;
 	player[0].startingPos.y += TILE_HEIGHT - 10;
 	player[0].sprite.pos = player[0].startingPos;
 
 	Images.push_back(Image(DigipenLogo, 750.0f, 300.0f));
-	Images[0].pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
+	Images[0].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
 	
 	Images.push_back(Image(VictoryScreen, (f32)AEGetWindowWidth(), (f32)AEGetWindowHeight()));
-	Images[WINSCREEN].pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
+	Images[WINSCREEN].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
 
 	Images.push_back(Image(GameoverScreen, (f32)AEGetWindowWidth(), (f32)AEGetWindowHeight()));
-	Images[DEATHSCREEN].pos = AEVector2::Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
+	Images[DEATHSCREEN].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
 	paused = false;
 }
 

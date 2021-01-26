@@ -3,6 +3,7 @@
 Player::Player(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height)
 {
 	this->active = true;
+	this->isGravity = false;
 	this->jump = false;
 	this->win = false;
 	this->startingPos = { 0, 0 };

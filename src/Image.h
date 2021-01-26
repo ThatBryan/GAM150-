@@ -4,6 +4,10 @@
 
 class Image
 {
+	private:
+	AEGfxVertexList* pMesh;
+	AEGfxTexture* pTex;
+
 	public:
 	// Constructor
 	Image(const s8* filepath, const f32 width, const f32 height);
@@ -23,9 +27,6 @@ class Image
 
 	void Draw_Tinted(Image& image, const AEVec2 pos, const f32 r, const f32 g, const f32 b, const f32 alpha);
 	void Draw_Default(Image& image, const AEVec2 pos, const f32 alpha);
+	void Draw_Advanced(Image& image, const AEVec2 pos, const f32 alpha, const f32 rotation);
 
-
-	private:
-	AEGfxVertexList* pMesh;
-	AEGfxTexture* pTex;
 };

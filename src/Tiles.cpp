@@ -65,8 +65,8 @@ std::vector <Tiles> Tiles::AddTileRow(std::vector <Tiles> tile, const s8* filepa
 		tile.push_back(Tiles(filepath, width, height));
 		tile[i].type = type;
 		tile[i].ID = i;
-		tile[i].startingPos = AEVector2::Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2) + ((tile[i].ID - tile[0].ID) * offset));
-		tile[i].image.pos = AEVector2::Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2) + ((tile[i].ID - tile[0].ID) * offset));
+		tile[i].startingPos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2) + ((tile[i].ID - tile[0].ID) * offset));
+		tile[i].image.pos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2) + ((tile[i].ID - tile[0].ID) * offset));
 	}
 	return tile;
 }
