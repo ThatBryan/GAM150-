@@ -2,8 +2,9 @@
 #include "AEEngine.h"
 #include <vector>
 #include "Image.h"
-#include "Player.h"
 #include "Constants.h"
+#include "Player.h"
+#include "Enemy.h"
 
 enum TileType {NIL, COLLAPSIBLE, GOAL, GREYTILE};
 
@@ -23,6 +24,8 @@ class Tiles
 		void CheckPlayerGoal(std::vector <Player>& player);
 		void CheckEnemyStatus(std::vector <Enemies> enemy);
 		static void Free(std::vector <Tiles>& tiles);
+
+		static void CheckPlayerCollision(std::vector <Tiles> tiles, std::vector <Player>& player);
 
 		// Add whole new row of tile.
 		static std::vector <Tiles> AddTileRow(std::vector < Tiles> tile, const s8* filepath, const s32 type, const size_t num, const f32 width, const f32 height, const AEVec2 pos);

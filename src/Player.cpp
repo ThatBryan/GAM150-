@@ -7,6 +7,7 @@ Player::Player(const s8* filepath, const f32 width, const f32 height) : sprite(f
 	this->jump = false;
 	this->win = false;
 	this->startingPos = { 0, 0 };
+	this->colliderHeight = 10.0f;
 }
 
 void Player::Reset(void)
@@ -92,7 +93,8 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 	{
 		if (enemy[i].active)
 		{
-			if (AETestCircleToRect(&enemy[i].sprite.pos, enemy[i].sprite.width / 2, &this->sprite.pos, this->sprite.width, this->sprite.height) && !this->jump)
+			AEVec2 PlayerFeetAABB = { this->sprite.pos.x, this->sprite.pos.y - this->sprite.height / 2 + this->colliderHeight / 2 };
+			if (AETestRectToRect(&enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height, &PlayerFeetAABB, this->sprite.width, this->colliderHeight) && !this->jump)
 			{
 				AEVec2 EnemyTop = { enemy[i].sprite.pos.x, enemy[i].sprite.pos.y + enemy[i].sprite.height / 2 };
 				if (AETestPointToRect(&EnemyTop, &this->sprite.pos, this->sprite.width, this->sprite.height))
@@ -107,3 +109,18 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 		}
 	}
 }
+
+//void Player::CheckTileCollision(std::vector <Tiles> tiles)
+//{
+//	for (size_t i = 0; i < tiles.size(); i++)
+//	{
+//		if (tiles[i].active)
+//		{
+//			AEVec2 PlayerFeetAABB = {this->sprite.pos.x, this->sprite.pos.y - this->sprite.height / 2 + this->colliderHeight / 2 };
+//			if (!AETestRectToRect(&tiles[i].image.pos, tiles[i].image.width, tiles[i].image.height, &PlayerFeetAABB, this->sprite.width, this->colliderHeight))
+//			{
+//				this->sprite.pos.y -= gravity_strength;
+//			}
+//		}
+//	}
+//}

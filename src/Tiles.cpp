@@ -55,6 +55,22 @@ void Tiles::CheckEnemyStatus(std::vector <Enemies> enemy)
 	}
 }
 
+void Tiles::CheckPlayerCollision(std::vector <Tiles> tiles, std::vector <Player>& player)
+{
+	for (size_t i = 0; i < tiles.size(); i++)
+	{
+		if (tiles[i].active)
+		{
+			//AEVec2 PlayerFeetAABB = {player[0].sprite.pos.x, player[0].sprite.pos.x - player[0].sprite.height / 2 + player[0].colliderHeight / 2 };
+			if ((AETestRectToRect(&tiles[i].image.pos, tiles[i].image.width, tiles[i].image.height, &player[0].sprite.pos, player[0].sprite.width, player[0].sprite.height)) == false)
+			{
+				printf("COLLIDE\n");
+				//player[0].sprite.pos.y -= gravity_strength * AEFrameRateControllerGetFrameTime();
+			}
+		}
+	}
+}
+
 std::vector <Tiles> Tiles::AddTileRow(std::vector <Tiles> tile, const s8* filepath, s32 type, size_t num, const f32 width, const f32 height, const AEVec2 pos)
 {
 	static float offset = 0.0f;

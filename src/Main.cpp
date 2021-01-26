@@ -46,7 +46,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	Demo::Init();
 	char strBuffer[100];
-	Graphics::Text FPS_Display("../Assets/Font/Roboto-Regular.ttf", strBuffer, 15, 1.0f);
+	Graphics::Text FPS_Display(FontFile, strBuffer, 15, 1.0f);
 	FPS_Display.color.SetColor(255, 0, 0, 255);
 
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;

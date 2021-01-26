@@ -142,6 +142,7 @@ void Demo::CollisionManager(void)
 	Tiles::CollisionManager(Demo_Tiles, player, enemy);
 	Tiles::CollisionManager(Demo_Tiles2, player, enemy);
 	Tiles::CollisionManager(Demo_Tiles3, player, enemy);
+	Tiles::CheckPlayerCollision(Demo_Tiles2, player);
 	player[0].CheckEnemyCollision(enemy);
 }
 
