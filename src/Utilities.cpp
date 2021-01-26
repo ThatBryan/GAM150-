@@ -52,7 +52,7 @@ AEVec2 Utilities::GetMousePos(void)
 	int mouseX = 0;
 	int mouseY = 0;
 	AEInputGetCursorPosition(&mouseX, &mouseY);
-	return AEVector2::Set(mouseX, AEGetWindowHeight() - mouseY);
+	return AEVector2::Set((f32)mouseX, (f32)AEGetWindowHeight() - (f32)mouseY);
 }
 
 void Utilities::CheckPauseInput(void)
