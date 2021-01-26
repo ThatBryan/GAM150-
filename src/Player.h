@@ -2,7 +2,7 @@
 #include "Image.h"
 #include "Utilities.h"
 #include <vector>
-#include "../Extern/AlphaEngine_V3.08/include/AEEngine.h"
+#include "AEEngine.h"
 #include "Enemy.h"
 #include "Constants.h"
 
