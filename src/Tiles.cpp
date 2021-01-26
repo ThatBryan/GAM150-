@@ -11,7 +11,6 @@ Tiles::Tiles(const s8* filepath, const f32 width, const f32 height) : image(file
 	this->type = NIL;
 	this->startingPos = { 0, 0 };
 }
-
 void Tiles::Collapse(void)
 {
 	if (this->type == COLLAPSIBLE)
@@ -56,7 +55,7 @@ void Tiles::CheckEnemyStatus(std::vector <Enemies> enemy)
 	}
 }
 
-std::vector <Tiles> Tile::AddTileRow(std::vector <Tiles> tile, const s8* filepath, s32 type, size_t num, const f32 width, const f32 height, const AEVec2 pos)
+std::vector <Tiles> Tiles::AddTileRow(std::vector <Tiles> tile, const s8* filepath, s32 type, size_t num, const f32 width, const f32 height, const AEVec2 pos)
 {
 	static float offset = 0.0f;
 	size_t VectorSize = tile.size();
@@ -72,7 +71,7 @@ std::vector <Tiles> Tile::AddTileRow(std::vector <Tiles> tile, const s8* filepat
 	return tile;
 }
 
-void Tile::CollapseNext(std::vector <Tiles>& tiles)
+void Tiles::CollapseNext(std::vector <Tiles>& tiles)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
@@ -94,7 +93,7 @@ void Tile::CollapseNext(std::vector <Tiles>& tiles)
 	}
 }
 
-void Tile::Draw(std::vector <Tiles> tiles)
+void Tiles::Draw(std::vector <Tiles> tiles)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
@@ -105,7 +104,7 @@ void Tile::Draw(std::vector <Tiles> tiles)
 	}
 }
 
-void Tile::Reset(std::vector <Tiles>& tiles)
+void Tiles::Reset(std::vector <Tiles>& tiles)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
@@ -115,7 +114,7 @@ void Tile::Reset(std::vector <Tiles>& tiles)
 		tiles[i].collapseDelay = 0.5f;
 	}
 }
-void Tile::CollisionManager(std::vector <Tiles>& tiles, std::vector <Player>& player, std::vector <Enemies>& enemy)
+void Tiles::CollisionManager(std::vector <Tiles>& tiles, std::vector <Player>& player, std::vector <Enemies>& enemy)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
@@ -128,7 +127,7 @@ void Tile::CollisionManager(std::vector <Tiles>& tiles, std::vector <Player>& pl
 	}
 }
 
-void Tile::Free(std::vector <Tiles>& tiles)
+void Tiles::Free(std::vector <Tiles>& tiles)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
