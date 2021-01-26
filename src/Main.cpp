@@ -48,7 +48,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Demo::Init();
 
 	char strBuffer[100];
-	Graphics::Text testText("../Assets/Font/Roboto-Regular.ttf", strBuffer, 15, 1.0f);
+	Graphics::Text testText("Assets/Font/Roboto-Regular.ttf", strBuffer, 15, 1.0f);
 	testText.color.SetColor(255, 0, 0, 255);
 
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;

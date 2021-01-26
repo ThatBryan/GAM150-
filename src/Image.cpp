@@ -10,7 +10,7 @@ Image::Image(const s8* filepath, const f32 width, const f32 height)
 	this->height = height;
 
 	this->pTex = AEGfxTextureLoad(filepath);
-	AE_ASSERT_MESG(this->pTex, "Failed to create texture!");
+	AE_ASSERT_MESG(this->pTex, "Failed to create image!");
 
 	this->pMesh = Image::Mesh_Rectangle(this);
 	AE_ASSERT_MESG(this->pMesh, "Failed to create mesh!");
