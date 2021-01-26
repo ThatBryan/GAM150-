@@ -3,9 +3,8 @@
 #include <string>
 #include <iostream>
 
-Image::Image(const s8* filepath, const f32 width, const f32 height)
+Image::Image(const s8* filepath, const f32 width, const f32 height) : GameObject()
 {
-	this->pos = { 0, 0 };
 	this->width = width;
 	this->height = height;
 

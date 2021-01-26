@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="src\Constants.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
+    <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\Image.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Graphics.cpp" />
@@ -24,6 +25,7 @@
   <ItemGroup>
     <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\Enemy.h" />
+    <ClInclude Include="src\GameObject.h" />
     <ClInclude Include="src\Image.h" />
     <ClInclude Include="src\Graphics.h" />
     <ClInclude Include="src\PitchDemo.h" />

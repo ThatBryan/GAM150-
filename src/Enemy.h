@@ -4,7 +4,7 @@
 #include <vector>
 #include "AEEngine.h"
 
-class Enemies
+class Enemies : public GameObject
 {
 public:
 	Enemies(const s8* filepath, const f32 width, const f32 height);

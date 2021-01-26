@@ -1,8 +1,9 @@
 #pragma once
 #include "AEEngine.h"
+#include "GameObject.h"
 #include "Constants.h"
 
-class Image
+class Image : public GameObject
 {
 	private:
 	AEGfxVertexList* pMesh;
@@ -28,5 +29,5 @@ class Image
 	void Draw_Tinted(Image& image, const AEVec2 pos, const f32 r, const f32 g, const f32 b, const f32 alpha);
 	void Draw_Default(Image& image, const AEVec2 pos, const f32 alpha);
 	void Draw_Advanced(Image& image, const AEVec2 pos, const f32 alpha, const f32 rotation);
-
 };
+

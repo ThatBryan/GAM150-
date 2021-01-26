@@ -65,6 +65,7 @@ void Demo::Init(void)
 void Demo::Update(void)
 {
 	Utilities::CheckPauseInput();
+	Utilities::CheckFullScreenInput();
 	if (paused && player[0].active && !player[0].GetWinStatus())
 	{
 		static float alpha = 255.0f;

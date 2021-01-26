@@ -45,7 +45,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	/// Test init functions
 
 	Demo::Init();
-	AEGfxSetBackgroundColor(0, 0, 0);
 	char strBuffer[100];
 	Graphics::Text FPS_Display("../Assets/Font/Roboto-Regular.ttf", strBuffer, 15, 1.0f);
 	FPS_Display.color.SetColor(255, 0, 0, 255);
@@ -63,7 +62,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		// Handling Input
 		AEInputUpdate();
-		Utilities::Set_FullScreen();
+
 		Demo::Update();
 
 		//test.Draw_Advanced(test, test.pos, 255.0f, 90.0f);
