@@ -67,3 +67,16 @@ void Utilities::CheckPauseInput(void)
 		}
 	}
 }
+
+void Utilities::CheckDebugMode(void)
+{
+	if (AEInputCheckTriggered(DEBUG_KEY))
+	{
+		if (!DebugMode) {
+			DebugMode = true;
+		}
+		else {
+			DebugMode = false;
+		}
+	}
+}

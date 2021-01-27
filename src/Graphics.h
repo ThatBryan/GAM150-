@@ -36,12 +36,13 @@ namespace Graphics
 		public:
 		// Constructor
 		Rect(const f32 width, const f32 height);
+		Rect();
 
 		Color color;
 		AEVec2 pos;
 		f32 height, width;
 
-		void Draw_Rect(Rect rect, const AEVec2 pos);
+		void Draw_Rect(Rect rect, const AEVec2 pos, const f32 alpha);
 		inline AEGfxVertexList* GetMesh(void) { return this->pMesh; }
 		inline void Free(void) { AEGfxMeshFree(GetMesh()); }
 

@@ -55,20 +55,25 @@ void Tiles::CheckEnemyStatus(std::vector <Enemies> enemy)
 	}
 }
 
-void Tiles::CheckPlayerCollision(std::vector <Tiles> tiles, std::vector <Player>& player)
+void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>> TileManager, std::vector <Player>& player)
 {
-	for (size_t i = 0; i < tiles.size(); i++)
+	for (size_t i = 0; i < TileManager.size(); i++)
 	{
-		if (tiles[i].active)
+		for (size_t j = 0; j < TileManager[i].size(); j++)
 		{
-			//AEVec2 PlayerFeetAABB = {player[0].sprite.pos.x, player[0].sprite.pos.x - player[0].sprite.height / 2 + player[0].colliderHeight / 2 };
-			if ((AETestRectToRect(&tiles[i].image.pos, tiles[i].image.width, tiles[i].image.height, &player[0].sprite.pos, player[0].sprite.width, player[0].sprite.height)) == false)
+			if (TileManager[i][j].active == false)
+				continue;
+
+			if (AETestRectToRect(&TileManager[i][j].image.pos, TileManager[i][j].image.width, TileManager[i][j].image.height, &player[0].colliderAABB.pos, player[0].colliderAABB.width, player[0].colliderAABB.height))
 			{
-				printf("COLLIDE\n");
-				//player[0].sprite.pos.y -= gravity_strength * AEFrameRateControllerGetFrameTime();
+				printf("Don't apply gravity\n");
+				//player[0].gravity = false;
+				return;
 			}
 		}
 	}
+	printf("Apply gravity\n");
+	//player[0].gravity = true;
 }
 
 std::vector <Tiles> Tiles::AddTileRow(std::vector <Tiles> tile, const s8* filepath, s32 type, size_t num, const f32 width, const f32 height, const AEVec2 pos)
@@ -117,6 +122,8 @@ void Tiles::Draw(std::vector <Tiles> tiles)
 			continue;
 
 		tiles[i].image.Draw_Default(tiles[i].image, tiles[i].image.pos, 255);
+		if (DebugMode)
+			tiles[i].ColliderAABB.Draw_Rect(tiles[i].ColliderAABB, tiles[i].image.pos, 150.0f);
 	}
 }
 
@@ -148,5 +155,6 @@ void Tiles::Free(std::vector <Tiles>& tiles)
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
 		tiles[i].image.Free();
+		tiles[i].ColliderAABB.Free();
 	}
 }

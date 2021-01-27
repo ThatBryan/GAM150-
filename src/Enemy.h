@@ -3,6 +3,8 @@
 #include "Utilities.h"
 #include <vector>
 #include "AEEngine.h"
+#include "Graphics.h"
+#include "Constants.h"
 
 class Enemies : public GameObject
 {
@@ -10,6 +12,7 @@ public:
 	Enemies(const s8* filepath, const f32 width, const f32 height);
 	bool active;
 	Image sprite;
+	Image colliderAABB{Collider, enemy_width, enemy_height };
 	AEVec2 startingPos;
 	void Update_Position(void);
 

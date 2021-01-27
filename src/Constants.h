@@ -10,6 +10,7 @@ extern const char* GrassTile;
 extern const char* GoalTile;
 extern const char* GreyTile;
 extern const char* FontFile;
+extern const char* Collider;
 
 
 // Player constants
@@ -30,9 +31,11 @@ extern const float colorcodeMax;
 
 // Miscallenous
 extern bool paused;
+extern bool DebugMode;
 
 // Hot key bindings.
 #define PAUSE_KEY AEVK_TAB 
 #define RESTART_KEY AEVK_R
 #define FULLSCREEN_KEY1 AEVK_LALT
 #define FULLSCREEN_KEY2 AEVK_RETURN
+#define DEBUG_KEY AEVK_F1

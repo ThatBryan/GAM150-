@@ -10,6 +10,7 @@ const char* GrassTile = "../Assets/Art/Grass_Tile.png";
 const char* GoalTile = "../Assets/Art/Goal.png";
 const char* GreyTile = "../Assets/Art/Grey_Tile.png";
 const char* FontFile = "../Assets/Font/Roboto-Regular.ttf";
+const char* Collider = "../Assets/Art/debugcollider.png";
 
 
 // Player constants
@@ -30,3 +31,4 @@ const float colorcodeMax = 255.0f;
 
 // Miscallenous
 bool paused = false;
+bool DebugMode = false;

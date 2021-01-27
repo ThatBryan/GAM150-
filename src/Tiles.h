@@ -19,13 +19,14 @@ class Tiles
 		bool active, collapsing;
 		AEVec2 startingPos;
 		Image image;
+		Graphics::Rect ColliderAABB{ 80.0f, 50.0f };
 		void Collapse(void);
 		void DecreaseLifespan(void);
 		void CheckPlayerGoal(std::vector <Player>& player);
 		void CheckEnemyStatus(std::vector <Enemies> enemy);
 		static void Free(std::vector <Tiles>& tiles);
 
-		static void CheckPlayerCollision(std::vector <Tiles> tiles, std::vector <Player>& player);
+		static void CheckPlayerCollision(std::vector <std::vector<Tiles>> TileManager, std::vector <Player>& player);
 
 		// Add whole new row of tile.
 		static std::vector <Tiles> AddTileRow(std::vector < Tiles> tile, const s8* filepath, const s32 type, const size_t num, const f32 width, const f32 height, const AEVec2 pos);

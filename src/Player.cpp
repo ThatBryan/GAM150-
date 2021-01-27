@@ -1,13 +1,13 @@
 #include "Player.h"
 
-Player::Player(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height)
+Player::Player(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height) 
 {
 	this->active = true;
-	this->isGravity = false;
+	this->gravity = false;
 	this->jump = false;
 	this->win = false;
 	this->startingPos = { 0, 0 };
-	this->colliderHeight = 10.0f;
+	this->colliderAABB.color.SetColor(255.0f, 0, 0, 255.0f);
 }
 
 void Player::Reset(void)
@@ -20,8 +20,15 @@ void Player::Reset(void)
 void Player::Draw(void)
 {
 	this->sprite.Draw_Default(this->sprite, this->sprite.pos, 255.0f);
+	
+	if(DebugMode)
+		this->colliderAABB.Draw_Rect(this->colliderAABB, this->colliderAABB.pos, 150.0f);
 }
-
+void Player::Free(std::vector <Player> player)
+{
+	player[player.size() - 1].colliderAABB.Free();
+	player[player.size() - 1].sprite.Free();
+}
 void Player::Update_Position(void)
 {
 	static f32 HeightLimit = (f32)AEGetWindowHeight();
@@ -85,6 +92,15 @@ void Player::Update_Position(void)
 		if (AEInputCheckCurr(AEVK_LBUTTON))
 			this->sprite.pos = Mouse;
 	}
+	this->colliderAABB.pos = AEVec2{ this->sprite.pos.x, this->sprite.pos.y - 21.0f };
+}
+
+void Player::GravityManager(void)
+{
+	if (this->gravity)
+	{
+		printf("Apply gravity\n");
+	}
 }
 
 void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
@@ -93,34 +109,14 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 	{
 		if (enemy[i].active)
 		{
-			AEVec2 PlayerFeetAABB = { this->sprite.pos.x, this->sprite.pos.y - this->sprite.height / 2 + this->colliderHeight / 2 };
-			if (AETestRectToRect(&enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height, &PlayerFeetAABB, this->sprite.width, this->colliderHeight) && !this->jump)
+			if (AETestRectToRect(&enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height, &this->sprite.pos, this->sprite.width, this->sprite.height))
 			{
 				AEVec2 EnemyTop = { enemy[i].sprite.pos.x, enemy[i].sprite.pos.y + enemy[i].sprite.height / 2 };
-				if (AETestPointToRect(&EnemyTop, &this->sprite.pos, this->sprite.width, this->sprite.height))
-				{
+				if (AETestRectToRect(&enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height, &this->colliderAABB.pos, this->colliderAABB.width, this->colliderAABB.height))// && 
 					enemy[i].active = false;
-				}
 				else
-				{
 					this->active = false;
-				}
 			}
 		}
 	}
 }
-
-//void Player::CheckTileCollision(std::vector <Tiles> tiles)
-//{
-//	for (size_t i = 0; i < tiles.size(); i++)
-//	{
-//		if (tiles[i].active)
-//		{
-//			AEVec2 PlayerFeetAABB = {this->sprite.pos.x, this->sprite.pos.y - this->sprite.height / 2 + this->colliderHeight / 2 };
-//			if (!AETestRectToRect(&tiles[i].image.pos, tiles[i].image.width, tiles[i].image.height, &PlayerFeetAABB, this->sprite.width, this->colliderHeight))
-//			{
-//				this->sprite.pos.y -= gravity_strength;
-//			}
-//		}
-//	}
-//}

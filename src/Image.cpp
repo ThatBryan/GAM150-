@@ -49,7 +49,7 @@ void Image::Draw_Default(Image& image, const AEVec2 pos, const f32 alpha)
 	AEGfxTextureSet(image.GetTexture(), 0, 0);
 
 	// No Tint
-	AEGfxSetTintColor(1.0, 1.0, 1.0f, 1.0f);
+	AEGfxSetTintColor(1.0, 1.0, 1.0, 1.0f);
 	AEGfxSetTransparency(alpha / colorcodeMax);
 
 	// Drawing the mesh (list of triangles)

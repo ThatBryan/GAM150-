@@ -22,6 +22,16 @@ Graphics::Rect::Rect(const f32 width, const f32 height)
 	this->color.SetColor(255, 255, 255, 255);
 }
 
+Graphics::Rect::Rect()
+{
+	this->width = 50.0f;
+	this->height = 10.0f;
+	this->pos = { 0, 0 };
+	this->pMesh = Graphics::Mesh_Rectangle(this);
+	AE_ASSERT_MESG(this->pMesh, "Failed to create mesh!");
+	this->color.SetColor(255, 255, 255, 255);
+}
+
 Graphics::Text::Text(const s8* filepath, s8* textBuffer, const s32 fontSize, const f32 scale)
 {
 	this->fontId = AEGfxCreateFont(filepath, fontSize);
@@ -92,17 +102,18 @@ AEGfxVertexList* Graphics::Mesh_Rectangle(Rect* rect)
 	return AEGfxMeshEnd();	
 }
 
-void Graphics::Rect::Draw_Rect(Rect rect, const AEVec2 pos)
+void Graphics::Rect::Draw_Rect(Rect rect, const AEVec2 pos, const f32 alpha)
 {
-	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-
+	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 	rect.pos.x = pos.x;
 	rect.pos.y = pos.y;
 	AEGfxSetPosition(rect.pos.x - Utilities::Get_HalfWindowWidth(), rect.pos.y - Utilities::Get_HalfWindowHeight());
-
+	AEGfxTextureSet(NULL, 0.0f, 0.0f);
 	AEGfxSetTintColor(rect.color.r, rect.color.g , rect.color.b, rect.color.alpha);
+	AEGfxSetTransparency(alpha / colorcodeMax);
 
-	AEGfxSetBlendMode(AE_GFX_BM_NONE);
+
+	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(rect.GetMesh(), AE_GFX_MDM_TRIANGLES);
 }
 

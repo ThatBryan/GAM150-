@@ -19,6 +19,8 @@ namespace Utilities
 
 	// Press Tab to pause the game.
 	void CheckPauseInput(void);
+
+	void CheckDebugMode(void);
 }
 
 

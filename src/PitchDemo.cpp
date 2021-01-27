@@ -14,6 +14,7 @@ std::vector <Tiles> Demo_Tiles3;
 std::vector <Player> player;
 std::vector <Enemies> enemy;
 std::vector <Image> Images;
+std::vector <std::vector <Tiles>> TileManager;
 
 enum {LOGO = 0, WINSCREEN = 1, DEATHSCREEN = 2};
 
@@ -36,6 +37,11 @@ void Demo::Init(void)
 	Demo_Tiles3 = Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 	Demo_Tiles3 = Tiles::AddTileRow(Demo_Tiles3, GreyTile, GREYTILE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 	Demo_Tiles3 = Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+
+	//
+	TileManager.push_back(Demo_Tiles);
+	TileManager.push_back(Demo_Tiles2);
+	TileManager.push_back(Demo_Tiles3);
 
 	AEVec2 DemoEnemyPos = Demo_Tiles2[(Demo_Tiles.size() / 2)].startingPos;
 	AEVec2 DemoEnemyPos2 = Demo_Tiles3[2].startingPos;
@@ -66,6 +72,7 @@ void Demo::Update(void)
 {
 	Utilities::CheckPauseInput();
 	Utilities::CheckFullScreenInput();
+	Utilities::CheckDebugMode();
 	if (paused && player[0].active && !player[0].GetWinStatus())
 	{
 		static float alpha = 255.0f;
@@ -109,7 +116,7 @@ void Demo::Exit(void)
 	Tiles::Free(Demo_Tiles3);
 	Enemies::Free(enemy);
 
-	player[0].sprite.Free();
+	Player::Free(player);
 	for (size_t i = 0; i < Images.size(); i++)
 	{
 		Images[i].Free();
@@ -142,7 +149,8 @@ void Demo::CollisionManager(void)
 	Tiles::CollisionManager(Demo_Tiles, player, enemy);
 	Tiles::CollisionManager(Demo_Tiles2, player, enemy);
 	Tiles::CollisionManager(Demo_Tiles3, player, enemy);
-	Tiles::CheckPlayerCollision(Demo_Tiles2, player);
+	Tiles::CheckPlayerCollision(TileManager, player);
+	player[0].GravityManager();
 	player[0].CheckEnemyCollision(enemy);
 }
 
