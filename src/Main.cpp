@@ -51,9 +51,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;
 
-	Image test(PlayerSprite, 100.0f, 100.0f);
-	test.pos = { 400, 300 };
-
 	// Game Loop
 	while (gGameRunning)
 	{
@@ -64,8 +61,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		AEInputUpdate();
 
 		Demo::Update();
-
-		//test.Draw_Advanced(test, test.pos, 255.0f, 90.0f);
 
 		memset(strBuffer, 0, 100 * sizeof(char));
 		sprintf_s(strBuffer, "Frame Rate:  %.2f", AEFrameRateControllerGetFrameRate());
@@ -80,7 +75,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	}
 
 	FPS_Display.Free();
-	test.Free();
 	Demo::Exit();
 	AESysExit();
 }

@@ -35,10 +35,10 @@ void Demo::Init(void)
 	Demo_Tiles2 = Tiles::AddTileRow(Demo_Tiles2, GrassTile, COLLAPSIBLE, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
 	Demo_Tiles2 = Tiles::AddTileRow(Demo_Tiles2, GoalTile, GOAL, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
 	Demo_Tiles3 = Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
-	Demo_Tiles3 = Tiles::AddTileRow(Demo_Tiles3, GreyTile, GREYTILE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	//Demo_Tiles3 = Tiles::AddTileRow(Demo_Tiles3, GreyTile, GREYTILE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	Demo_Tiles3 = Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 	Demo_Tiles3 = Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 
-	//
 	TileManager.push_back(Demo_Tiles);
 	TileManager.push_back(Demo_Tiles2);
 	TileManager.push_back(Demo_Tiles3);
@@ -65,7 +65,11 @@ void Demo::Init(void)
 
 	Images.push_back(Image(GameoverScreen, (f32)AEGetWindowWidth(), (f32)AEGetWindowHeight()));
 	Images[DEATHSCREEN].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
-	paused = false;
+
+	for (size_t i = 0; i < Demo_Tiles3.size(); i++)
+	{
+		printf("x: %.2f y: %.2f\n", Demo_Tiles3[i].image.pos.x, Demo_Tiles3[i].image.pos.y);
+	}
 }
 
 void Demo::Update(void)
@@ -104,7 +108,10 @@ void Demo::Update(void)
 		paused = true;
 		Images[WINSCREEN].Draw_Default(Images[WINSCREEN], Images[WINSCREEN].pos, 255);
 	}
-
+	for (size_t i = 0; i < Demo_Tiles3.size(); i++)
+	{
+		//printf("%d\n", Demo_Tiles3[i].active);
+	}
 	Demo::DrawingManager();
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Demo::Restart();
@@ -146,6 +153,7 @@ void Demo::DrawingManager(void)
 
 void Demo::CollisionManager(void)
 {
+	Tiles::CheckTilesPos(TileManager);
 	Tiles::CollisionManager(Demo_Tiles, player, enemy);
 	Tiles::CollisionManager(Demo_Tiles2, player, enemy);
 	Tiles::CollisionManager(Demo_Tiles3, player, enemy);

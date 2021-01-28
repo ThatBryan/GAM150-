@@ -8,10 +8,13 @@
 #include "Enemy.h"
 #include "Constants.h"
 
+
 class Player
 {
+	int x;
 public:
 	Player(const s8* filepath, const f32 width, const f32 height);
+	Player();
 	bool active, jump, gravity;
 	Image sprite;
 	Graphics::Rect colliderAABB = Graphics::Rect(player_width, 10.0f);

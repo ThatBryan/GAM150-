@@ -99,7 +99,7 @@ void Player::GravityManager(void)
 {
 	if (this->gravity)
 	{
-		printf("Apply gravity\n");
+		//printf("Apply gravity\n");
 	}
 }
 
