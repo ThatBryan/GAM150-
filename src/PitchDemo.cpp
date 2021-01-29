@@ -109,7 +109,7 @@ void Demo::Update(void)
 		Images[WINSCREEN].Draw_Default(Images[WINSCREEN], Images[WINSCREEN].pos, 255);
 	}
 	
-	printf("Vector: X: %.2f Y: %.2f \t VectorManager X: %.2f Y: %.2f\n", Demo_Tiles3[2].image.pos.x, Demo_Tiles3[2].image.pos.y, TileManager[2]->at(2).image.pos.x, TileManager[2]->at(2).image.pos.y);
+	printf("Vector: X: %.2f Y: %.2f \t VectorManager X: %.2f Y: %.2f\n", Demo_Tiles3[2].image.pos.x, Demo_Tiles3[2].image.pos.y, (*TileManager[2])[2].image.pos.x, TileManager[2]->at(2).image.pos.y);
 	Demo::DrawingManager();
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Demo::Restart();
