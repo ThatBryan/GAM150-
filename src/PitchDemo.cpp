@@ -14,7 +14,7 @@ std::vector <Tiles> Demo_Tiles3;
 std::vector <Player> player;
 std::vector <Enemies> enemy;
 std::vector <Image> Images;
-std::vector <std::vector <Tiles>> TileManager;
+std::vector <std::vector <Tiles>*> TileManager;
 
 enum {LOGO = 0, WINSCREEN = 1, DEATHSCREEN = 2};
 
@@ -31,17 +31,17 @@ void Demo::Init(void)
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 
-	Demo_Tiles = Tiles::AddTileRow(Demo_Tiles, GrassTile, COLLAPSIBLE, 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
-	Demo_Tiles2 = Tiles::AddTileRow(Demo_Tiles2, GrassTile, COLLAPSIBLE, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
-	Demo_Tiles2 = Tiles::AddTileRow(Demo_Tiles2, GoalTile, GOAL, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
-	Demo_Tiles3 = Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	Tiles::AddTileRow(Demo_Tiles, GrassTile, COLLAPSIBLE, 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
+	Tiles::AddTileRow(Demo_Tiles2, GrassTile, COLLAPSIBLE, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
+	Tiles::AddTileRow(Demo_Tiles2, GoalTile, GOAL, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
+	Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 	//Demo_Tiles3 = Tiles::AddTileRow(Demo_Tiles3, GreyTile, GREYTILE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
-	Demo_Tiles3 = Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
-	Demo_Tiles3 = Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 
-	TileManager.push_back(Demo_Tiles);
-	TileManager.push_back(Demo_Tiles2);
-	TileManager.push_back(Demo_Tiles3);
+	TileManager.push_back(&Demo_Tiles);
+	TileManager.push_back(&Demo_Tiles2);
+	TileManager.push_back(&Demo_Tiles3);
 
 	AEVec2 DemoEnemyPos = Demo_Tiles2[(Demo_Tiles.size() / 2)].startingPos;
 	AEVec2 DemoEnemyPos2 = Demo_Tiles3[2].startingPos;
@@ -68,7 +68,7 @@ void Demo::Init(void)
 
 	for (size_t i = 0; i < Demo_Tiles3.size(); i++)
 	{
-		printf("x: %.2f y: %.2f\n", Demo_Tiles3[i].image.pos.x, Demo_Tiles3[i].image.pos.y);
+		//printf("x: %.2f y: %.2f\n", Demo_Tiles3[i].image.pos.x, Demo_Tiles3[i].image.pos.y);
 	}
 }
 
@@ -108,10 +108,8 @@ void Demo::Update(void)
 		paused = true;
 		Images[WINSCREEN].Draw_Default(Images[WINSCREEN], Images[WINSCREEN].pos, 255);
 	}
-	for (size_t i = 0; i < Demo_Tiles3.size(); i++)
-	{
-		//printf("%d\n", Demo_Tiles3[i].active);
-	}
+	
+	printf("Vector: X: %.2f Y: %.2f \t VectorManager X: %.2f Y: %.2f\n", Demo_Tiles3[2].image.pos.x, Demo_Tiles3[2].image.pos.y, TileManager[2]->at(2).image.pos.x, TileManager[2]->at(2).image.pos.y);
 	Demo::DrawingManager();
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Demo::Restart();

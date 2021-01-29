@@ -31,19 +31,19 @@ void Tiles::CheckPlayerGoal(std::vector <Player>& player)
 			player[(player.size() - 1)].SetWin();
 	}
 }
-void Tiles::CheckTilesPos(std::vector <std::vector<Tiles>>& TileManager)
+void Tiles::CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager)
 {
 	for (size_t i = 2; i < TileManager.size(); i++)
 	{
-		for (size_t j = 0; j < TileManager[i].size(); j++)
+		for (size_t j = 0; j < TileManager[i]->size(); j++)
 		{
-			if (TileManager[i][j].active == true)
+			if (TileManager[i]->at(j).active == true)
 			{
-				printf("Posx: %.2f\tPosy: %.2f\n", TileManager[i][j].image.pos.x, TileManager[i][j].image.pos.y); //
-				if (TileManager[i][j].image.pos.y  <= 0)
+				//printf("Posx: %.2f\tPosy: %.2f\n", TileManager[i][j].image.pos.x, TileManager[i][j].image.pos.y); //
+				if (TileManager[i]->at(j).image.pos.y  <= 0)
 				{
-					printf("Test\n");
-					TileManager[i][j].active = false;
+					//printf("Test\n");
+					TileManager[i]->at(j).active = false;
 				}
 			}
 		}
@@ -71,16 +71,16 @@ void Tiles::CheckEnemyStatus(std::vector <Enemies> enemy)
 	}
 }
 
-void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>>& TileManager, std::vector <Player>& player)
+void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& player)
 {
 	for (size_t i = 0; i < TileManager.size(); i++)
 	{
-		for (size_t j = 0; j < TileManager[i].size(); j++)
+		for (size_t j = 0; j < TileManager[i]->size(); j++)
 		{
-			if (TileManager[i][j].active == false)
+			if (TileManager[i]->at(j).active == false)
 				continue;
 
-			if (AETestRectToRect(&TileManager[i][j].image.pos, TileManager[i][j].image.width, TileManager[i][j].image.height, &player[0].colliderAABB.pos, player[0].colliderAABB.width, 10.0f))
+			if (AETestRectToRect(&TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height, &player[0].colliderAABB.pos, player[0].colliderAABB.width, 10.0f))
 			{
 				//printf("Don't apply gravity\n");
 				player[0].gravity = false;
@@ -91,7 +91,7 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>>& TileManager, 
 	player[0].gravity = true;
 }
 
-std::vector <Tiles> Tiles::AddTileRow(std::vector <Tiles> tile, const s8* filepath, s32 type, size_t num, const f32 width, const f32 height, const AEVec2 pos)
+void Tiles::AddTileRow(std::vector <Tiles>& tile, const s8* filepath, s32 type, size_t num, const f32 width, const f32 height, const AEVec2 pos)
 {
 	static float offset = 0.0f;
 	size_t VectorSize = tile.size();
@@ -104,7 +104,7 @@ std::vector <Tiles> Tiles::AddTileRow(std::vector <Tiles> tile, const s8* filepa
 		tile[i].startingPos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2) + ((tile[i].ID - tile[0].ID) * offset));
 		tile[i].image.pos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2) + ((tile[i].ID - tile[0].ID) * offset));
 	}
-	return tile;
+
 }
 
 void Tiles::CollapseNext(std::vector <Tiles>& tiles)
