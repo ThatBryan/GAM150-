@@ -8,6 +8,7 @@ Player::Player(const s8* filepath, const f32 width, const f32 height) : sprite(f
 	this->win = false;
 	this->startingPos = { 0, 0 };
 	this->colliderAABB.color.SetColor(255.0f, 0, 0, 255.0f);
+	this->colldierPos = { 0, 0 };
 }
 
 void Player::Reset(void)
@@ -99,7 +100,8 @@ void Player::GravityManager(void)
 {
 	if (this->gravity)
 	{
-		//printf("Apply gravity\n");
+		if(DebugMode)
+			printf("Apply gravity\n");
 	}
 }
 
@@ -109,6 +111,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 	{
 		if (enemy[i].active)
 		{
+			//????????????
 			if (AETestRectToRect(&enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height, &this->sprite.pos, this->sprite.width, this->sprite.height))
 			{
 				AEVec2 EnemyTop = { enemy[i].sprite.pos.x, enemy[i].sprite.pos.y + enemy[i].sprite.height / 2 };

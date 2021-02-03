@@ -33,16 +33,14 @@ void Tiles::CheckPlayerGoal(std::vector <Player>& player)
 }
 void Tiles::CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager)
 {
-	for (size_t i = 2; i < TileManager.size(); i++)
+	for (size_t i = 0; i < TileManager.size(); i++)
 	{
 		for (size_t j = 0; j < TileManager[i]->size(); j++)
 		{
 			if (TileManager[i]->at(j).active == true)
 			{
-				//printf("Posx: %.2f\tPosy: %.2f\n", TileManager[i][j].image.pos.x, TileManager[i][j].image.pos.y); //
 				if (TileManager[i]->at(j).image.pos.y  <= 0)
 				{
-					//printf("Test\n");
 					TileManager[i]->at(j).active = false;
 				}
 			}
@@ -82,8 +80,9 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 
 			if (AETestRectToRect(&TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height, &player[0].colliderAABB.pos, player[0].colliderAABB.width, 10.0f))
 			{
-				//printf("Don't apply gravity\n");
 				player[0].gravity = false;
+				if (DebugMode)
+					printf("Don't apply gravity\n");
 				return;
 			}
 		}

@@ -8,9 +8,7 @@
 #include "Constants.h"
 
 Color background;
-std::vector <Tiles> Demo_Tiles;
-std::vector <Tiles> Demo_Tiles2;
-std::vector <Tiles> Demo_Tiles3;
+std::vector <Tiles> Demo_Tiles, Demo_Tiles2, Demo_Tiles3;
 std::vector <Player> player;
 std::vector <Enemies> enemy;
 std::vector <Image> Images;
@@ -31,13 +29,17 @@ void Demo::Init(void)
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 
-	Tiles::AddTileRow(Demo_Tiles, GrassTile, COLLAPSIBLE, 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
+	size_t test = (size_t)AEGetWindowWidth() / TILE_WIDTTH;
+	Tiles::AddTileRow(Demo_Tiles, GrassTile, COLLAPSIBLE, test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
+
 	Tiles::AddTileRow(Demo_Tiles2, GrassTile, COLLAPSIBLE, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
 	Tiles::AddTileRow(Demo_Tiles2, GoalTile, GOAL, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
+	//Tiles::AddTileRow(Demo_Tiles2, GrassTile, COLLAPSIBLE, test- 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
+
 	Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
-	//Demo_Tiles3 = Tiles::AddTileRow(Demo_Tiles3, GreyTile, GREYTILE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
-	Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	Tiles::AddTileRow(Demo_Tiles3, GreyTile, GREYTILE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 	Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	//Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, test - 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 
 	TileManager.push_back(&Demo_Tiles);
 	TileManager.push_back(&Demo_Tiles2);
@@ -66,10 +68,6 @@ void Demo::Init(void)
 	Images.push_back(Image(GameoverScreen, (f32)AEGetWindowWidth(), (f32)AEGetWindowHeight()));
 	Images[DEATHSCREEN].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
 
-	for (size_t i = 0; i < Demo_Tiles3.size(); i++)
-	{
-		//printf("x: %.2f y: %.2f\n", Demo_Tiles3[i].image.pos.x, Demo_Tiles3[i].image.pos.y);
-	}
 }
 
 void Demo::Update(void)
@@ -109,7 +107,6 @@ void Demo::Update(void)
 		Images[WINSCREEN].Draw_Default(Images[WINSCREEN], Images[WINSCREEN].pos, 255);
 	}
 	
-	printf("Vector: X: %.2f Y: %.2f \t VectorManager X: %.2f Y: %.2f\n", Demo_Tiles3[2].image.pos.x, Demo_Tiles3[2].image.pos.y, (*TileManager[2])[2].image.pos.x, TileManager[2]->at(2).image.pos.y);
 	Demo::DrawingManager();
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Demo::Restart();
