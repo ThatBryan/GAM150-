@@ -73,3 +73,25 @@ void Image::Draw_Tinted(Image& image, const AEVec2 pos, const f32 r, const f32 g
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(image.GetMesh(), AE_GFX_MDM_TRIANGLES);
 }
+void Image::Draw_Advanced(Image& image, const AEVec2 pos, const f32 alpha, const f32 rotation)
+{
+	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+
+	AEMtx33 translate;
+	AEMtx33 rotationMtx;
+	AEGfxSetPosition(0, 0);
+
+	AEMtx33Trans(&translate, pos.x, pos.y);
+	AEMtx33RotDeg(&rotationMtx, rotation);
+
+	AEMtx33Concat(&translate, &translate, &rotationMtx);
+
+	AEMtx33MultVec(&image.pos, &translate, &image.pos);
+	AEGfxTextureSet(image.GetTexture(), 0, 0);
+
+	AEGfxSetTintColor(1.0, 1.0, 1.0f, 1.0f);
+	AEGfxSetTransparency(alpha / colorcodeMax);
+
+	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	AEGfxMeshDraw(image.GetMesh(), AE_GFX_MDM_TRIANGLES);
+}

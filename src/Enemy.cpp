@@ -20,7 +20,7 @@ void Enemies::Update_Position(void)
 	}
 }
 
-void Enemy::Draw(std::vector <Enemies> enemy)
+void Enemies::Draw(std::vector <Enemies> enemy)
 {
 	for (size_t i = 0; i < enemy.size(); i++)
 	{
@@ -29,14 +29,14 @@ void Enemy::Draw(std::vector <Enemies> enemy)
 	}
 }
 
-void Enemy::AddNew(std::vector <Enemies>& enemy, const s8* filepath, const AEVec2 pos, const f32 width, const f32 height)
+void Enemies::AddNew(std::vector <Enemies>& enemy, const s8* filepath, const AEVec2 pos, const f32 width, const f32 height)
 {
 	enemy.push_back(Enemies(filepath, width, height));
 	enemy[enemy.size() - 1].sprite.pos = pos;
 	enemy[enemy.size() - 1].startingPos = pos;
 }
 
-void Enemy::Reset(std::vector <Enemies>& enemy)
+void Enemies::Reset(std::vector <Enemies>& enemy)
 {
 	for (size_t i = 0; i < enemy.size(); i++)
 	{
@@ -44,7 +44,7 @@ void Enemy::Reset(std::vector <Enemies>& enemy)
 		enemy[i].active = true;
 	}
 }
-void Enemy::Free(std::vector <Enemies>& enemy)
+void Enemies::Free(std::vector <Enemies>& enemy)
 {
 	for (size_t i = 0; i < enemy.size(); i++)
 	{

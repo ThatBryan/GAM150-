@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------
 // includes
 
-#include "../Extern/AlphaEngine_V3.08/include/AEEngine.h"
+#include "AEEngine.h"
 #include <iostream>
 #include "Image.h"
 #include <ctime>
@@ -10,6 +10,7 @@
 #include "Tiles.h"
 #include <vector>
 #include "PitchDemo.h"
+#include "Constants.h"
 // ---------------------------------------------------------------------------
 // main
 
@@ -25,8 +26,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// Variable declaration
 
 	int gGameRunning = 1;
-	int counter = 255;
-	bool paused = false;
 	// Variable declaration end
 	///////////////////////////
 
@@ -38,7 +37,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	AESysInit(hInstance, nCmdShow, 800, 600, 1, 60, true, NULL);
 
 	// Changing the window title
-	AESysSetWindowTitle("GAM150");
+	AESysSetWindowTitle("JumperMan");
 
 	// reset the system modules
 	AESysReset();
@@ -46,12 +45,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	/// Test init functions
 
 	Demo::Init();
-
+	AEGfxSetBackgroundColor(0, 0, 0);
 	char strBuffer[100];
-	Graphics::Text testText("Assets/Font/Roboto-Regular.ttf", strBuffer, 15, 1.0f);
-	testText.color.SetColor(255, 0, 0, 255);
+	Graphics::Text FPS_Display("../Assets/Font/Roboto-Regular.ttf", strBuffer, 15, 1.0f);
+	FPS_Display.color.SetColor(255, 0, 0, 255);
 
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;
+
+	Image test(PlayerSprite, 100.0f, 100.0f);
+	test.pos = { 400, 300 };
 
 	// Game Loop
 	while (gGameRunning)
@@ -61,34 +63,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		// Handling Input
 		AEInputUpdate();
-
-		///////////////////
-		// Game loop update
-
-		// Game loop update end
-		///////////////////////
-
-
-		//////////////////
-		// Game loop draw
 		Utilities::Set_FullScreen();
-
-		// Draw boi
-		counter -= 4;
-		if (counter < 0)
-			counter = 255;
-		
-
 		Demo::Update();
 
+		//test.Draw_Advanced(test, test.pos, 255.0f, 90.0f);
 
 		memset(strBuffer, 0, 100 * sizeof(char));
 		sprintf_s(strBuffer, "Frame Rate:  %.2f", AEFrameRateControllerGetFrameRate());
-		testText.Draw_Text(testText, AEVector2::Set(0, 570));
-
-
-		// Game loop draw end
-		/////////////////////
+		FPS_Display.Draw_Text(FPS_Display, AEVec2Set(0, 570));
 
 		// Informing the system about the loop's end
 		AESysFrameEnd();
@@ -98,8 +80,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			gGameRunning = 0;
 	}
 
-	testText.Free();
+	FPS_Display.Free();
+	test.Free();
 	Demo::Exit();
-
 	AESysExit();
 }

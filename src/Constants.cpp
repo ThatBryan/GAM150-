@@ -13,7 +13,11 @@ const char* GreyTile = "Assets/Art/Grey_Tile.png";
 
 // Player constants
 const float player_speed = 2.5f;
-
+const float player_width = 50.0f;
+const float player_height = 50.0f;
+const float enemy_width = 50.0f;
+const float enemy_height = 50.0f;
+const float gravity_strength = 10.0f;
 
 // Tile constants
 const double TileCollapseDelay = 0.5f;

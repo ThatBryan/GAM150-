@@ -1,5 +1,5 @@
 #pragma once
-#include "../Extern/AlphaEngine_V3.08/include/AEEngine.h"
+#include "AEEngine.h"
 #include "Constants.h"
 
 namespace Utilities 
@@ -21,13 +21,8 @@ namespace Utilities
 	void CheckPauseInput(void);
 }
 
-namespace AEVector2
-{
-	// Returns a 2D-vector set to to perimeter x and y. 
-	AEVec2 Set(const f32 x, const f32 y);
 
-	// Returns the sum of two 2D-vectors.
-	AEVec2 Add(const AEVec2 vec1, const AEVec2 vec2);
-
-	AEVec2 Sub(const AEVec2 vec1, const AEVec2 vec2);
-}
+// Overloading vector functions.
+AEVec2 AEVec2Sub(const AEVec2 vec1, const AEVec2 vec2);
+AEVec2 AEVec2Set(const f32 x, const f32 y);
+AEVec2 AEVec2Add(const AEVec2 vec1, const AEVec2 vec2);
