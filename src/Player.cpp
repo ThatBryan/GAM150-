@@ -21,7 +21,7 @@ void Player::Draw(void)
 	this->sprite.Draw_Default(this->sprite, this->sprite.pos, 255.0f);
 	
 	if (DebugMode)
-		colliderAABB.Draw_Tinted(colliderAABB, colliderAABB.pos, 255.0f, 0, 0, 0);
+		colliderAABB.Draw_Tinted(colliderAABB, colliderAABB.pos, 255.0f, 0, 0, 255.0f);
 }
 void Player::Free(std::vector <Player> player)
 {
@@ -91,7 +91,7 @@ void Player::Update_Position(void)
 		if (AEInputCheckCurr(AEVK_LBUTTON))
 			this->sprite.pos = Mouse;
 	}
-	this->colliderAABB.pos = AEVec2{ this->sprite.pos.x, this->sprite.pos.y - 21.0f };
+	this->colliderAABB.pos = AEVec2{ this->sprite.pos.x, this->sprite.pos.y - player_collider_offset };
 }
 
 void Player::GravityManager(void)
@@ -109,7 +109,6 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 	{
 		if (enemy[i].active)
 		{
-			//????????????
 			if (AETestRectToRect(&enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height, &this->sprite.pos, this->sprite.width - 5.0f, this->sprite.height))
 			{
 				//if (AETestRectToRect(&enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height, &this->colliderAABB.pos, this->colliderAABB.width, this->colliderAABB.height))// && 

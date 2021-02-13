@@ -68,6 +68,7 @@ void Image::Draw_Tinted(Image& image, const AEVec2 pos, const f32 r, const f32 g
 
 	// Set tint color
 	AEGfxSetTintColor(r / colorcodeMax, g / colorcodeMax, b / colorcodeMax, alpha / colorcodeMax);
+	//AEGfxSetTintColor(0, 0, 0, 1.0f);
 	AEGfxSetTransparency(alpha / colorcodeMax);
 
 	//AEGfxSetBlendMode(AE_GFX_BM_BLEND);
@@ -88,11 +89,11 @@ void Image::Draw_Advanced(Image& image, const AEVec2 pos, const f32 alpha, const
 	AEMtx33Concat(&translate, &translate, &rotationMtx);
 
 	AEMtx33MultVec(&image.pos, &translate, &image.pos);
-	AEGfxTextureSet(image.GetTexture(), 0, 0);
+	AEGfxTextureSet(image.pTex, 0, 0);
 
 	AEGfxSetTintColor(1.0, 1.0, 1.0f, 1.0f);
 	AEGfxSetTransparency(alpha / colorcodeMax);
 
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxMeshDraw(image.GetMesh(), AE_GFX_MDM_TRIANGLES);
+	AEGfxMeshDraw(image.pMesh, AE_GFX_MDM_TRIANGLES);
 }

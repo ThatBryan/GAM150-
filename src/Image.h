@@ -22,9 +22,9 @@ class Image : public GameObject
 	// Sets the mesh for a rectangle and returns a pointer to the AEGfxVertexList
 	AEGfxVertexList* Mesh_Rectangle(Image* image);
 
-	inline AEGfxVertexList* GetMesh(void) { return this->pMesh; }
-	inline AEGfxTexture* GetTexture(void) { return this->pTex; }
-	inline void Free(void) {AEGfxMeshFree(GetMesh()); AEGfxTextureUnload(GetTexture());}
+	//inline AEGfxVertexList* GetMesh(void) { return this->pMesh; }
+	//inline AEGfxTexture* GetTexture(void) { return this->pTex; }
+	inline void Free(void) {AEGfxMeshFree(pMesh); AEGfxTextureUnload(pTex);}
 
 	void Draw_Tinted(Image& image, const AEVec2 pos, const f32 r, const f32 g, const f32 b, const f32 alpha);
 	void Draw_Default(Image& image, const AEVec2 pos, const f32 alpha);

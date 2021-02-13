@@ -24,7 +24,7 @@ void Tiles::Collapse(void)
 
 void Tiles::CheckPlayerGoal(std::vector <Player>& player)
 {
-	if (this->type == GOAL)
+	if (type == GOAL)
 	{
 		static AEVec2 GoalPoint = { this->image.pos.x, this->image.pos.y + this->image.height / 2 };
 		if (AETestPointToRect(&GoalPoint, &player[0].sprite.pos, player[0].sprite.width, player[0].sprite.height))
@@ -136,8 +136,8 @@ void Tiles::Draw(std::vector <Tiles>& tiles)
 			continue;
 
 		tiles[i].image.Draw_Default(tiles[i].image, tiles[i].image.pos, 255);
-		if (DebugMode)
-			tiles[i].ColliderAABB.Draw_Rect(tiles[i].ColliderAABB, tiles[i].image.pos, 150.0f);
+		//if (DebugMode)
+		//	tiles[i].ColliderAABB.Draw_Rect(tiles[i].ColliderAABB, tiles[i].image.pos, 150.0f);
 	}
 }
 

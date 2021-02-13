@@ -11,6 +11,9 @@
 #include <vector>
 #include "PitchDemo.h"
 #include "Constants.h"
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
 // ---------------------------------------------------------------------------
 // main
 
@@ -22,6 +25,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
+	//// Enable run-time memory check for debug builds.
+
+	#if defined(DEBUG) | defined(_DEBUG)
+		_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+	#endif
+
+	//int * pi = new int;
 	///////////////////////
 	// Variable declaration
 
@@ -70,17 +80,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		Demo::Update();
 
 		memset(strBuffer, 0, 100 * sizeof(char));
-		sprintf_s(strBuffer, "Current Level: Tutorial Time Elapsed:  %.2f", AEFrameRateControllerGetFrameRate());
-		if(DebugMode)
-			FPS_Display.Draw_Text(FPS_Display, AEVec2Set(0, 400));
-		
 		memset(strBuffer1, 0, 100 * sizeof(char));
 		memset(strBuffer2, 0, 100 * sizeof(char));
-
-		elapsedTime += AEFrameRateControllerGetFrameTime();
+		sprintf_s(strBuffer, "FPS: %.2f", AEFrameRateControllerGetFrameRate());
 		sprintf_s(strBuffer1, "Current Level: Tutorial");
 		sprintf_s(strBuffer2, "Time Elapsed: %.2f", elapsedTime);
+		
 
+		elapsedTime += AEFrameRateControllerGetFrameTime();
+
+		if(DebugMode)
+			FPS_Display.Draw_Text(FPS_Display, AEVec2Set(0, 400));
 		LevelDisplay.Draw_Text(LevelDisplay, AEVec2Set(0, 550));
 		TimerDisplay.Draw_Text(TimerDisplay, AEVec2Set(665, 550));
 

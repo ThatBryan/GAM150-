@@ -4,6 +4,7 @@ Enemies::Enemies(const s8* filepath, const f32 width, const f32 height) : sprite
 {
 	this->active = true;
 	this->startingPos = { 0, 0 };
+	type = 0;
 }
 
 void Enemies::Update_Position(void)
@@ -13,9 +14,11 @@ void Enemies::Update_Position(void)
 
 	this->sprite.pos.x += speed;
 	this->colliderAABB.pos = this->sprite.pos;
-	colliderAABB.pos.y += 20.0f;
+	if(type == Slime)
+		colliderAABB.pos.y += 20.0f;
+
 	counter += 1.0f;
-	if (counter > 60.0f)
+	if (counter > 180.0f)
 	{
 		speed *= -1;
 		counter = 0.0f;
@@ -31,14 +34,16 @@ void Enemies::Draw(std::vector <Enemies> enemy)
 			enemy[i].sprite.Draw_Default(enemy[i].sprite, enemy[i].sprite.pos, 255.0f);
 				if (DebugMode)
 					enemy[i].colliderAABB.Draw_Tinted(enemy[i].colliderAABB, enemy[i].colliderAABB.pos, 0, 0, 255.0f, 255.0f);
+					//enemy[i].colliderAABB.Draw_Default(enemy[i].colliderAABB, enemy[i].colliderAABB.pos, 200.0f);
 		}
 	}
 }
 
-void Enemies::AddNew(std::vector <Enemies>& enemy, const s8* filepath, const AEVec2 pos, const f32 width, const f32 height)
+void Enemies::AddNew(std::vector <Enemies>& enemy, const short type, const s8* filepath, const AEVec2 pos, const f32 width, const f32 height)
 {
 	enemy.push_back(Enemies(filepath, width, height));
 	enemy[enemy.size() - 1].sprite.pos = pos;
+	enemy[enemy.size() - 1].type = type;
 	enemy[enemy.size() - 1].startingPos = pos;
 }
 
