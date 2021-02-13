@@ -7,8 +7,6 @@ Player::Player(const s8* filepath, const f32 width, const f32 height) : sprite(f
 	this->jump = false;
 	this->win = false;
 	this->startingPos = { 0, 0 };
-	this->colliderAABB.color.SetColor(255.0f, 0, 0, 255.0f);
-	this->colldierPos = { 0, 0 };
 }
 
 void Player::Reset(void)
@@ -22,8 +20,8 @@ void Player::Draw(void)
 {
 	this->sprite.Draw_Default(this->sprite, this->sprite.pos, 255.0f);
 	
-	if(DebugMode)
-		this->colliderAABB.Draw_Rect(this->colliderAABB, this->colliderAABB.pos, 150.0f);
+	if (DebugMode)
+		colliderAABB.Draw_Tinted(colliderAABB, colliderAABB.pos, 255.0f, 0, 0, 0);
 }
 void Player::Free(std::vector <Player> player)
 {
@@ -112,10 +110,13 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 		if (enemy[i].active)
 		{
 			//????????????
-			if (AETestRectToRect(&enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height, &this->sprite.pos, this->sprite.width, this->sprite.height))
+			if (AETestRectToRect(&enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height, &this->sprite.pos, this->sprite.width - 5.0f, this->sprite.height))
 			{
+				//if (AETestRectToRect(&enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height, &this->colliderAABB.pos, this->colliderAABB.width, this->colliderAABB.height))// && 
+				//	enemy[i].active = false;
 				AEVec2 EnemyTop = { enemy[i].sprite.pos.x, enemy[i].sprite.pos.y + enemy[i].sprite.height / 2 };
-				if (AETestRectToRect(&enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height, &this->colliderAABB.pos, this->colliderAABB.width, this->colliderAABB.height))// && 
+				if(AETestPointToRect(&EnemyTop, &colliderAABB.pos, this->colliderAABB.width, this->colliderAABB.height))
+				//if (this->colldierPos.y >= enemy[i].sprite.pos.y)
 					enemy[i].active = false;
 				else
 					this->active = false;

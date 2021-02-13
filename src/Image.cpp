@@ -19,18 +19,18 @@ AEGfxVertexList* Image::Mesh_Rectangle(Image* image)
 {
 	AEGfxMeshStart();
 	AEGfxTriAdd(
-		-image->width * 0.5f, -image->height * 0.5f, 0x00FF00FF, 0.0f, 1.0f,
-		image->width * 0.5f, -image->height * 0.5f, 0x00FFFF00, 1.0f, 1.0f,
-		-image->width * 0.5f, image->height * 0.5f, 0x0000FFFF, 0.0f, 0.0f);
+		-image->width * 0.5f, -image->height * 0.5f, 0x00FF0000, 0.0f, 1.0f,
+		image->width * 0.5f, -image->height * 0.5f, 0x00FF0000, 1.0f, 1.0f,
+		-image->width * 0.5f, image->height * 0.5f, 0x00FF0000, 0.0f, 0.0f);
 
 	// Bottom Left
 	// Bottom Right
 	// Top vertice
 
 	AEGfxTriAdd(
-		image->width * 0.5f, -image->height * 0.5f, 0x00FFFFFF, 1.0f, 1.0f,
-		image->width * 0.5f, image->height * 0.5f, 0x00FFFFFF, 1.0f, 0.0f,
-		-image->width * 0.5f, image->height * 0.5f, 0x00FFFFFF, 0.0f, 0.0f);
+		image->width * 0.5f, -image->height * 0.5f, 0x00FF0000, 1.0f, 1.0f,
+		image->width * 0.5f, image->height * 0.5f, 0x00FF0000, 1.0f, 0.0f,
+		-image->width * 0.5f, image->height * 0.5f, 0x00FF0000, 0.0f, 0.0f);
 
 	//	Bottom Right
 	//	Top Right
@@ -46,7 +46,7 @@ void Image::Draw_Default(Image& image, const AEVec2 pos, const f32 alpha)
 	AEGfxSetPosition(pos.x - Utilities::Get_HalfWindowWidth(), pos.y - Utilities::Get_HalfWindowHeight());
 
 	// Set texture. No translation for texture.
-	AEGfxTextureSet(image.GetTexture(), 0, 0);
+	AEGfxTextureSet(image.pTex, 0, 0);
 
 	// No Tint
 	AEGfxSetTintColor(1.0, 1.0, 1.0, 1.0f);
@@ -54,23 +54,25 @@ void Image::Draw_Default(Image& image, const AEVec2 pos, const f32 alpha)
 
 	// Drawing the mesh (list of triangles)
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxMeshDraw(image.GetMesh(), AE_GFX_MDM_TRIANGLES);
+	AEGfxMeshDraw(image.pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
 void Image::Draw_Tinted(Image& image, const AEVec2 pos, const f32 r, const f32 g, const f32 b, const f32 alpha)
 {
-	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+	//AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 
 	AEGfxSetPosition(pos.x - Utilities::Get_HalfWindowWidth(), pos.y - Utilities::Get_HalfWindowHeight());
 
-	AEGfxTextureSet(image.GetTexture(), 0.0f, 0.0f);
+	AEGfxTextureSet(NULL, 0.0f, 0.0f);
 
 	// Set tint color
 	AEGfxSetTintColor(r / colorcodeMax, g / colorcodeMax, b / colorcodeMax, alpha / colorcodeMax);
 	AEGfxSetTransparency(alpha / colorcodeMax);
 
-	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxMeshDraw(image.GetMesh(), AE_GFX_MDM_TRIANGLES);
+	//AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	AEGfxSetBlendMode(AE_GFX_BM_NONE);
+	AEGfxMeshDraw(image.pMesh, AE_GFX_MDM_TRIANGLES);
 }
 void Image::Draw_Advanced(Image& image, const AEVec2 pos, const f32 alpha, const f32 rotation)
 {

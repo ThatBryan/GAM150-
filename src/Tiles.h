@@ -6,7 +6,7 @@
 #include "Player.h"
 #include "Enemy.h"
 
-enum TileType {NIL, COLLAPSIBLE, GOAL, GREYTILE};
+enum TileType {NIL, COLLAPSIBLE, GOAL, SAFE, SPECIAL};
 
 class Tiles
 {

@@ -13,6 +13,7 @@ void Enemies::Update_Position(void)
 
 	this->sprite.pos.x += speed;
 	this->colliderAABB.pos = this->sprite.pos;
+	colliderAABB.pos.y += 20.0f;
 	counter += 1.0f;
 	if (counter > 60.0f)
 	{
@@ -27,9 +28,9 @@ void Enemies::Draw(std::vector <Enemies> enemy)
 	{
 		if (enemy[i].active)
 		{
-			enemy[i].sprite.Draw_Tinted(enemy[i].sprite, enemy[i].sprite.pos, 255.0f, 0, 0, 255.0f);
+			enemy[i].sprite.Draw_Default(enemy[i].sprite, enemy[i].sprite.pos, 255.0f);
 				if (DebugMode)
-				enemy[i].colliderAABB.Draw_Tinted(enemy[i].colliderAABB, enemy[i].colliderAABB.pos, 0, 255.0f, 0, 175.0f);
+					enemy[i].colliderAABB.Draw_Tinted(enemy[i].colliderAABB, enemy[i].colliderAABB.pos, 0, 0, 255.0f, 255.0f);
 		}
 	}
 }

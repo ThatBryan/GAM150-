@@ -125,6 +125,7 @@ void Graphics::Text::Draw_Text(Text text, const AEVec2 pos)
 
 	AEVec2 drawPos = Graphics::Text::Calculate_DrawTextOffset(text);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	//std::cout << drawPos.x << std::endl;
 	AEGfxPrint(text.GetFontID(), text.GetBuffer(), drawPos.x, drawPos.y, text.Scale, text.color.r, text.color.g, text.color.b);
 }
 
@@ -145,22 +146,23 @@ AEVec2 Graphics::Text::Calculate_DrawTextOffset(const Text text)
 {
 	AEVec2 Offset = {0, 0};
 
-	// Drawpos < Half window width / height
 	if (text.pos.x < Utilities::Get_HalfWindowWidth())
 	{
-		Offset.x = Utilities::Get_HalfWindowWidth()/ (-Utilities::Get_HalfWindowWidth() - text.pos.x);
+		Offset.x = Utilities::Get_HalfWindowWidth() / (-Utilities::Get_HalfWindowWidth() - text.pos.x);
 	}
+	else if (text.pos.x > Utilities::Get_HalfWindowWidth())
+	{
+		Offset.x = (text.pos.x - Utilities::Get_HalfWindowWidth()) / ((f32)AEGetWindowWidth());
+	}
+	else
+		Offset.x = 0;
+
 	if (text.pos.y < Utilities::Get_HalfWindowHeight())
 	{
 		Offset.y = Utilities::Get_HalfWindowHeight() / (-Utilities::Get_HalfWindowHeight() - text.pos.y);
 	}
 
-	// Drawpos> Half Window Width / Height
-	if (text.pos.x > Utilities::Get_HalfWindowWidth())
-	{
-		Offset.x = text.pos.x / (f32)(AEGetWindowWidth());
-	}
-	if (text.pos.y > Utilities::Get_HalfWindowHeight())
+	else if (text.pos.y > Utilities::Get_HalfWindowHeight())
 	{
 		Offset.y = text.pos.y / (f32)(AEGetWindowHeight());
 	}

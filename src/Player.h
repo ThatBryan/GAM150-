@@ -15,8 +15,8 @@ public:
 	Player(const s8* filepath, const f32 width, const f32 height);
 	bool active, jump, gravity;
 	Image sprite;
-	Graphics::Rect colliderAABB = Graphics::Rect(player_width, 10.0f);
-	AEVec2 startingPos, colldierPos;
+	Image colliderAABB{Collider, player_width, 10.0f };
+	AEVec2 startingPos;
 	void Update_Position(void);
 	void CheckEnemyCollision(std::vector <Enemies>& enemy);
 	void Reset(void);

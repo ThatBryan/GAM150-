@@ -32,12 +32,13 @@ void Demo::Init(void)
 	size_t test = (size_t)AEGetWindowWidth() / TILE_WIDTTH;
 	Tiles::AddTileRow(Demo_Tiles, GrassTile, COLLAPSIBLE, test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
 
-	Tiles::AddTileRow(Demo_Tiles2, GrassTile, COLLAPSIBLE, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
-	Tiles::AddTileRow(Demo_Tiles2, GoalTile, GOAL, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
+	Tiles::AddTileRow(Demo_Tiles2, GrassTile, COLLAPSIBLE, 8, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
+	Tiles::AddTileRow(Demo_Tiles2, GoalTile, GOAL, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
 	//Tiles::AddTileRow(Demo_Tiles2, GrassTile, COLLAPSIBLE, test- 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
 
 	Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
-	Tiles::AddTileRow(Demo_Tiles3, GreyTile, GREYTILE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	Tiles::AddTileRow(Demo_Tiles3, GreyTile, SAFE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	//Tiles::AddTileRow(Demo_Tiles3, SpecialTile, SPECIAL, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 	Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 	//Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, test - 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 
@@ -45,14 +46,17 @@ void Demo::Init(void)
 	TileManager.push_back(&Demo_Tiles2);
 	TileManager.push_back(&Demo_Tiles3);
 
-	AEVec2 DemoEnemyPos = Demo_Tiles2[(Demo_Tiles.size() / 2)].startingPos;
+	AEVec2 DemoEnemyPos = Demo_Tiles2[2].startingPos;
 	AEVec2 DemoEnemyPos2 = Demo_Tiles3[2].startingPos;
 	AEVec2 DemoEnemyPos3 = Demo_Tiles3[7].startingPos;
+	AEVec2 DemoEnemyPos4 = Demo_Tiles3[4].startingPos;
+	DemoEnemyPos4.y += 20.0f;
 	AEVec2 Offset = { -15.0f, TILE_HEIGHT - 10.0f };
 	
 	Enemies::AddNew(enemy, WaterSlimeSprite, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, WaterSlimeSprite, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, WaterSlimeSprite, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, FlyingEnemySprite, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
 
 	player.push_back(Player(PlayerSprite, player_width, player_height));
 	player[0].startingPos = Demo_Tiles2[0].startingPos;

@@ -12,7 +12,7 @@ public:
 	Enemies(const s8* filepath, const f32 width, const f32 height);
 	bool active;
 	Image sprite;
-	Image colliderAABB{Collider, enemy_width, enemy_height };
+	Image colliderAABB{Collider, enemy_width, 10.0f };
 	AEVec2 startingPos;
 	void Update_Position(void);
 

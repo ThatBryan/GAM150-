@@ -5,10 +5,12 @@ extern const char* DigipenLogo;
 extern const char* VictoryScreen;
 extern const char* GameoverScreen;
 extern const char* WaterSlimeSprite;
+extern const char* FlyingEnemySprite;
 extern const char* PlayerSprite;
 extern const char* GrassTile;
 extern const char* GoalTile;
 extern const char* GreyTile;
+extern const char* SpecialTile;
 extern const char* FontFile;
 extern const char* Collider;
 
