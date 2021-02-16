@@ -4,7 +4,7 @@ Enemies::Enemies(const s8* filepath, const f32 width, const f32 height) : sprite
 {
 	this->active = true;
 	this->startingPos = { 0, 0 };
-	type = 0;
+	type = None;
 }
 
 void Enemies::Update_Position(void)

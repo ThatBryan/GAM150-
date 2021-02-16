@@ -11,15 +11,15 @@ enum TileType {NIL, COLLAPSIBLE, GOAL, SAFE, SPECIAL};
 class Tiles
 {
 	private:
-
-	public:
-		Tiles(const s8* filepath, const f32 width, const f32 height);
 		s32 ID, type;
 		f64 collapseDelay;
 		bool active, collapsing;
-		AEVec2 startingPos;
-		Image image;
 		Graphics::Rect ColliderAABB{ 80.0f, 50.0f };
+
+	public:
+		Tiles(const s8* filepath, const f32 width, const f32 height);
+		Image image;
+		AEVec2 startingPos;
 		void Collapse(void);
 		void DecreaseLifespan(void);
 		void CheckPlayerGoal(std::vector <Player>& player);

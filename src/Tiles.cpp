@@ -4,20 +4,20 @@
 
 Tiles::Tiles(const s8* filepath, const f32 width, const f32 height) : image(filepath, width, height)
 {
-	this->active = true;
-	this->collapsing = false;
-	this->ID = 0;
-	this->collapseDelay = TileCollapseDelay;
-	this->type = NIL;
-	this->startingPos = { 0, 0 };
+	active = true;
+	collapsing = false;
+	ID = 0;
+	collapseDelay = TileCollapseDelay;
+	type = NIL;
+	startingPos = { 0, 0 };
 }
 void Tiles::Collapse(void)
 {
-	if (this->type == COLLAPSIBLE)
+	if (type == COLLAPSIBLE)
 	{
-		if (this->collapseDelay <= 0)
+		if (collapseDelay <= 0)
 		{
-			this->image.pos.y -= TileCollapseSpeed;
+			image.pos.y -= TileCollapseSpeed;
 		}
 	}
 }
@@ -50,20 +50,20 @@ void Tiles::CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager)
 
 void Tiles::DecreaseLifespan(void)
 {
-	if (this->collapsing && this->active)
+	if (collapsing && active)
 	{
-		this->collapseDelay -= AEFrameRateControllerGetFrameTime();
+		collapseDelay -= g_dt;
 	}
 }
 void Tiles::CheckEnemyStatus(std::vector <Enemies> enemy)
 {
 	for (size_t i = 0; i < enemy.size(); i++)
 	{
-		if (AETestRectToRect(&this->image.pos, this->image.width, this->image.height, &enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height))
+		if (AETestRectToRect(&image.pos, image.width, image.height, &enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height))
 		{
 			if (!enemy[i].active)
 			{
-				this->collapsing = true;
+				collapsing = true;
 			}
 		}
 	}

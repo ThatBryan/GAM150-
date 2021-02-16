@@ -158,7 +158,7 @@ void Demo::CollisionManager(void)
 	Tiles::CollisionManager(Demo_Tiles3, player, enemy);
 	Tiles::CheckPlayerCollision(TileManager, player);
 	player[0].GravityManager();
-	//player[0].CheckEnemyCollision(enemy);
+	player[0].CheckEnemyCollision(enemy);
 }
 
 void Demo::CollapsingManager(void)

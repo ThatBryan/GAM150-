@@ -64,7 +64,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	FPS_Display.color.SetColor(255, 0, 0, 255);
 	LevelDisplay.color.SetColor(255, 0, 0, 255);
 	TimerDisplay.color.SetColor(0, 0, 0, 255);
-	float elapsedTime = 0;
 
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;
 
@@ -76,18 +75,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		// Handling Input
 		AEInputUpdate();
-	
+		
+		g_dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 		Demo::Update();
 
 		memset(strBuffer, 0, 100 * sizeof(char));
 		memset(strBuffer1, 0, 100 * sizeof(char));
 		memset(strBuffer2, 0, 100 * sizeof(char));
 		sprintf_s(strBuffer, "FPS: %.2f", AEFrameRateControllerGetFrameRate());
+		sprintf_s(strBuffer2, "Time Elapsed: %.2f", app_time);
 		sprintf_s(strBuffer1, "Current Level: Tutorial");
-		sprintf_s(strBuffer2, "Time Elapsed: %.2f", elapsedTime);
 		
 
-		elapsedTime += AEFrameRateControllerGetFrameTime();
 
 		if(DebugMode)
 			FPS_Display.Draw_Text(FPS_Display, AEVec2Set(0, 400));
@@ -96,6 +95,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		// Informing the system about the loop's end
 		AESysFrameEnd();
+		app_time += g_dt;
 
 		// check if forcing the application to quit
 		if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())

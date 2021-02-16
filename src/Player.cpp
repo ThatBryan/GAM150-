@@ -111,12 +111,12 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 		{
 			if (AETestRectToRect(&enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height, &this->sprite.pos, this->sprite.width - 5.0f, this->sprite.height))
 			{
-				//if (AETestRectToRect(&enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height, &this->colliderAABB.pos, this->colliderAABB.width, this->colliderAABB.height))// && 
-				//	enemy[i].active = false;
-				AEVec2 EnemyTop = { enemy[i].sprite.pos.x, enemy[i].sprite.pos.y + enemy[i].sprite.height / 2 };
-				if(AETestPointToRect(&EnemyTop, &colliderAABB.pos, this->colliderAABB.width, this->colliderAABB.height))
-				//if (this->colldierPos.y >= enemy[i].sprite.pos.y)
+				if (AETestRectToRect(&enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height, &this->colliderAABB.pos, this->colliderAABB.width, this->colliderAABB.height))// && 
 					enemy[i].active = false;
+				//AEVec2 EnemyTop = { enemy[i].sprite.pos.x, enemy[i].sprite.pos.y + enemy[i].sprite.height / 2 };
+				//if(AETestPointToRect(&EnemyTop, &colliderAABB.pos, this->colliderAABB.width, this->colliderAABB.height))
+				//if (this->colldierPos.y >= enemy[i].sprite.pos.y)
+					//enemy[i].active = false;
 				else
 					this->active = false;
 			}

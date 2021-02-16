@@ -11,6 +11,9 @@
 
 class Player
 {
+private:
+	bool win;
+
 public:
 	Player(const s8* filepath, const f32 width, const f32 height);
 	bool active, jump, gravity;
@@ -22,10 +25,8 @@ public:
 	void Reset(void);
 	void Draw(void);
 	void GravityManager(void);
-	inline void SetWin(void) { this->win = true; }
-	inline bool GetWinStatus(void) { return this->win; }
+	inline void SetWin(void) { win = true; }
+	inline bool GetWinStatus(void) { return win; }
 
 	static void Free(std::vector <Player> player);
-private:
-	bool win;
 };

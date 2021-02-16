@@ -35,6 +35,8 @@ extern const float colorcodeMax;
 // Miscallenous
 extern bool paused;
 extern bool DebugMode;
+extern float g_dt;
+extern float app_time;
 
 // Hot key bindings.
 #define PAUSE_KEY AEVK_TAB 

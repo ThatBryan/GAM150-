@@ -38,7 +38,7 @@ AEGfxVertexList* Image::Mesh_Rectangle(Image* image)
 	return AEGfxMeshEnd();
 }
 
-void Image::Draw_Default(Image& image, const AEVec2 pos, const f32 alpha)
+void Image::Draw_Default(Image& image, const AEVec2 pos, const f32 alpha) const
 {
 	// Assumed texture since function is expected to use to draw images
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
@@ -57,7 +57,7 @@ void Image::Draw_Default(Image& image, const AEVec2 pos, const f32 alpha)
 	AEGfxMeshDraw(image.pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-void Image::Draw_Tinted(Image& image, const AEVec2 pos, const f32 r, const f32 g, const f32 b, const f32 alpha)
+void Image::Draw_Tinted(Image& image, const AEVec2 pos, const f32 r, const f32 g, const f32 b, const f32 alpha) const
 {
 	//AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
@@ -68,7 +68,6 @@ void Image::Draw_Tinted(Image& image, const AEVec2 pos, const f32 r, const f32 g
 
 	// Set tint color
 	AEGfxSetTintColor(r / colorcodeMax, g / colorcodeMax, b / colorcodeMax, alpha / colorcodeMax);
-	//AEGfxSetTintColor(0, 0, 0, 1.0f);
 	AEGfxSetTransparency(alpha / colorcodeMax);
 
 	//AEGfxSetBlendMode(AE_GFX_BM_BLEND);
