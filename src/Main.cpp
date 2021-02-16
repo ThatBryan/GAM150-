@@ -11,6 +11,9 @@
 #include <vector>
 #include "PitchDemo.h"
 #include "Constants.h"
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
 // ---------------------------------------------------------------------------
 // main
 
@@ -22,6 +25,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
+	//// Enable run-time memory check for debug builds.
+
+	#if defined(DEBUG) | defined(_DEBUG)
+		_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+	#endif
+
+	//int * pi = new int;
 	///////////////////////
 	// Variable declaration
 
@@ -45,15 +55,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	/// Test init functions
 
 	Demo::Init();
-	AEGfxSetBackgroundColor(0, 0, 0);
 	char strBuffer[100];
-	Graphics::Text FPS_Display("../Assets/Font/Roboto-Regular.ttf", strBuffer, 15, 1.0f);
+	char strBuffer1[100];
+	char strBuffer2[100];
+	Graphics::Text FPS_Display(FontFile, strBuffer, 15, 1.0f);
+	Graphics::Text LevelDisplay(FontFile, strBuffer1, 30, 1.0f);
+	Graphics::Text TimerDisplay(FontFile, strBuffer2, 30, 1.0f);
 	FPS_Display.color.SetColor(255, 0, 0, 255);
+	LevelDisplay.color.SetColor(255, 0, 0, 255);
+	TimerDisplay.color.SetColor(0, 0, 0, 255);
 
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;
-
-	Image test(PlayerSprite, 100.0f, 100.0f);
-	test.pos = { 400, 300 };
 
 	// Game Loop
 	while (gGameRunning)
@@ -63,17 +75,27 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		// Handling Input
 		AEInputUpdate();
-		Utilities::Set_FullScreen();
+		
+		g_dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 		Demo::Update();
 
-		//test.Draw_Advanced(test, test.pos, 255.0f, 90.0f);
-
 		memset(strBuffer, 0, 100 * sizeof(char));
-		sprintf_s(strBuffer, "Frame Rate:  %.2f", AEFrameRateControllerGetFrameRate());
-		FPS_Display.Draw_Text(FPS_Display, AEVec2Set(0, 570));
+		memset(strBuffer1, 0, 100 * sizeof(char));
+		memset(strBuffer2, 0, 100 * sizeof(char));
+		sprintf_s(strBuffer, "FPS: %.2f", AEFrameRateControllerGetFrameRate());
+		sprintf_s(strBuffer2, "Time Elapsed: %.2f", app_time);
+		sprintf_s(strBuffer1, "Current Level: Tutorial");
+		
+
+
+		if(DebugMode)
+			FPS_Display.Draw_Text(FPS_Display, AEVec2Set(0, 400));
+		LevelDisplay.Draw_Text(LevelDisplay, AEVec2Set(0, 550));
+		TimerDisplay.Draw_Text(TimerDisplay, AEVec2Set(665, 550));
 
 		// Informing the system about the loop's end
 		AESysFrameEnd();
+		app_time += g_dt;
 
 		// check if forcing the application to quit
 		if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
@@ -81,7 +103,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	}
 
 	FPS_Display.Free();
-	test.Free();
+	LevelDisplay.Free();
+	TimerDisplay.Free();
+
 	Demo::Exit();
 	AESysExit();
 }

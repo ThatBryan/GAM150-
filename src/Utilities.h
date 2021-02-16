@@ -8,7 +8,7 @@ namespace Utilities
 	int RandomRangeInt(const s32 lowerBound, const s32 upperBound);
 
 	// Set window to full screen with L ALT + Enter.
-	void Set_FullScreen(void);
+	void CheckFullScreenInput(void);
 
 	// Returns half window width/height to be used for calculations.
 	f32 Get_HalfWindowWidth(void);
@@ -19,6 +19,8 @@ namespace Utilities
 
 	// Press Tab to pause the game.
 	void CheckPauseInput(void);
+
+	void CheckDebugMode(void);
 }
 
 

@@ -4,58 +4,94 @@
 
 Tiles::Tiles(const s8* filepath, const f32 width, const f32 height) : image(filepath, width, height)
 {
-	this->active = true;
-	this->collapsing = false;
-	this->ID = 0;
-	this->collapseDelay = TileCollapseDelay;
-	this->type = NIL;
-	this->startingPos = { 0, 0 };
+	active = true;
+	collapsing = false;
+	ID = 0;
+	collapseDelay = TileCollapseDelay;
+	type = NIL;
+	spawnPos = { 0, 0 };
+	ColliderAABB.color.SetColor(0, 0, 0, 150);
 }
 void Tiles::Collapse(void)
 {
-	if (this->type == COLLAPSIBLE)
+	if (type == COLLAPSIBLE)
 	{
-		if (this->collapseDelay <= 0)
+		if (collapseDelay <= 0)
 		{
-			this->image.pos.y -= TileCollapseSpeed;
-			if (this->image.pos.y <= 0)
-				this->active = false;
+			image.pos.y -= TileCollapseSpeed;
 		}
 	}
 }
 
 void Tiles::CheckPlayerGoal(std::vector <Player>& player)
 {
-	if (this->type == GOAL)
+	if (type == GOAL)
 	{
 		static AEVec2 GoalPoint = { this->image.pos.x, this->image.pos.y + this->image.height / 2 };
 		if (AETestPointToRect(&GoalPoint, &player[0].sprite.pos, player[0].sprite.width, player[0].sprite.height))
-			player[(player.size() - 1)].SetWin();
+			player[(player.size() - 1)].SetPlayerWin();
+	}
+}
+void Tiles::CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager)
+{
+	for (size_t i = 0; i < TileManager.size(); i++)
+	{
+		for (size_t j = 0; j < TileManager[i]->size(); j++)
+		{
+			if (TileManager[i]->at(j).active == true)
+			{
+				if (TileManager[i]->at(j).image.pos.y  <= 0)
+				{
+					TileManager[i]->at(j).active = false;
+				}
+			}
+		}
 	}
 }
 
 void Tiles::DecreaseLifespan(void)
 {
-	if (this->collapsing && this->active)
+	if (collapsing && active)
 	{
-		this->collapseDelay -= AEFrameRateControllerGetFrameTime();
+		collapseDelay -= g_dt;
 	}
 }
 void Tiles::CheckEnemyStatus(std::vector <Enemies> enemy)
 {
 	for (size_t i = 0; i < enemy.size(); i++)
 	{
-		if (AETestRectToRect(&this->image.pos, this->image.width, this->image.height, &enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height))
+		if (AETestRectToRect(&image.pos, image.width, image.height, &enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height))
 		{
 			if (!enemy[i].active)
 			{
-				this->collapsing = true;
+				collapsing = true;
 			}
 		}
 	}
 }
 
-std::vector <Tiles> Tiles::AddTileRow(std::vector <Tiles> tile, const s8* filepath, s32 type, size_t num, const f32 width, const f32 height, const AEVec2 pos)
+void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& player)
+{
+	for (size_t i = 0; i < TileManager.size(); i++)
+	{
+		for (size_t j = 0; j < TileManager[i]->size(); j++)
+		{
+			if (TileManager[i]->at(j).active == false)
+				continue;
+
+			if (AETestRectToRect(&TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height, &player[0].colliderAABB.pos, player[0].colliderAABB.width, 10.0f))
+			{
+				player[0].gravity = false;
+				if (DebugMode)
+					printf("Don't apply gravity\n");
+				return;
+			}
+		}
+	}
+	player[0].gravity = true;
+}
+
+void Tiles::AddTileRow(std::vector <Tiles>& tile, const s8* filepath, s32 type, size_t num, const f32 width, const f32 height, const AEVec2 pos)
 {
 	static float offset = 0.0f;
 	size_t VectorSize = tile.size();
@@ -65,10 +101,10 @@ std::vector <Tiles> Tiles::AddTileRow(std::vector <Tiles> tile, const s8* filepa
 		tile.push_back(Tiles(filepath, width, height));
 		tile[i].type = type;
 		tile[i].ID = i;
-		tile[i].startingPos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2) + ((tile[i].ID - tile[0].ID) * offset));
+		tile[i].spawnPos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2) + ((tile[i].ID - tile[0].ID) * offset));
 		tile[i].image.pos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2) + ((tile[i].ID - tile[0].ID) * offset));
 	}
-	return tile;
+
 }
 
 void Tiles::CollapseNext(std::vector <Tiles>& tiles)
@@ -93,14 +129,16 @@ void Tiles::CollapseNext(std::vector <Tiles>& tiles)
 	}
 }
 
-void Tiles::Draw(std::vector <Tiles> tiles)
+void Tiles::Draw(std::vector <Tiles>& tiles)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
 		if (tiles[i].active == false)
 			continue;
 
-		tiles[i].image.Draw_Default(tiles[i].image, tiles[i].image.pos, 255);
+		tiles[i].image.Draw_Default(tiles[i].image.pos, 255);
+		if (DebugMode)
+			tiles[i].ColliderAABB.Draw(tiles[i].image.pos, 150.0f);
 	}
 }
 
@@ -108,7 +146,7 @@ void Tiles::Reset(std::vector <Tiles>& tiles)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
-		tiles[i].image.pos = tiles[i].startingPos;
+		tiles[i].image.pos = tiles[i].spawnPos;
 		tiles[i].active = true;
 		tiles[i].collapsing = false;
 		tiles[i].collapseDelay = 0.5f;
@@ -132,5 +170,6 @@ void Tiles::Free(std::vector <Tiles>& tiles)
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
 		tiles[i].image.Free();
+		tiles[i].ColliderAABB.Free();
 	}
 }

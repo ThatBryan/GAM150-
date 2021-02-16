@@ -21,7 +21,7 @@ AEVec2 AEVecSub(const AEVec2 vec1, const AEVec2 vec2)
 	return AEVec2{ vec1.x - vec2.x, vec1.y - vec2.y };
 }
 
-void Utilities::Set_FullScreen(void)
+void Utilities::CheckFullScreenInput(void)
 {
 	static bool fullscreen = false;
 	if (AEInputCheckCurr(FULLSCREEN_KEY1) && AEInputCheckTriggered(FULLSCREEN_KEY2))
@@ -64,6 +64,19 @@ void Utilities::CheckPauseInput(void)
 		}
 		else {
 			paused = false;
+		}
+	}
+}
+
+void Utilities::CheckDebugMode(void)
+{
+	if (AEInputCheckTriggered(DEBUG_KEY))
+	{
+		if (!DebugMode) {
+			DebugMode = true;
+		}
+		else {
+			DebugMode = false;
 		}
 	}
 }
