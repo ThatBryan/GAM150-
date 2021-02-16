@@ -9,7 +9,8 @@ Tiles::Tiles(const s8* filepath, const f32 width, const f32 height) : image(file
 	ID = 0;
 	collapseDelay = TileCollapseDelay;
 	type = NIL;
-	startingPos = { 0, 0 };
+	spawnPos = { 0, 0 };
+	ColliderAABB.color.SetColor(0, 0, 0, 150);
 }
 void Tiles::Collapse(void)
 {
@@ -28,7 +29,7 @@ void Tiles::CheckPlayerGoal(std::vector <Player>& player)
 	{
 		static AEVec2 GoalPoint = { this->image.pos.x, this->image.pos.y + this->image.height / 2 };
 		if (AETestPointToRect(&GoalPoint, &player[0].sprite.pos, player[0].sprite.width, player[0].sprite.height))
-			player[(player.size() - 1)].SetWin();
+			player[(player.size() - 1)].SetPlayerWin();
 	}
 }
 void Tiles::CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager)
@@ -100,7 +101,7 @@ void Tiles::AddTileRow(std::vector <Tiles>& tile, const s8* filepath, s32 type, 
 		tile.push_back(Tiles(filepath, width, height));
 		tile[i].type = type;
 		tile[i].ID = i;
-		tile[i].startingPos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2) + ((tile[i].ID - tile[0].ID) * offset));
+		tile[i].spawnPos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2) + ((tile[i].ID - tile[0].ID) * offset));
 		tile[i].image.pos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2) + ((tile[i].ID - tile[0].ID) * offset));
 	}
 
@@ -135,9 +136,9 @@ void Tiles::Draw(std::vector <Tiles>& tiles)
 		if (tiles[i].active == false)
 			continue;
 
-		tiles[i].image.Draw_Default(tiles[i].image, tiles[i].image.pos, 255);
-		//if (DebugMode)
-		//	tiles[i].ColliderAABB.Draw_Rect(tiles[i].ColliderAABB, tiles[i].image.pos, 150.0f);
+		tiles[i].image.Draw_Default(tiles[i].image.pos, 255);
+		if (DebugMode)
+			tiles[i].ColliderAABB.Draw(tiles[i].image.pos, 150.0f);
 	}
 }
 
@@ -145,7 +146,7 @@ void Tiles::Reset(std::vector <Tiles>& tiles)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
-		tiles[i].image.pos = tiles[i].startingPos;
+		tiles[i].image.pos = tiles[i].spawnPos;
 		tiles[i].active = true;
 		tiles[i].collapsing = false;
 		tiles[i].collapseDelay = 0.5f;

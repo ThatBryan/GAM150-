@@ -46,10 +46,10 @@ void Demo::Init(void)
 	TileManager.push_back(&Demo_Tiles2);
 	TileManager.push_back(&Demo_Tiles3);
 
-	AEVec2 DemoEnemyPos = Demo_Tiles2[2].startingPos;
-	AEVec2 DemoEnemyPos2 = Demo_Tiles3[2].startingPos;
-	AEVec2 DemoEnemyPos3 = Demo_Tiles3[7].startingPos;
-	AEVec2 DemoEnemyPos4 = Demo_Tiles3[4].startingPos;
+	AEVec2 DemoEnemyPos = Demo_Tiles2[2].spawnPos;
+	AEVec2 DemoEnemyPos2 = Demo_Tiles3[2].spawnPos;
+	AEVec2 DemoEnemyPos3 = Demo_Tiles3[7].spawnPos;
+	AEVec2 DemoEnemyPos4 = Demo_Tiles3[4].spawnPos;
 	DemoEnemyPos4.y += 20.0f;
 	AEVec2 Offset = { -15.0f, TILE_HEIGHT - 10.0f };
 	
@@ -59,7 +59,7 @@ void Demo::Init(void)
 	Enemies::AddNew(enemy, Bat, FlyingEnemySprite, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
 
 	player.push_back(Player(PlayerSprite, player_width, player_height));
-	player[0].startingPos = Demo_Tiles2[0].startingPos;
+	player[0].startingPos = Demo_Tiles2[0].spawnPos;
 	player[0].startingPos.y += TILE_HEIGHT - 10;
 	player[0].sprite.pos = player[0].startingPos;
 
@@ -85,7 +85,7 @@ void Demo::Update(void)
 		if (alpha <= 0)
 			alpha = 255.0f;
 
-		Images[LOGO].Draw_Default(Images[LOGO], Images[LOGO].pos, alpha);
+		Images[LOGO].Draw_Default(Images[LOGO].pos, alpha);
 		alpha -= 4.0f;
 	}
 	if (!paused)
@@ -103,12 +103,12 @@ void Demo::Update(void)
 	if (player[0].active == false)
 	{
 		paused = true;
-		Images[DEATHSCREEN].Draw_Default(Images[DEATHSCREEN], Images[DEATHSCREEN].pos, 255);
+		Images[DEATHSCREEN].Draw_Default(Images[DEATHSCREEN].pos, 255);
 	}
 	if (player[0].GetWinStatus())
 	{
 		paused = true;
-		Images[WINSCREEN].Draw_Default(Images[WINSCREEN], Images[WINSCREEN].pos, 255);
+		Images[WINSCREEN].Draw_Default(Images[WINSCREEN].pos, 255);
 	}
 	
 	Demo::DrawingManager();

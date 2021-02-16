@@ -19,7 +19,7 @@ class Tiles
 	public:
 		Tiles(const s8* filepath, const f32 width, const f32 height);
 		Image image;
-		AEVec2 startingPos;
+		AEVec2 spawnPos;
 		void Collapse(void);
 		void DecreaseLifespan(void);
 		void CheckPlayerGoal(std::vector <Player>& player);

@@ -15,37 +15,19 @@ class Color
 
 namespace Graphics
 {
-	class Line
-	{
-		public:
-			Line(const AEVec2 pos1, const AEVec2 pos2, const f32 width);
-
-			Color color;
-			f32 width;
-			AEVec2 pos1, pos2;
-
-			void Draw_Line(Line& line);
-			inline AEGfxVertexList* GetMesh(void) { return this->pMesh; }
-			inline void SetMesh(Line* line);
-			inline void Free(void) { AEGfxMeshFree(GetMesh()); }
-		private:
-			AEGfxVertexList* pMesh;
-	};
-
 	class Rect
 	{
 		public:
 		// Constructor
-		Rect(const f32 width, const f32 height);
-		Rect();
+			Rect(const f32 width = 50.0f, const f32 height = 10.0f);
+		//Rect();
 
 		Color color;
 		AEVec2 pos;
 		f32 height, width;
 
-		void Draw_Rect(Rect rect, const AEVec2 pos, const f32 alpha);
-		inline AEGfxVertexList* GetMesh(void) { return this->pMesh; }
-		inline void Free(void) { AEGfxMeshFree(GetMesh()); }
+		void Draw(const AEVec2 pos, const f32 alpha = 150.0f);
+		inline void Free(void) { AEGfxMeshFree(pMesh); }
 
 		private:
 			AEGfxVertexList* pMesh;
@@ -63,13 +45,11 @@ namespace Graphics
 			// Calculates the X and Y offset
 			AEVec2 Calculate_DrawTextOffset(const Text text);
 			void Draw_Text(Text text, const AEVec2 pos);
-			inline s8 GetFontID(void) { return this->fontId; }
-			inline s8* GetBuffer(void) { return this->pStr; }
-			inline void Free(void) { AEGfxDestroyFont(GetFontID()); }
+			inline void Free(void) { AEGfxDestroyFont(fontID); }
 
 		private:
-			s8 fontId;
-			s8* pStr;
+			s8 fontID;
+			s8* buffer;
 	};
 
 }

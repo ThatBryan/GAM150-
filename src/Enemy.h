@@ -11,8 +11,8 @@ enum EnemyType {None = 0, Slime = 1, Bat = 2, Squirrel = 3, Max_Num = 4 };
 class Enemies : public GameObject
 {
 	unsigned short type;
-	AEVec2 startingPos;
-	Image colliderAABB{Collider, enemy_width, 10.0f };
+	AEVec2 spawnPos;
+	Graphics::Rect colliderAABB {enemy_width, 10.0f };
 
 public:
 	Enemies(const s8* filepath, const f32 width, const f32 height);
