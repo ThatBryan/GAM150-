@@ -25,10 +25,15 @@ enum {LOGO = 0, WINSCREEN = 1, DEATHSCREEN = 2};
 #define startingY2 150 + TILE_HEIGHT / 2.0f
 #define startingY3 300 + TILE_HEIGHT / 2.0f
 
-void Demo::Init(void)
+void Demo::Load(void)
 {
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
+
+}
+
+void Demo::Init(void)
+{
 
 	Demo_Tiles = Tiles::AddTileRow(Demo_Tiles, GrassTile, COLLAPSIBLE, 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
 	Demo_Tiles2 = Tiles::AddTileRow(Demo_Tiles2, GrassTile, COLLAPSIBLE, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});

@@ -11,6 +11,14 @@
 #include <vector>
 #include "PitchDemo.h"
 #include "Constants.h"
+#include "AEGameStateMgr.h"
+
+enum
+{
+	GS_GAMEPLAY = 0,
+	GS_QUIT,
+	GS_RESTART
+};
 // ---------------------------------------------------------------------------
 // main
 
@@ -39,8 +47,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// Changing the window title
 	AESysSetWindowTitle("JumperMan");
 
+	//AEGameStateMgrInit(GS_GAMEPLAY);
+
 	// reset the system modules
 	AESysReset();
+
+	//Testing Game State Manager
+	//void AEGameStateMgrAdd(GS_GAMEPLAY, 
+	//	Demo::Init,
+	//	AEGameStateInit(),
+	//	AEGameStateUpdate(),
+	//	AEGameStateDraw(),
+	//	AEGameStateFree(),
+	//	AEGameStateUnload());
 
 	/// Test init functions
 

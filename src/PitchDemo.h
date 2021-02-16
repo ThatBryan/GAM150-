@@ -7,6 +7,7 @@
 namespace Demo
 {
 	//Level main entry points
+	void Load(void);
 	void Init(void);
 	void Update(void);
 	void Exit(void);
