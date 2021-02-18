@@ -19,7 +19,7 @@ void Player::Reset(void)
 
 void Player::Draw(void)
 {
-	this->sprite.Draw_Default(sprite.pos, 255.0f);
+	this->sprite.Draw_Texture(sprite.pos, 255.0f);
 	
 	if (DebugMode)
 		colliderAABB.Draw(colliderAABB.pos);

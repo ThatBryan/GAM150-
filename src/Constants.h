@@ -35,6 +35,7 @@ extern const float colorcodeMax;
 // Miscallenous
 extern bool paused;
 extern bool DebugMode;
+extern bool fullscreen;
 extern float g_dt;
 extern float app_time;
 

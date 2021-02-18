@@ -32,7 +32,7 @@ void Enemies::Draw(std::vector <Enemies> enemy)
 	{
 		if (enemy[i].active)
 		{
-			enemy[i].sprite.Draw_Default(enemy[i].sprite.pos, 255.0f);
+			enemy[i].sprite.Draw_Texture(enemy[i].sprite.pos, 255.0f);
 				if (DebugMode)
 					enemy[i].colliderAABB.Draw(enemy[i].colliderAABB.pos);
 		}

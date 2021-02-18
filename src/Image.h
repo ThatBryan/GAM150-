@@ -8,9 +8,12 @@ class Image : public GameObject
 	private:
 	AEGfxVertexList* pMesh;
 	AEGfxTexture* pTex;
+	AEMtx33 Transform;
+	f32 direction;
+	AEVec2 scale;
 
 	public:
-	Image(const s8* filepath, const f32 width, const f32 height); //ctor
+	Image(const s8* filepath, const f32 width, const f32 height, const f32 dir = 0); //ctor
 	f32 height, width;
 	AEVec2 pos;
 
@@ -18,8 +21,9 @@ class Image : public GameObject
 
 	AEGfxVertexList* Mesh_Rectangle(Image* image);
 	inline void Free(void) {AEGfxMeshFree(pMesh); AEGfxTextureUnload(pTex);}
-	void Draw_Tinted(const AEVec2 pos, const f32 r, const f32 g, const f32 b, const f32 alpha) const;
-	void Draw_Default(const AEVec2 pos, const f32 alpha) const;
+	void Handle();
+	void Draw_Color(const AEVec2 pos, const f32 r = 255.0f, const f32 g = 255.0f, const f32 b = 255.0f, const f32 alpha = 255.0f) const;
+	void Draw_Texture(const AEVec2 pos, const f32 alpha, const f32 r = 255.0f, const f32 g = 255.0f, const f32 b = 255.0f, const f32 alpha2 = 255.0f) const;
 	//void Draw_Advanced(const AEVec2 pos, const f32 alpha, const f32 rotation);
 };
 

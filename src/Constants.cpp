@@ -35,5 +35,6 @@ const float colorcodeMax = 255.0f;
 // Miscallenous
 bool paused = false;
 bool DebugMode = false;
+bool fullscreen = false;
 float g_dt = 0;
 float app_time = 0;

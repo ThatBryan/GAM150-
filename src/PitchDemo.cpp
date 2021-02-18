@@ -85,7 +85,7 @@ void Demo::Update(void)
 		if (alpha <= 0)
 			alpha = 255.0f;
 
-		Images[LOGO].Draw_Default(Images[LOGO].pos, alpha);
+		Images[LOGO].Draw_Texture(Images[LOGO].pos, alpha);
 		alpha -= 4.0f;
 	}
 	if (!paused)
@@ -103,12 +103,12 @@ void Demo::Update(void)
 	if (player[0].active == false)
 	{
 		paused = true;
-		Images[DEATHSCREEN].Draw_Default(Images[DEATHSCREEN].pos, 255);
+		Images[DEATHSCREEN].Draw_Texture(Images[DEATHSCREEN].pos, 255);
 	}
 	if (player[0].GetWinStatus())
 	{
 		paused = true;
-		Images[WINSCREEN].Draw_Default(Images[WINSCREEN].pos, 255);
+		Images[WINSCREEN].Draw_Texture(Images[WINSCREEN].pos, 255);
 	}
 	
 	Demo::DrawingManager();

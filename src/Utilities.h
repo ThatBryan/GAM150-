@@ -26,5 +26,6 @@ namespace Utilities
 
 // Overloading vector functions.
 AEVec2 AEVec2Sub(const AEVec2 vec1, const AEVec2 vec2);
+AEVec2 AEVec2Zero();
 AEVec2 AEVec2Set(const f32 x, const f32 y);
 AEVec2 AEVec2Add(const AEVec2 vec1, const AEVec2 vec2);

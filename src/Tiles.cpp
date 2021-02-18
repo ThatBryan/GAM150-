@@ -136,7 +136,7 @@ void Tiles::Draw(std::vector <Tiles>& tiles)
 		if (tiles[i].active == false)
 			continue;
 
-		tiles[i].image.Draw_Default(tiles[i].image.pos, 255);
+		tiles[i].image.Draw_Texture(tiles[i].image.pos, 255);
 		if (DebugMode)
 			tiles[i].ColliderAABB.Draw(tiles[i].image.pos, 150.0f);
 	}
