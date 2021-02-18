@@ -49,6 +49,8 @@ AEGfxVertexList* Graphics::Mesh_Rectangle(Rect* rect)
 	return AEGfxMeshEnd();	
 }
 
+enum offsetType{None, Topleft = 1,};
+
 void Graphics::Rect::Draw(const AEVec2 pos, const f32 alpha)
 {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
@@ -70,7 +72,6 @@ void Graphics::Text::Draw_Text(Text text, const AEVec2 pos)
 
 	AEVec2 drawPos = Graphics::Text::Calculate_DrawTextOffset(text);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	//std::cout << drawPos.x << std::endl;
 	AEGfxPrint(fontID, buffer, drawPos.x, drawPos.y, text.Scale, text.color.r, text.color.g, text.color.b);
 }
 
