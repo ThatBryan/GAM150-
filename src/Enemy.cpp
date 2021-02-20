@@ -32,9 +32,9 @@ void Enemies::Draw(std::vector <Enemies> enemy)
 	{
 		if (enemy[i].active)
 		{
-			enemy[i].sprite.Draw_Texture(enemy[i].sprite.pos, 255.0f);
-				if (DebugMode)
-					enemy[i].colliderAABB.Draw(enemy[i].colliderAABB.pos);
+			enemy[i].sprite.Draw_Texture(255.0f);
+			if (DebugMode)
+				enemy[i].colliderAABB.Draw();
 		}
 	}
 }
@@ -60,6 +60,6 @@ void Enemies::Free(std::vector <Enemies>& enemy)
 	for (size_t i = 0; i < enemy.size(); i++)
 	{
 		enemy[i].sprite.Free();
-		enemy[i].colliderAABB.Free();
+		//enemy[i].colliderAABB.Free();
 	}
 }

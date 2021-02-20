@@ -18,19 +18,20 @@ namespace Graphics
 	class Rect
 	{
 		public:
-		// Constructor
-			Rect(const f32 width = 50.0f, const f32 height = 10.0f);
-		//Rect();
+			Rect(const f32 width = 50.0f, const f32 height = 10.0f, const f32 direction = 0);
 
 		Color color;
 		AEVec2 pos;
 		f32 height, width;
 
-		void Draw(const AEVec2 pos, const f32 alpha = 150.0f);
-		inline void Free(void) { AEGfxMeshFree(pMesh); }
+		void Draw(const f32 alpha = 150.0f);
+		void SetMatrix();
+		//inline void Free(void) { AEGfxMeshFree(pMesh); }
 
 		private:
 			AEGfxVertexList* pMesh;
+			AEMtx33 transformMtx;
+			f32 direction;
 	};
 
 	class Text
@@ -51,13 +52,12 @@ namespace Graphics
 			s8 fontID;
 			s8* buffer;
 	};
-
 }
 
 namespace Graphics
 {
 	// Sets the mesh for a rectangle and returns a pointer to the AEGfxVertexList
-	AEGfxVertexList* Mesh_Rectangle(Rect* rect);
+	AEGfxVertexList* Mesh_Rectangle(void);
 }
 
 

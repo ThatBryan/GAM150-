@@ -19,15 +19,16 @@ enum {LOGO = 0, WINSCREEN = 1, DEATHSCREEN = 2};
 #define TILE_WIDTTH 80.0f
 #define TILE_HEIGHT 50.0f
 
-#define startingX TILE_WIDTTH / 2.0f
+#define startingX TILE_WIDTTH / 2.0f - 400
 #define startingY1 TILE_HEIGHT / 2.0f
 #define startingY2 150 + TILE_HEIGHT / 2.0f
-#define startingY3 300 + TILE_HEIGHT / 2.0f
+#define startingY3 -100
 
 void Demo::Init(void)
 {
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
+	rectMesh = Graphics::Mesh_Rectangle();
 
 	size_t test = (size_t)AEGetWindowWidth() / TILE_WIDTTH;
 	Tiles::AddTileRow(Demo_Tiles, GrassTile, COLLAPSIBLE, test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
@@ -59,8 +60,10 @@ void Demo::Init(void)
 	Enemies::AddNew(enemy, Bat, FlyingEnemySprite, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
 
 	player.push_back(Player(PlayerSprite, player_width, player_height));
-	player[0].startingPos = Demo_Tiles2[0].spawnPos;
-	player[0].startingPos.y += TILE_HEIGHT - 10;
+	//player[0].startingPos = Demo_Tiles2[0].spawnPos;
+	//player[0].startingPos.y += TILE_HEIGHT - 10;
+	//player[0].sprite.pos = player[0].startingPos;
+	player[0].startingPos = AEVec2Set(-100, -200);
 	player[0].sprite.pos = player[0].startingPos;
 
 	Images.push_back(Image(DigipenLogo, 750.0f, 300.0f));
@@ -85,7 +88,7 @@ void Demo::Update(void)
 		if (alpha <= 0)
 			alpha = 255.0f;
 
-		Images[LOGO].Draw_Texture(Images[LOGO].pos, alpha);
+		Images[LOGO].Draw_Texture(alpha);
 		alpha -= 4.0f;
 	}
 	if (!paused)
@@ -103,12 +106,12 @@ void Demo::Update(void)
 	if (player[0].active == false)
 	{
 		paused = true;
-		Images[DEATHSCREEN].Draw_Texture(Images[DEATHSCREEN].pos, 255);
+		Images[DEATHSCREEN].Draw_Texture( 255);
 	}
 	if (player[0].GetWinStatus())
 	{
 		paused = true;
-		Images[WINSCREEN].Draw_Texture(Images[WINSCREEN].pos, 255);
+		Images[WINSCREEN].Draw_Texture(255);
 	}
 	
 	Demo::DrawingManager();
@@ -127,6 +130,7 @@ void Demo::Exit(void)
 	{
 		Images[i].Free();
 	}
+	AEGfxMeshFree(rectMesh);
 }
 
 void Demo::Restart(void)

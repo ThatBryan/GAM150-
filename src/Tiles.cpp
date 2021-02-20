@@ -10,7 +10,7 @@ Tiles::Tiles(const s8* filepath, const f32 width, const f32 height) : image(file
 	collapseDelay = TileCollapseDelay;
 	type = NIL;
 	spawnPos = { 0, 0 };
-	ColliderAABB.color.SetColor(0, 0, 0, 150);
+	ColliderAABB.color.SetColor(150, 0, 0, 150);
 }
 void Tiles::Collapse(void)
 {
@@ -40,7 +40,7 @@ void Tiles::CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager)
 		{
 			if (TileManager[i]->at(j).active == true)
 			{
-				if (TileManager[i]->at(j).image.pos.y  <= 0)
+				if (TileManager[i]->at(j).image.pos.y  <= AEGfxGetWinMinY())
 				{
 					TileManager[i]->at(j).active = false;
 				}
@@ -83,7 +83,7 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 			{
 				player[0].gravity = false;
 				if (DebugMode)
-					printf("Don't apply gravity\n");
+					//printf("Don't apply gravity\n");
 				return;
 			}
 		}
@@ -136,9 +136,9 @@ void Tiles::Draw(std::vector <Tiles>& tiles)
 		if (tiles[i].active == false)
 			continue;
 
-		tiles[i].image.Draw_Texture(tiles[i].image.pos, 255);
+		tiles[i].image.Draw_Texture(255);
 		if (DebugMode)
-			tiles[i].ColliderAABB.Draw(tiles[i].image.pos, 150.0f);
+			tiles[i].ColliderAABB.Draw();
 	}
 }
 
@@ -170,6 +170,6 @@ void Tiles::Free(std::vector <Tiles>& tiles)
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
 		tiles[i].image.Free();
-		tiles[i].ColliderAABB.Free();
+		//tiles[i].ColliderAABB.Free();
 	}
 }

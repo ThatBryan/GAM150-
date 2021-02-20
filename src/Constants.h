@@ -1,4 +1,5 @@
 #pragma once
+#include "AEEngine.h"
 
 // File Paths
 extern const char* DigipenLogo;
@@ -38,7 +39,7 @@ extern bool DebugMode;
 extern bool fullscreen;
 extern float g_dt;
 extern float app_time;
-
+extern AEGfxVertexList* rectMesh;
 // Hot key bindings.
 #define PAUSE_KEY AEVK_TAB 
 #define RESTART_KEY AEVK_R

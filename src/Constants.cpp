@@ -31,6 +31,7 @@ const float TileCollapseSpeed = 5.0f;
 
 //Utility constants
 const float colorcodeMax = 255.0f;
+AEGfxVertexList* rectMesh = nullptr;
 
 // Miscallenous
 bool paused = false;

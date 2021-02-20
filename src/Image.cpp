@@ -4,32 +4,16 @@
 #include <iostream>
 #include <cstring>
 
-Image::Image(const s8* filepath, const f32 width, const f32 height, const f32 dir, const f32 scale) : GameObject(), direction{dir}, 
-width{width}, height{height}, scale{scale}, pTex{nullptr}, pMesh{nullptr}
+Image::Image(const s8* filepath, const f32 width, const f32 height, const f32 dir) : GameObject(), direction{dir}, 
+width{width}, height{height}, scale{width, height}, pTex{nullptr}, pMesh{nullptr}
 {
 	pTex = AEGfxTextureLoad(filepath);
 	AE_ASSERT_MESG(pTex, "Failed to create texture!");
-	pMesh = Image::Mesh_Rectangle(*this);
+	pMesh = Image::Mesh_Rectangle();
 	AE_ASSERT_MESG(pMesh, "Failed to create mesh!");
 }
 
-AEGfxVertexList* Image::Mesh_Rectangle(Image& image)
-{
-	AEGfxMeshStart();
-	AEGfxTriAdd(
-		-image.width * 0.5f, -image.height * 0.5f, 0xFFFFFFFF, 0.0f, 1.0f, // Bottom Left
-		image.width * 0.5f, -image.height * 0.5f, 0xFFFFFFFF, 1.0f, 1.0f,	 // Bottom Right
-		-image.width * 0.5f, image.height * 0.5f, 0xFFFFFFFF, 0.0f, 0.0f); // Top vertice
-
-	AEGfxTriAdd(
-		image.width * 0.5f, -image.height * 0.5f, 0xFFFFFFFF, 1.0f, 1.0f,	 //	Bottom Right
-		image.width * 0.5f, image.height * 0.5f, 0xFFFFFFFF, 1.0f, 0.0f,   //	Top Right
-		-image.width * 0.5f, image.height * 0.5f, 0xFFFFFFFF, 0.0f, 0.0f); //	Top Left
-
-	return AEGfxMeshEnd();
-}
-
-void Image::Handle(void)
+void Image::SetMatrix(void)
 {
 	AEMtx33	trans, rot, scale;
 	AEMtx33Scale(&scale, this->scale.x, this->scale.y);
@@ -39,34 +23,42 @@ void Image::Handle(void)
 	AEMtx33Concat(&temp, &rot, &scale);
 	AEMtx33Concat(&transformMtx, &trans, &temp);
 }
+AEGfxVertexList* Image::Mesh_Rectangle() {
+	AEGfxMeshStart();
+	AEGfxTriAdd(
+		-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 1.0f,// Bottom Left
+		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f, // Bottom Righ
+		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f); // Top vertic
 
-void Image::Draw_Texture(const AEVec2 pos, const f32 alpha, const f32 r, const f32 g, const f32 b, const f32 a) const
+	AEGfxTriAdd(
+		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f, //	Bottom R
+		0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 0.0f,	 //	Top Righ
+		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);//	Top Left
+	return AEGfxMeshEnd();
+}
+void Image::Draw_Texture(const f32 alpha, const f32 r, const f32 g, const f32 b, const f32 a)
 {
+	SetMatrix();
 	// Assumed texture since function is expected to use to draw images
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-	AEGfxSetPosition(pos.x - Utilities::Get_HalfWindowWidth(), pos.y - Utilities::Get_HalfWindowHeight()); // To be removed
 
 	AEGfxTextureSet(pTex, 0, 0); 
 
 	AEGfxSetTintColor(r / colorcodeMax, g / colorcodeMax, b / colorcodeMax, a / colorcodeMax);
 	AEGfxSetTransparency(alpha / colorcodeMax);
-
-	//AEGfxSetTransform(&transformMtx);
+	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-void Image::Draw_Color(const AEVec2 pos, const f32 r, const f32 g, const f32 b, const f32 alpha) const
+void Image::Draw_Color(const f32 r, const f32 g, const f32 b, const f32 alpha)
 {
+	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-
-	AEGfxSetPosition(pos.x - Utilities::Get_HalfWindowWidth(), pos.y - Utilities::Get_HalfWindowHeight()); // To be removed
-
 	AEGfxTextureSet(NULL, 0.0f, 0.0f);
-
 	AEGfxSetTintColor(r / colorcodeMax, g / colorcodeMax, b / colorcodeMax, alpha / colorcodeMax);
 	AEGfxSetTransparency(alpha / colorcodeMax);
-	//AEGfxSetTransform(&transformMtx);
+	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_NONE);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
