@@ -1,10 +1,8 @@
 #include "Enemy.h"
 
-Enemies::Enemies(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height)
+Enemies::Enemies(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
+spawnPos{0, 0}, active{true}, type{None}
 {
-	active = true;
-	spawnPos = { 0, 0 };
-	type = None;
 	colliderAABB.color.SetColor(0, 0, 255.0f, 255.0f);
 }
 

@@ -20,9 +20,9 @@ enum {LOGO = 0, WINSCREEN = 1, DEATHSCREEN = 2};
 #define TILE_HEIGHT 50.0f
 
 #define startingX TILE_WIDTTH / 2.0f - 400
-#define startingY1 TILE_HEIGHT / 2.0f
-#define startingY2 150 + TILE_HEIGHT / 2.0f
-#define startingY3 -100
+#define startingY2 -125
+#define startingY1 startingY2 - 150
+#define startingY3 startingY2 + 150
 
 void Demo::Init(void)
 {
@@ -60,20 +60,22 @@ void Demo::Init(void)
 	Enemies::AddNew(enemy, Bat, FlyingEnemySprite, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
 
 	player.push_back(Player(PlayerSprite, player_width, player_height));
-	//player[0].startingPos = Demo_Tiles2[0].spawnPos;
-	//player[0].startingPos.y += TILE_HEIGHT - 10;
-	//player[0].sprite.pos = player[0].startingPos;
-	player[0].startingPos = AEVec2Set(-100, -200);
+	player[0].startingPos = Demo_Tiles2[0].spawnPos;
+	player[0].startingPos.y += TILE_HEIGHT - 10;
 	player[0].sprite.pos = player[0].startingPos;
 
+
 	Images.push_back(Image(DigipenLogo, 750.0f, 300.0f));
-	Images[0].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
+	Images[0].pos = AEVec2Zero();	
+	//Images[0].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
 	
 	Images.push_back(Image(VictoryScreen, (f32)AEGetWindowWidth(), (f32)AEGetWindowHeight()));
-	Images[WINSCREEN].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
+	Images[WINSCREEN].pos = AEVec2Zero();
+	//Images[WINSCREEN].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
 
 	Images.push_back(Image(GameoverScreen, (f32)AEGetWindowWidth(), (f32)AEGetWindowHeight()));
-	Images[DEATHSCREEN].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
+	Images[DEATHSCREEN].pos = AEVec2Zero();
+	//Images[DEATHSCREEN].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
 
 }
 

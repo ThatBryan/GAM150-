@@ -1,12 +1,8 @@
 #include "Player.h"
 
-Player::Player(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height) 
+Player::Player(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height),
+active{true}, gravity{false}, jump{false}, win{false}, startingPos{0, 0}
 {
-	active = true;
-	gravity = false;
-	jump = false;
-	win = false;
-	startingPos = { 0, 0 };
 	colliderAABB.color.SetColor(255.0f, 0, 0, 255.0f);
 }
 

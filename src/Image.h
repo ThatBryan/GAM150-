@@ -19,10 +19,7 @@ class Image : public GameObject
 	f32 height, width;
 	AEVec2 pos;
 
-	// Sets the mesh for a rectangle and returns a pointer to the AEGfxVertexList
-	AEGfxVertexList* Mesh_Rectangle();
-
-	inline void Free(void) {AEGfxMeshFree(pMesh); AEGfxTextureUnload(pTex);}
+	inline void Free(void) {AEGfxTextureUnload(pTex);}
 	void SetMatrix();
 	void Draw_Color(const f32 r = 255.0f, const f32 g = 0, const f32 b = 255.0f, const f32 alpha = 255.0f);
 	void Draw_Texture(const f32 alpha, const f32 r = 255.0f, const f32 g = 255.0f, const f32 b = 255.0f, const f32 alpha2 = 255.0f);

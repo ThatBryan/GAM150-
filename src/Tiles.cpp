@@ -2,14 +2,10 @@
 #include <iostream>
 
 
-Tiles::Tiles(const s8* filepath, const f32 width, const f32 height) : image(filepath, width, height)
+Tiles::Tiles(const s8* filepath, const f32 width, const f32 height) : image(filepath, width, height),
+active{ true }, collapsing{false}, ID{0}, collapseDelay{TileCollapseDelay}, type{NIL}, spawnPos{0, 0},
+ColliderAABB{width, height}
 {
-	active = true;
-	collapsing = false;
-	ID = 0;
-	collapseDelay = TileCollapseDelay;
-	type = NIL;
-	spawnPos = { 0, 0 };
 	ColliderAABB.color.SetColor(150, 0, 0, 150);
 }
 void Tiles::Collapse(void)
@@ -40,6 +36,7 @@ void Tiles::CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager)
 		{
 			if (TileManager[i]->at(j).active == true)
 			{
+				TileManager[i]->at(j).ColliderAABB.pos = TileManager[i]->at(j).image.pos;
 				if (TileManager[i]->at(j).image.pos.y  <= AEGfxGetWinMinY())
 				{
 					TileManager[i]->at(j).active = false;

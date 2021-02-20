@@ -5,12 +5,11 @@
 #include <cstring>
 
 Image::Image(const s8* filepath, const f32 width, const f32 height, const f32 dir) : GameObject(), direction{dir}, 
-width{width}, height{height}, scale{width, height}, pTex{nullptr}, pMesh{nullptr}
+width{width}, height{height}, scale{width, height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color{NULL}, transformMtx{NULL}
 {
 	pTex = AEGfxTextureLoad(filepath);
 	AE_ASSERT_MESG(pTex, "Failed to create texture!");
-	pMesh = Image::Mesh_Rectangle();
-	AE_ASSERT_MESG(pMesh, "Failed to create mesh!");
+	pMesh = rectMesh;
 }
 
 void Image::SetMatrix(void)
@@ -22,19 +21,6 @@ void Image::SetMatrix(void)
 	AEMtx33 temp;
 	AEMtx33Concat(&temp, &rot, &scale);
 	AEMtx33Concat(&transformMtx, &trans, &temp);
-}
-AEGfxVertexList* Image::Mesh_Rectangle() {
-	AEGfxMeshStart();
-	AEGfxTriAdd(
-		-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 1.0f,// Bottom Left
-		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f, // Bottom Righ
-		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f); // Top vertic
-
-	AEGfxTriAdd(
-		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f, //	Bottom R
-		0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 0.0f,	 //	Top Righ
-		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);//	Top Left
-	return AEGfxMeshEnd();
 }
 void Image::Draw_Texture(const f32 alpha, const f32 r, const f32 g, const f32 b, const f32 a)
 {

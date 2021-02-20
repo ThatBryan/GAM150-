@@ -11,10 +11,10 @@ enum TileType {NIL, COLLAPSIBLE, GOAL, SAFE, SPECIAL};
 class Tiles
 {
 	private:
-		s32 ID, type;
+		short ID, type;
 		f64 collapseDelay;
 		bool active, collapsing;
-		Graphics::Rect ColliderAABB{ 80.0f, 50.0f };
+		Graphics::Rect ColliderAABB;
 
 	public:
 		Tiles(const s8* filepath, const f32 width, const f32 height);
