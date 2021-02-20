@@ -11,10 +11,10 @@ enum TileType {NIL, COLLAPSIBLE, GOAL, SAFE, SPECIAL};
 class Tiles
 {
 	private:
-		s32 ID, type;
+		short ID, type;
 		f64 collapseDelay;
 		bool active, collapsing;
-		Graphics::Rect ColliderAABB{ 80.0f, 50.0f };
+		Graphics::Rect ColliderAABB;
 
 	public:
 		Tiles(const s8* filepath, const f32 width, const f32 height);
@@ -24,6 +24,8 @@ class Tiles
 		void DecreaseLifespan(void);
 		void CheckPlayerGoal(std::vector <Player>& player);
 		void CheckEnemyStatus(std::vector <Enemies> enemy);
+		void Update(void);
+		void CheckPos(void);
 		static void Free(std::vector <Tiles>& tiles);
 
 		static void CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager);
@@ -36,7 +38,7 @@ class Tiles
 		static void CollapseNext(std::vector <Tiles>& tiles);
 		// Handles the collision between the enemy and tiles, and enemy with player.
 
-		static void CollisionManager(std::vector <Tiles>& tiles, std::vector <Player>& player, std::vector <Enemies>& enemy);
+		static void UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& player, std::vector <Enemies>& enemy);
 
 		// Resets the level.
 		static void Reset(std::vector <Tiles>& tiles);

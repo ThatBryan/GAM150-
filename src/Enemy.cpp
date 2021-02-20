@@ -1,10 +1,8 @@
 #include "Enemy.h"
 
-Enemies::Enemies(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height)
+Enemies::Enemies(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
+spawnPos{0, 0}, active{true}, type{None}
 {
-	active = true;
-	spawnPos = { 0, 0 };
-	type = None;
 	colliderAABB.color.SetColor(0, 0, 255.0f, 255.0f);
 }
 
@@ -26,16 +24,21 @@ void Enemies::Update_Position(void)
 	}
 }
 
-void Enemies::Draw(std::vector <Enemies> enemy)
+void Enemies::Update()
 {
-	for (size_t i = 0; i < enemy.size(); i++)
+	if (!paused) {
+		Update_Position();
+	}
+	Draw();
+}
+
+void Enemies::Draw()
+{
+	if (active)
 	{
-		if (enemy[i].active)
-		{
-			enemy[i].sprite.Draw_Default(enemy[i].sprite.pos, 255.0f);
-				if (DebugMode)
-					enemy[i].colliderAABB.Draw(enemy[i].colliderAABB.pos);
-		}
+		sprite.Draw_Texture(255.0f);
+		if (DebugMode)
+			colliderAABB.Draw();
 	}
 }
 
@@ -60,6 +63,6 @@ void Enemies::Free(std::vector <Enemies>& enemy)
 	for (size_t i = 0; i < enemy.size(); i++)
 	{
 		enemy[i].sprite.Free();
-		enemy[i].colliderAABB.Free();
+		//enemy[i].colliderAABB.Free();
 	}
 }

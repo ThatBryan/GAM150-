@@ -19,15 +19,16 @@ enum {LOGO = 0, WINSCREEN = 1, DEATHSCREEN = 2};
 #define TILE_WIDTTH 80.0f
 #define TILE_HEIGHT 50.0f
 
-#define startingX TILE_WIDTTH / 2.0f
-#define startingY1 TILE_HEIGHT / 2.0f
-#define startingY2 150 + TILE_HEIGHT / 2.0f
-#define startingY3 300 + TILE_HEIGHT / 2.0f
+#define startingX TILE_WIDTTH / 2.0f - 400
+#define startingY2 -125
+#define startingY1 startingY2 - 150
+#define startingY3 startingY2 + 150
 
 void Demo::Init(void)
 {
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
+	rectMesh = Graphics::Mesh_Rectangle();
 
 	size_t test = (size_t)AEGetWindowWidth() / TILE_WIDTTH;
 	Tiles::AddTileRow(Demo_Tiles, GrassTile, COLLAPSIBLE, test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
@@ -63,14 +64,18 @@ void Demo::Init(void)
 	player[0].startingPos.y += TILE_HEIGHT - 10;
 	player[0].sprite.pos = player[0].startingPos;
 
+
 	Images.push_back(Image(DigipenLogo, 750.0f, 300.0f));
-	Images[0].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
+	Images[0].pos = AEVec2Zero();	
+	//Images[0].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
 	
 	Images.push_back(Image(VictoryScreen, (f32)AEGetWindowWidth(), (f32)AEGetWindowHeight()));
-	Images[WINSCREEN].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
+	Images[WINSCREEN].pos = AEVec2Zero();
+	//Images[WINSCREEN].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
 
 	Images.push_back(Image(GameoverScreen, (f32)AEGetWindowWidth(), (f32)AEGetWindowHeight()));
-	Images[DEATHSCREEN].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
+	Images[DEATHSCREEN].pos = AEVec2Zero();
+	//Images[DEATHSCREEN].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
 
 }
 
@@ -85,31 +90,27 @@ void Demo::Update(void)
 		if (alpha <= 0)
 			alpha = 255.0f;
 
-		Images[LOGO].Draw_Default(Images[LOGO].pos, alpha);
+		Images[LOGO].Draw_Texture(alpha);
 		alpha -= 4.0f;
-	}
-	if (!paused)
-	{
-		player[0].Update_Position();
-
-		for (size_t i = 0; i < enemy.size(); i++)
-		{
-			if(enemy[i].active)
-				enemy[i].Update_Position();	
-		}
-		Demo::CollisionManager();
-		Demo::CollapsingManager();
 	}
 	if (player[0].active == false)
 	{
 		paused = true;
-		Images[DEATHSCREEN].Draw_Default(Images[DEATHSCREEN].pos, 255);
+		Images[DEATHSCREEN].Draw_Texture( 255);
 	}
 	if (player[0].GetWinStatus())
 	{
 		paused = true;
-		Images[WINSCREEN].Draw_Default(Images[WINSCREEN].pos, 255);
+		Images[WINSCREEN].Draw_Texture(255);
 	}
+
+	for (size_t i = 0; i < enemy.size(); i++)
+	{
+		enemy[i].Update();
+	}
+	Demo::UpdateManager();
+	Demo::CollapsingManager();
+	player[0].Update();
 	
 	Demo::DrawingManager();
 	if (AEInputCheckTriggered(RESTART_KEY))
@@ -127,6 +128,7 @@ void Demo::Exit(void)
 	{
 		Images[i].Free();
 	}
+	AEGfxMeshFree(rectMesh);
 }
 
 void Demo::Restart(void)
@@ -145,19 +147,16 @@ void Demo::DrawingManager(void)
 	Tiles::Draw(Demo_Tiles);
 	Tiles::Draw(Demo_Tiles2);
 	Tiles::Draw(Demo_Tiles3);
-
-	Enemies::Draw(enemy);
-	player[0].Draw();
 }
 
-void Demo::CollisionManager(void)
+void Demo::UpdateManager(void)
 {
-	Tiles::CheckTilesPos(TileManager);
-	Tiles::CollisionManager(Demo_Tiles, player, enemy);
-	Tiles::CollisionManager(Demo_Tiles2, player, enemy);
-	Tiles::CollisionManager(Demo_Tiles3, player, enemy);
+	//Tiles::CheckTilesPos(TileManager);
+	Tiles::UpdateManager(Demo_Tiles, player, enemy);
+	Tiles::UpdateManager(Demo_Tiles2, player, enemy);
+	Tiles::UpdateManager(Demo_Tiles3, player, enemy);
 	Tiles::CheckPlayerCollision(TileManager, player);
-	player[0].GravityManager();
+	//player[0].GravityManager();
 	player[0].CheckEnemyCollision(enemy);
 }
 

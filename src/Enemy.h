@@ -19,10 +19,10 @@ public:
 	Image sprite;
 	bool active;
 	void Update_Position(void);
-
+	void Update(void);
 	// Add new enemy into the vector.
 	static void AddNew(std::vector <Enemies>& enemy, const short type, const s8* filepath, const AEVec2 pos, const f32 width, const f32 height);
 	static void Reset(std::vector <Enemies>& enemy);
-	static void Draw(std::vector <Enemies> enemy);
+	void Draw();
 	static void Free(std::vector <Enemies>& enemy);
 };

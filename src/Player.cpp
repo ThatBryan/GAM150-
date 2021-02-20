@@ -1,12 +1,8 @@
 #include "Player.h"
 
-Player::Player(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height) 
+Player::Player(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height, 270),
+active{true}, gravity{false}, jump{false}, win{false}, startingPos{0, 0}
 {
-	active = true;
-	gravity = false;
-	jump = false;
-	win = false;
-	startingPos = { 0, 0 };
 	colliderAABB.color.SetColor(255.0f, 0, 0, 255.0f);
 }
 
@@ -17,22 +13,31 @@ void Player::Reset(void)
 	sprite.pos = startingPos;
 }
 
+void Player::Update() {
+	if (!paused) {
+		sprite.direction += 1;
+		Update_Position();
+	}
+	Draw();
+}
 void Player::Draw(void)
 {
-	this->sprite.Draw_Default(sprite.pos, 255.0f);
+	sprite.Draw_Texture(255.0f);
 	
 	if (DebugMode)
-		colliderAABB.Draw(colliderAABB.pos);
+		colliderAABB.Draw();
 }
 void Player::Free(std::vector <Player> player)
 {
-	player[player.size() - 1].colliderAABB.Free();
+	//player[player.size() - 1].colliderAABB.Free();
 	player[player.size() - 1].sprite.Free();
 }
 void Player::Update_Position(void)
 {
-	static f32 HeightLimit = (f32)AEGetWindowHeight();
-	static f32 WidthLimit = (f32)AEGetWindowWidth();
+	static f32 maxY = AEGfxGetWinMaxY();
+	static f32 maxX = AEGfxGetWinMaxX();
+	static f32 minY = AEGfxGetWinMinY();
+	static f32 minX = AEGfxGetWinMinX();
 	static float jumpspeed_y = 10.0f;
 
 	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP) && this->jump == FALSE)
@@ -41,7 +46,7 @@ void Player::Update_Position(void)
 	}
 	if (jump == TRUE)
 	{
-		if (sprite.pos.y + sprite.height / 2 <= HeightLimit)
+		if (sprite.pos.y + sprite.height / 2 <= maxY)
 		{
 
 			sprite.pos.y += jumpspeed_y;
@@ -66,26 +71,17 @@ void Player::Update_Position(void)
 	}
 
 	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
-	{
-		if (sprite.pos.y - sprite.height / 2 >= 0)
-		{
+		if (sprite.pos.y - sprite.height / 2 >= minY)
 			sprite.pos.y -= player_speed;
-		}
-	}
+
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
-	{
-		if (sprite.pos.x + sprite.width / 2 <= WidthLimit)
-		{
+		if (sprite.pos.x + sprite.width / 2 <= maxX)
 			sprite.pos.x += player_speed;
-		}
-	}
+
 	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
-	{
-		if (sprite.pos.x - sprite.width / 2 >= 0)
-		{
+		if (sprite.pos.x - sprite.width / 2 >= minX)
 			sprite.pos.x -= player_speed;
-		}
-	}
+
 	AEVec2 Mouse = Utilities::GetMousePos();
 	if (AETestPointToRect(&Mouse, &sprite.pos, sprite.width, sprite.height))
 	{
@@ -95,14 +91,14 @@ void Player::Update_Position(void)
 	colliderAABB.pos = AEVec2{ sprite.pos.x, sprite.pos.y - player_collider_offset };
 }
 
-void Player::GravityManager(void)
-{
-	if (gravity)
-	{
-		if(DebugMode)
-			printf("Apply gravity\n");
-	}
-}
+//void Player::GravityManager(void)
+//{
+//	if (gravity)
+//	{
+//		if(DebugMode)
+//			printf("Apply gravity\n");
+//	}
+//}
 
 void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 {

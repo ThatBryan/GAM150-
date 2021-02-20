@@ -12,7 +12,7 @@
 #include "PitchDemo.h"
 #include "Constants.h"
 #define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
+#include <cstdlib>
 #include <crtdbg.h>
 // ---------------------------------------------------------------------------
 // main
@@ -58,9 +58,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	char strBuffer[100];
 	char strBuffer1[100];
 	char strBuffer2[100];
-	Graphics::Text FPS_Display(FontFile, strBuffer, 15, 1.0f);
-	Graphics::Text LevelDisplay(FontFile, strBuffer1, 30, 1.0f);
-	Graphics::Text TimerDisplay(FontFile, strBuffer2, 30, 1.0f);
+	Graphics::Text FPS_Display(FontFile, strBuffer, 15);
+	Graphics::Text LevelDisplay(FontFile, strBuffer1, 30);
+	Graphics::Text TimerDisplay(FontFile, strBuffer2, 30);
 	FPS_Display.color.SetColor(255, 0, 0, 255);
 	LevelDisplay.color.SetColor(255, 0, 0, 255);
 	TimerDisplay.color.SetColor(0, 0, 0, 255);

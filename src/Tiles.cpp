@@ -2,15 +2,11 @@
 #include <iostream>
 
 
-Tiles::Tiles(const s8* filepath, const f32 width, const f32 height) : image(filepath, width, height)
+Tiles::Tiles(const s8* filepath, const f32 width, const f32 height) : image(filepath, width, height),
+active{ true }, collapsing{false}, ID{0}, collapseDelay{TileCollapseDelay}, type{NIL}, spawnPos{0, 0},
+ColliderAABB{width, height}
 {
-	active = true;
-	collapsing = false;
-	ID = 0;
-	collapseDelay = TileCollapseDelay;
-	type = NIL;
-	spawnPos = { 0, 0 };
-	ColliderAABB.color.SetColor(0, 0, 0, 150);
+	ColliderAABB.color.SetColor(150, 0, 0, 150);
 }
 void Tiles::Collapse(void)
 {
@@ -32,22 +28,33 @@ void Tiles::CheckPlayerGoal(std::vector <Player>& player)
 			player[(player.size() - 1)].SetPlayerWin();
 	}
 }
-void Tiles::CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager)
-{
-	for (size_t i = 0; i < TileManager.size(); i++)
+
+void Tiles::CheckPos(void) {
+	if (active)
 	{
-		for (size_t j = 0; j < TileManager[i]->size(); j++)
-		{
-			if (TileManager[i]->at(j).active == true)
-			{
-				if (TileManager[i]->at(j).image.pos.y  <= 0)
-				{
-					TileManager[i]->at(j).active = false;
-				}
-			}
-		}
+		ColliderAABB.pos = image.pos;
+		if (image.pos.y <= AEGfxGetWinMinY())
+			active = false;
 	}
 }
+
+//void Tiles::CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager)
+//{
+//	for (size_t i = 0; i < TileManager.size(); i++)
+//	{
+//		for (size_t j = 0; j < TileManager[i]->size(); j++)
+//		{
+//			if (TileManager[i]->at(j).active == true)
+//			{
+//				TileManager[i]->at(j).ColliderAABB.pos = TileManager[i]->at(j).image.pos;
+//				if (TileManager[i]->at(j).image.pos.y  <= AEGfxGetWinMinY())
+//				{
+//					TileManager[i]->at(j).active = false;
+//				}
+//			}
+//		}
+//	}
+//}
 
 void Tiles::DecreaseLifespan(void)
 {
@@ -83,7 +90,7 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 			{
 				player[0].gravity = false;
 				if (DebugMode)
-					printf("Don't apply gravity\n");
+					//printf("Don't apply gravity\n");
 				return;
 			}
 		}
@@ -93,7 +100,6 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 
 void Tiles::AddTileRow(std::vector <Tiles>& tile, const s8* filepath, s32 type, size_t num, const f32 width, const f32 height, const AEVec2 pos)
 {
-	static float offset = 0.0f;
 	size_t VectorSize = tile.size();
 
 	for (size_t i = VectorSize; i < VectorSize + num; i++)
@@ -101,8 +107,8 @@ void Tiles::AddTileRow(std::vector <Tiles>& tile, const s8* filepath, s32 type, 
 		tile.push_back(Tiles(filepath, width, height));
 		tile[i].type = type;
 		tile[i].ID = i;
-		tile[i].spawnPos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2) + ((tile[i].ID - tile[0].ID) * offset));
-		tile[i].image.pos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2) + ((tile[i].ID - tile[0].ID) * offset));
+		tile[i].spawnPos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2));
+		tile[i].image.pos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2));
 	}
 
 }
@@ -136,9 +142,9 @@ void Tiles::Draw(std::vector <Tiles>& tiles)
 		if (tiles[i].active == false)
 			continue;
 
-		tiles[i].image.Draw_Default(tiles[i].image.pos, 255);
+		tiles[i].image.Draw_Texture(255);
 		if (DebugMode)
-			tiles[i].ColliderAABB.Draw(tiles[i].image.pos, 150.0f);
+			tiles[i].ColliderAABB.Draw();
 	}
 }
 
@@ -152,16 +158,30 @@ void Tiles::Reset(std::vector <Tiles>& tiles)
 		tiles[i].collapseDelay = 0.5f;
 	}
 }
-void Tiles::CollisionManager(std::vector <Tiles>& tiles, std::vector <Player>& player, std::vector <Enemies>& enemy)
+void Tiles::Update()
+{
+	if (!paused) {
+		CheckPos();
+		Collapse();
+		DecreaseLifespan();
+	}
+
+	if (active) {
+		image.Draw_Texture(255);
+		if (DebugMode)
+			ColliderAABB.Draw();
+	}
+}
+void Tiles::UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& player, std::vector <Enemies>& enemy)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
 		if (tiles[i].active == false)
 			continue;
-		tiles[i].DecreaseLifespan();
+
 		tiles[i].CheckEnemyStatus(enemy);
-		tiles[i].Collapse();
 		tiles[i].CheckPlayerGoal(player);
+		tiles[i].Update();
 	}
 }
 
@@ -170,6 +190,5 @@ void Tiles::Free(std::vector <Tiles>& tiles)
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
 		tiles[i].image.Free();
-		tiles[i].ColliderAABB.Free();
 	}
 }
