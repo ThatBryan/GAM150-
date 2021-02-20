@@ -37,7 +37,7 @@ namespace Graphics
 	{
 		public:
 		// Constructor
-		Text(const s8* filepath, s8* textBuffer, const s32 fontSize, const f32 scale);
+		Text(const s8* filepath, s8* textBuffer, const s32 fontSize, const f32 scale = 1.0f);
 			Color color;
 			f32 TextWidth, TextHeight, Scale;
 			AEVec2 pos;

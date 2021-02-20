@@ -8,7 +8,7 @@ class Image : public GameObject
 	private:
 	AEGfxVertexList* pMesh;
 	AEGfxTexture* pTex;
-	AEMtx33 Transform;
+	AEMtx33 transformMtx;
 	f32 direction;
 	AEVec2 scale;
 

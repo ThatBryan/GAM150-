@@ -4,7 +4,8 @@
 #include <iostream>
 #include <cstring>
 
-Image::Image(const s8* filepath, const f32 width, const f32 height, const f32 dir, const f32 scale) : GameObject(), direction{dir}, width{width}, height{height}, scale{scale}
+Image::Image(const s8* filepath, const f32 width, const f32 height, const f32 dir, const f32 scale) : GameObject(), direction{dir}, 
+width{width}, height{height}, scale{scale}, pTex{nullptr}, pMesh{nullptr}
 {
 	pTex = AEGfxTextureLoad(filepath);
 	AE_ASSERT_MESG(pTex, "Failed to create texture!");
