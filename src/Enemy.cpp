@@ -24,16 +24,21 @@ void Enemies::Update_Position(void)
 	}
 }
 
-void Enemies::Draw(std::vector <Enemies> enemy)
+void Enemies::Update()
 {
-	for (size_t i = 0; i < enemy.size(); i++)
+	if (!paused) {
+		Update_Position();
+	}
+	Draw();
+}
+
+void Enemies::Draw()
+{
+	if (active)
 	{
-		if (enemy[i].active)
-		{
-			enemy[i].sprite.Draw_Texture(255.0f);
-			if (DebugMode)
-				enemy[i].colliderAABB.Draw();
-		}
+		sprite.Draw_Texture(255.0f);
+		if (DebugMode)
+			colliderAABB.Draw();
 	}
 }
 

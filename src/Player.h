@@ -21,10 +21,11 @@ public:
 	Graphics::Rect colliderAABB {player_width, 10.0f };
 	AEVec2 startingPos;
 	void Update_Position(void);
+	void Update(void);
 	void CheckEnemyCollision(std::vector <Enemies>& enemy);
 	void Reset(void);
 	void Draw(void);
-	void GravityManager(void);
+	//void GravityManager(void);
 	inline void SetPlayerWin(void) { win = true; }
 	inline bool GetWinStatus(void) { return win; }
 

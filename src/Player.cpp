@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height),
+Player::Player(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height, 270),
 active{true}, gravity{false}, jump{false}, win{false}, startingPos{0, 0}
 {
 	colliderAABB.color.SetColor(255.0f, 0, 0, 255.0f);
@@ -13,6 +13,13 @@ void Player::Reset(void)
 	sprite.pos = startingPos;
 }
 
+void Player::Update() {
+	if (!paused) {
+		sprite.direction += 1;
+		Update_Position();
+	}
+	Draw();
+}
 void Player::Draw(void)
 {
 	sprite.Draw_Texture(255.0f);
@@ -84,14 +91,14 @@ void Player::Update_Position(void)
 	colliderAABB.pos = AEVec2{ sprite.pos.x, sprite.pos.y - player_collider_offset };
 }
 
-void Player::GravityManager(void)
-{
-	if (gravity)
-	{
-		if(DebugMode)
-			printf("Apply gravity\n");
-	}
-}
+//void Player::GravityManager(void)
+//{
+//	if (gravity)
+//	{
+//		if(DebugMode)
+//			printf("Apply gravity\n");
+//	}
+//}
 
 void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 {

@@ -93,18 +93,6 @@ void Demo::Update(void)
 		Images[LOGO].Draw_Texture(alpha);
 		alpha -= 4.0f;
 	}
-	if (!paused)
-	{
-		player[0].Update_Position();
-
-		for (size_t i = 0; i < enemy.size(); i++)
-		{
-			if(enemy[i].active)
-				enemy[i].Update_Position();	
-		}
-		Demo::CollisionManager();
-		Demo::CollapsingManager();
-	}
 	if (player[0].active == false)
 	{
 		paused = true;
@@ -115,6 +103,14 @@ void Demo::Update(void)
 		paused = true;
 		Images[WINSCREEN].Draw_Texture(255);
 	}
+
+	for (size_t i = 0; i < enemy.size(); i++)
+	{
+		enemy[i].Update();
+	}
+	Demo::UpdateManager();
+	Demo::CollapsingManager();
+	player[0].Update();
 	
 	Demo::DrawingManager();
 	if (AEInputCheckTriggered(RESTART_KEY))
@@ -151,19 +147,16 @@ void Demo::DrawingManager(void)
 	Tiles::Draw(Demo_Tiles);
 	Tiles::Draw(Demo_Tiles2);
 	Tiles::Draw(Demo_Tiles3);
-
-	Enemies::Draw(enemy);
-	player[0].Draw();
 }
 
-void Demo::CollisionManager(void)
+void Demo::UpdateManager(void)
 {
-	Tiles::CheckTilesPos(TileManager);
-	Tiles::CollisionManager(Demo_Tiles, player, enemy);
-	Tiles::CollisionManager(Demo_Tiles2, player, enemy);
-	Tiles::CollisionManager(Demo_Tiles3, player, enemy);
+	//Tiles::CheckTilesPos(TileManager);
+	Tiles::UpdateManager(Demo_Tiles, player, enemy);
+	Tiles::UpdateManager(Demo_Tiles2, player, enemy);
+	Tiles::UpdateManager(Demo_Tiles3, player, enemy);
 	Tiles::CheckPlayerCollision(TileManager, player);
-	player[0].GravityManager();
+	//player[0].GravityManager();
 	player[0].CheckEnemyCollision(enemy);
 }
 

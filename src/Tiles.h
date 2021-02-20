@@ -24,6 +24,8 @@ class Tiles
 		void DecreaseLifespan(void);
 		void CheckPlayerGoal(std::vector <Player>& player);
 		void CheckEnemyStatus(std::vector <Enemies> enemy);
+		void Update(void);
+		void CheckPos(void);
 		static void Free(std::vector <Tiles>& tiles);
 
 		static void CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager);
@@ -36,7 +38,7 @@ class Tiles
 		static void CollapseNext(std::vector <Tiles>& tiles);
 		// Handles the collision between the enemy and tiles, and enemy with player.
 
-		static void CollisionManager(std::vector <Tiles>& tiles, std::vector <Player>& player, std::vector <Enemies>& enemy);
+		static void UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& player, std::vector <Enemies>& enemy);
 
 		// Resets the level.
 		static void Reset(std::vector <Tiles>& tiles);

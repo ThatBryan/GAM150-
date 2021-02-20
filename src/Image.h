@@ -10,14 +10,12 @@ class Image : public GameObject
 	AEGfxVertexList* pMesh;
 	AEGfxTexture* pTex;
 	AEMtx33 transformMtx;
-	f32 direction;
-	AEVec2 scale;
 
 	public:
 		Image(const s8* filepath, const f32 width, const f32 height, const f32 dir = 0); //ctor
 	Color color;
-	f32 height, width;
-	AEVec2 pos;
+	f32 height, width, direction;
+	AEVec2 pos, scale;
 
 	inline void Free(void) {AEGfxTextureUnload(pTex);}
 	void SetMatrix();

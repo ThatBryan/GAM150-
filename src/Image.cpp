@@ -16,7 +16,7 @@ void Image::SetMatrix(void)
 {
 	AEMtx33	trans, rot, scale;
 	AEMtx33Scale(&scale, this->scale.x, this->scale.y);
-	AEMtx33Rot(&rot, direction);
+	AEMtx33Rot(&rot, AEDegToRad(direction));
 	AEMtx33Trans(&trans, pos.x, pos.y);
 	AEMtx33 temp;
 	AEMtx33Concat(&temp, &rot, &scale);

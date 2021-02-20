@@ -17,7 +17,7 @@ namespace Demo
 	void Restart(void);
 
 	// Collection of collision related code.
-	void CollisionManager(void);
+	void UpdateManager(void);
 
 	// Collection of tile collapsing related code.
 	void CollapsingManager(void);
