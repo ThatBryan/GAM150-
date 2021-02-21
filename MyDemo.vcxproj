@@ -20,6 +20,7 @@
     <ClCompile Include="src\PitchDemo.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Tiles.cpp" />
+    <ClCompile Include="src\UserInterface.cpp" />
     <ClCompile Include="src\Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -31,6 +32,7 @@
     <ClInclude Include="src\PitchDemo.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Tiles.h" />
+    <ClInclude Include="src\UserInterface.h" />
     <ClInclude Include="src\Utilities.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

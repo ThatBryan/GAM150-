@@ -13,6 +13,7 @@ class Enemies : public GameObject
 	unsigned short type;
 	AEVec2 spawnPos;
 	Graphics::Rect colliderAABB {enemy_width, 10.0f };
+	short ID;
 
 public:
 	Enemies(const s8* filepath, const f32 width, const f32 height);
@@ -20,6 +21,7 @@ public:
 	bool active;
 	void Update_Position(void);
 	void Update(void);
+
 	// Add new enemy into the vector.
 	static void AddNew(std::vector <Enemies>& enemy, const short type, const s8* filepath, const AEVec2 pos, const f32 width, const f32 height);
 	static void Reset(std::vector <Enemies>& enemy);

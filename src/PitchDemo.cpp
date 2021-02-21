@@ -25,12 +25,13 @@ enum {LOGO = 0, WINSCREEN = 1, DEATHSCREEN = 2};
 #define startingY3 startingY2 + 150
 
 void Demo::Init(void)
-{
+{	
+	UI::Init();
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 	rectMesh = Graphics::Mesh_Rectangle();
 
-	size_t test = (size_t)AEGetWindowWidth() / TILE_WIDTTH;
+	size_t test = (size_t)(AEGetWindowWidth() / TILE_WIDTTH);
 	Tiles::AddTileRow(Demo_Tiles, GrassTile, COLLAPSIBLE, test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
 
 	Tiles::AddTileRow(Demo_Tiles2, GrassTile, COLLAPSIBLE, 8, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
@@ -110,9 +111,10 @@ void Demo::Update(void)
 	}
 	Demo::UpdateManager();
 	Demo::CollapsingManager();
-	player[0].Update();
 	
+	UI::Update();
 	Demo::DrawingManager();
+	player[0].Update();
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Demo::Restart();
 }
@@ -128,7 +130,6 @@ void Demo::Exit(void)
 	{
 		Images[i].Free();
 	}
-	AEGfxMeshFree(rectMesh);
 }
 
 void Demo::Restart(void)
@@ -140,6 +141,7 @@ void Demo::Restart(void)
 
 	player[0].Reset();
 	paused = false;
+	app_time = 0;
 }
 
 void Demo::DrawingManager(void)

@@ -29,6 +29,9 @@ extern const float player_collider_offset;
 extern const double TileCollapseDelay;
 extern const float TileCollapseSpeed;
 
+// Enemy stuff
+extern short EnemyCount;
+
 //Utility constants
 extern const float colorcodeMax;
 
@@ -39,7 +42,12 @@ extern bool DebugMode;
 extern bool fullscreen;
 extern float g_dt;
 extern float app_time;
+
+// Graphics stuff
+extern char fontID;
 extern AEGfxVertexList* rectMesh;
+
+
 // Hot key bindings.
 #define PAUSE_KEY AEVK_TAB 
 #define RESTART_KEY AEVK_R
