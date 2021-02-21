@@ -3,18 +3,20 @@
 
 //https://htmlcolorcodes.com/
 
-class Color
+struct Color
 {
 	public:
 	f32 r, g, b, alpha;
 	void SetColor(const f32 r, const f32 g, const f32 b, const f32 alpha);
-
-	private:
 };
 
 
 namespace Graphics
 {
+	// Sets the mesh for a rectangle and returns a pointer to the AEGfxVertexList
+	AEGfxVertexList* Mesh_Rectangle(void);
+	void Free();
+
 	class Rect
 	{
 		public:
@@ -26,7 +28,6 @@ namespace Graphics
 
 		void Draw(const f32 alpha = 150.0f);
 		void SetMatrix();
-		//inline void Free(void) { AEGfxMeshFree(pMesh); }
 
 		private:
 			AEGfxVertexList* pMesh;
@@ -38,26 +39,19 @@ namespace Graphics
 	{
 		public:
 		// Constructor
-		Text(const s8* filepath, s8* textBuffer, const s32 fontSize, const f32 scale = 1.0f);
+		Text(s8* textBuffer, const f32 scale = 1.0f);
 			Color color;
 			f32 TextWidth, TextHeight, Scale;
 			AEVec2 pos;
 
 			// Calculates the X and Y offset
 			AEVec2 Calculate_DrawTextOffset(const Text text);
-			void Draw_Text(Text text, const AEVec2 pos);
-			inline void Free(void) { AEGfxDestroyFont(fontID); }
+			void Draw_Text(const AEVec2 pos);
 
 		private:
-			s8 fontID;
 			s8* buffer;
 	};
 }
 
-namespace Graphics
-{
-	// Sets the mesh for a rectangle and returns a pointer to the AEGfxVertexList
-	AEGfxVertexList* Mesh_Rectangle(void);
-}
 
 

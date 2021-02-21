@@ -20,14 +20,14 @@ Graphics::Rect::Rect(const f32 width, const f32 height, const f32 direction) : d
 	color.SetColor(255, 255, 255, 255);
 }
 
-Graphics::Text::Text(const s8* filepath, s8* textBuffer, const s32 fontSize, const f32 scale)
+void Graphics::Free() {
+	AEGfxDestroyFont(fontID);
+	AEGfxMeshFree(rectMesh);
+}
+
+Graphics::Text::Text(s8* textBuffer, const f32 scale) : Scale{ scale }, pos{ 0, 0 },
+TextHeight{ 0 }, TextWidth{ 0 }, buffer{ textBuffer }
 {
-	fontID = AEGfxCreateFont(filepath, fontSize);
-	buffer = textBuffer;
-	Scale = scale;
-	pos = { 0, 0 };
-	TextHeight = 0;
-	TextWidth = 0;
 	Text::color.SetColor(255.0f, 255.0f, 255.0f, 255.0f);
 }
 
@@ -73,15 +73,15 @@ void Graphics::Rect::Draw(const f32 alpha)
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-void Graphics::Text::Draw_Text(Text text, const AEVec2 pos)
+void Graphics::Text::Draw_Text(const AEVec2 pos)
 {
-	text.pos.x = pos.x;
-	text.pos.y = pos.y;
-	AEGfxGetPrintSize(fontID, buffer, text.Scale, text.TextWidth, text.TextHeight);
+	this->pos.x = pos.x;
+	this->pos.y = pos.y;
+	AEGfxGetPrintSize(fontID, buffer, Scale, TextWidth, TextHeight);
 
-	AEVec2 drawPos = Graphics::Text::Calculate_DrawTextOffset(text);
+	AEVec2 drawPos = Graphics::Text::Calculate_DrawTextOffset(*this);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxPrint(fontID, buffer, drawPos.x, drawPos.y, text.Scale, text.color.r, text.color.g, text.color.b);
+	AEGfxPrint(fontID, buffer, drawPos.x, drawPos.y, Scale, color.r, color.g, color.b);
 }
 
 AEVec2 Graphics::Text::Calculate_DrawTextOffset(const Text text)

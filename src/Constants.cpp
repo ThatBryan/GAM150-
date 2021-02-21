@@ -28,9 +28,14 @@ const float player_collider_offset = 21.0f;
 const double TileCollapseDelay = 0.5f;
 const float TileCollapseSpeed = 5.0f;
 
+// Enemy stuff
+short EnemyCount = 1.0f;
 
 //Utility constants
 const float colorcodeMax = 255.0f;
+
+// Graphics
+char fontID = 0;
 AEGfxVertexList* rectMesh = nullptr;
 
 // Miscallenous

@@ -3,6 +3,8 @@
 Enemies::Enemies(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
 spawnPos{0, 0}, active{true}, type{None}
 {
+	ID = EnemyCount;
+	EnemyCount++;
 	colliderAABB.color.SetColor(0, 0, 255.0f, 255.0f);
 }
 
@@ -13,8 +15,11 @@ void Enemies::Update_Position(void)
 
 	sprite.pos.x += speed;
 	colliderAABB.pos = sprite.pos;
-	if(type == Slime)
+	if (type == Slime)
+	{
 		colliderAABB.pos.y += 20.0f;
+		sprite.direction -= 1.0f * ID;
+	}
 
 	counter += 1.0f;
 	if (counter > 180.0f)

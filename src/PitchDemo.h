@@ -2,6 +2,7 @@
 #include "Tiles.h"
 #include "Player.h"
 #include "AEEngine.h"
+#include "UserInterface.h"
 
 namespace Demo
 {

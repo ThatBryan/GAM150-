@@ -8,8 +8,9 @@ active{true}, gravity{false}, jump{false}, win{false}, startingPos{0, 0}
 
 void Player::Reset(void)
 {
-	active = true;
+	jump = false;
 	win = false;
+	active = true;
 	sprite.pos = startingPos;
 }
 
@@ -29,7 +30,6 @@ void Player::Draw(void)
 }
 void Player::Free(std::vector <Player> player)
 {
-	//player[player.size() - 1].colliderAABB.Free();
 	player[player.size() - 1].sprite.Free();
 }
 void Player::Update_Position(void)
@@ -58,27 +58,17 @@ void Player::Update_Position(void)
 				jumpspeed_y = 10.0f;
 			}
 		}
-
-		if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
-		{
-			sprite.pos.x += player_speed;
-		}
-
-		if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
-		{
-			sprite.pos.x -= player_speed;
-		}
 	}
 
-	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
+	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN))
 		if (sprite.pos.y - sprite.height / 2 >= minY)
 			sprite.pos.y -= player_speed;
 
-	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
+	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
 		if (sprite.pos.x + sprite.width / 2 <= maxX)
 			sprite.pos.x += player_speed;
 
-	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
+	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
 		if (sprite.pos.x - sprite.width / 2 >= minX)
 			sprite.pos.x -= player_speed;
 
