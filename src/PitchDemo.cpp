@@ -8,11 +8,11 @@
 #include "Constants.h"
 
 Color background;
-//std::vector <Tiles> Demo_Tiles, Demo_Tiles2, Demo_Tiles3;
+std::vector <Tiles> Demo_Tiles, Demo_Tiles2, Demo_Tiles3;
 //std::vector <Player> player;
 std::vector <Enemies> enemy;
 //std::vector <Image> Images;
-//std::vector <std::vector <Tiles>*> TileManager;
+std::vector <std::vector <Tiles>*> TileManager;
 
 enum {LOGO = 0, WINSCREEN = 1, DEATHSCREEN = 2};
 
@@ -33,18 +33,18 @@ void Demo::Init(void)
 
 
 	size_t test = (size_t)(AEGetWindowWidth() / TILE_WIDTTH);
-	//Tiles::AddTileRow(Demo_Tiles, GrassTile, COLLAPSIBLE, test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
+	Tiles::AddTileRow(Demo_Tiles, COLLAPSIBLE, test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
 
-	//Tiles::AddTileRow(Demo_Tiles2, GrassTile, COLLAPSIBLE, 8, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
-	//Tiles::AddTileRow(Demo_Tiles2, GoalTile, GOAL, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
+	Tiles::AddTileRow(Demo_Tiles2, COLLAPSIBLE, 8, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
+	Tiles::AddTileRow(Demo_Tiles2, GOAL, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
 
-	//Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
-	//Tiles::AddTileRow(Demo_Tiles3, GreyTile, SAFE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
-	//Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	Tiles::AddTileRow(Demo_Tiles3, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	Tiles::AddTileRow(Demo_Tiles3, SAFE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	Tiles::AddTileRow(Demo_Tiles, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
 
-	//TileManager.push_back(&Demo_Tiles);
-	//TileManager.push_back(&Demo_Tiles2);
-	//TileManager.push_back(&Demo_Tiles3);
+	TileManager.push_back(&Demo_Tiles);
+	TileManager.push_back(&Demo_Tiles2);
+	TileManager.push_back(&Demo_Tiles3);
 
 	//AEVec2 DemoEnemyPos = Demo_Tiles2[2].spawnPos;
 	//AEVec2 DemoEnemyPos2 = Demo_Tiles3[2].spawnPos;
@@ -110,20 +110,20 @@ void Demo::Update(void)
 		enemy[i].Update();
 	}
 	//Demo::UpdateManager();
-	//Demo::CollapsingManager();
+	Demo::CollapsingManager();
 	
 	UI::Update();
-	//Demo::Render();
+	Demo::Render();
 	//player[0].Update();
 	//if (AEInputCheckTriggered(RESTART_KEY))
 	//	Demo::Restart();
 }
 void Demo::Exit(void)
 {
+	Unload();
 	//Tiles::Free(Demo_Tiles);
 	//Tiles::Free(Demo_Tiles2);
 	//Tiles::Free(Demo_Tiles3);
-	Enemies::Free(enemy);
 
 	//Player::Free(player);
 	//for (size_t i = 0; i < Images.size(); i++)
@@ -135,12 +135,14 @@ void Demo::Exit(void)
 void Demo::Load(void) {
 	rectMesh = Graphics::Mesh_Rectangle();
 	Enemies::LoadTex();
+	Tiles::LoadTex();
 	//slimeTex = AEGfxTextureLoad(WaterSlimeSprite);
 	//AE_ASSERT_MESG(pTex, "Failed to create texture!");
 }
-void Unload(void)
+void Demo::Unload(void)
 {
-
+	Enemies::Unload();
+	Tiles::Unload();
 }
 
 //void Demo::Restart(void)
@@ -155,13 +157,13 @@ void Unload(void)
 //	app_time = 0;
 //}
 //
-//void Demo::Render(void)
-//{
-//	Tiles::Draw(Demo_Tiles);
-//	Tiles::Draw(Demo_Tiles2);
-//	Tiles::Draw(Demo_Tiles3);
-//}
-//
+void Demo::Render(void)
+{
+	Tiles::Draw(Demo_Tiles);
+	Tiles::Draw(Demo_Tiles2);
+	Tiles::Draw(Demo_Tiles3);
+}
+
 //void Demo::UpdateManager(void)
 //{
 //	//Tiles::CheckTilesPos(TileManager);
@@ -170,12 +172,12 @@ void Unload(void)
 //	Tiles::UpdateManager(Demo_Tiles3, player, enemy);
 //	Tiles::CheckPlayerCollision(TileManager, player);
 //	//player[0].GravityManager();
-//	player[0].CheckEnemyCollision(enemy);
+//	//player[0].CheckEnemyCollision(enemy);
 //}
-//
-//void Demo::CollapsingManager(void)
-//{
-//	Tiles::CollapseNext(Demo_Tiles);
-//	Tiles::CollapseNext(Demo_Tiles2);
-//	Tiles::CollapseNext(Demo_Tiles3);
-//}
+
+void Demo::CollapsingManager(void)
+{
+	Tiles::CollapseNext(Demo_Tiles);
+	Tiles::CollapseNext(Demo_Tiles2);
+	Tiles::CollapseNext(Demo_Tiles3);
+}

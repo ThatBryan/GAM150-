@@ -51,7 +51,7 @@ void Enemies::Draw()
 void Enemies::AddNew(std::vector <Enemies>& enemy, const short type, const s8* filepath, const AEVec2 pos, const f32 width, const f32 height)
 {
 	AEGfxTexture* temp = nullptr;
-	temp = Enemies::AssignTex(type);
+	temp = enemyTex[type];
 	enemy.push_back(Enemies(temp, width, height));
 	enemy[enemy.size() - 1].sprite.pos = pos;
 	enemy[enemy.size() - 1].type = type;
@@ -66,11 +66,13 @@ void Enemies::Reset(std::vector <Enemies>& enemy)
 		enemy[i].active = true;
 	}
 }
-void Enemies::Free(std::vector <Enemies>& enemy)
+void Enemies::Unload(void)
 {
-	for (size_t i = 0; i < enemy.size(); i++)
+	for (size_t i = 0; i < ENEMY_MAX; i++)
 	{
-		enemy[i].sprite.Free();
+		if (i == Squirrel)
+			continue;
+		AEGfxTextureUnload(enemyTex[i]);
 	}
 }
 
@@ -92,20 +94,4 @@ void Enemies::LoadTex(void) {
 		enemyTex[i] = AEGfxTextureLoad(pTex);
 		AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	}
-}
-
-AEGfxTexture* Enemies::AssignTex(const short ID) {
-	switch (ID) {
-	case Slime:
-		return enemyTex[Slime];
-		break;
-	case Bat:
-		return enemyTex[Bat];
-		break;
-	case Squirrel:
-		return enemyTex[Squirrel];
-	default:
-		return nullptr;
-	}
-	return nullptr;
 }

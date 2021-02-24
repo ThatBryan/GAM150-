@@ -8,7 +8,7 @@
 
 enum EnemyType {Slime = 0, Bat = 1, Squirrel, ENEMY_MAX };
 
-AEGfxTexture* enemyTex[ENEMY_MAX]{ nullptr };
+static AEGfxTexture* enemyTex[ENEMY_MAX]{ nullptr };
 
 
 class Enemies : public GameObject
@@ -29,7 +29,6 @@ public:
 	static void LoadTex(void);
 	static void AddNew(std::vector <Enemies>& enemy, const short type, const s8* filepath, const AEVec2 pos, const f32 width, const f32 height);
 	static void Reset(std::vector <Enemies>& enemy);
-	static AEGfxTexture* AssignTex(const short ID);
 	void Draw();
-	static void Free(std::vector <Enemies>& enemy);
+	static void Unload(void);
 };

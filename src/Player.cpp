@@ -30,7 +30,7 @@ void Player::Draw(void)
 }
 void Player::Free(std::vector <Player> player)
 {
-	player[player.size() - 1].sprite.Free();
+	//player[player.size() - 1].sprite.Free();
 }
 void Player::Update_Position(void)
 {
