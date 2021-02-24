@@ -6,7 +6,10 @@
 #include "Graphics.h"
 #include "Constants.h"
 
-enum EnemyType {None = 0, Slime = 1, Bat = 2, Squirrel = 3, Max_Num = 4 };
+enum EnemyType {Slime = 0, Bat = 1, Squirrel, ENEMY_MAX };
+
+AEGfxTexture* enemyTex[ENEMY_MAX]{ nullptr };
+
 
 class Enemies : public GameObject
 {
@@ -16,15 +19,17 @@ class Enemies : public GameObject
 	short ID;
 
 public:
-	Enemies(const s8* filepath, const f32 width, const f32 height);
+	Enemies(AEGfxTexture* filepath, const f32 width, const f32 height);
 	Image sprite;
 	bool active;
 	void Update_Position(void);
 	void Update(void);
 
 	// Add new enemy into the vector.
+	static void LoadTex(void);
 	static void AddNew(std::vector <Enemies>& enemy, const short type, const s8* filepath, const AEVec2 pos, const f32 width, const f32 height);
 	static void Reset(std::vector <Enemies>& enemy);
+	static AEGfxTexture* AssignTex(const short ID);
 	void Draw();
 	static void Free(std::vector <Enemies>& enemy);
 };

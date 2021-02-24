@@ -4,11 +4,10 @@
 #include <iostream>
 #include <cstring>
 
-Image::Image(const s8* filepath, const f32 width, const f32 height, const f32 dir) : GameObject(), direction{dir}, 
+Image::Image(const AEGfxTexture* pTex, const f32 width, const f32 height, const f32 dir) : GameObject(), direction{dir}, 
 width{width}, height{height}, scale{width, height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color{NULL}, transformMtx{NULL}
 {
-	pTex = AEGfxTextureLoad(filepath);
-	AE_ASSERT_MESG(pTex, "Failed to create texture!");
+	this->pTex = const_cast<AEGfxTexture*>(pTex);
 	pMesh = rectMesh;
 }
 

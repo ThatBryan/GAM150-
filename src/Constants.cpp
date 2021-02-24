@@ -1,3 +1,4 @@
+
 #include "Constants.h"
 
 // File Paths
@@ -29,7 +30,7 @@ const double TileCollapseDelay = 0.5f;
 const float TileCollapseSpeed = 5.0f;
 
 // Enemy stuff
-short EnemyCount = 1.0f;
+short EnemyCount = 1;
 
 //Utility constants
 const float colorcodeMax = 255.0f;
@@ -37,6 +38,7 @@ const float colorcodeMax = 255.0f;
 // Graphics
 char fontID = 0;
 AEGfxVertexList* rectMesh = nullptr;
+
 
 // Miscallenous
 bool paused = false;

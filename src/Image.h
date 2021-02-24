@@ -12,7 +12,7 @@ class Image : public GameObject
 	AEMtx33 transformMtx;
 
 	public:
-		Image(const s8* filepath, const f32 width, const f32 height, const f32 dir = 0); //ctor
+		Image(const AEGfxTexture* pTex, const f32 width, const f32 height, const f32 dir = 0); //ctor
 	Color color;
 	f32 height, width, direction;
 	AEVec2 pos, scale;

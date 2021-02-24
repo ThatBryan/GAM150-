@@ -1,10 +1,10 @@
 #include "Player.h"
 
-Player::Player(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height, 270),
-active{true}, gravity{false}, jump{false}, win{false}, startingPos{0, 0}
-{
-	colliderAABB.color.SetColor(255.0f, 0, 0, 255.0f);
-}
+//Player::Player(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height, 270),
+//active{true}, gravity{false}, jump{false}, win{false}, startingPos{0, 0}
+//{
+//	colliderAABB.color.SetColor(255.0f, 0, 0, 255.0f);
+//}
 
 void Player::Reset(void)
 {
@@ -44,11 +44,10 @@ void Player::Update_Position(void)
 	{
 		jump = TRUE;
 	}
-	if (jump == TRUE)
+	if (jump)
 	{
 		if (sprite.pos.y + sprite.height / 2 <= maxY)
 		{
-
 			sprite.pos.y += jumpspeed_y;
 
 			jumpspeed_y -= 1.0f;
