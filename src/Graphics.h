@@ -8,7 +8,7 @@ struct Color
 	public:
 	f32 r, g, b, alpha;
 	void SetColor(const f32 r, const f32 g, const f32 b, const f32 alpha);
-	void Decrement(float i = 0.001f);
+	void Decrement(float i = 0.0001f);
 };
 
 

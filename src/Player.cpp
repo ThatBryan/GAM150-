@@ -2,10 +2,11 @@
 
 AEGfxTexture* Player::playerTex{ nullptr };
 
-Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height, 270),
-active{true}, gravity{false}, jump{false}, win{false}, startingPos{0, 0}
+Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height),
+active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }
 {
-	colliderAABB.color.SetColor(255.0f, 0, 0, 255.0f);
+	playerBB.color.SetColor(0, 0, 0, 255.0f);
+	feetBB.color.SetColor(255.0f, 255.0f, 0, 255.0f);
 }
 
 void Player::Reset(void)
@@ -18,7 +19,7 @@ void Player::Reset(void)
 
 void Player::Update() {
 	if (!paused) {
-		sprite.direction += 1;
+		//sprite.direction += 1;
 		Update_Position();
 	}
 	Render();
@@ -27,8 +28,10 @@ void Player::Render(void)
 {
 	sprite.Draw_Texture(255.0f);
 	
-	if (DebugMode)
-		colliderAABB.Draw();
+	if (DebugMode) {
+		playerBB.Draw();
+		feetBB.Draw();
+	}
 }
 void Player::LoadTex(void) {
 	playerTex = AEGfxTextureLoad(PlayerSprite);
@@ -44,7 +47,7 @@ void Player::Update_Position(void)
 	static f32 maxX = AEGfxGetWinMaxX();
 	static f32 minY = AEGfxGetWinMinY();
 	static f32 minX = AEGfxGetWinMinX();
-	static float jumpspeed_y = 10.0f;
+	static float jumpspeed_y = 5.0f;
 
 	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP) && this->jump == FALSE)
 	{
@@ -57,34 +60,34 @@ void Player::Update_Position(void)
 		{
 			sprite.pos.y += jumpspeed_y;
 
-			jumpspeed_y -= 1.0f;
-			if (jumpspeed_y < -10.0f)
+			jumpspeed_y -= .2f;
+			if (jumpspeed_y < -5.0f)
 			{
 				jump = FALSE;
-				jumpspeed_y = 10.0f;
+				jumpspeed_y = 5.0f;
 			}
 		}
 	}
-
-	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN))
-		if (sprite.pos.y - sprite.height / 2 >= minY)
-			sprite.pos.y -= player_speed;
-
-	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
+	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT) && !(AEInputCheckCurr(AEVK_W)))
+	{
 		if (sprite.pos.x + sprite.width / 2 <= maxX)
 			sprite.pos.x += player_speed;
+	}
 
-	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
+	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT) && !(AEInputCheckCurr(AEVK_W)))
 		if (sprite.pos.x - sprite.width / 2 >= minX)
 			sprite.pos.x -= player_speed;
 
+	if (DebugMode) {
 	AEVec2 Mouse = Utilities::GetMousePos();
 	if (AETestPointToRect(&Mouse, &sprite.pos, sprite.width, sprite.height))
 	{
 		if (AEInputCheckCurr(AEVK_LBUTTON))
 			sprite.pos = Mouse;
+		}
 	}
-	colliderAABB.pos = AEVec2{ sprite.pos.x, sprite.pos.y - player_collider_offset };
+	playerBB.pos = sprite.pos;
+	feetBB.pos = AEVec2{ sprite.pos.x, sprite.pos.y - player_collider_offset };
 }
 
 //void Player::GravityManager(void)
@@ -98,20 +101,28 @@ void Player::Update_Position(void)
 
 void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 {
+	if (AEInputCheckCurr(AEVK_SPACE))
+		printf("\n");
 	for (size_t i = 0; i < enemy.size(); i++)
 	{
-		if (enemy[i].active)
+		if (enemy[i].ID == 1 && enemy[i].active)
 		{
-			if (AETestRectToRect(&enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height, &sprite.pos, sprite.width - 5.0f, sprite.height))
+			//printf("%.2f %.2f %.2f %.2f\n", enemy[i].headBB.pos.x, this->playerBB.pos.x, enemy[i].headBB.pos.y, this->playerBB.pos.y);
+			//enemy[i].headBB.pos.y -= 15.0f;
+			//if (AETestRectToRect(&enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, &this->feetBB.pos, feetBB.width, feetBB.height))// && 
+			//	printf("enemy dies\n");
+			//	//enemy[i].active = false;
+			if (AETestRectToRect(&enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, &playerBB.pos, playerBB.width, playerBB.height))
 			{
-				if (AETestRectToRect(&enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height, &colliderAABB.pos, colliderAABB.width, colliderAABB.height))// && 
-					enemy[i].active = false;
-				//AEVec2 EnemyTop = { enemy[i].sprite.pos.x, enemy[i].sprite.pos.y + enemy[i].sprite.height / 2 };
-				//if(AETestPointToRect(&EnemyTop, &colliderAABB.pos, this->colliderAABB.width, this->colliderAABB.height))
-				//if (this->colldierPos.y >= enemy[i].sprite.pos.y)
-					//enemy[i].active = false;
-				else
-					this->active = false;
+			if (enemy[i].headBB.pos.y < feetBB.pos.y) {
+				printf("enemy dies\n");
+				enemy[i].active = false;
+			}
+			else {
+				printf("player dies\n");
+				active = false;
+			}
+				//active = false;
 			}
 		}
 	}

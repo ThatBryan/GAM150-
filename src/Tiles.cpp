@@ -38,25 +38,6 @@ void Tiles::CheckPos(void) {
 			active = false;
 	}
 }
-
-//void Tiles::CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager)
-//{
-//	for (size_t i = 0; i < TileManager.size(); i++)
-//	{
-//		for (size_t j = 0; j < TileManager[i]->size(); j++)
-//		{
-//			if (TileManager[i]->at(j).active == true)
-//			{
-//				TileManager[i]->at(j).ColliderAABB.pos = TileManager[i]->at(j).image.pos;
-//				if (TileManager[i]->at(j).image.pos.y  <= AEGfxGetWinMinY())
-//				{
-//					TileManager[i]->at(j).active = false;
-//				}
-//			}
-//		}
-//	}
-//}
-
 void Tiles::DecreaseLifespan(void)
 {
 	if (collapsing && active)
@@ -87,7 +68,7 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 			if (TileManager[i]->at(j).active == false)
 				continue;
 
-			if (AETestRectToRect(&TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height, &player[0].colliderAABB.pos, player[0].colliderAABB.width, 10.0f))
+			if (AETestRectToRect(&TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height, &player[0].playerBB.pos, player[0].playerBB.width, 10.0f))
 			{
 				player[0].gravity = false;
 				if (DebugMode)
@@ -108,7 +89,7 @@ void Tiles::AddTileRow(std::vector <Tiles>& tile, s32 type, size_t num, const f3
 	{
 		tile.push_back(Tiles(temp, width, height));
 		tile[i].type = type;
-		tile[i].ID = i;
+		tile[i].ID = static_cast<short>(i);
 		tile[i].spawnPos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2));
 		tile[i].image.pos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2));
 	}
@@ -145,8 +126,8 @@ void Tiles::Draw(std::vector <Tiles>& tiles)
 			continue;
 
 		tiles[i].image.Draw_Texture(255);
-		if (DebugMode)
-			tiles[i].ColliderAABB.Draw();
+		//if (DebugMode)
+		//	tiles[i].ColliderAABB.Draw();
 	}
 }
 
@@ -218,3 +199,23 @@ void Tiles::Unload()
 		AEGfxTextureUnload(tileTex[i]);
 	}
 }
+
+
+
+//void Tiles::CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager)
+//{
+//	for (size_t i = 0; i < TileManager.size(); i++)
+//	{
+//		for (size_t j = 0; j < TileManager[i]->size(); j++)
+//		{
+//			if (TileManager[i]->at(j).active == true)
+//			{
+//				TileManager[i]->at(j).ColliderAABB.pos = TileManager[i]->at(j).image.pos;
+//				if (TileManager[i]->at(j).image.pos.y  <= AEGfxGetWinMinY())
+//				{
+//					TileManager[i]->at(j).active = false;
+//				}
+//			}
+//		}
+//	}
+//}

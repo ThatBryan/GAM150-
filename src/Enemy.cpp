@@ -5,8 +5,8 @@ spawnPos{0, 0}, active{true}, type{0}
 {
 	ID = EnemyCount;
 	EnemyCount++;
-	colliderAABB.color.SetColor(0, 0, 255.0f, 255.0f);
-
+	headBB.color.SetColor(0, 0, 255.0f, 255.0f);
+	enemyBB.color.SetColor(0, 0, 0, 255.0f);
 }
 
 void Enemies::Update_Position(void)
@@ -15,11 +15,12 @@ void Enemies::Update_Position(void)
 	static float counter = 0.0f;
 
 	sprite.pos.x += speed;
-	colliderAABB.pos = sprite.pos;
+	headBB.pos = sprite.pos;
+	enemyBB.pos = sprite.pos;
 	if (type == Slime)
 	{
-		colliderAABB.pos.y += 20.0f;
-		sprite.direction -= 1.0f * ID;
+		headBB.pos.y += 20.0f;
+		//sprite.direction -= 1.0f * ID;
 	}
 
 	counter += 1.0f;
@@ -43,8 +44,10 @@ void Enemies::Draw()
 	if (active)
 	{
 		sprite.Draw_Texture(255.0f);
-		if (DebugMode)
-			colliderAABB.Draw();
+		if (DebugMode) {
+			headBB.Draw();
+			enemyBB.Draw();
+		}
 	}
 }
 

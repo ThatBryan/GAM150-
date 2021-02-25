@@ -67,47 +67,22 @@ void Demo::Init(void)
 	Images[Victory].Init(VictoryScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), AEVec2Set(0, 0));
 	Images[Defeat].Init(GameoverScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), AEVec2Set(0, 0));
 
-	sound.playSound(soundTest[BGM]);
+	//sound.playSound(soundTest[BGM]);
 
 }
 
 void Demo::Update(void)
 {
+	sound.update();
 	background.Decrement();
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 	Utilities::CheckPauseInput();
 	Utilities::CheckFullScreenInput();
 	Utilities::CheckDebugMode();
-	if (paused && player[0].active && !player[0].GetWinStatus())
-	{
-		static float alpha = 255.0f;
-		if (alpha <= 0)
-			alpha = 255.0f;
-
-		Images[GGPen].Draw_Texture(alpha);
-		alpha -= 4.0f;
-	}
-	if (player[0].active == false)
-	{
-		paused = true;
-		Images[Defeat].Draw_Texture(255);
-	}
-	if (player[0].GetWinStatus())
-	{
-		paused = true;
-		Images[Victory].Draw_Texture(255);
-	}
-
-	for (size_t i = 0; i < enemy.size(); i++)
-	{
-		enemy[i].Update();
-	}
-	Demo::UpdateManager();
-	Demo::CollapsingManager();
-	
+	Demo::UpdateOverlay();
 	UI::Update();
 	Demo::Render();
-	player[0].Update();
+	Demo::UpdateManager();
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Demo::Restart();
 }
@@ -160,7 +135,13 @@ void Demo::UpdateManager(void)
 	Tiles::UpdateManager(Demo_Tiles3, player, enemy);
 	Tiles::CheckPlayerCollision(TileManager, player);
 	//player[0].GravityManager();
+	for (size_t i = 0; i < enemy.size(); i++)
+	{
+		enemy[i].Update();
+	}
+	player[0].Update();
 	player[0].CheckEnemyCollision(enemy);
+	CollapsingManager();
 }
 
 void Demo::CollapsingManager(void)
@@ -168,4 +149,26 @@ void Demo::CollapsingManager(void)
 	Tiles::CollapseNext(Demo_Tiles);
 	Tiles::CollapseNext(Demo_Tiles2);
 	Tiles::CollapseNext(Demo_Tiles3);
+}
+
+void Demo::UpdateOverlay() {
+	if (paused && player[0].active && !player[0].GetWinStatus())
+	{
+		static float alpha = 255.0f;
+		if (alpha <= 0)
+			alpha = 255.0f;
+
+		Images[GGPen].Draw_Texture(alpha);
+		alpha -= 4.0f;
+	}
+	if (player[0].active == false)
+	{
+		paused = true;
+		Images[Defeat].Draw_Texture(255);
+	}
+	if (player[0].GetWinStatus())
+	{
+		paused = true;
+		Images[Victory].Draw_Texture(255);
+	}
 }

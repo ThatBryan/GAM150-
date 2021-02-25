@@ -2,6 +2,7 @@
 
 SoundSystemClass sound;
 std::array <SoundClass, MAX> soundTest{ NULL };
+FMOD::Channel* chan{ nullptr };
 
 SoundSystemClass::SoundSystemClass() {
 	if (FMOD::System_Create(&m_pSystem) != FMOD_OK)
@@ -29,7 +30,16 @@ void SoundSystemClass::playSound(SoundClass& Sound, bool bLoop) {
 		Sound->setMode(FMOD_LOOP_NORMAL);
 		Sound->setLoopCount(-1);
 	}
-	m_pSystem->playSound(Sound, NULL, false, NULL);
+	m_pSystem->playSound(Sound, NULL, false, &chan);
+}
+
+void SoundSystemClass::update() {
+	m_pSystem->update();
+	if (paused) {
+		chan->setMute(true);
+	}
+	else
+		chan->setMute(false);
 }
 
 void SoundSystemClass::releaseSound(SoundClass& Sound) {
