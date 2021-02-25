@@ -3,6 +3,7 @@
 #include "fmod_errors.h"
 #include "AEEngine.h"
 #include <array>
+#include "Constants.h"
 
 using SoundClass = FMOD::Sound*;
 enum Sounds { JUMP, BGM, MAX };
@@ -16,6 +17,7 @@ public:
 	void createSound(SoundClass*, const char* pFile);
 	void playSound(SoundClass& pSound, bool bLoop = false);
 	void releaseSound(SoundClass& pSound);
+	void update();
 	static void loadSound(void);
 	static void unloadSound(void);
 };

@@ -1,8 +1,6 @@
 #include "Image.h"
 #include "Utilities.h"
-#include <string>
 #include <iostream>
-#include <cstring>
 
 Image::Image(const AEGfxTexture* pTex, const f32 width, const f32 height, const f32 dir) : GameObject(), direction{dir}, 
 width{width}, height{height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color{NULL}, transformMtx{NULL}

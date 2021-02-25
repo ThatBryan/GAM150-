@@ -21,8 +21,9 @@ public:
 	Player(AEGfxTexture* ,const f32 width, const f32 height);
 	Image sprite;
 	bool active, jump, gravity;
-	Graphics::Rect colliderAABB {player_width, 10.0f };
-	AEVec2 startingPos;
+	Graphics::Rect playerBB {player_width, player_height};
+	Graphics::Rect feetBB {player_width, 5.0f};
+	AEVec2 startingPos, vel;
 	void Update_Position(void);
 	static void LoadTex(void);
 	static void Unload(void);
