@@ -4,18 +4,29 @@
 #include <iostream>
 #include <cstring>
 
-Image::Image(const s8* filepath, const f32 width, const f32 height, const f32 dir) : GameObject(), direction{dir}, 
-width{width}, height{height}, scale{width, height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color{NULL}, transformMtx{NULL}
+Image::Image(const AEGfxTexture* pTex, const f32 width, const f32 height, const f32 dir) : GameObject(), direction{dir}, 
+width{width}, height{height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color{NULL}, transformMtx{NULL}
 {
-	pTex = AEGfxTextureLoad(filepath);
-	AE_ASSERT_MESG(pTex, "Failed to create texture!");
+	this->pTex = const_cast<AEGfxTexture*>(pTex);
 	pMesh = rectMesh;
+}
+Image::Image() : GameObject(), direction{0}, width{0}, height{0},
+pTex{ nullptr }, pMesh{ nullptr }, pos{ 0, 0 }, color{ NULL }, transformMtx{ NULL } {}
+
+void Image::Init(const char* pFile, const f32 width, const f32 height, const AEVec2 pos, const f32 dir, AEGfxVertexList* pMesh){
+	pTex = AEGfxTextureLoad(pFile);
+	AE_ASSERT_MESG(pTex, "Failed to create texture!");
+	this->width = width;
+	this->height = height;
+	this->pMesh = const_cast<AEGfxVertexList*>(pMesh);
+	this->pos = pos;
+	direction = dir;
 }
 
 void Image::SetMatrix(void)
 {
 	AEMtx33	trans, rot, scale;
-	AEMtx33Scale(&scale, this->scale.x, this->scale.y);
+	AEMtx33Scale(&scale, width, height);
 	AEMtx33Rot(&rot, AEDegToRad(direction));
 	AEMtx33Trans(&trans, pos.x, pos.y);
 	AEMtx33 temp;
@@ -25,11 +36,8 @@ void Image::SetMatrix(void)
 void Image::Draw_Texture(const f32 alpha, const f32 r, const f32 g, const f32 b, const f32 a)
 {
 	SetMatrix();
-	// Assumed texture since function is expected to use to draw images
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-
 	AEGfxTextureSet(pTex, 0, 0); 
-
 	AEGfxSetTintColor(r / colorcodeMax, g / colorcodeMax, b / colorcodeMax, a / colorcodeMax);
 	AEGfxSetTransparency(alpha / colorcodeMax);
 	AEGfxSetTransform(transformMtx.m);

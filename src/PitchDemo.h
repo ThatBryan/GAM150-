@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "AEEngine.h"
 #include "UserInterface.h"
+#include "AudioManager.h"
 
 namespace Demo
 {
@@ -12,7 +13,9 @@ namespace Demo
 	void Exit(void);
 
 	// Collection of drawing related code.
-	void DrawingManager(void);
+	void Render(void);
+	void Load(void);
+	void Unload(void);
 
 	// Restarts the level (kinda)
 	void Restart(void);

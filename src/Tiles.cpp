@@ -2,8 +2,9 @@
 #include <iostream>
 
 
-Tiles::Tiles(const s8* filepath, const f32 width, const f32 height) : image(filepath, width, height),
-active{ true }, collapsing{false}, ID{0}, collapseDelay{TileCollapseDelay}, type{NIL}, spawnPos{0, 0},
+
+Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
+active{ true }, collapsing{false}, ID{0}, collapseDelay{TileCollapseDelay}, type{0}, spawnPos{0, 0},
 ColliderAABB{width, height}
 {
 	ColliderAABB.color.SetColor(150, 0, 0, 150);
@@ -98,13 +99,14 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 	player[0].gravity = true;
 }
 
-void Tiles::AddTileRow(std::vector <Tiles>& tile, const s8* filepath, s32 type, size_t num, const f32 width, const f32 height, const AEVec2 pos)
+void Tiles::AddTileRow(std::vector <Tiles>& tile, s32 type, size_t num, const f32 width, const f32 height, const AEVec2 pos)
 {
 	size_t VectorSize = tile.size();
+	AEGfxTexture* temp = tileTex[type];
 
 	for (size_t i = VectorSize; i < VectorSize + num; i++)
 	{
-		tile.push_back(Tiles(filepath, width, height));
+		tile.push_back(Tiles(temp, width, height));
 		tile[i].type = type;
 		tile[i].ID = i;
 		tile[i].spawnPos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2));
@@ -185,10 +187,34 @@ void Tiles::UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& play
 	}
 }
 
-void Tiles::Free(std::vector <Tiles>& tiles)
+void Tiles::LoadTex() {
+	for (int i = 0; i < TILE_MAX; i++) {
+		const char* pTex = nullptr;
+		switch (i) {
+		case COLLAPSIBLE:
+			pTex = GrassTile;
+			break;
+		case GOAL:
+			pTex = GoalTile;
+			break;
+		case SAFE:
+			pTex = GreyTile;
+			break;
+		case SPECIAL:
+			pTex = SpecialTile;
+			break;
+		default:
+			return;
+		}
+		tileTex[i] = AEGfxTextureLoad(pTex);
+		AE_ASSERT_MESG(pTex, "Failed to create texture!");
+	}
+}
+
+void Tiles::Unload()
 {
-	for (size_t i = 0; i < tiles.size(); i++)
+	for (size_t i = 0; i < TILE_MAX; i++)
 	{
-		tiles[i].image.Free();
+		AEGfxTextureUnload(tileTex[i]);
 	}
 }

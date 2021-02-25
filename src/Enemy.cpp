@@ -1,11 +1,12 @@
 #include "Enemy.h"
 
-Enemies::Enemies(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
-spawnPos{0, 0}, active{true}, type{None}
+Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
+spawnPos{0, 0}, active{true}, type{0}
 {
 	ID = EnemyCount;
 	EnemyCount++;
 	colliderAABB.color.SetColor(0, 0, 255.0f, 255.0f);
+
 }
 
 void Enemies::Update_Position(void)
@@ -47,9 +48,9 @@ void Enemies::Draw()
 	}
 }
 
-void Enemies::AddNew(std::vector <Enemies>& enemy, const short type, const s8* filepath, const AEVec2 pos, const f32 width, const f32 height)
+void Enemies::AddNew(std::vector <Enemies>& enemy, const short type, const AEVec2 pos, const f32 width, const f32 height)
 {
-	enemy.push_back(Enemies(filepath, width, height));
+	enemy.push_back(Enemies(enemyTex[type], width, height));
 	enemy[enemy.size() - 1].sprite.pos = pos;
 	enemy[enemy.size() - 1].type = type;
 	enemy[enemy.size() - 1].spawnPos = pos;
@@ -63,11 +64,32 @@ void Enemies::Reset(std::vector <Enemies>& enemy)
 		enemy[i].active = true;
 	}
 }
-void Enemies::Free(std::vector <Enemies>& enemy)
+void Enemies::Unload(void)
 {
-	for (size_t i = 0; i < enemy.size(); i++)
+	for (size_t i = 0; i < ENEMY_MAX; i++)
 	{
-		enemy[i].sprite.Free();
-		//enemy[i].colliderAABB.Free();
+		if (i == Squirrel)
+			continue;
+		AEGfxTextureUnload(enemyTex[i]);
+	}
+}
+
+void Enemies::LoadTex(void) {
+	for (int i = 0; i < ENEMY_MAX - 1; i++) {
+		const char* pTex = nullptr;
+		switch (i) {
+		case Slime:
+			pTex = WaterSlimeSprite;
+			break;
+		case Bat:
+			pTex = FlyingEnemySprite;
+			break;
+		case Squirrel:
+			break;
+		default:
+			return;
+		}
+		enemyTex[i] = AEGfxTextureLoad(pTex);
+		AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	}
 }

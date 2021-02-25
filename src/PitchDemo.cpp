@@ -6,15 +6,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Constants.h"
-
-Color background;
-std::vector <Tiles> Demo_Tiles, Demo_Tiles2, Demo_Tiles3;
-std::vector <Player> player;
-std::vector <Enemies> enemy;
-std::vector <Image> Images;
-std::vector <std::vector <Tiles>*> TileManager;
-
-enum {LOGO = 0, WINSCREEN = 1, DEATHSCREEN = 2};
+#include <array>
 
 #define TILE_WIDTTH 80.0f
 #define TILE_HEIGHT 50.0f
@@ -24,25 +16,35 @@ enum {LOGO = 0, WINSCREEN = 1, DEATHSCREEN = 2};
 #define startingY1 startingY2 - 150
 #define startingY3 startingY2 + 150
 
+Color background;
+std::vector <Tiles> Demo_Tiles, Demo_Tiles2, Demo_Tiles3;
+std::vector <Enemies> enemy;
+std::vector <std::vector <Tiles>*> TileManager;
+std::vector <Player> player;
+
+enum {GGPen = 0, Victory, Defeat, MAX_IMAGE};
+static std::array <Image, MAX_IMAGE> Images;
+
+enum Sounds{JUMP, BGM, MAX};
+SoundSystemClass sound;
+std::array <SoundClass, MAX> soundTest{ NULL };
 void Demo::Init(void)
-{	
+{
+
 	UI::Init();
+	Demo::Load();
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
-	AEGfxSetBackgroundColor(background.r, background.g, background.b);
-	rectMesh = Graphics::Mesh_Rectangle();
 
 	size_t test = (size_t)(AEGetWindowWidth() / TILE_WIDTTH);
-	Tiles::AddTileRow(Demo_Tiles, GrassTile, COLLAPSIBLE, test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
+	Tiles::AddTileRow(Demo_Tiles, COLLAPSIBLE, test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
 
-	Tiles::AddTileRow(Demo_Tiles2, GrassTile, COLLAPSIBLE, 8, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
-	Tiles::AddTileRow(Demo_Tiles2, GoalTile, GOAL, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
-	//Tiles::AddTileRow(Demo_Tiles2, GrassTile, COLLAPSIBLE, test- 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
+	Tiles::AddTileRow(Demo_Tiles2, COLLAPSIBLE, 8, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2 });
+	Tiles::AddTileRow(Demo_Tiles2, GOAL, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2 });
 
-	Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
-	Tiles::AddTileRow(Demo_Tiles3, GreyTile, SAFE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
-	//Tiles::AddTileRow(Demo_Tiles3, SpecialTile, SPECIAL, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
-	Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
-	//Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, test - 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	Tiles::AddTileRow(Demo_Tiles3, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
+	Tiles::AddTileRow(Demo_Tiles3, SAFE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
+	Tiles::AddTileRow(Demo_Tiles3, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
+	Tiles::AddTileRow(Demo_Tiles, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
 
 	TileManager.push_back(&Demo_Tiles);
 	TileManager.push_back(&Demo_Tiles2);
@@ -50,38 +52,34 @@ void Demo::Init(void)
 
 	AEVec2 DemoEnemyPos = Demo_Tiles2[2].spawnPos;
 	AEVec2 DemoEnemyPos2 = Demo_Tiles3[2].spawnPos;
-	AEVec2 DemoEnemyPos3 = Demo_Tiles3[7].spawnPos;
+	AEVec2 DemoEnemyPos3 = Demo_Tiles3[5].spawnPos;
 	AEVec2 DemoEnemyPos4 = Demo_Tiles3[4].spawnPos;
+
 	DemoEnemyPos4.y += 20.0f;
 	AEVec2 Offset = { -15.0f, TILE_HEIGHT - 10.0f };
-	
-	Enemies::AddNew(enemy, Slime, WaterSlimeSprite, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, Slime, WaterSlimeSprite, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, Slime, WaterSlimeSprite, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, Bat, FlyingEnemySprite, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
 
-	player.push_back(Player(PlayerSprite, player_width, player_height));
+	Enemies::AddNew(enemy, Slime, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, Slime, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, Slime, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, Bat, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
+
+	player.push_back(Player(Player::playerTex, player_width, player_height));
 	player[0].startingPos = Demo_Tiles2[0].spawnPos;
 	player[0].startingPos.y += TILE_HEIGHT - 10;
 	player[0].sprite.pos = player[0].startingPos;
 
+	Images[GGPen].Init(DigipenLogo, static_cast<f32>(AEGetWindowWidth()) - 100.0f, static_cast<f32>(AEGetWindowHeight()) - 150.0f, AEVec2Set(0, 0));
+	Images[Victory].Init(VictoryScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), AEVec2Set(0, 0));
+	Images[Defeat].Init(GameoverScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), AEVec2Set(0, 0));
 
-	Images.push_back(Image(DigipenLogo, 750.0f, 300.0f));
-	Images[0].pos = AEVec2Zero();	
-	//Images[0].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
-	
-	Images.push_back(Image(VictoryScreen, (f32)AEGetWindowWidth(), (f32)AEGetWindowHeight()));
-	Images[WINSCREEN].pos = AEVec2Zero();
-	//Images[WINSCREEN].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
-
-	Images.push_back(Image(GameoverScreen, (f32)AEGetWindowWidth(), (f32)AEGetWindowHeight()));
-	Images[DEATHSCREEN].pos = AEVec2Zero();
-	//Images[DEATHSCREEN].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
+	sound.playSound(soundTest[BGM]);
 
 }
 
 void Demo::Update(void)
 {
+	background.Decrement();
+	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 	Utilities::CheckPauseInput();
 	Utilities::CheckFullScreenInput();
 	Utilities::CheckDebugMode();
@@ -91,18 +89,18 @@ void Demo::Update(void)
 		if (alpha <= 0)
 			alpha = 255.0f;
 
-		Images[LOGO].Draw_Texture(alpha);
+		Images[GGPen].Draw_Texture(alpha);
 		alpha -= 4.0f;
 	}
 	if (player[0].active == false)
 	{
 		paused = true;
-		Images[DEATHSCREEN].Draw_Texture( 255);
+		Images[Defeat].Draw_Texture(255);
 	}
 	if (player[0].GetWinStatus())
 	{
 		paused = true;
-		Images[WINSCREEN].Draw_Texture(255);
+		Images[Victory].Draw_Texture(255);
 	}
 
 	for (size_t i = 0; i < enemy.size(); i++)
@@ -113,21 +111,35 @@ void Demo::Update(void)
 	Demo::CollapsingManager();
 	
 	UI::Update();
-	Demo::DrawingManager();
+	Demo::Render();
 	player[0].Update();
+	if (AEInputCheckTriggered(AEVK_W) || AEInputCheckTriggered(AEVK_UP))
+		sound.playSound(soundTest[JUMP]);
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Demo::Restart();
 }
 void Demo::Exit(void)
 {
-	Tiles::Free(Demo_Tiles);
-	Tiles::Free(Demo_Tiles2);
-	Tiles::Free(Demo_Tiles3);
-	Enemies::Free(enemy);
+	Unload();
+}
 
-	Player::Free(player);
-	for (size_t i = 0; i < Images.size(); i++)
-	{
+void Demo::Load(void) {
+	rectMesh = Graphics::Mesh_Rectangle();
+	Enemies::LoadTex();
+	Tiles::LoadTex();
+	Player::LoadTex();
+	sound.createSound(&soundTest[JUMP], "../Assets/Audio/SFX/powerup.wav");
+	sound.createSound(&soundTest[BGM], "../Assets/Audio/BGM/gg.wav");
+}
+void Demo::Unload(void)
+{
+	Enemies::Unload();
+	Tiles::Unload();
+	Player::Unload();
+	for (int i = 0; i < soundTest.size(); i++) {
+		sound.releaseSound(soundTest[i]);
+	}
+	for (int i = 0; i < Images.size(); ++i) {
 		Images[i].Free();
 	}
 }
@@ -144,7 +156,7 @@ void Demo::Restart(void)
 	app_time = 0;
 }
 
-void Demo::DrawingManager(void)
+void Demo::Render(void)
 {
 	Tiles::Draw(Demo_Tiles);
 	Tiles::Draw(Demo_Tiles2);
@@ -153,7 +165,6 @@ void Demo::DrawingManager(void)
 
 void Demo::UpdateManager(void)
 {
-	//Tiles::CheckTilesPos(TileManager);
 	Tiles::UpdateManager(Demo_Tiles, player, enemy);
 	Tiles::UpdateManager(Demo_Tiles2, player, enemy);
 	Tiles::UpdateManager(Demo_Tiles3, player, enemy);

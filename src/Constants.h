@@ -1,5 +1,7 @@
 #pragma once
 #include "AEEngine.h"
+//#include "Tiles.h"
+//#include "Enemy.h"
 
 // File Paths
 extern const char* DigipenLogo;
@@ -46,7 +48,6 @@ extern float app_time;
 // Graphics stuff
 extern char fontID;
 extern AEGfxVertexList* rectMesh;
-
 
 // Hot key bindings.
 #define PAUSE_KEY AEVK_TAB 
