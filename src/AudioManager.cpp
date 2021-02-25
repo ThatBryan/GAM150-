@@ -1,5 +1,8 @@
 #include "AudioManager.h"
 
+SoundSystemClass sound;
+std::array <SoundClass, MAX> soundTest{ NULL };
+
 SoundSystemClass::SoundSystemClass() {
 	if (FMOD::System_Create(&m_pSystem) != FMOD_OK)
 	{
@@ -31,4 +34,14 @@ void SoundSystemClass::playSound(SoundClass& Sound, bool bLoop) {
 
 void SoundSystemClass::releaseSound(SoundClass& Sound) {
 	Sound->release();
+}
+
+void SoundSystemClass::loadSound(void) {
+	sound.createSound(&soundTest[JUMP], "../Assets/Audio/SFX/powerup.wav");
+	sound.createSound(&soundTest[BGM], "../Assets/Audio/BGM/gg.wav");
+}
+void SoundSystemClass::unloadSound(void) {
+	for (int i = 0; i < soundTest.size(); i++) {
+		sound.releaseSound(soundTest[i]);
+	}
 }

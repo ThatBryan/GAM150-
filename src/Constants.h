@@ -1,7 +1,5 @@
 #pragma once
 #include "AEEngine.h"
-//#include "Tiles.h"
-//#include "Enemy.h"
 
 // File Paths
 extern const char* DigipenLogo;
@@ -15,7 +13,6 @@ extern const char* GoalTile;
 extern const char* GreyTile;
 extern const char* SpecialTile;
 extern const char* FontFile;
-extern const char* Collider;
 
 
 // Player constants

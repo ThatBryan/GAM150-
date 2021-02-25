@@ -6,6 +6,10 @@
 #include "AEEngine.h"
 #include "Enemy.h"
 #include "Constants.h"
+#include "AudioManager.h"
+
+extern SoundSystemClass sound;
+extern std::array <SoundClass, MAX> soundTest;
 
 class Player
 {

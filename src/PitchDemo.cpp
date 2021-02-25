@@ -25,9 +25,6 @@ std::vector <Player> player;
 enum {GGPen = 0, Victory, Defeat, MAX_IMAGE};
 static std::array <Image, MAX_IMAGE> Images;
 
-enum Sounds{JUMP, BGM, MAX};
-SoundSystemClass sound;
-std::array <SoundClass, MAX> soundTest{ NULL };
 void Demo::Init(void)
 {
 
@@ -37,10 +34,8 @@ void Demo::Init(void)
 
 	size_t test = (size_t)(AEGetWindowWidth() / TILE_WIDTTH);
 	Tiles::AddTileRow(Demo_Tiles, COLLAPSIBLE, test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
-
 	Tiles::AddTileRow(Demo_Tiles2, COLLAPSIBLE, 8, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2 });
 	Tiles::AddTileRow(Demo_Tiles2, GOAL, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2 });
-
 	Tiles::AddTileRow(Demo_Tiles3, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
 	Tiles::AddTileRow(Demo_Tiles3, SAFE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
 	Tiles::AddTileRow(Demo_Tiles3, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
@@ -113,8 +108,6 @@ void Demo::Update(void)
 	UI::Update();
 	Demo::Render();
 	player[0].Update();
-	if (AEInputCheckTriggered(AEVK_W) || AEInputCheckTriggered(AEVK_UP))
-		sound.playSound(soundTest[JUMP]);
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Demo::Restart();
 }
@@ -128,17 +121,14 @@ void Demo::Load(void) {
 	Enemies::LoadTex();
 	Tiles::LoadTex();
 	Player::LoadTex();
-	sound.createSound(&soundTest[JUMP], "../Assets/Audio/SFX/powerup.wav");
-	sound.createSound(&soundTest[BGM], "../Assets/Audio/BGM/gg.wav");
+	SoundSystemClass::loadSound();
 }
 void Demo::Unload(void)
 {
 	Enemies::Unload();
 	Tiles::Unload();
 	Player::Unload();
-	for (int i = 0; i < soundTest.size(); i++) {
-		sound.releaseSound(soundTest[i]);
-	}
+	SoundSystemClass::unloadSound();
 	for (int i = 0; i < Images.size(); ++i) {
 		Images[i].Free();
 	}
