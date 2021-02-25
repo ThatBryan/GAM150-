@@ -48,11 +48,9 @@ void Enemies::Draw()
 	}
 }
 
-void Enemies::AddNew(std::vector <Enemies>& enemy, const short type, const s8* filepath, const AEVec2 pos, const f32 width, const f32 height)
+void Enemies::AddNew(std::vector <Enemies>& enemy, const short type, const AEVec2 pos, const f32 width, const f32 height)
 {
-	AEGfxTexture* temp = nullptr;
-	temp = enemyTex[type];
-	enemy.push_back(Enemies(temp, width, height));
+	enemy.push_back(Enemies(enemyTex[type], width, height));
 	enemy[enemy.size() - 1].sprite.pos = pos;
 	enemy[enemy.size() - 1].type = type;
 	enemy[enemy.size() - 1].spawnPos = pos;

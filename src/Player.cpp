@@ -1,10 +1,12 @@
 #include "Player.h"
 
-//Player::Player(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height, 270),
-//active{true}, gravity{false}, jump{false}, win{false}, startingPos{0, 0}
-//{
-//	colliderAABB.color.SetColor(255.0f, 0, 0, 255.0f);
-//}
+AEGfxTexture* Player::playerTex{ nullptr };
+
+Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height, 270),
+active{true}, gravity{false}, jump{false}, win{false}, startingPos{0, 0}
+{
+	colliderAABB.color.SetColor(255.0f, 0, 0, 255.0f);
+}
 
 void Player::Reset(void)
 {
@@ -19,18 +21,22 @@ void Player::Update() {
 		sprite.direction += 1;
 		Update_Position();
 	}
-	Draw();
+	Render();
 }
-void Player::Draw(void)
+void Player::Render(void)
 {
 	sprite.Draw_Texture(255.0f);
 	
 	if (DebugMode)
 		colliderAABB.Draw();
 }
-void Player::Free(std::vector <Player> player)
-{
-	//player[player.size() - 1].sprite.Free();
+void Player::LoadTex(void) {
+	playerTex = AEGfxTextureLoad(PlayerSprite);
+	AE_ASSERT_MESG(playerTex, "Failed to create texture!");
+}
+
+void Player::Unload(void) {
+	AEGfxTextureUnload(playerTex);
 }
 void Player::Update_Position(void)
 {

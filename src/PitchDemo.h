@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "AEEngine.h"
 #include "UserInterface.h"
+#include "AudioManager.h"
 
 namespace Demo
 {

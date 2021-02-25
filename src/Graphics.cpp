@@ -11,6 +11,21 @@ void Color::SetColor(const f32 r, const f32 g, const f32 b, const f32 alpha)
 	this->alpha = alpha / colorcodeMax;
 }
 
+void Color::Decrement(float i) {
+	r -= i;
+	b -= i;
+	//g -= i;
+	//alpha -= i;
+	if (r <= 0)
+		r = 1.0f;
+	if (g <= 0)
+		g = 1.0f;
+	if (b <= 0)
+		b = 1.0f;
+	if (alpha <= 0)
+		alpha = 1.0f;
+}
+
 Graphics::Rect::Rect(const f32 width, const f32 height, const f32 direction) : direction{direction}, transformMtx{NULL},
 width{width}, height{height}, pos{0, 0}, pMesh{rectMesh}
 {

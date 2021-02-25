@@ -27,7 +27,7 @@ public:
 
 	// Add new enemy into the vector.
 	static void LoadTex(void);
-	static void AddNew(std::vector <Enemies>& enemy, const short type, const s8* filepath, const AEVec2 pos, const f32 width, const f32 height);
+	static void AddNew(std::vector <Enemies>& enemy, const short type, const AEVec2 pos, const f32 width, const f32 height);
 	static void Reset(std::vector <Enemies>& enemy);
 	void Draw();
 	static void Unload(void);
