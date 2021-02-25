@@ -31,15 +31,12 @@ void SoundSystemClass::playSound(SoundClass& Sound, bool bLoop) {
 		Sound->setLoopCount(-1);
 	}
 	m_pSystem->playSound(Sound, NULL, false, &chan);
+	chan->setVolume(0.5f);
 }
 
 void SoundSystemClass::update() {
 	m_pSystem->update();
-	if (paused) {
-		chan->setMute(true);
-	}
-	else
-		chan->setMute(false);
+	chan->setMute(paused);
 }
 
 void SoundSystemClass::releaseSound(SoundClass& Sound) {

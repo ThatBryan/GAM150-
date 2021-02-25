@@ -68,15 +68,38 @@ void Player::Update_Position(void)
 			}
 		}
 	}
-	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT) && !(AEInputCheckCurr(AEVK_W)))
+	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
 	{
 		if (sprite.pos.x + sprite.width / 2 <= maxX)
 			sprite.pos.x += player_speed;
 	}
 
-	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT) && !(AEInputCheckCurr(AEVK_W)))
+	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
+	{
 		if (sprite.pos.x - sprite.width / 2 >= minX)
+		sprite.pos.x -= player_speed;
+	}
+
+	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
+	{
+		if (sprite.pos.y - sprite.height / 2 >= 0)
+		{
+			sprite.pos.y -= player_speed;
+		}
+	}
+	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
+	{
+		if (sprite.pos.x + sprite.width / 2 <= maxX)
+			sprite.pos.x += player_speed;
+
+	}
+	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
+	{
+		if (sprite.pos.x - sprite.width / 2 >= minX)
+		{
 			sprite.pos.x -= player_speed;
+		}
+	}
 
 	if (DebugMode) {
 	AEVec2 Mouse = Utilities::GetMousePos();
