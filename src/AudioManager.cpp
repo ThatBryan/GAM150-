@@ -1,8 +1,8 @@
 #include "AudioManager.h"
 
 SoundSystemClass sound;
-std::array <SoundClass, soundMAX> soundTest{ NULL };
-SoundData soundData[soundMAX];
+std::array <SoundClass, Sound_Max> soundTest{ NULL };
+SoundData soundData[Sound_Max];
 
 SoundSystemClass::SoundSystemClass() {
 	if (FMOD::System_Create(&m_pSystem) != FMOD_OK)
@@ -36,7 +36,7 @@ void SoundSystemClass::playSound(SoundClass& Sound, int index, bool bLoop) {
 
 void SoundSystemClass::update() {
 	m_pSystem->update();
-	for (int i = 0; i < soundMAX; ++i) {
+	for (int i = 0; i < Sound_Max; ++i) {
 		soundData[i].channel->setMute(paused);
 	}
 }
@@ -46,8 +46,8 @@ void SoundSystemClass::releaseSound(SoundClass& Sound) {
 }
 
 void SoundSystemClass::loadSound(void) {
-	sound.createSound(&soundTest[JUMP], "../Assets/Audio/SFX/powerup.wav");
-	sound.createSound(&soundTest[BGM], "../Assets/Audio/BGM/gg.wav");
+	sound.createSound(&soundTest[Sound_Jump], "../Assets/Audio/SFX/powerup.wav");
+	sound.createSound(&soundTest[Sound_BGM], "../Assets/Audio/BGM/gg.wav");
 }
 void SoundSystemClass::unloadSound(void) {
 	for (int i = 0; i < soundTest.size(); i++) {

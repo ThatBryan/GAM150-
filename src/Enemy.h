@@ -5,9 +5,9 @@
 #include "AEEngine.h"
 #include "Graphics.h"
 #include "Constants.h"
-enum EnemyType {Slime = 0, Bat = 1, Squirrel, ENEMY_MAX };
+enum EnemyType {Enemy_Slime = 0, Enemy_Bat, Enemy_Squirrel, Enemy_Max };
 
-static AEGfxTexture* enemyTex[ENEMY_MAX]{ nullptr };
+static AEGfxTexture* enemyTex[Enemy_Max]{ nullptr };
 
 class Player;
 class Enemies : public GameObject

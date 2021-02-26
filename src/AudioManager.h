@@ -7,7 +7,7 @@
 #include "Constants.h"
 
 using SoundClass = FMOD::Sound*;
-enum Sounds {BGM, JUMP, soundMAX };
+enum Sounds {Sound_BGM, Sound_Jump, Sound_Max };
 
 struct SoundData {
 	int index;

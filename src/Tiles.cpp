@@ -155,7 +155,7 @@ void Tiles::UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& play
 }
 
 void Tiles::LoadTex() {
-	for (int i = 0; i < TILE_MAX; i++) {
+	for (int i = 0; i < Tile_Max; i++) {
 		const char* pTex = nullptr;
 		switch (i) {
 		case Tile_Grass:
@@ -180,7 +180,7 @@ void Tiles::LoadTex() {
 
 void Tiles::Unload()
 {
-	for (size_t i = 0; i < TILE_MAX; i++)
+	for (size_t i = 0; i < Tile_Max; i++)
 	{
 		AEGfxTextureUnload(tileTex[i]);
 	}

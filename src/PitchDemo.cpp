@@ -24,7 +24,7 @@ std::vector <Player> player;
 
 enum {GGPen = 0, Victory, Defeat, MAX_IMAGE};
 static std::array <Image, MAX_IMAGE> Images;
-extern SoundData soundData[soundMAX];
+extern SoundData soundData[Sound_Max];
 
 void Demo::Init(void)
 {
@@ -53,10 +53,10 @@ void Demo::Init(void)
 	DemoEnemyPos4.y += 20.0f;
 	AEVec2 Offset = { -15.0f, TILE_HEIGHT - 10.0f };
 
-	Enemies::AddNew(enemy, Slime, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, Slime, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, Slime, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, Bat, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, Enemy_Slime, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, Enemy_Slime, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, Enemy_Slime, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, Enemy_Bat, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
 
 	player.push_back(Player(Player::playerTex, player_width, player_height));
 	player[0].startingPos = Demo_Tiles2[0].spawnPos;
@@ -67,7 +67,7 @@ void Demo::Init(void)
 	Images[Victory].Init(VictoryScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), AEVec2Set(0, 0));
 	Images[Defeat].Init(GameoverScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), AEVec2Set(0, 0));
 
-	sound.playSound(soundTest[BGM], BGM, true);
+	sound.playSound(soundTest[Sound_BGM], Sound_BGM, true);
 }
 
 void Demo::Update(void)
@@ -96,8 +96,8 @@ void Demo::Load(void) {
 	Tiles::LoadTex();
 	Player::LoadTex();
 	SoundSystemClass::loadSound();
-	SoundSystemClass::SetVolume(BGM, 0.5f);
-	SoundSystemClass::SetVolume(JUMP, 2.0f);
+	SoundSystemClass::SetVolume(Sound_BGM, 0.5f);
+	SoundSystemClass::SetVolume(Sound_Jump, 2.0f);
 }
 void Demo::Unload(void)
 {
