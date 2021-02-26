@@ -97,7 +97,7 @@ void Demo::Load(void) {
 	Player::LoadTex();
 	SoundSystemClass::loadSound();
 	SoundSystemClass::SetVolume(Sound_BGM, 0.5f);
-	SoundSystemClass::SetVolume(Sound_Jump, 2.0f);
+	SoundSystemClass::SetVolume(Sound_Jump, .5f);
 }
 void Demo::Unload(void)
 {
