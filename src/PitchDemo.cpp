@@ -34,13 +34,12 @@ void Demo::Init(void)
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
 
 	size_t test = (size_t)(AEGetWindowWidth() / TILE_WIDTTH);
-	Tiles::AddTileRow(Demo_Tiles, COLLAPSIBLE, test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
-	Tiles::AddTileRow(Demo_Tiles2, COLLAPSIBLE, 8, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2 });
-	Tiles::AddTileRow(Demo_Tiles2, GOAL, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2 });
-	Tiles::AddTileRow(Demo_Tiles3, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
-	Tiles::AddTileRow(Demo_Tiles3, SAFE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
-	Tiles::AddTileRow(Demo_Tiles3, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
-	Tiles::AddTileRow(Demo_Tiles, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
+	Tiles::AddTileRow(Demo_Tiles, Tile_Grass, test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
+	Tiles::AddTileRow(Demo_Tiles2, Tile_Grass, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2 });
+	Tiles::AddTileRow(Demo_Tiles2, Tile_Goal, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2 });
+	Tiles::AddTileRow(Demo_Tiles3, Tile_Special, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
+	Tiles::AddTileRow(Demo_Tiles3, Tile_Safe, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
+	Tiles::AddTileRow(Demo_Tiles3, Tile_Grass, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
 
 	TileManager.push_back(&Demo_Tiles);
 	TileManager.push_back(&Demo_Tiles2);

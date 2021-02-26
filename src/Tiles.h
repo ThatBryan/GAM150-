@@ -6,7 +6,7 @@
 #include "Player.h"
 #include "Enemy.h"
 
-enum TileType {COLLAPSIBLE, GOAL, SAFE, SPECIAL, TILE_MAX};
+enum TileType {Tile_Grass, Tile_Goal, Tile_Safe, Tile_Special, TILE_MAX};
 static AEGfxTexture* tileTex[TILE_MAX]{ nullptr };
 
 class Tiles

@@ -14,13 +14,13 @@ void Enemies::Update_Position(void)
 	static float speed = 1.0f;
 	static float counter = 0.0f;
 
+	sprite.direction -= 1.0f * ID;
 	sprite.pos.x += speed;
 	headBB.pos = sprite.pos;
 	enemyBB.pos = sprite.pos;
 	if (type == Slime)
 	{
 		headBB.pos.y += 20.0f;
-		//sprite.direction -= 1.0f * ID;
 	}
 
 	counter += 1.0f;

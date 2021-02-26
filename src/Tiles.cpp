@@ -11,7 +11,7 @@ ColliderAABB{width, height}
 }
 void Tiles::Collapse(void)
 {
-	if (type == COLLAPSIBLE)
+	if (type == Tile_Grass || type == Tile_Special)
 	{
 		if (collapseDelay <= 0)
 		{
@@ -22,9 +22,9 @@ void Tiles::Collapse(void)
 
 void Tiles::CheckPlayerGoal(std::vector <Player>& player)
 {
-	if (type == GOAL)
+	if (type == Tile_Goal)
 	{
-		static AEVec2 GoalPoint = { this->image.pos.x, this->image.pos.y + this->image.height / 2 };
+		static AEVec2 GoalPoint = {image.pos.x, image.pos.y + image.height / 2 };
 		if (AETestPointToRect(&GoalPoint, &player[0].sprite.pos, player[0].sprite.width, player[0].sprite.height))
 			player[(player.size() - 1)].SetPlayerWin();
 	}
@@ -100,19 +100,18 @@ void Tiles::CollapseNext(std::vector <Tiles>& tiles)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
-		if (tiles[i].type != COLLAPSIBLE)
-			continue;
-
-		if (tiles[i].collapsing && (tiles[i].collapseDelay <= 0))
-		{
-			if (tiles[i].ID + 1 < (int)tiles.size())
+		if (tiles[i].type == Tile_Grass || tiles[i].type == Tile_Special) {
+			if (tiles[i].collapsing && (tiles[i].collapseDelay <= 0))
 			{
-				tiles[i + 1].collapsing = true;
-			}
+				if (tiles[i].ID + 1 < (int)tiles.size())
+				{
+					tiles[i + 1].collapsing = true;
+				}
 
-			if ((tiles[i].ID - 1) >= 0)
-			{
-				tiles[i - 1].collapsing = true;
+				if ((tiles[i].ID - 1) >= 0)
+				{
+					tiles[i - 1].collapsing = true;
+				}
 			}
 		}
 	}
@@ -126,8 +125,8 @@ void Tiles::Draw(std::vector <Tiles>& tiles)
 			continue;
 
 		tiles[i].image.Draw_Texture(255);
-		//if (DebugMode)
-		//	tiles[i].ColliderAABB.Draw();
+		if (DebugMode)
+			tiles[i].ColliderAABB.Draw();
 	}
 }
 
@@ -172,16 +171,16 @@ void Tiles::LoadTex() {
 	for (int i = 0; i < TILE_MAX; i++) {
 		const char* pTex = nullptr;
 		switch (i) {
-		case COLLAPSIBLE:
+		case Tile_Grass:
 			pTex = GrassTile;
 			break;
-		case GOAL:
+		case Tile_Goal:
 			pTex = GoalTile;
 			break;
-		case SAFE:
+		case Tile_Safe:
 			pTex = GreyTile;
 			break;
-		case SPECIAL:
+		case Tile_Special:
 			pTex = SpecialTile;
 			break;
 		default:
