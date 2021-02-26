@@ -14,13 +14,13 @@ void Enemies::Update_Position(void)
 	static float speed = 1.0f;
 	static float counter = 0.0f;
 
+	sprite.direction -= 1.0f * ID;
 	sprite.pos.x += speed;
 	headBB.pos = sprite.pos;
 	enemyBB.pos = sprite.pos;
-	if (type == Slime)
+	if (type == Enemy_Slime)
 	{
 		headBB.pos.y += 20.0f;
-		//sprite.direction -= 1.0f * ID;
 	}
 
 	counter += 1.0f;
@@ -36,7 +36,6 @@ void Enemies::Update()
 	if (!paused) {
 		Update_Position();
 	}
-	Draw();
 }
 
 void Enemies::Draw()
@@ -69,25 +68,25 @@ void Enemies::Reset(std::vector <Enemies>& enemy)
 }
 void Enemies::Unload(void)
 {
-	for (size_t i = 0; i < ENEMY_MAX; i++)
+	for (size_t i = 0; i < Enemy_Max; i++)
 	{
-		if (i == Squirrel)
+		if (i == Enemy_Squirrel)
 			continue;
 		AEGfxTextureUnload(enemyTex[i]);
 	}
 }
 
 void Enemies::LoadTex(void) {
-	for (int i = 0; i < ENEMY_MAX - 1; i++) {
+	for (int i = 0; i < Enemy_Max - 1; i++) {
 		const char* pTex = nullptr;
 		switch (i) {
-		case Slime:
+		case Enemy_Slime:
 			pTex = WaterSlimeSprite;
 			break;
-		case Bat:
+		case Enemy_Bat:
 			pTex = FlyingEnemySprite;
 			break;
-		case Squirrel:
+		case Enemy_Squirrel:
 			break;
 		default:
 			return;

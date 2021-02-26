@@ -6,8 +6,8 @@
 #include "Player.h"
 #include "Enemy.h"
 
-enum TileType {COLLAPSIBLE, GOAL, SAFE, SPECIAL, TILE_MAX};
-static AEGfxTexture* tileTex[TILE_MAX]{ nullptr };
+enum TileType {Tile_Grass, Tile_Goal, Tile_Safe, Tile_Special, Tile_Max};
+static AEGfxTexture* tileTex[Tile_Max]{ nullptr };
 
 class Tiles
 {
@@ -29,6 +29,7 @@ class Tiles
 		void CheckPos(void);
 		static void Unload(void);
 		static void LoadTex(void);
+		void Render(void);
 
 		static void CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager);
 		static void CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& player);
@@ -44,7 +45,4 @@ class Tiles
 
 		// Resets the level.
 		static void Reset(std::vector <Tiles>& tiles);
-
-		// Draws to screen the tiles.
-		static void Draw(std::vector <Tiles>& tile);
 };

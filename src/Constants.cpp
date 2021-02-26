@@ -19,6 +19,7 @@ const char* FontFile = "../Assets/Font/Roboto-Regular.ttf";
 const float player_speed = 1.5f;
 const float player_width = 50.0f;
 const float player_height = 50.0f;
+const float jumpspeed = 5.0f;
 const float enemy_width = 50.0f;
 const float enemy_height = 50.0f;
 const float gravity_strength = 10.0f;
