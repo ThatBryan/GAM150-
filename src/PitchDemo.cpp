@@ -24,6 +24,7 @@ std::vector <Player> player;
 
 enum {GGPen = 0, Victory, Defeat, MAX_IMAGE};
 static std::array <Image, MAX_IMAGE> Images;
+extern SoundData soundData[soundMAX];
 
 void Demo::Init(void)
 {
@@ -67,8 +68,7 @@ void Demo::Init(void)
 	Images[Victory].Init(VictoryScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), AEVec2Set(0, 0));
 	Images[Defeat].Init(GameoverScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), AEVec2Set(0, 0));
 
-	sound.playSound(soundTest[BGM], true);
-
+	sound.playSound(soundTest[BGM], BGM, true);
 }
 
 void Demo::Update(void)
@@ -97,6 +97,8 @@ void Demo::Load(void) {
 	Tiles::LoadTex();
 	Player::LoadTex();
 	SoundSystemClass::loadSound();
+	SoundSystemClass::SetVolume(BGM, 0.5f);
+	SoundSystemClass::SetVolume(JUMP, 2.0f);
 }
 void Demo::Unload(void)
 {
