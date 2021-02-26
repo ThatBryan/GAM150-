@@ -9,7 +9,7 @@
 #include "AudioManager.h"
 
 extern SoundSystemClass sound;
-extern std::array <SoundClass, MAX> soundTest;
+extern std::array <SoundClass, soundMAX> soundTest;
 
 class Player
 {

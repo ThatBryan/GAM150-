@@ -1,8 +1,8 @@
 #include "AudioManager.h"
 
 SoundSystemClass sound;
-std::array <SoundClass, MAX> soundTest{ NULL };
-FMOD::Channel* chan{ nullptr };
+std::array <SoundClass, soundMAX> soundTest{ NULL };
+SoundData soundData[soundMAX];
 
 SoundSystemClass::SoundSystemClass() {
 	if (FMOD::System_Create(&m_pSystem) != FMOD_OK)
@@ -21,7 +21,7 @@ void SoundSystemClass::createSound(SoundClass* pSound, const char* pFile) {
 	m_pSystem->createSound(pFile, FMOD_ERR_NEEDSHARDWARE, 0, pSound);
 }
 
-void SoundSystemClass::playSound(SoundClass& Sound, bool bLoop) {
+void SoundSystemClass::playSound(SoundClass& Sound, int index, bool bLoop) {
 	if (!bLoop) {
 		Sound->setMode(FMOD_LOOP_OFF);
 	}
@@ -30,13 +30,15 @@ void SoundSystemClass::playSound(SoundClass& Sound, bool bLoop) {
 		Sound->setMode(FMOD_LOOP_NORMAL);
 		Sound->setLoopCount(-1);
 	}
-	m_pSystem->playSound(Sound, NULL, false, &chan);
-	chan->setVolume(0.5f);
+	m_pSystem->playSound(Sound, NULL, false, &(soundData[index].channel));
+	soundData[index].channel->setVolume(soundData[index].volume);
 }
 
 void SoundSystemClass::update() {
 	m_pSystem->update();
-	chan->setMute(paused);
+	for (int i = 0; i < soundMAX; ++i) {
+		soundData[i].channel->setMute(paused);
+	}
 }
 
 void SoundSystemClass::releaseSound(SoundClass& Sound) {
@@ -51,4 +53,7 @@ void SoundSystemClass::unloadSound(void) {
 	for (int i = 0; i < soundTest.size(); i++) {
 		sound.releaseSound(soundTest[i]);
 	}
+}
+void SoundSystemClass::SetVolume(int index, float volume) {
+	soundData[index].volume = volume;
 }

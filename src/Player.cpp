@@ -51,7 +51,7 @@ void Player::Update_Position(void)
 
 	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP) && this->jump == FALSE)
 	{
-		sound.playSound(soundTest[JUMP]);
+		sound.playSound(soundTest[JUMP], JUMP);
 		jump = TRUE;
 	}
 	if (jump)

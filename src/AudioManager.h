@@ -7,7 +7,13 @@
 #include "Constants.h"
 
 using SoundClass = FMOD::Sound*;
-enum Sounds { JUMP, BGM, MAX };
+enum Sounds {BGM, JUMP, soundMAX };
+
+struct SoundData {
+	int index;
+	FMOD::Channel* channel;
+	float volume;
+};
 
 class SoundSystemClass
 {
@@ -16,9 +22,10 @@ class SoundSystemClass
 public:
 	SoundSystemClass();
 	void createSound(SoundClass*, const char* pFile);
-	void playSound(SoundClass& pSound, bool bLoop = false);
+	void playSound(SoundClass& pSound, int index, bool bLoop = false);
 	void releaseSound(SoundClass& pSound);
 	void update();
 	static void loadSound(void);
 	static void unloadSound(void);
+	static void SetVolume(int index, float volume);
 };
