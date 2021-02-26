@@ -36,7 +36,6 @@ void Enemies::Update()
 	if (!paused) {
 		Update_Position();
 	}
-	Draw();
 }
 
 void Enemies::Draw()

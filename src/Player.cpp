@@ -3,7 +3,7 @@
 AEGfxTexture* Player::playerTex{ nullptr };
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height, 270),
-active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }
+active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpspeed_y{jumpspeed}
 {
 	playerBB.color.SetColor(0, 0, 0, 255.0f);
 	feetBB.color.SetColor(255.0f, 255.0f, 0, 255.0f);
@@ -15,6 +15,7 @@ void Player::Reset(void)
 	win = false;
 	active = true;
 	sprite.pos = startingPos;
+	jumpspeed_y = jumpspeed;
 }
 
 void Player::Update() {
@@ -22,7 +23,6 @@ void Player::Update() {
 		sprite.direction += 1;
 		Update_Position();
 	}
-	Render();
 }
 void Player::Render(void)
 {
@@ -47,12 +47,13 @@ void Player::Update_Position(void)
 	static f32 maxX = AEGfxGetWinMaxX();
 	static f32 minY = AEGfxGetWinMinY();
 	static f32 minX = AEGfxGetWinMinX();
-	static float jumpspeed_y = 5.0f;
 
-	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP) && this->jump == FALSE)
+	if (!jump && (AEInputCheckTriggered(AEVK_W) || AEInputCheckTriggered(AEVK_UP)))
 	{
-		sound.playSound(soundTest[JUMP], JUMP);
-		jump = TRUE;
+		if (!DebugMode) {
+			jump = TRUE;
+			sound.playSound(soundTest[JUMP], JUMP);
+		}
 	}
 	if (jump)
 	{
@@ -108,6 +109,17 @@ void Player::Update_Position(void)
 		if (AEInputCheckCurr(AEVK_LBUTTON))
 			sprite.pos = Mouse;
 		}
+	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN)) {
+		if (sprite.pos.y - sprite.height / 2 >= minY) {
+			sprite.pos.y -= player_speed;
+		}
+	}
+	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP)) {
+		if (sprite.pos.y + sprite.height / 2 <= maxY) {
+			sprite.pos.y += player_speed;
+		}
+	}
+
 	}
 	playerBB.pos = sprite.pos;
 	feetBB.pos = AEVec2{ sprite.pos.x, sprite.pos.y - player_collider_offset };

@@ -116,20 +116,6 @@ void Tiles::CollapseNext(std::vector <Tiles>& tiles)
 		}
 	}
 }
-
-void Tiles::Draw(std::vector <Tiles>& tiles)
-{
-	for (size_t i = 0; i < tiles.size(); i++)
-	{
-		if (tiles[i].active == false)
-			continue;
-
-		tiles[i].image.Draw_Texture(255);
-		if (DebugMode)
-			tiles[i].ColliderAABB.Draw();
-	}
-}
-
 void Tiles::Reset(std::vector <Tiles>& tiles)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
@@ -147,7 +133,8 @@ void Tiles::Update()
 		Collapse();
 		DecreaseLifespan();
 	}
-
+}
+void Tiles::Render() {
 	if (active) {
 		image.Draw_Texture(255);
 		if (DebugMode)

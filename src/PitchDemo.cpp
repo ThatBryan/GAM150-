@@ -78,10 +78,10 @@ void Demo::Update(void)
 	Utilities::CheckPauseInput();
 	Utilities::CheckFullScreenInput();
 	Utilities::CheckDebugMode();
+	Demo::UpdateManager();
 	Demo::UpdateOverlay();
 	UI::Update();
 	Demo::Render();
-	Demo::UpdateManager();
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Demo::Restart();
 }
@@ -124,9 +124,15 @@ void Demo::Restart(void)
 
 void Demo::Render(void)
 {
-	Tiles::Draw(Demo_Tiles);
-	Tiles::Draw(Demo_Tiles2);
-	Tiles::Draw(Demo_Tiles3);
+	for (int i = 0; i < Demo_Tiles.size(); ++i) {
+		Demo_Tiles[i].Render();
+		Demo_Tiles2[i].Render();
+		Demo_Tiles3[i].Render();
+	}
+	for (size_t i = 0; i < enemy.size(); ++i) {
+		enemy[i].Draw();
+	}
+	player[0].Render();
 }
 
 void Demo::UpdateManager(void)

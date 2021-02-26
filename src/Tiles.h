@@ -29,6 +29,7 @@ class Tiles
 		void CheckPos(void);
 		static void Unload(void);
 		static void LoadTex(void);
+		void Render(void);
 
 		static void CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager);
 		static void CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& player);
@@ -44,7 +45,4 @@ class Tiles
 
 		// Resets the level.
 		static void Reset(std::vector <Tiles>& tiles);
-
-		// Draws to screen the tiles.
-		static void Draw(std::vector <Tiles>& tile);
 };

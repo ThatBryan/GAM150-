@@ -15,6 +15,7 @@ class Player
 {
 private:
 	bool win;
+	float jumpspeed_y;
 
 public:
 	static AEGfxTexture* playerTex;
