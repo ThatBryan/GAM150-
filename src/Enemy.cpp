@@ -1,5 +1,7 @@
 #include "Enemy.h"
 
+float numberOfTicks = 0.0f;
+
 Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
 spawnPos{0, 0}, active{true}, type{0}
 {
@@ -11,24 +13,44 @@ spawnPos{0, 0}, active{true}, type{0}
 
 void Enemies::Update_Position(void)
 {
-	static float speed = 1.0f;
 	static float counter = 0.0f;
-
-	sprite.direction -= 1.0f * ID;
-	sprite.pos.x += speed;
-	headBB.pos = sprite.pos;
-	enemyBB.pos = sprite.pos;
+	static float speed = 1.0f;
+	static float bat_speed = 1.0f;
+	static float bat_counter = 0.0f;
+	
 	if (type == Enemy_Slime)
 	{
-		headBB.pos.y += 20.0f;
+		sprite.direction -= 1.0f * ID;
+		sprite.pos.x += speed;
+		headBB.pos = sprite.pos;
+		enemyBB.pos = sprite.pos;
+		if (type == Enemy_Slime)
+		{
+			headBB.pos.y += 20.0f;
+		}
+
+		counter += 1.0f;
+		if (counter > 180.0f)
+		{
+			speed *= -1;
+			counter = 0.0f;
+		}
+	}
+	
+	if (type == Enemy_Bat)
+	{
+		// Sine-Wave
+		sprite.pos.x += bat_speed;
+		sprite.pos.y = 20 * sin(sprite.pos.x * 2 * 3.14159 / 180); // y = amplitude * sin(x * period * pi / 180)
+
+		bat_counter += 1.0f;
+		if (bat_counter > 550)
+		{
+			bat_speed *= -1;
+			bat_counter = 0.0f;
+		}
 	}
 
-	counter += 1.0f;
-	if (counter > 180.0f)
-	{
-		speed *= -1;
-		counter = 0.0f;
-	}
 }
 
 void Enemies::Update()
@@ -87,6 +109,7 @@ void Enemies::LoadTex(void) {
 			pTex = FlyingEnemySprite;
 			break;
 		case Enemy_Squirrel:
+			pTex = SquirrelSprite;
 			break;
 		default:
 			return;
