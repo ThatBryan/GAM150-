@@ -6,111 +6,108 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Constants.h"
-
-Color background;
-std::vector <Tiles> Demo_Tiles;
-std::vector <Tiles> Demo_Tiles2;
-std::vector <Tiles> Demo_Tiles3;
-std::vector <Player> player;
-std::vector <Enemies> enemy;
-std::vector <Image> Images;
-
-enum {LOGO = 0, WINSCREEN = 1, DEATHSCREEN = 2};
+#include <array>
 
 #define TILE_WIDTTH 80.0f
 #define TILE_HEIGHT 50.0f
 
-#define startingX TILE_WIDTTH / 2.0f
-#define startingY1 TILE_HEIGHT / 2.0f
-#define startingY2 150 + TILE_HEIGHT / 2.0f
-#define startingY3 300 + TILE_HEIGHT / 2.0f
+#define startingX TILE_WIDTTH / 2.0f - 400
+#define startingY2 -125
+#define startingY1 startingY2 - 150
+#define startingY3 startingY2 + 150
+
+Color background;
+std::vector <Tiles> Demo_Tiles, Demo_Tiles2, Demo_Tiles3;
+std::vector <Enemies> enemy;
+std::vector <std::vector <Tiles>*> TileManager;
+std::vector <Player> player;
+
+enum {GGPen = 0, Victory, Defeat, MAX_IMAGE};
+static std::array <Image, MAX_IMAGE> Images;
+extern SoundData soundData[Sound_Max];
 
 void Demo::Init(void)
 {
+
+	UI::Init();
+	Demo::Load();
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
-	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 
-	Demo_Tiles = Tiles::AddTileRow(Demo_Tiles, GrassTile, COLLAPSIBLE, 10, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
-	Demo_Tiles2 = Tiles::AddTileRow(Demo_Tiles2, GrassTile, COLLAPSIBLE, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
-	Demo_Tiles2 = Tiles::AddTileRow(Demo_Tiles2, GoalTile, GOAL, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2});
-	Demo_Tiles3 = Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
-	Demo_Tiles3 = Tiles::AddTileRow(Demo_Tiles3, GreyTile, GREYTILE, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
-	Demo_Tiles3 = Tiles::AddTileRow(Demo_Tiles3, GrassTile, COLLAPSIBLE, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3});
+	size_t test = (size_t)(AEGetWindowWidth() / TILE_WIDTTH);
+	Tiles::AddTileRow(Demo_Tiles, Tile_Grass, test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
+	Tiles::AddTileRow(Demo_Tiles2, Tile_Grass, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2 });
+	Tiles::AddTileRow(Demo_Tiles2, Tile_Goal, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2 });
+	Tiles::AddTileRow(Demo_Tiles3, Tile_Special, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
+	Tiles::AddTileRow(Demo_Tiles3, Tile_Safe, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
+	Tiles::AddTileRow(Demo_Tiles3, Tile_Grass, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
 
-	AEVec2 DemoEnemyPos = Demo_Tiles2[(Demo_Tiles.size() / 2)].startingPos;
-	AEVec2 DemoEnemyPos2 = Demo_Tiles3[2].startingPos;
-	AEVec2 DemoEnemyPos3 = Demo_Tiles3[7].startingPos;
+	TileManager.push_back(&Demo_Tiles);
+	TileManager.push_back(&Demo_Tiles2);
+	TileManager.push_back(&Demo_Tiles3);
+
+	AEVec2 DemoEnemyPos = Demo_Tiles2[2].spawnPos;
+	AEVec2 DemoEnemyPos2 = Demo_Tiles3[2].spawnPos;
+	AEVec2 DemoEnemyPos3 = Demo_Tiles[5].spawnPos;
+	AEVec2 DemoEnemyPos4 = Demo_Tiles[4].spawnPos;
+	AEVec2 DemoEnemyPos5 = Demo_Tiles[1].spawnPos;
+
+	DemoEnemyPos4.y += 20.0f;
 	AEVec2 Offset = { -15.0f, TILE_HEIGHT - 10.0f };
-	
-	Enemies::AddNew(enemy, WaterSlimeSprite, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, WaterSlimeSprite, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, WaterSlimeSprite, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
 
-	player.push_back(Player(PlayerSprite, player_width, player_height));
-	player[0].startingPos = Demo_Tiles2[0].startingPos;
+	Enemies::AddNew(enemy, Enemy_Slime, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, Enemy_Slime, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, Enemy_Slime, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, Enemy_Bat, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, Enemy_Bat, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
+
+	player.push_back(Player(Player::playerTex, player_width, player_height));
+	player[0].startingPos = Demo_Tiles2[0].spawnPos;
 	player[0].startingPos.y += TILE_HEIGHT - 10;
 	player[0].sprite.pos = player[0].startingPos;
 
-	Images.push_back(Image(DigipenLogo, 750.0f, 300.0f));
-	Images[0].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
-	
-	Images.push_back(Image(VictoryScreen, (f32)AEGetWindowWidth(), (f32)AEGetWindowHeight()));
-	Images[WINSCREEN].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());	
+	Images[GGPen].Init(DigipenLogo, static_cast<f32>(AEGetWindowWidth()) - 100.0f, static_cast<f32>(AEGetWindowHeight()) - 150.0f, AEVec2Set(0, 0));
+	Images[Victory].Init(VictoryScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), AEVec2Set(0, 0));
+	Images[Defeat].Init(GameoverScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), AEVec2Set(0, 0));
 
-	Images.push_back(Image(GameoverScreen, (f32)AEGetWindowWidth(), (f32)AEGetWindowHeight()));
-	Images[DEATHSCREEN].pos = AEVec2Set(Utilities::Get_HalfWindowWidth(), Utilities::Get_HalfWindowHeight());
-	paused = false;
+	sound.playSound(soundTest[Sound_BGM], Sound_BGM, true);
 }
 
 void Demo::Update(void)
 {
+	sound.update();
+	background.Decrement();
+	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 	Utilities::CheckPauseInput();
-	if (paused && player[0].active && !player[0].GetWinStatus())
-	{
-		static float alpha = 255.0f;
-		if (alpha <= 0)
-			alpha = 255.0f;
-
-		Images[LOGO].Draw_Default(Images[LOGO], Images[LOGO].pos, alpha);
-		alpha -= 4.0f;
-	}
-	if (!paused)
-	{
-		player[0].Update_Position();
-
-		for (size_t i = 0; i < enemy.size(); i++)
-		{
-			if(enemy[i].active)
-				enemy[i].Update_Position();	
-		}
-		Demo::CollisionManager();
-		Demo::CollapsingManager();
-	}
-	if (player[0].active == false)
-	{
-		paused = true;
-		Images[DEATHSCREEN].Draw_Default(Images[DEATHSCREEN], Images[DEATHSCREEN].pos, 255);
-	}
-	if (player[0].GetWinStatus())
-	{
-		paused = true;
-		Images[WINSCREEN].Draw_Default(Images[WINSCREEN], Images[WINSCREEN].pos, 255);
-	}
-
-	Demo::DrawingManager();
+	Utilities::CheckFullScreenInput();
+	Utilities::CheckDebugMode();
+	Demo::UpdateManager();
+	Demo::UpdateOverlay();
+	UI::Update();
+	Demo::Render();
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Demo::Restart();
 }
 void Demo::Exit(void)
 {
-	Tiles::Free(Demo_Tiles);
-	Tiles::Free(Demo_Tiles2);
-	Tiles::Free(Demo_Tiles3);
-	Enemies::Free(enemy);
+	Unload();
+}
 
-	player[0].sprite.Free();
-	for (size_t i = 0; i < Images.size(); i++)
-	{
+void Demo::Load(void) {
+	rectMesh = Graphics::Mesh_Rectangle();
+	Enemies::LoadTex();
+	Tiles::LoadTex();
+	Player::LoadTex();
+	SoundSystemClass::loadSound();
+	SoundSystemClass::SetVolume(Sound_BGM, 0.5f);
+	SoundSystemClass::SetVolume(Sound_Jump, .5f);
+}
+void Demo::Unload(void)
+{
+	Enemies::Unload();
+	Tiles::Unload();
+	Player::Unload();
+	SoundSystemClass::unloadSound();
+	for (int i = 0; i < Images.size(); ++i) {
 		Images[i].Free();
 	}
 }
@@ -124,24 +121,36 @@ void Demo::Restart(void)
 
 	player[0].Reset();
 	paused = false;
+	app_time = 0;
 }
 
-void Demo::DrawingManager(void)
+void Demo::Render(void)
 {
-	Tiles::Draw(Demo_Tiles);
-	Tiles::Draw(Demo_Tiles2);
-	Tiles::Draw(Demo_Tiles3);
-
-	Enemies::Draw(enemy);
-	player[0].Draw();
+	for (int i = 0; i < Demo_Tiles.size(); ++i) {
+		Demo_Tiles[i].Render();
+		Demo_Tiles2[i].Render();
+		Demo_Tiles3[i].Render();
+	}
+	for (size_t i = 0; i < enemy.size(); ++i) {
+		enemy[i].Draw();
+	}
+	player[0].Render();
 }
 
-void Demo::CollisionManager(void)
+void Demo::UpdateManager(void)
 {
-	Tiles::CollisionManager(Demo_Tiles, player, enemy);
-	Tiles::CollisionManager(Demo_Tiles2, player, enemy);
-	Tiles::CollisionManager(Demo_Tiles3, player, enemy);
+	Tiles::UpdateManager(Demo_Tiles, player, enemy);
+	Tiles::UpdateManager(Demo_Tiles2, player, enemy);
+	Tiles::UpdateManager(Demo_Tiles3, player, enemy);
+	Tiles::CheckPlayerCollision(TileManager, player);
+	//player[0].GravityManager();
+	for (size_t i = 0; i < enemy.size(); i++)
+	{
+		enemy[i].Update();
+	}
+	player[0].Update();
 	player[0].CheckEnemyCollision(enemy);
+	CollapsingManager();
 }
 
 void Demo::CollapsingManager(void)
@@ -149,4 +158,26 @@ void Demo::CollapsingManager(void)
 	Tiles::CollapseNext(Demo_Tiles);
 	Tiles::CollapseNext(Demo_Tiles2);
 	Tiles::CollapseNext(Demo_Tiles3);
+}
+
+void Demo::UpdateOverlay() {
+	if (paused && player[0].active && !player[0].GetWinStatus())
+	{
+		static float alpha = 255.0f;
+		if (alpha <= 0)
+			alpha = 255.0f;
+
+		Images[GGPen].Draw_Texture(alpha);
+		alpha -= 4.0f;
+	}
+	if (player[0].active == false)
+	{
+		paused = true;
+		Images[Defeat].Draw_Texture(255);
+	}
+	if (player[0].GetWinStatus())
+	{
+		paused = true;
+		Images[Victory].Draw_Texture(255);
+	}
 }

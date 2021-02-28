@@ -1,32 +1,27 @@
 #pragma once
 #include "AEEngine.h"
+#include "GameObject.h"
 #include "Constants.h"
+#include "Graphics.h"
 
-class Image
+class Image : public GameObject
 {
 	private:
 	AEGfxVertexList* pMesh;
 	AEGfxTexture* pTex;
+	AEMtx33 transformMtx;
 
 	public:
-	// Constructor
-	Image(const s8* filepath, const f32 width, const f32 height);
-
-	f32 height, width;
+		Image(const AEGfxTexture* pTex, const f32 width, const f32 height, const f32 dir = 0); //ctor
+		Image();
+		void Init(const char* pFile, const f32 width, const f32 height, const AEVec2 pos, const f32 direction = 0, AEGfxVertexList* = rectMesh);
+	Color color;
+	f32 height, width, direction;
 	AEVec2 pos;
 
-	inline void SetMesh(AEGfxVertexList* pMesh) { this->pMesh = pMesh; }
-	inline void SetTexture(AEGfxTexture* pTex) { this->pTex = pTex; }
-
-	// Sets the mesh for a rectangle and returns a pointer to the AEGfxVertexList
-	AEGfxVertexList* Mesh_Rectangle(Image* image);
-
-	inline AEGfxVertexList* GetMesh(void) { return this->pMesh; }
-	inline AEGfxTexture* GetTexture(void) { return this->pTex; }
-	inline void Free(void) {AEGfxMeshFree(GetMesh()); AEGfxTextureUnload(GetTexture());}
-
-	void Draw_Tinted(Image& image, const AEVec2 pos, const f32 r, const f32 g, const f32 b, const f32 alpha);
-	void Draw_Default(Image& image, const AEVec2 pos, const f32 alpha);
-	void Draw_Advanced(Image& image, const AEVec2 pos, const f32 alpha, const f32 rotation);
-
+	inline void Free(void) {AEGfxTextureUnload(pTex);}
+	void SetMatrix();
+	void Draw_Color(const f32 r = 255.0f, const f32 g = 0, const f32 b = 255.0f, const f32 alpha = 255.0f);
+	void Draw_Texture(const f32 alpha, const f32 r = 255.0f, const f32 g = 255.0f, const f32 b = 255.0f, const f32 alpha2 = 255.0f);
 };
+

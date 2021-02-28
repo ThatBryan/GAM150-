@@ -3,20 +3,33 @@
 #include "Utilities.h"
 #include <vector>
 #include "AEEngine.h"
+#include "Graphics.h"
+#include "Constants.h"
+enum EnemyType {Enemy_Slime = 0, Enemy_Bat, Enemy_Squirrel, Enemy_Max };
 
-class Enemies
+static AEGfxTexture* enemyTex[Enemy_Max]{ nullptr };
+
+class Player;
+class Enemies : public GameObject
 {
-public:
-	Enemies(const s8* filepath, const f32 width, const f32 height);
-	bool active;
-	Image sprite;
-	AEVec2 startingPos;
-	void Update_Position(void);
+	unsigned short type;
+	AEVec2 spawnPos;
+	Graphics::Rect headBB {enemy_width, 5.0f};
+	Graphics::Rect enemyBB {enemy_width, enemy_height};
+	short ID;
+	friend class Player;
 
+public:
+	Enemies(AEGfxTexture* filepath, const f32 width, const f32 height);
+	Image sprite;
+	bool active;
+	void Update_Position(void);
+	void Update(void);
+	void Draw();
 
 	// Add new enemy into the vector.
-	static void AddNew(std::vector <Enemies>& enemy, const s8* filepath, const AEVec2 pos, const f32 width, const f32 height);
+	static void LoadTex(void);
+	static void AddNew(std::vector <Enemies>& enemy, const short type, const AEVec2 pos, const f32 width, const f32 height);
 	static void Reset(std::vector <Enemies>& enemy);
-	static void Draw(std::vector <Enemies> enemy);
-	static void Free(std::vector <Enemies>& enemy);
+	static void Unload(void);
 };

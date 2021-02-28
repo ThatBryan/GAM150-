@@ -1,90 +1,138 @@
 #include "Player.h"
 
-Player::Player(const s8* filepath, const f32 width, const f32 height) : sprite(filepath, width, height)
+AEGfxTexture* Player::playerTex{ nullptr };
+
+Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height, 270),
+active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpspeed_y{jumpspeed}
 {
-	this->active = true;
-	this->isGravity = false;
-	this->jump = false;
-	this->win = false;
-	this->startingPos = { 0, 0 };
+	playerBB.color.SetColor(0, 0, 0, 255.0f);
+	feetBB.color.SetColor(255.0f, 255.0f, 0, 255.0f);
 }
 
 void Player::Reset(void)
 {
-	this->active = true;
-	this->win = false;
-	this->sprite.pos = this->startingPos;
+	jump = false;
+	win = false;
+	active = true;
+	sprite.pos = startingPos;
+	jumpspeed_y = jumpspeed;
 }
 
-void Player::Draw(void)
+void Player::Update() {
+	if (!paused) {
+		sprite.direction += 1;
+		Update_Position();
+	}
+}
+void Player::Render(void)
 {
-	this->sprite.Draw_Default(this->sprite, this->sprite.pos, 255.0f);
+	sprite.Draw_Texture(255.0f);
+	
+	if (DebugMode) {
+		playerBB.Draw();
+		feetBB.Draw();
+	}
+}
+void Player::LoadTex(void) {
+	playerTex = AEGfxTextureLoad(PlayerSprite);
+	AE_ASSERT_MESG(playerTex, "Failed to create texture!");
 }
 
+void Player::Unload(void) {
+	AEGfxTextureUnload(playerTex);
+}
 void Player::Update_Position(void)
 {
-	static f32 HeightLimit = (f32)AEGetWindowHeight();
-	static f32 WidthLimit = (f32)AEGetWindowWidth();
-	static float jumpspeed_y = 10.0f;
+	static f32 maxY = AEGfxGetWinMaxY();
+	static f32 maxX = AEGfxGetWinMaxX();
+	static f32 minY = AEGfxGetWinMinY();
+	static f32 minX = AEGfxGetWinMinX();
 
-	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP) && this->jump == FALSE)
+	if (!jump && (AEInputCheckTriggered(AEVK_W) || AEInputCheckTriggered(AEVK_UP)))
 	{
-		this->jump = TRUE;
+		if (!DebugMode) {
+			jump = TRUE;
+			sound.playSound(soundTest[Sound_Jump], Sound_Jump);
+		}
 	}
-	if (this->jump == TRUE)
+	if (jump)
 	{
-		if (this->sprite.pos.y + this->sprite.height / 2 <= HeightLimit)
+		if (sprite.pos.y + sprite.height / 2 <= maxY)
 		{
+			sprite.pos.y += jumpspeed_y;
 
-			this->sprite.pos.y += jumpspeed_y;
-
-			jumpspeed_y -= 1.0f;
-			if (jumpspeed_y < -10.0f)
+			jumpspeed_y -= .2f;
+			if (jumpspeed_y < -5.0f)
 			{
-				this->jump = FALSE;
-				jumpspeed_y = 10.0f;
+				jump = FALSE;
+				jumpspeed_y = 5.0f;
 			}
 		}
+	}
+	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
+	{
+		if (sprite.pos.x + sprite.width / 2 <= maxX)
+			sprite.pos.x += player_speed;
+	}
 
-		if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
-		{
-			this->sprite.pos.x += player_speed;
-		}
-
-		if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
-		{
-			this->sprite.pos.x -= player_speed;
-		}
+	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
+	{
+		if (sprite.pos.x - sprite.width / 2 >= minX)
+		sprite.pos.x -= player_speed;
 	}
 
 	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
 	{
-		if (this->sprite.pos.y - this->sprite.height / 2 >= 0)
+		if (sprite.pos.y - sprite.height / 2 >= 0)
 		{
-			this->sprite.pos.y -= player_speed;
+			sprite.pos.y -= player_speed;
 		}
 	}
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
 	{
-		if (this->sprite.pos.x + this->sprite.width / 2 <= WidthLimit)
-		{
-			this->sprite.pos.x += player_speed;
-		}
+		if (sprite.pos.x + sprite.width / 2 <= maxX)
+			sprite.pos.x += player_speed;
+
 	}
 	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
 	{
-		if (this->sprite.pos.x - this->sprite.width / 2 >= 0)
+		if (sprite.pos.x - sprite.width / 2 >= minX)
 		{
-			this->sprite.pos.x -= player_speed;
+			sprite.pos.x -= player_speed;
 		}
 	}
+
+	if (DebugMode) {
 	AEVec2 Mouse = Utilities::GetMousePos();
-	if (AETestPointToRect(&Mouse, &this->sprite.pos, this->sprite.width, this->sprite.height))
+	if (AETestPointToRect(&Mouse, &sprite.pos, sprite.width, sprite.height))
 	{
 		if (AEInputCheckCurr(AEVK_LBUTTON))
-			this->sprite.pos = Mouse;
+			sprite.pos = Mouse;
+		}
+	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN)) {
+		if (sprite.pos.y - sprite.height / 2 >= minY) {
+			sprite.pos.y -= player_speed;
+		}
 	}
+	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP)) {
+		if (sprite.pos.y + sprite.height / 2 <= maxY) {
+			sprite.pos.y += player_speed;
+		}
+	}
+
+	}
+	playerBB.pos = sprite.pos;
+	feetBB.pos = AEVec2{ sprite.pos.x, sprite.pos.y - player_collider_offset };
 }
+
+//void Player::GravityManager(void)
+//{
+//	if (gravity)
+//	{
+//		if(DebugMode)
+//			printf("Apply gravity\n");
+//	}
+//}
 
 void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 {
@@ -92,17 +140,23 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 	{
 		if (enemy[i].active)
 		{
-			if (AETestCircleToRect(&enemy[i].sprite.pos, enemy[i].sprite.width / 2, &this->sprite.pos, this->sprite.width, this->sprite.height) && !this->jump)
+			//printf("%.2f %.2f %.2f %.2f\n", enemy[i].headBB.pos.x, this->playerBB.pos.x, enemy[i].headBB.pos.y, this->playerBB.pos.y);
+			//enemy[i].headBB.pos.y -= 15.0f;
+			//if (AETestRectToRect(&enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, &this->feetBB.pos, feetBB.width, feetBB.height))// && 
+			//	printf("enemy dies\n");
+			//	//enemy[i].active = false;
+			if (AETestRectToRect(&enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, &playerBB.pos, playerBB.width, playerBB.height))
 			{
-				AEVec2 EnemyTop = { enemy[i].sprite.pos.x, enemy[i].sprite.pos.y + enemy[i].sprite.height / 2 };
-				if (AETestPointToRect(&EnemyTop, &this->sprite.pos, this->sprite.width, this->sprite.height))
-				{
-					enemy[i].active = false;
-				}
-				else
-				{
-					this->active = false;
-				}
+			if (enemy[i].headBB.pos.y < feetBB.pos.y) {
+				if(DebugMode)
+					printf("enemy dies\n");
+				enemy[i].active = false;
+			}
+			else {
+				if(DebugMode)
+					printf("player dies\n");
+				active = false;
+			}
 			}
 		}
 	}

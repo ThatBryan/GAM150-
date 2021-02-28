@@ -1,9 +1,10 @@
 #pragma once
-//#include "../Extern/AlphaEngine_V3.08/include/AEEngine.h"
 #include "Tiles.h"
 #include "Player.h"
 #include "AEEngine.h"
-
+#include "UserInterface.h"
+#include "AudioManager.h"
+extern SoundSystemClass sound;
 namespace Demo
 {
 	//Level main entry points
@@ -12,14 +13,16 @@ namespace Demo
 	void Exit(void);
 
 	// Collection of drawing related code.
-	void DrawingManager(void);
+	void Render(void);
+	void Load(void);
+	void Unload(void);
 
-	// Restarts the level (kinda)
+	// Restarts the level (kinda)asd
 	void Restart(void);
 
 	// Collection of collision related code.
-	void CollisionManager(void);
-
+	void UpdateManager(void);
+	void UpdateOverlay(void);
 	// Collection of tile collapsing related code.
 	void CollapsingManager(void);
 }

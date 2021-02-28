@@ -11,6 +11,9 @@
 #include <vector>
 #include "PitchDemo.h"
 #include "Constants.h"
+#define _CRTDBG_MAP_ALLOC
+#include <cstdlib>
+#include <crtdbg.h>
 // ---------------------------------------------------------------------------
 // main
 
@@ -22,6 +25,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
+	//// Enable run-time memory check for debug builds.
+
+	#if defined(DEBUG) | defined(_DEBUG)
+		_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+	#endif
+
+	//int * pi = new int;
 	///////////////////////
 	// Variable declaration
 
@@ -31,8 +41,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	/////////////////
 	// Initialization
-	srand(time(NULL));
-
+	srand((u32)time(NULL));
 	// Using custom window procedure
 	AESysInit(hInstance, nCmdShow, 800, 600, 1, 60, true, NULL);
 
@@ -44,16 +53,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	/// Test init functions
 
+	fontID = AEGfxCreateFont(FontFile, 30);
 	Demo::Init();
-	AEGfxSetBackgroundColor(0, 0, 0);
-	char strBuffer[100];
-	Graphics::Text FPS_Display("../Assets/Font/Roboto-Regular.ttf", strBuffer, 15, 1.0f);
-	FPS_Display.color.SetColor(255, 0, 0, 255);
+
 
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;
-
-	Image test(PlayerSprite, 100.0f, 100.0f);
-	test.pos = { 400, 300 };
 
 	// Game Loop
 	while (gGameRunning)
@@ -63,25 +67,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		// Handling Input
 		AEInputUpdate();
-		Utilities::Set_FullScreen();
+
+		g_dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 		Demo::Update();
-
-		//test.Draw_Advanced(test, test.pos, 255.0f, 90.0f);
-
-		memset(strBuffer, 0, 100 * sizeof(char));
-		sprintf_s(strBuffer, "Frame Rate:  %.2f", AEFrameRateControllerGetFrameRate());
-		FPS_Display.Draw_Text(FPS_Display, AEVec2Set(0, 570));
 
 		// Informing the system about the loop's end
 		AESysFrameEnd();
+
+		if(!paused)
+			app_time += g_dt;
 
 		// check if forcing the application to quit
 		if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
 			gGameRunning = 0;
 	}
-
-	FPS_Display.Free();
-	test.Free();
 	Demo::Exit();
+	Graphics::Free();
 	AESysExit();
 }
