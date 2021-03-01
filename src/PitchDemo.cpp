@@ -42,10 +42,10 @@ void Demo::Init(void)
 	Tiles::AddTileRow(Demo_Tiles3, Tile_Special, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
 	Tiles::AddTileRow(Demo_Tiles3, Tile_Safe, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
 	Tiles::AddTileRow(Demo_Tiles3, Tile_Grass, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
-	buttonTest.push_back(Button(100.0, 100.0f));
-	buttonTest[0].Set_Position(AEVec2{ 200, 300 });
+	buttonTest.push_back(Button(100.0, 100.0f, 0.7f));
+	buttonTest[0].Set_Position(AEVec2{ 0, 300 });
 	buttonTest[0].Set_Callback(Test_Callback);
-	buttonTest[0].Set_Text("HELLO WORLD!\n");
+	buttonTest[0].Set_Text("Pause");
 
 	TileManager.push_back(&Demo_Tiles);
 	TileManager.push_back(&Demo_Tiles2);
@@ -80,7 +80,6 @@ void Demo::Init(void)
 
 void Demo::Update(void)
 {
-	buttonTest[0].Update();
 	sound.update();
 	background.Decrement();
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
@@ -91,6 +90,7 @@ void Demo::Update(void)
 	Demo::UpdateOverlay();
 	UI::Update();
 	Demo::Render();
+	buttonTest[0].Update();
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Demo::Restart();
 }

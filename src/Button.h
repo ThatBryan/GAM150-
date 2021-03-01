@@ -12,7 +12,7 @@ enum ColorType{Button_Idle = 0, Button_Hovered, Button_Clicked, Max_Color};
 
 class Button {
 public: 
-	Button(const f32 width, const f32 height);
+	Button(const f32 width, const f32 height, const f32 textScale = 1.0f);
 	void Set_Position(const AEVec2 pos);
 	void Set_Callback(fn_ptr function);
 	// Set_pos must be called first!!
@@ -30,4 +30,4 @@ private:
 	void Set_TextPos();
 };
 
-inline void Test_Callback() { std::cout << "Execute callback" << std::endl; }
+inline void Test_Callback() { paused = !paused; }

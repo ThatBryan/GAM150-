@@ -53,7 +53,7 @@ namespace Graphics
 
 		private:
 			s8* buffer;
-			AEVec2 Calculate_DrawTextOffset();
+			AEVec2 Calculate_DrawTextOffset(AEVec2 pos);
 	};
 }
 

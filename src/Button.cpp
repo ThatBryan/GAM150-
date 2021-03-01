@@ -1,6 +1,6 @@
 #include "Button.h"
 
-Button::Button(const f32 width, const f32 height) : button(width, height), text(nullptr)
+Button::Button(const f32 width, const f32 height, const f32 scale) : button(width, height), text(nullptr, scale)
 , pos{ 0,0 }, callback{ nullptr }{
 	buttonState[Button_Idle] = { 0, 255.0f, 0, 255.0f };
 	buttonState[Button_Hovered] = { 255.0f, 0, 0, 255.0f };
@@ -9,7 +9,7 @@ Button::Button(const f32 width, const f32 height) : button(width, height), text(
 }
 
 void Button::Set_Position(const AEVec2 pos) {
-	this->pos = pos;
+	button.pos = pos;
 }
 
 void Button::Set_Callback(fn_ptr fnc_ptr) {
@@ -21,14 +21,11 @@ void Button::Set_Text(const char* text) {
 	Set_TextPos();
 }
 void Button::Set_TextPos() {
-	size_t sz = strlen(text.GetText());
 	AEGfxGetPrintSize(fontID, text.GetText(), text.Scale, text.width, text.height);
-	f32 stringwidth = sz * text.width;
-	f32 stringheight = sz * text.height;
-	text.pos.x = button.pos.x - stringwidth / 2;
-	text.pos.y = button.pos.y;
-	printf("String width: %.2f\n", stringwidth);
-	printf("%.2f %.2f\n", text.pos.x, text.pos.y);
+	text.width = text.width / 2 * static_cast <f32> (AEGetWindowWidth());
+	text.height = text.height / 2 * static_cast <f32> (AEGetWindowHeight());
+	text.pos.x = 400 - text.width / 2;
+	text.pos.y = 600 - button.height / 2 - text.height;
 }
 void Button::Set_TextColor(Color color) {
 	text.color = color;
@@ -36,7 +33,7 @@ void Button::Set_TextColor(Color color) {
 
 void Button::Update(void) {
 	AEVec2 Mouse = Utilities::GetMousePos();
-	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckTriggered(AEVK_LBUTTON))
+	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckReleased(AEVK_LBUTTON))
 		callback();
 
 	Render();
@@ -49,7 +46,7 @@ void Button::Render(void) {
 
 int Button::Check_Cursor() {
 	AEVec2 Mouse = Utilities::GetMousePos();
-	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckTriggered(AEVK_LBUTTON))
+	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckCurr(AEVK_LBUTTON))
 		return Button_Clicked;
 	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height))
 		return Button_Hovered;
