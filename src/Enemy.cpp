@@ -18,60 +18,46 @@ void Enemies::Update_Position(void)
 	static float speed = 1.0f;
 	static float bat_speed = 1.0f;
 	static float bat_counter = 0.0f;
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> main
-	if (type == Enemy_Slime)
+	static f32 maxY = AEGfxGetWinMaxY();
+	static f32 maxX = AEGfxGetWinMaxX();
+	static f32 minY = AEGfxGetWinMinY();
+	static f32 minX = AEGfxGetWinMinX();
+
+	if (sprite.pos.x + sprite.width / 2 <= maxX || sprite.pos.x - sprite.width / 2 >= minX
+		|| sprite.pos.y - sprite.height / 2 >= minY || sprite.pos.y + sprite.height / 2 <= maxY)
 	{
-		sprite.direction -= 1.0f * ID;
-		sprite.pos.x += speed;
-		headBB.pos = sprite.pos;
-		enemyBB.pos = sprite.pos;
 		if (type == Enemy_Slime)
 		{
-			headBB.pos.y += 20.0f;
+			sprite.direction -= 1.0f * ID;
+			sprite.pos.x += speed;
+			headBB.pos = sprite.pos;
+			enemyBB.pos = sprite.pos;
+			if (type == Enemy_Slime)
+			{
+				headBB.pos.y += 20.0f;
+			}
+
+			counter += 1.0f;
+			if (counter > 180.0f)
+			{
+				speed *= -1;
+				counter = 0.0f;
+			}
 		}
-<<<<<<< HEAD
 
-		counter += 1.0f;
-		if (counter > 180.0f)
+		if (type == Enemy_Bat)
 		{
-			speed *= -1;
-			counter = 0.0f;
-		}
-	}
+			// Sine-Wave
+			sprite.pos.x += bat_speed;
+			sprite.pos.y = 20 * sin(sprite.pos.x * 2 * PI / 180); // y = amplitude * sin(x * period * pi / 180)
 
-=======
-
-		counter += 1.0f;
-		if (counter > 180.0f)
-		{
-			speed *= -1;
-			counter = 0.0f;
-		}
-	}
-	
->>>>>>> main
-	if (type == Enemy_Bat)
-	{
-		// Sine-Wave
-		sprite.pos.x += bat_speed;
-<<<<<<< HEAD
-		sprite.pos.y = 20 * sin(sprite.pos.x * 2 * PI / 180); // y = amplitude * sin(x * period * pi / 180)
-
-		bat_counter += 1.0f;
-		if (bat_counter > 250)
-=======
-		sprite.pos.y = 20 * sin(sprite.pos.x * 2 * 3.14159 / 180); // y = amplitude * sin(x * period * pi / 180)
-
-		bat_counter += 1.0f;
-		if (bat_counter > 550)
->>>>>>> main
-		{
-			bat_speed *= -1;
-			bat_counter = 0.0f;
+			bat_counter += 1.0f;
+			if (bat_counter > 550)
+			{
+				bat_speed *= -1;
+				bat_counter = 0.0f;
+			}
 		}
 	}
 
@@ -123,7 +109,7 @@ void Enemies::Unload(void)
 }
 
 void Enemies::LoadTex(void) {
-	for (int i = 0; i < Enemy_Max - 1; i++) {
+	for (int i = 0; i < Enemy_Max; i++) {
 		const char* pTex = nullptr;
 		switch (i) {
 		case Enemy_Slime:

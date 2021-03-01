@@ -47,16 +47,16 @@ void Demo::Init(void)
 
 	AEVec2 DemoEnemyPos = Demo_Tiles2[2].spawnPos;
 	AEVec2 DemoEnemyPos2 = Demo_Tiles3[2].spawnPos;
-	AEVec2 DemoEnemyPos3 = Demo_Tiles[5].spawnPos;
+	AEVec2 DemoEnemyPos3 = Demo_Tiles[0].spawnPos;
 	AEVec2 DemoEnemyPos4 = Demo_Tiles[4].spawnPos;
-	AEVec2 DemoEnemyPos5 = Demo_Tiles[1].spawnPos;
+	AEVec2 DemoEnemyPos5 = Demo_Tiles[0].spawnPos;
 
 	DemoEnemyPos4.y += 20.0f;
 	AEVec2 Offset = { -15.0f, TILE_HEIGHT - 10.0f };
 
 	Enemies::AddNew(enemy, Enemy_Slime, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, Enemy_Slime, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, Enemy_Slime, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, Enemy_Squirrel, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, Enemy_Bat, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, Enemy_Bat, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
 
