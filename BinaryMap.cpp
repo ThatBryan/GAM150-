@@ -1,5 +1,6 @@
 #include "BinaryMap.h"
 
+
 /*The number of horizontal elements*/
 static int BINARY_MAP_WIDTH;
 
@@ -67,11 +68,11 @@ int ImportMapDataFromFile(const char* FileName)
 					if (BinaryCollisionArray[i])
 					{
 						BinaryCollisionArray[i][j] = MapData[i][j];
-						if (BinaryCollisionArray[i][j] > 1 && BinaryCollisionArray[i][j] < 4)
+						if (BinaryCollisionArray[i][j] > 1 && BinaryCollisionArray[i][j] < 5)
 						{
 							BinaryCollisionArray[i][j] = 1;
 						}
-						else if (BinaryCollisionArray[i][j] == 4)
+						else if (BinaryCollisionArray[i][j] >= 5)
 						{
 							BinaryCollisionArray[i][j] = 0;
 						}
