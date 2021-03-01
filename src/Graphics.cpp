@@ -38,7 +38,7 @@ void Graphics::Free() {
 }
 
 Graphics::Text::Text(s8* textBuffer, const f32 scale) : Scale{ scale }, pos{ 0, 0 },
-TextHeight{ 0 }, TextWidth{ 0 }, buffer{ textBuffer }
+height{ 0 }, width{ 0 }, buffer{ textBuffer }
 {
 	Text::color.SetColor(255.0f, 255.0f, 255.0f, 255.0f);
 }
@@ -85,40 +85,54 @@ void Graphics::Rect::Draw(const f32 alpha)
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
+void Graphics::Rect::Draw(Color color, const f32 alpha)
+{
+	SetMatrix();
+	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		
+	AEGfxTextureSet(NULL, 0.0f, 0.0f);
+	AEGfxSetTintColor(color.r, color.g, color.b, color.alpha);
+	AEGfxSetTransparency(alpha / colorcodeMax);
+
+	AEGfxSetTransform(transformMtx.m);
+	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
+}
+
 void Graphics::Text::Draw_Text(const AEVec2 pos)
 {
 	this->pos.x = pos.x;
 	this->pos.y = pos.y;
-	AEGfxGetPrintSize(fontID, buffer, Scale, TextWidth, TextHeight);
+	AEGfxGetPrintSize(fontID, buffer, Scale, width, height);
 
-	AEVec2 drawPos = Graphics::Text::Calculate_DrawTextOffset(*this);
+	AEVec2 drawPos = Graphics::Text::Calculate_DrawTextOffset();
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxPrint(fontID, buffer, drawPos.x, drawPos.y, Scale, color.r, color.g, color.b);
 }
 
-AEVec2 Graphics::Text::Calculate_DrawTextOffset(const Text text)
+AEVec2 Graphics::Text::Calculate_DrawTextOffset()
 {
 	AEVec2 Offset = {0, 0};
 
-	if (text.pos.x < Utilities::Get_HalfWindowWidth())
+	if (pos.x < Utilities::Get_HalfWindowWidth())
 	{
-		Offset.x = Utilities::Get_HalfWindowWidth() / (-Utilities::Get_HalfWindowWidth() - text.pos.x);
+		Offset.x = Utilities::Get_HalfWindowWidth() / (-Utilities::Get_HalfWindowWidth() - pos.x);
 	}
-	else if (text.pos.x > Utilities::Get_HalfWindowWidth())
+	else if (pos.x > Utilities::Get_HalfWindowWidth())
 	{
-		Offset.x = (text.pos.x - Utilities::Get_HalfWindowWidth()) / ((f32)AEGetWindowWidth());
+		Offset.x = (pos.x - Utilities::Get_HalfWindowWidth()) / ((f32)AEGetWindowWidth());
 	}
 	else
 		Offset.x = 0;
 
-	if (text.pos.y < Utilities::Get_HalfWindowHeight())
+	if (pos.y < Utilities::Get_HalfWindowHeight())
 	{
-		Offset.y = Utilities::Get_HalfWindowHeight() / (-Utilities::Get_HalfWindowHeight() - text.pos.y);
+		Offset.y = Utilities::Get_HalfWindowHeight() / (-Utilities::Get_HalfWindowHeight() - pos.y);
 	}
 
-	else if (text.pos.y > Utilities::Get_HalfWindowHeight())
+	else if (pos.y > Utilities::Get_HalfWindowHeight())
 	{
-		Offset.y = text.pos.y / (f32)(AEGetWindowHeight());
+		Offset.y = pos.y / (f32)(AEGetWindowHeight());
 	}
 	return Offset;
 }

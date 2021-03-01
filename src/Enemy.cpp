@@ -18,9 +18,11 @@ void Enemies::Update_Position(void)
 	static float bat_speed = 1.0f;
 	static float bat_counter = 0.0f;
 	
+	if(DebugMode)
+		sprite.direction -= 1.0f * ID;
 	if (type == Enemy_Slime)
 	{
-		sprite.direction -= 1.0f * ID;
+
 		sprite.pos.x += speed;
 		headBB.pos = sprite.pos;
 		enemyBB.pos = sprite.pos;
@@ -99,7 +101,7 @@ void Enemies::Unload(void)
 }
 
 void Enemies::LoadTex(void) {
-	for (int i = 0; i < Enemy_Max - 1; i++) {
+	for (int i = 0; i < Enemy_Max; i++) {
 		const char* pTex = nullptr;
 		switch (i) {
 		case Enemy_Slime:

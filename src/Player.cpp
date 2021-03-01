@@ -2,7 +2,7 @@
 
 AEGfxTexture* Player::playerTex{ nullptr };
 
-Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height, 270),
+Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height),
 active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpspeed_y{jumpspeed}
 {
 	playerBB.color.SetColor(0, 0, 0, 255.0f);
@@ -20,7 +20,8 @@ void Player::Reset(void)
 
 void Player::Update() {
 	if (!paused) {
-		sprite.direction += 1;
+		if(DebugMode)
+			sprite.direction += 1;
 		Update_Position();
 	}
 }
