@@ -58,7 +58,7 @@ void Demo::Init(void)
 	Enemies::AddNew(enemy, Enemy_Slime, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, Enemy_Squirrel, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, Enemy_Bat, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, Enemy_Bat, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, Enemy_Squirrel, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
 
 	player.push_back(Player(Player::playerTex, player_width, player_height));
 	player[0].startingPos = Demo_Tiles2[0].spawnPos;
@@ -98,7 +98,7 @@ void Demo::Load(void) {
 	Tiles::LoadTex();
 	Player::LoadTex();
 	SoundSystemClass::loadSound();
-	SoundSystemClass::SetVolume(Sound_BGM, 0.5f);
+	SoundSystemClass::SetVolume(Sound_BGM, 0.2f);
 	SoundSystemClass::SetVolume(Sound_Jump, .5f);
 }
 void Demo::Unload(void)

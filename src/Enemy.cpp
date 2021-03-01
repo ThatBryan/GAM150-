@@ -11,53 +11,45 @@ spawnPos{0, 0}, active{true}, type{0}
 	enemyBB.color.SetColor(0, 0, 0, 255.0f);
 }
 
-
 void Enemies::Update_Position(void)
 {
 	static float counter = 0.0f;
 	static float speed = 1.0f;
 	static float bat_speed = 1.0f;
 	static float bat_counter = 0.0f;
-
-	static f32 maxY = AEGfxGetWinMaxY();
-	static f32 maxX = AEGfxGetWinMaxX();
-	static f32 minY = AEGfxGetWinMinY();
-	static f32 minX = AEGfxGetWinMinX();
-
-	if (sprite.pos.x + sprite.width / 2 <= maxX || sprite.pos.x - sprite.width / 2 >= minX
-		|| sprite.pos.y - sprite.height / 2 >= minY || sprite.pos.y + sprite.height / 2 <= maxY)
+	
+	if(DebugMode)
+		sprite.direction -= 1.0f * ID;
+	if (type == Enemy_Slime)
 	{
+
+		sprite.pos.x += speed;
+		headBB.pos = sprite.pos;
+		enemyBB.pos = sprite.pos;
 		if (type == Enemy_Slime)
 		{
-			sprite.direction -= 1.0f * ID;
-			sprite.pos.x += speed;
-			headBB.pos = sprite.pos;
-			enemyBB.pos = sprite.pos;
-			if (type == Enemy_Slime)
-			{
-				headBB.pos.y += 20.0f;
-			}
-
-			counter += 1.0f;
-			if (counter > 180.0f)
-			{
-				speed *= -1;
-				counter = 0.0f;
-			}
+			headBB.pos.y += 20.0f;
 		}
 
-		if (type == Enemy_Bat)
+		counter += 1.0f;
+		if (counter > 180.0f)
 		{
-			// Sine-Wave
-			sprite.pos.x += bat_speed;
-			sprite.pos.y = 20 * sin(sprite.pos.x * 2 * PI / 180); // y = amplitude * sin(x * period * pi / 180)
+			speed *= -1;
+			counter = 0.0f;
+		}
+	}
+	
+	if (type == Enemy_Bat)
+	{
+		// Sine-Wave
+		sprite.pos.x += bat_speed;
+		sprite.pos.y = 20 * sin(sprite.pos.x * 2 * 3.14159 / 180); // y = amplitude * sin(x * period * pi / 180)
 
-			bat_counter += 1.0f;
-			if (bat_counter > 550)
-			{
-				bat_speed *= -1;
-				bat_counter = 0.0f;
-			}
+		bat_counter += 1.0f;
+		if (bat_counter > 550)
+		{
+			bat_speed *= -1;
+			bat_counter = 0.0f;
 		}
 	}
 
@@ -102,8 +94,6 @@ void Enemies::Unload(void)
 {
 	for (size_t i = 0; i < Enemy_Max; i++)
 	{
-		if (i == Enemy_Squirrel)
-			continue;
 		AEGfxTextureUnload(enemyTex[i]);
 	}
 }
