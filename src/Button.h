@@ -4,6 +4,7 @@
 #include "Constants.h"
 #include "Utilities.h"
 #include <cstring>
+#include <iostream>
 
 using fn_ptr = void(*)(void);
 
@@ -28,3 +29,5 @@ private:
 	Color buttonState[Max_Color];
 	void Set_TextPos();
 };
+
+inline void Test_Callback() { std::cout << "Execute callback" << std::endl; }

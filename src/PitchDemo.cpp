@@ -18,9 +18,11 @@
 
 Color background;
 std::vector <Tiles> Demo_Tiles, Demo_Tiles2, Demo_Tiles3;
-std::vector <Enemies> enemy;
 std::vector <std::vector <Tiles>*> TileManager;
+std::vector <Enemies> enemy;
 std::vector <Player> player;
+
+std::vector <Button> buttonTest;
 
 enum {GGPen = 0, Victory, Defeat, MAX_IMAGE};
 static std::array <Image, MAX_IMAGE> Images;
@@ -40,6 +42,10 @@ void Demo::Init(void)
 	Tiles::AddTileRow(Demo_Tiles3, Tile_Special, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
 	Tiles::AddTileRow(Demo_Tiles3, Tile_Safe, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
 	Tiles::AddTileRow(Demo_Tiles3, Tile_Grass, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY3 });
+	buttonTest.push_back(Button(100.0, 100.0f));
+	buttonTest[0].Set_Position(AEVec2{ 200, 300 });
+	buttonTest[0].Set_Callback(Test_Callback);
+	buttonTest[0].Set_Text("HELLO WORLD!\n");
 
 	TileManager.push_back(&Demo_Tiles);
 	TileManager.push_back(&Demo_Tiles2);
@@ -74,6 +80,7 @@ void Demo::Init(void)
 
 void Demo::Update(void)
 {
+	buttonTest[0].Update();
 	sound.update();
 	background.Decrement();
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);

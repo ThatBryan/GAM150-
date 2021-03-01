@@ -5,7 +5,7 @@ Button::Button(const f32 width, const f32 height) : button(width, height), text(
 	buttonState[Button_Idle] = { 0, 255.0f, 0, 255.0f };
 	buttonState[Button_Hovered] = { 255.0f, 0, 0, 255.0f };
 	buttonState[Button_Clicked] = { 0, 0, 255.0f, 255.0f };
-	text.color = { 255.0f, 255.0f, 255.0f, 255.0f };
+	text.color = { 0, 0, 0, 255.0f };
 }
 
 void Button::Set_Position(const AEVec2 pos) {
@@ -25,8 +25,10 @@ void Button::Set_TextPos() {
 	AEGfxGetPrintSize(fontID, text.GetText(), text.Scale, text.width, text.height);
 	f32 stringwidth = sz * text.width;
 	f32 stringheight = sz * text.height;
-	text.pos.x -= stringwidth / 2;
-	text.pos.y -= stringheight / 2;
+	text.pos.x = button.pos.x - stringwidth / 2;
+	text.pos.y = button.pos.y;
+	printf("String width: %.2f\n", stringwidth);
+	printf("%.2f %.2f\n", text.pos.x, text.pos.y);
 }
 void Button::Set_TextColor(Color color) {
 	text.color = color;
