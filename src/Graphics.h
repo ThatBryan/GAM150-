@@ -2,80 +2,57 @@
 #include "AEEngine.h"
 
 //https://htmlcolorcodes.com/
-class Color
+
+struct Color
 {
 	public:
 	f32 r, g, b, alpha;
 	void SetColor(const f32 r, const f32 g, const f32 b, const f32 alpha);
-
-	private:
+	void Decrement(float i = 0.0001f);
 };
 
 
 namespace Graphics
 {
-	class Line
-	{
-		public:
-			Line(const AEVec2 pos1, const AEVec2 pos2, const f32 width);
-
-			Color color;
-			f32 width;
-			AEVec2 pos1, pos2;
-
-			void Draw_Line(Line& line);
-			inline AEGfxVertexList* GetMesh(void) { return this->pMesh; }
-			inline void SetMesh(Line* line);
-			inline void Free(void) { AEGfxMeshFree(GetMesh()); }
-		private:
-			AEGfxVertexList* pMesh;
-	};
+	// Sets the mesh for a rectangle and returns a pointer to the AEGfxVertexList
+	AEGfxVertexList* Mesh_Rectangle(void);
+	void Free();
 
 	class Rect
 	{
 		public:
-		// Constructor
-		Rect(const f32 width, const f32 height);
+			Rect(const f32 width = 50.0f, const f32 height = 10.0f, const f32 direction = 0);
 
 		Color color;
 		AEVec2 pos;
 		f32 height, width;
 
-		void Draw_Rect(Rect rect, const AEVec2 pos);
-		inline AEGfxVertexList* GetMesh(void) { return this->pMesh; }
-		inline void Free(void) { AEGfxMeshFree(GetMesh()); }
+		void Draw(const f32 alpha = 150.0f);
+		void SetMatrix();
 
 		private:
 			AEGfxVertexList* pMesh;
+			AEMtx33 transformMtx;
+			f32 direction;
 	};
 
 	class Text
 	{
 		public:
 		// Constructor
-		Text(const s8* filepath, s8* textBuffer, const s32 fontSize, const f32 scale);
+		Text(s8* textBuffer, const f32 scale = 1.0f);
 			Color color;
 			f32 TextWidth, TextHeight, Scale;
 			AEVec2 pos;
 
 			// Calculates the X and Y offset
 			AEVec2 Calculate_DrawTextOffset(const Text text);
-			void Draw_Text(Text text, const AEVec2 pos);
-			inline s8 GetFontID(void) { return this->fontId; }
-			inline s8* GetBuffer(void) { return this->pStr; }
-			inline void Free(void) { AEGfxDestroyFont(GetFontID()); }
+			void Draw_Text(const AEVec2 pos);
 
 		private:
-			s8 fontId;
-			s8* pStr;
+			s8* buffer;
 	};
-
 }
 
-namespace Graphics
-{
-	// Sets the mesh for a rectangle and returns a pointer to the AEGfxVertexList
-	AEGfxVertexList* Mesh_Rectangle(Rect* rect);
-}
 
 

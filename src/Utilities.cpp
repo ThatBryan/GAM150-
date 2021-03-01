@@ -6,9 +6,15 @@ int Utilities::RandomRangeInt(const s32 lowerBound, const s32 upperBound)
 	return (lowerBound + rand() % (upperBound - lowerBound + 1));
 }
 
+
 AEVec2 AEVec2Set(const f32 x, const f32 y)
 {
 	return AEVec2{ x, y };
+}
+
+AEVec2 AEVec2Zero()
+{
+	return AEVec2{0, 0};
 }
 
 AEVec2 AEVec2Add(const AEVec2 vec1, const AEVec2 vec2)
@@ -16,24 +22,16 @@ AEVec2 AEVec2Add(const AEVec2 vec1, const AEVec2 vec2)
 	return AEVec2{ vec1.x + vec2.x, vec1.y + vec2.y };
 }
 
-AEVec2 AEVecSub(const AEVec2 vec1, const AEVec2 vec2)
+AEVec2 AEVec2Sub(const AEVec2 vec1, const AEVec2 vec2)
 {
 	return AEVec2{ vec1.x - vec2.x, vec1.y - vec2.y };
 }
 
-void Utilities::Set_FullScreen(void)
+void Utilities::CheckFullScreenInput(void)
 {
-	static bool fullscreen = false;
 	if (AEInputCheckCurr(FULLSCREEN_KEY1) && AEInputCheckTriggered(FULLSCREEN_KEY2))
 	{
-		if (fullscreen)
-		{
-			fullscreen = false;
-		}
-		else
-		{
-			fullscreen = true;
-		}
+		fullscreen = !fullscreen;
 		AEToogleFullScreen(fullscreen);
 	}
 }
@@ -52,18 +50,21 @@ AEVec2 Utilities::GetMousePos(void)
 	int mouseX = 0;
 	int mouseY = 0;
 	AEInputGetCursorPosition(&mouseX, &mouseY);
-	return AEVec2Set((f32)mouseX, (f32)AEGetWindowHeight() - (f32)mouseY);
+	return AEVec2Set((f32)mouseX + AEGfxGetWinMinX(), -(mouseY + AEGfxGetWinMinY())); // (f32)AEGetWindowHeight() - (f32)
 }
 
 void Utilities::CheckPauseInput(void)
 {
 	if (AEInputCheckTriggered(PAUSE_KEY))
 	{
-		if (!paused) {
-			paused = true;
-		}
-		else {
-			paused = false;
-		}
+		paused = !paused;
+	}
+}
+
+void Utilities::CheckDebugMode(void)
+{
+	if (AEInputCheckTriggered(DEBUG_KEY))
+	{
+		DebugMode = !DebugMode;
 	}
 }

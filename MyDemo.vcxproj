@@ -12,25 +12,31 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameStateManager.cpp" />
+    <ClCompile Include="src\AudioManager.cpp" />
     <ClCompile Include="src\Constants.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
+    <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\Image.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Graphics.cpp" />
     <ClCompile Include="src\PitchDemo.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Tiles.cpp" />
+    <ClCompile Include="src\UserInterface.cpp" />
     <ClCompile Include="src\Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameStateManager.h" />
+    <ClInclude Include="src\AudioManager.h" />
     <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\Enemy.h" />
+    <ClInclude Include="src\GameObject.h" />
     <ClInclude Include="src\Image.h" />
     <ClInclude Include="src\Graphics.h" />
     <ClInclude Include="src\PitchDemo.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Tiles.h" />
+    <ClInclude Include="src\UserInterface.h" />
     <ClInclude Include="src\Utilities.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -71,8 +77,8 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)\.tmp\$(Configuration)-$(Platform)\</IntDir>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Extern\AlphaEngine_V3.08\include;</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(SolutionDir)Extern\AlphaEngine_V3.08\lib;</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Extern\AlphaEngine_V3.08\include;$(SolutionDir)Extern\core\inc</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(SolutionDir)Extern\AlphaEngine_V3.08\lib;$(SolutionDir)Extern\core\lib\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -85,11 +91,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Alpha_EngineD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Alpha_EngineD.lib;fmodL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
