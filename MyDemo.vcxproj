@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BinaryMap.cpp" />
     <ClCompile Include="src\AudioManager.cpp" />
     <ClCompile Include="src\Constants.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
@@ -25,6 +26,7 @@
     <ClCompile Include="src\Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryMap.h" />
     <ClInclude Include="src\AudioManager.h" />
     <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\Enemy.h" />
@@ -82,6 +84,8 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)Extern\AlphaEngine_V3.08\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Extern\AlphaEngine_V3.08\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)\.tmp\$(Configuration)-$(Platform)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

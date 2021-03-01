@@ -28,7 +28,7 @@ void Enemies::Update_Position(void)
 		{
 			headBB.pos.y += 20.0f;
 		}
-
+		// Check for collision logic here
 		counter += 1.0f;
 		if (counter > 180.0f)
 		{

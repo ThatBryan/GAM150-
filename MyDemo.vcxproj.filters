@@ -51,6 +51,9 @@
     <ClCompile Include="src\AudioManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BinaryMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Image.h">
@@ -84,6 +87,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\AudioManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

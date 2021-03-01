@@ -17,6 +17,7 @@ class Enemies : public GameObject
 	Graphics::Rect headBB {enemy_width, 5.0f};
 	Graphics::Rect enemyBB {enemy_width, enemy_height};
 	short ID;
+	AEVec2 velocity;
 	friend class Player;
 
 public:
