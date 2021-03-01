@@ -49,11 +49,11 @@ namespace Graphics
 			AEVec2 pos;
 
 			// Calculates the X and Y offset
-			AEVec2 Calculate_DrawTextOffset();
 			void Draw_Text(const AEVec2 pos);
 
 		private:
 			s8* buffer;
+			AEVec2 Calculate_DrawTextOffset();
 	};
 }
 

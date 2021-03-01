@@ -94,8 +94,6 @@ void Enemies::Unload(void)
 {
 	for (size_t i = 0; i < Enemy_Max; i++)
 	{
-		if (i == Enemy_Squirrel)
-			continue;
 		AEGfxTextureUnload(enemyTex[i]);
 	}
 }

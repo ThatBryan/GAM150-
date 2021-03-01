@@ -104,7 +104,6 @@ void Graphics::Text::Draw_Text(const AEVec2 pos)
 	this->pos.x = pos.x;
 	this->pos.y = pos.y;
 	AEGfxGetPrintSize(fontID, buffer, Scale, width, height);
-
 	AEVec2 drawPos = Graphics::Text::Calculate_DrawTextOffset();
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxPrint(fontID, buffer, drawPos.x, drawPos.y, Scale, color.r, color.g, color.b);
