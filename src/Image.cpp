@@ -23,10 +23,12 @@ void Image::Init(const char* pFile, const f32 width, const f32 height, const AEV
 
 void Image::SetMatrix(void)
 {
+	static f32 HalfWinHeight = Utils::Get_HalfWindowHeight();
+	static f32 HalfWinWindow = Utils::Get_HalfWindowWidth();
 	AEMtx33	trans, rot, scale;
 	AEMtx33Scale(&scale, width, height);
 	AEMtx33Rot(&rot, AEDegToRad(direction));
-	AEMtx33Trans(&trans, pos.x, pos.y);
+	AEMtx33Trans(&trans, -HalfWinWindow + pos.x, HalfWinHeight - pos.y);
 	AEMtx33 temp;
 	AEMtx33Concat(&temp, &rot, &scale);
 	AEMtx33Concat(&transformMtx, &trans, &temp);

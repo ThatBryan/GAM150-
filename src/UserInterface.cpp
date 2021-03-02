@@ -28,7 +28,7 @@ void UI::Update() {
 
 void UI::Draw() {
 	if (DebugMode)
-		FPS_Display.Draw_Text(AEVec2Set(0, 400));
-	LevelDisplay.Draw_Text(AEVec2Set(0, 550));
-	TimerDisplay.Draw_Text(AEVec2Set(665, 550));
+		FPS_Display.Draw_Text(AEVec2Set(0, 200));
+	LevelDisplay.Draw_Text(AEVec2Set(0, 25));
+	TimerDisplay.Draw_Text(AEVec2Set(665, 25));
 }

@@ -18,15 +18,17 @@ void Enemies::Update_Position(void)
 	static float bat_speed = 1.0f;
 	static float bat_counter = 0.0f;
 	
+	if(DebugMode)
+		sprite.direction -= 1.0f * ID;
 	if (type == Enemy_Slime)
 	{
-		sprite.direction -= 1.0f * ID;
+
 		sprite.pos.x += speed;
 		headBB.pos = sprite.pos;
 		enemyBB.pos = sprite.pos;
 		if (type == Enemy_Slime)
 		{
-			headBB.pos.y += 20.0f;
+			headBB.pos.y -= 20.0f;
 		}
 
 		counter += 1.0f;
@@ -41,10 +43,10 @@ void Enemies::Update_Position(void)
 	{
 		// Sine-Wave
 		sprite.pos.x += bat_speed;
-		sprite.pos.y = 20 * sin(sprite.pos.x * 2 * 3.14159 / 180); // y = amplitude * sin(x * period * pi / 180)
+		sprite.pos.y = 20 * sin(static_cast<f32>(sprite.pos.x) * 2.0f * 3.14159 / 180.0f); // y = amplitude * sin(x * period * pi / 180)
 
 		bat_counter += 1.0f;
-		if (bat_counter > 550)
+		if (bat_counter > 120)
 		{
 			bat_speed *= -1;
 			bat_counter = 0.0f;
@@ -86,20 +88,19 @@ void Enemies::Reset(std::vector <Enemies>& enemy)
 	{
 		enemy[i].sprite.pos = enemy[i].spawnPos;
 		enemy[i].active = true;
+		enemy[i].sprite.direction = 0;
 	}
 }
 void Enemies::Unload(void)
 {
 	for (size_t i = 0; i < Enemy_Max; i++)
 	{
-		if (i == Enemy_Squirrel)
-			continue;
 		AEGfxTextureUnload(enemyTex[i]);
 	}
 }
 
 void Enemies::LoadTex(void) {
-	for (int i = 0; i < Enemy_Max - 1; i++) {
+	for (int i = 0; i < Enemy_Max; i++) {
 		const char* pTex = nullptr;
 		switch (i) {
 		case Enemy_Slime:
