@@ -11,7 +11,6 @@ namespace Demo
 	void Load(void);
 	void Init(void);
 	void Update(void);
-	void Exit(void);
 
 	// Collection of drawing related code.
 	void Render(void);

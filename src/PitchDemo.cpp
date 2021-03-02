@@ -26,7 +26,17 @@ enum {GGPen = 0, Victory, Defeat, MAX_IMAGE};
 static std::array <Image, MAX_IMAGE> Images;
 extern SoundData soundData[Sound_Max];
 
-void Demo::Load(void)
+void Demo::Load(void) {
+	rectMesh = Graphics::Mesh_Rectangle();
+	Enemies::LoadTex();
+	Tiles::LoadTex();
+	Player::LoadTex();
+	SoundSystemClass::loadSound();
+	SoundSystemClass::SetVolume(Sound_BGM, 0.5f);
+	SoundSystemClass::SetVolume(Sound_Jump, .5f);
+}
+
+void Demo::Init(void)
 {
 
 	UI::Init();
@@ -83,24 +93,11 @@ void Demo::Update(void)
 	Demo::UpdateManager();
 	Demo::UpdateOverlay();
 	UI::Update();
-	Demo::Render();
+	/*Demo::Render();*/
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Demo::Restart();
 }
-void Demo::Exit(void)
-{
-	Unload();
-}
 
-void Demo::Load(void) {
-	rectMesh = Graphics::Mesh_Rectangle();
-	Enemies::LoadTex();
-	Tiles::LoadTex();
-	Player::LoadTex();
-	SoundSystemClass::loadSound();
-	SoundSystemClass::SetVolume(Sound_BGM, 0.5f);
-	SoundSystemClass::SetVolume(Sound_Jump, .5f);
-}
 void Demo::Unload(void)
 {
 	Enemies::Unload();

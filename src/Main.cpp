@@ -11,14 +11,14 @@
 #include <vector>
 #include "PitchDemo.h"
 #include "Constants.h"
-#include "AEGameStateMgr.h"
+#include "GameStateManager.h"
 
-enum
-{
-	GS_GAMEPLAY = 0,
-	GS_QUIT,
-	GS_RESTART
-};
+//enum
+//{
+//	GS_GAMEPLAY = 0,
+//	GS_QUIT,
+//	GS_RESTART
+//};
 #define _CRTDBG_MAP_ALLOC
 #include <cstdlib>
 #include <crtdbg.h>
@@ -56,51 +56,66 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// Changing the window title
 	AESysSetWindowTitle("JumperMan");
 
-	//AEGameStateMgrInit(GS_GAMEPLAY);
-
 	// reset the system modules
 	AESysReset();
 
-	//Testing Game State Manager
-	//void AEGameStateMgrAdd(GS_GAMEPLAY, 
-	//	Demo::Init,
-	//	AEGameStateInit(),
-	//	AEGameStateUpdate(),
-	//	AEGameStateDraw(),
-	//	AEGameStateFree(),
-	//	AEGameStateUnload());
-
-	/// Test init functions
-
 	fontID = AEGfxCreateFont(FontFile, 30);
-	Demo::Init();
-
 
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;
 
-	// Game Loop
-	while (gGameRunning)
+	// Initialises the GSM
+	GameStateManagerInit(GS_GAMEPLAY);
+
+	//Checks if game state isnt at quit status
+	while (gamestateCurr != GS_QUIT)
 	{
-		// Informing the system about the loop's start
-		AESysFrameStart();
+		//checks if game state isnt at restart
+		if (gamestateCurr != GS_RESTART)
+		{
+			GameStateManagerUpdate(); //Update GSM
+			GameStateLoad(); //Loads the game state
+		}
+		else
+		{
+			gamestateNext = gamestateCurr = gamestatePrev;
+		}
 
-		// Handling Input
-		AEInputUpdate();
+		GameStateInit(); //Init the game state
 
-		g_dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
-		Demo::Update();
+		//Game Loop
+		while (gamestateCurr == gamestateNext)
+		{
+			// Informing the system about the loop's start
+			AESysFrameStart();
 
-		// Informing the system about the loop's end
-		AESysFrameEnd();
+			// Handling Input
+			AEInputUpdate();
 
-		if(!paused)
-			app_time += g_dt;
+			g_dt = static_cast<f32>(AEFrameRateControllerGetFrameTime()); //Getting delta time
+			GameStateUpdate(); //Update game state
+			GameStateDraw(); //Render game state
 
-		// check if forcing the application to quit
-		if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
-			gGameRunning = 0;
+			// Informing the system about the loop's end
+			AESysFrameEnd();
+
+			if (!paused)
+				app_time += g_dt;
+
+			// check if forcing the application to quit
+			if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
+				gamestateCurr = GS_QUIT;
+		}
+		GameStateFree(); //Resets the game state
+
+		if (gamestateNext != GS_RESTART)
+		{
+			GameStateUnload(); //Unloads all loaded assets of game state
+			Graphics::Free(); //Free the graphic meshes
+		}
+
+		gamestatePrev = gamestateCurr;
+		gamestateCurr = gamestateNext;
 	}
-	Demo::Exit();
-	Graphics::Free();
+
 	AESysExit();
 }
