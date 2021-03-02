@@ -58,11 +58,12 @@ void Demo::Init(void)
 	AEVec2 DemoEnemyPos4 = Demo_Tiles[4].spawnPos;
 	AEVec2 DemoEnemyPos5 = Demo_Tiles[1].spawnPos;
 	AEVec2 Offset = {0, -TILE_HEIGHT };
+	AEVec2 Offset2 = { 0, -2*TILE_HEIGHT };
 
 	Enemies::AddNew(enemy, Enemy_Slime, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, Enemy_Slime, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, Enemy_Slime, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, Enemy_Bat, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, Enemy_Bat, AEVec2Add(DemoEnemyPos4, Offset2), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, Enemy_Squirrel, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
 
 	player.push_back(Player(Player::playerTex, player_width, player_height));

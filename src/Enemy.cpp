@@ -42,8 +42,9 @@ void Enemies::Update_Position(void)
 	if (type == Enemy_Bat)
 	{
 		// Sine-Wave
+		static AEVec2 startpos = sprite.pos;
 		sprite.pos.x += bat_speed;
-		sprite.pos.y = 20 * sin(static_cast<f32>(sprite.pos.x) * 2.0f * 3.14159 / 180.0f); // y = amplitude * sin(x * period * pi / 180)
+		sprite.pos.y = startpos.y + 20 * sin(static_cast<f32>(sprite.pos.x) * 2.0f * 3.14159 / 180.0f); // y = amplitude * sin(x * period * pi / 180)
 
 		bat_counter += 1.0f;
 		if (bat_counter > 120)
