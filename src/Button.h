@@ -18,15 +18,15 @@ public:
 	// Set_pos must be called first!!
 	void Set_Text(const char* text);
 	void Set_TextColor(Color color);
-	void Render();
 	void Update();
-	int Check_Cursor();
 private:
 	Graphics::Rect button;
 	Graphics::Text text;
 	AEVec2 pos;
 	fn_ptr callback;
 	Color buttonState[Max_Color];
+	void Render();
+	int Check_Cursor();
 	void Set_TextPos();
 };
 

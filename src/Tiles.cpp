@@ -15,7 +15,7 @@ void Tiles::Collapse(void)
 	{
 		if (collapseDelay <= 0)
 		{
-			image.pos.y -= TileCollapseSpeed;
+			image.pos.y += TileCollapseSpeed;
 		}
 	}
 }
@@ -24,7 +24,7 @@ void Tiles::CheckPlayerGoal(std::vector <Player>& player)
 {
 	if (type == Tile_Goal)
 	{
-		static AEVec2 GoalPoint = {image.pos.x, image.pos.y + image.height / 2 };
+		static AEVec2 GoalPoint = {image.pos.x, image.pos.y - image.height / 2 };
 		if (AETestPointToRect(&GoalPoint, &player[0].sprite.pos, player[0].sprite.width, player[0].sprite.height))
 			player[(player.size() - 1)].SetPlayerWin();
 	}
@@ -34,7 +34,7 @@ void Tiles::CheckPos(void) {
 	if (active)
 	{
 		ColliderAABB.pos = image.pos;
-		if (image.pos.y <= AEGfxGetWinMinY())
+		if (image.pos.y >= static_cast <f32> (AEGetWindowHeight())) 
 			active = false;
 	}
 }

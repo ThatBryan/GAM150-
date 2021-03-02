@@ -24,15 +24,15 @@ void Button::Set_TextPos() {
 	AEGfxGetPrintSize(fontID, text.GetText(), text.Scale, text.width, text.height);
 	text.width = text.width / 2 * static_cast <f32> (AEGetWindowWidth());
 	text.height = text.height / 2 * static_cast <f32> (AEGetWindowHeight());
-	text.pos.x = 400 - text.width / 2;
-	text.pos.y = 600 - button.height / 2 - text.height;
+	text.pos.x = button.pos.x - text.width / 2;
+	text.pos.y = button.pos.y + text.height / 2;
 }
 void Button::Set_TextColor(Color color) {
 	text.color = color;
 }
 
 void Button::Update(void) {
-	AEVec2 Mouse = Utilities::GetMousePos();
+	AEVec2 Mouse = Utils::GetMousePos();
 	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckReleased(AEVK_LBUTTON))
 		callback();
 
@@ -45,7 +45,7 @@ void Button::Render(void) {
 }
 
 int Button::Check_Cursor() {
-	AEVec2 Mouse = Utilities::GetMousePos();
+	AEVec2 Mouse = Utils::GetMousePos();
 	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckCurr(AEVK_LBUTTON))
 		return Button_Clicked;
 	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height))
