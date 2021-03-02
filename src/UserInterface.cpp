@@ -9,8 +9,8 @@ Graphics::Text TimerDisplay(strBuffer2);
 
 void UI::Init() {
 
-	FPS_Display.color.SetColor(255, 0, 0, 255);
-	LevelDisplay.color.SetColor(255, 0, 0, 255);
+	FPS_Display.color.SetColor(0, 0, 0, 255);
+	LevelDisplay.color.SetColor(0, 0, 0, 255);
 	TimerDisplay.color.SetColor(0, 0, 0, 255);
 
 	memset(strBuffer, 0, 100 * sizeof(char));
@@ -28,7 +28,7 @@ void UI::Update() {
 
 void UI::Draw() {
 	if (DebugMode)
-		FPS_Display.Draw_Text(AEVec2Set(0, 200));
-	LevelDisplay.Draw_Text(AEVec2Set(0, 25));
-	TimerDisplay.Draw_Text(AEVec2Set(665, 25));
+		FPS_Display.Draw(AEVec2Set(0, 100));
+	LevelDisplay.Draw(AEVec2Set(0, 25));
+	TimerDisplay.Draw(AEVec2Set(520, 25));
 }

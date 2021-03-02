@@ -14,7 +14,7 @@ extern std::array <SoundClass, Sound_Max> soundTest;
 class Player
 {
 private:
-	bool win;
+	bool win, lose;
 	float jumpspeed_y;
 
 public:
@@ -33,6 +33,9 @@ public:
 	void Reset(void);
 	void Render(void);
 	//void GravityManager(void);
-	inline void SetPlayerWin(void) { win = true; }
+	inline void SetWin(void) { win = true; }
 	inline bool GetWinStatus(void) { return win; }
+	inline void SetLose(void) { lose = true; }
+	inline bool GetLose(void) { return lose; }
+
 };

@@ -2,7 +2,7 @@
 
 AEGfxTexture* Player::playerTex{ nullptr };
 
-Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height),
+Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},
 active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpspeed_y{jumpspeed}
 {
 	playerBB.color.SetColor(0, 0, 0, 255.0f);
@@ -13,6 +13,7 @@ void Player::Reset(void)
 {
 	jump = false;
 	win = false;
+	lose = false;
 	active = true;
 	sprite.pos = startingPos;
 	jumpspeed_y = jumpspeed;
@@ -142,11 +143,6 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 	{
 		if (enemy[i].active)
 		{
-			//printf("%.2f %.2f %.2f %.2f\n", enemy[i].headBB.pos.x, this->playerBB.pos.x, enemy[i].headBB.pos.y, this->playerBB.pos.y);
-			//enemy[i].headBB.pos.y -= 15.0f;
-			//if (AETestRectToRect(&enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, &this->feetBB.pos, feetBB.width, feetBB.height))// && 
-			//	printf("enemy dies\n");
-			//	//enemy[i].active = false;
 			if (AETestRectToRect(&enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, &playerBB.pos, playerBB.width, playerBB.height))
 			{
 			if (enemy[i].headBB.pos.y > feetBB.pos.y) {
@@ -158,6 +154,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 				if(DebugMode)
 					printf("player dies\n");
 				active = false;
+				SetLose();
 			}
 			}
 		}

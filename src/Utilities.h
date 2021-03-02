@@ -18,7 +18,7 @@ namespace Utils
 	void CheckFullScreenInput(void);// Set window to full screen with L ALT + Enter.
 	void CheckPauseInput(void); 	// Press Tab to pause the game.
 	void CheckDebugMode(void);		// F1 to enter debug mode
-	AEVec2 GetScreenMiddle();
+	AEVec2 GetScreenMiddle(void);
 }
 
 // Overloading vector functions.

@@ -38,12 +38,13 @@ void Demo::Init(void)
 
 	size_t test = (size_t)(AEGetWindowWidth() / TILE_WIDTTH);
 	Tiles::AddTileRow(Demo_Tiles, Tile_Special, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ x, y1 });
-	Tiles::AddTileRow(Demo_Tiles, Tile_Safe, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ x, y1 });
-	Tiles::AddTileRow(Demo_Tiles, Tile_Grass, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ x, y1 });
-	Tiles::AddTileRow(Demo_Tiles2, Tile_Grass, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ x, y2 });
-	Tiles::AddTileRow(Demo_Tiles2, Tile_Goal, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ x, y2 });
+	Tiles::AddTileRow(Demo_Tiles, Tile_Safe, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{x, y1 });
+	Tiles::AddTileRow(Demo_Tiles, Tile_Grass, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{x, y1 });
+	Tiles::AddTileRow(Demo_Tiles2, Tile_Grass, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{x, y2 });
+	Tiles::AddTileRow(Demo_Tiles2, Tile_Goal, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{x, y2 });
 	Tiles::AddTileRow(Demo_Tiles3, Tile_Grass, test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ x, y3 });
-	buttonTest.push_back(Button(100.0, 50.0f, 0.7f));
+
+	buttonTest.push_back(Button(100.0, 50.0f, 0.8f));
 	buttonTest[0].Set_Position(AEVec2{ 400.0f, 25.0f});
 	buttonTest[0].Set_Callback(Test_Callback);
 	buttonTest[0].Set_Text("Pause");
@@ -58,6 +59,7 @@ void Demo::Init(void)
 	AEVec2 DemoEnemyPos4 = Demo_Tiles[4].spawnPos;
 	AEVec2 DemoEnemyPos5 = Demo_Tiles[1].spawnPos;
 	AEVec2 Offset = {0, -TILE_HEIGHT };
+	DemoEnemyPos4.y = 250.0f;
 
 	Enemies::AddNew(enemy, Enemy_Slime, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, Enemy_Slime, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
@@ -87,9 +89,9 @@ void Demo::Update(void)
 	Utils::CheckDebugMode();
 	Demo::UpdateManager();
 	Demo::UpdateOverlay();
-	UI::Update();
-	Demo::Render();
 	buttonTest[0].Update();
+	Demo::Render();
+	UI::Update();
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Demo::Restart();
 }
@@ -104,7 +106,7 @@ void Demo::Load(void) {
 	Tiles::LoadTex();
 	Player::LoadTex();
 	SoundSystemClass::loadSound();
-	SoundSystemClass::SetVolume(Sound_BGM, 0.2f);
+	SoundSystemClass::SetVolume(Sound_BGM, 0.1f);
 	SoundSystemClass::SetVolume(Sound_Jump, .5f);
 }
 void Demo::Unload(void)
@@ -176,7 +178,7 @@ void Demo::UpdateOverlay() {
 		Images[GGPen].Draw_Texture(alpha);
 		alpha -= 4.0f;
 	}
-	if (player[0].active == false)
+	if (player[0].GetLose())
 	{
 		paused = true;
 		Images[Defeat].Draw_Texture(255);
