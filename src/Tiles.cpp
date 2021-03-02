@@ -20,7 +20,7 @@ void Tiles::Collapse(void)
 	}
 	if (type == Tile_Special) {
 		if (AETestRectToRect(&player[0].feetBB.pos, player[0].feetBB.width, player[0].feetBB.height, &ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
-			&& AEInputCheckTriggered(AEVK_S) || AEInputCheckTriggered(AEVK_DOWN))
+			&& (AEInputCheckTriggered(AEVK_DOWN) || AEInputCheckTriggered(AEVK_S)))
 		{
 			collapsing = true;
 		}
