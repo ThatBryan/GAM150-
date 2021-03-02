@@ -1,6 +1,8 @@
 #include "Tiles.h"
 #include <iostream>
 
+extern std::vector <Player> player;
+
 Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
 active{ true }, collapsing{false}, ID{0}, collapseDelay{TileCollapseDelay}, type{0}, spawnPos{0, 0},
 ColliderAABB{width, height}
@@ -14,6 +16,13 @@ void Tiles::Collapse(void)
 		if (collapseDelay <= 0)
 		{
 			image.pos.y += TileCollapseSpeed;
+		}
+	}
+	if (type == Tile_Special) {
+		if (AETestRectToRect(&player[0].feetBB.pos, player[0].feetBB.width, player[0].feetBB.height, &ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
+			&& AEInputCheckTriggered(AEVK_S) || AEInputCheckTriggered(AEVK_DOWN))
+		{
+			collapsing = true;
 		}
 	}
 }

@@ -163,7 +163,7 @@ void Demo::UpdateManager(void)
 void Demo::CollapsingManager(void)
 {
 	Tiles::CollapseNext(Demo_Tiles);
-	Tiles::CollapseNext(Demo_Tiles2);
+	Tiles::CollapseNext(Demo_Tiles2);	
 	Tiles::CollapseNext(Demo_Tiles3);
 }
 
