@@ -22,6 +22,7 @@ public:
 	Player(AEGfxTexture* ,const f32 width, const f32 height);
 	Image sprite;
 	bool active, jump, gravity;
+	int lives;
 	Graphics::Rect playerBB {player_width, player_height};
 	Graphics::Rect feetBB {player_width, 5.0f};
 	AEVec2 startingPos, vel;

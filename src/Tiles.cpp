@@ -68,7 +68,7 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 			if (TileManager[i]->at(j).active == false)
 				continue;
 
-			if (AETestRectToRect(&TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height, &player[0].playerBB.pos, player[0].playerBB.width, 10.0f))
+			if (AETestRectToRect(&TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height, &player[0].feetBB.pos, player[0].feetBB.width, 10.0f))
 			{
 				player[0].gravity = false;
 				if (DebugMode)
