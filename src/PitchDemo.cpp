@@ -22,7 +22,6 @@ std::vector <Tiles> Demo_Tiles, Demo_Tiles2, Demo_Tiles3;
 std::vector <std::vector <Tiles>*> TileManager;
 std::vector <Enemies> enemy;
 std::vector <Player> player;
-
 std::vector <Button> buttonTest;
 
 enum {GGPen = 0, Victory, Defeat, MAX_IMAGE};

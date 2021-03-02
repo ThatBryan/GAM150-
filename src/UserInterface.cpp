@@ -30,5 +30,5 @@ void UI::Draw() {
 	if (DebugMode)
 		FPS_Display.Draw(AEVec2Set(0, 100));
 	LevelDisplay.Draw(AEVec2Set(0, 25));
-	TimerDisplay.Draw(AEVec2Set(520, 25));
+	TimerDisplay.Draw(AEVec2Set(530, 25));
 }

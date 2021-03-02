@@ -1,8 +1,6 @@
 #include "Tiles.h"
 #include <iostream>
 
-
-
 Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
 active{ true }, collapsing{false}, ID{0}, collapseDelay{TileCollapseDelay}, type{0}, spawnPos{0, 0},
 ColliderAABB{width, height}

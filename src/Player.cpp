@@ -48,8 +48,6 @@ void Player::Update_Position(void)
 {
 	static f32 maxY = static_cast<f32>(AEGetWindowHeight());
 	static f32 maxX = static_cast<f32>(AEGetWindowWidth());
-	static f32 minY = 0;
-	static f32 minX = 0;
 
 	if (!jump && (AEInputCheckTriggered(AEVK_W) || AEInputCheckTriggered(AEVK_UP)))
 	{
@@ -80,16 +78,8 @@ void Player::Update_Position(void)
 
 	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
 	{
-		if (sprite.pos.x - sprite.width / 2 >= minX)
+		if (sprite.pos.x - sprite.width / 2 >= 0)
 		sprite.pos.x -= player_speed;
-	}
-
-	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
-	{
-		if (sprite.pos.y - sprite.height / 2 >= 0)
-		{
-			sprite.pos.y -= player_speed;
-		}
 	}
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
 	{
@@ -99,7 +89,7 @@ void Player::Update_Position(void)
 	}
 	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
 	{
-		if (sprite.pos.x - sprite.width / 2 >= minX)
+		if (sprite.pos.x - sprite.width / 2 >= 0)
 		{
 			sprite.pos.x -= player_speed;
 		}
@@ -113,13 +103,13 @@ void Player::Update_Position(void)
 			sprite.pos = Mouse;
 		}
 	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN)) {
-		if (sprite.pos.y - sprite.height / 2 >= minY) {
-			sprite.pos.y -= player_speed;
+		if (sprite.pos.y + sprite.height / 2 <= maxY) {
+			sprite.pos.y += player_speed;
 		}
 	}
 	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP)) {
-		if (sprite.pos.y + sprite.height / 2 <= maxY) {
-			sprite.pos.y += player_speed;
+		if (sprite.pos.y - sprite.height / 2 >= 0) {
+			sprite.pos.y -= player_speed;
 		}
 	}
 

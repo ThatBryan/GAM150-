@@ -5,7 +5,7 @@ extern std::vector <Player> player;
 Button::Button(const f32 width, const f32 height, const f32 scale) : button(width, height), text(nullptr, scale)
 , pos{ 0,0 }, callback{ nullptr }{
 	buttonState[Button_Idle] = { 0, 255.0f, 0, 255.0f };
-	buttonState[Button_Hovered] = { 255.0f, 0, 0, 255.0f };
+	buttonState[Button_Hovered] = { 255.0f, 255.0f, 0, 255.0f };
 	buttonState[Button_Clicked] = { 0, 0, 255.0f, 255.0f };
 	text.color = { 0, 0, 0, 255.0f };
 }
@@ -30,8 +30,10 @@ void Button::Set_TextColor(Color color) {
 void Button::Update(void) {
 	AEVec2 Mouse = Utils::GetMousePos();
 	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckReleased(AEVK_LBUTTON))
-		callback();
-
+	{
+		if (!player[0].GetLose() && !player[0].GetWinStatus())
+			callback();
+	}
 	Render();
 }
 
@@ -47,10 +49,4 @@ int Button::Check_Cursor() {
 	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height))
 		return Button_Hovered;
 	return Button_Idle;
-}
-
-void Test_Callback(void) {
-	if (!player[0].GetLose() && !player[0].GetWinStatus()) {
-		paused = !paused;
-	}
 }

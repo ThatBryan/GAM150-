@@ -6,9 +6,8 @@
 #include "Player.h"
 #include "Enemy.h"
 
-enum TileType {Tile_Grass, Tile_Goal, Tile_Safe, Tile_Special, Tile_Max};
+enum TileType{ Tile_Grass = 0, Tile_Goal, Tile_Safe, Tile_Special, Tile_Max };
 static AEGfxTexture* tileTex[Tile_Max]{ nullptr };
-
 class Tiles
 {
 	private:

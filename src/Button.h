@@ -30,4 +30,4 @@ private:
 	int Check_Cursor();
 };
 
-void Test_Callback();
+inline void Test_Callback(){ paused = !paused; };

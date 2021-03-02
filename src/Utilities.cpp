@@ -55,7 +55,7 @@ AEVec2 Utils::GetMousePos(void)
 	int mouseX = 0;
 	int mouseY = 0;
 	AEInputGetCursorPosition(&mouseX, &mouseY);
-	return AEVec2Set(mouseX, mouseY);
+	return AEVec2Set(static_cast<f32>(mouseX), static_cast<f32>(mouseY));
 }
 
 void Utils::CheckPauseInput(void)

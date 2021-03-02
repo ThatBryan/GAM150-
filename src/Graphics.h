@@ -41,9 +41,9 @@ namespace Graphics
 	{
 		public:
 		// Constructor
+		Text(s8* textBuffer, const f32 scale = 1.0f);
 			inline void SetText(s8* text) { buffer = text; }
 			inline s8* GetText() { return buffer; }
-		Text(s8* textBuffer, const f32 scale = 1.0f);
 			Color color;
 			f32 width, height, scale;
 			AEVec2 pos;
