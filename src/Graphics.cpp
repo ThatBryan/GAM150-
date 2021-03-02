@@ -14,8 +14,6 @@ void Color::SetColor(const f32 r, const f32 g, const f32 b, const f32 alpha)
 void Color::Decrement(float i) {
 	r -= i;
 	b -= i;
-	//g -= i;
-	//alpha -= i;
 	if (r <= 0)
 		r = 1.0f;
 	if (g <= 0)
@@ -48,8 +46,8 @@ AEGfxVertexList* Graphics::Mesh_Rectangle(void)
 	AEGfxMeshStart();
 	AEGfxTriAdd(
 		-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 1.0f,// Bottom Left
-		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f, // Bottom Righ
-		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f); // Top vertic
+		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f, // Bottom Right
+		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f); // Top vertex
 
 	AEGfxTriAdd(
 		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f, //	Bottom R
@@ -60,16 +58,16 @@ AEGfxVertexList* Graphics::Mesh_Rectangle(void)
 
 void Graphics::Rect::SetMatrix(void)
 {
+	static f32 HalfWinHeight = Utils::Get_HalfWindowHeight();
+	static f32 HalfWinWindow = Utils::Get_HalfWindowWidth();
 	AEMtx33	trans, rot, scale;
 	AEMtx33Scale(&scale, width, height);
-	AEMtx33Rot(&rot, direction);
-	AEMtx33Trans(&trans, pos.x, pos.y);
+	AEMtx33Rot(&rot, AEDegToRad(direction));
+	AEMtx33Trans(&trans, -HalfWinWindow + pos.x, HalfWinHeight - pos.y);
 	AEMtx33 temp;
 	AEMtx33Concat(&temp, &rot, &scale);
 	AEMtx33Concat(&transformMtx, &trans, &temp);
 }
-
-enum offsetType{None, Topleft = 1,};
 
 void Graphics::Rect::Draw(const f32 alpha)
 {
@@ -101,37 +99,38 @@ void Graphics::Rect::Draw(Color color, const f32 alpha)
 
 void Graphics::Text::Draw_Text(const AEVec2 pos)
 {
-	this->pos.x = pos.x;
-	this->pos.y = pos.y;
 	AEGfxGetPrintSize(fontID, buffer, Scale, width, height);
-	AEVec2 drawPos = Graphics::Text::Calculate_DrawTextOffset();
+	AEVec2 drawPos = Graphics::Text::Calculate_DrawTextOffset(pos);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxPrint(fontID, buffer, drawPos.x, drawPos.y, Scale, color.r, color.g, color.b);
+	AEGfxPrint(fontID, buffer, drawPos.x, -drawPos.y, Scale, color.r, color.g, color.b);
 }
 
-AEVec2 Graphics::Text::Calculate_DrawTextOffset()
+AEVec2 Graphics::Text::Calculate_DrawTextOffset(AEVec2 pos)
 {
-	AEVec2 Offset = {0, 0};
+	static f32 HalfWinWidth = Utils::Get_HalfWindowWidth();
+	static f32 HalfWinHeight = Utils::Get_HalfWindowHeight();
+	static f32 WinHeight = static_cast<f32>(AEGetWindowHeight());
+	static f32 WinWidth = static_cast<f32>(AEGetWindowWidth());
 
-	if (pos.x < Utilities::Get_HalfWindowWidth())
+	AEVec2 Offset{0, 0};
+	if (pos.x < HalfWinWidth)
 	{
-		Offset.x = Utilities::Get_HalfWindowWidth() / (-Utilities::Get_HalfWindowWidth() - pos.x);
+		Offset.x = (-HalfWinWidth + pos.x) / HalfWinWidth;
 	}
-	else if (pos.x > Utilities::Get_HalfWindowWidth())
+	else if (pos.x > HalfWinWidth)
 	{
-		Offset.x = (pos.x - Utilities::Get_HalfWindowWidth()) / ((f32)AEGetWindowWidth());
-	}
-	else
-		Offset.x = 0;
-
-	if (pos.y < Utilities::Get_HalfWindowHeight())
-	{
-		Offset.y = Utilities::Get_HalfWindowHeight() / (-Utilities::Get_HalfWindowHeight() - pos.y);
+		Offset.x = (pos.x - HalfWinWidth) / WinWidth;
 	}
 
-	else if (pos.y > Utilities::Get_HalfWindowHeight())
+	if (pos.y < HalfWinHeight)
 	{
-		Offset.y = pos.y / (f32)(AEGetWindowHeight());
+		Offset.y = (-HalfWinHeight + pos.y) / HalfWinHeight;
 	}
+
+	else if (pos.y > HalfWinHeight)
+	{
+		Offset.y = pos.y / WinHeight;
+	}
+	//printf("%.2f %.2f\n", Offset.x, Offset.y);
 	return Offset;
 }

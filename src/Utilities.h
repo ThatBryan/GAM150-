@@ -1,8 +1,9 @@
 #pragma once
 #include "AEEngine.h"
 #include "Constants.h"
+#include <fstream>
 
-namespace Utilities 
+namespace Utils 
 {
 	// Returns a random int between the specified perimeters.
 	int RandomRangeInt(const s32 lowerBound, const s32 upperBound);
@@ -17,6 +18,7 @@ namespace Utilities
 	void CheckFullScreenInput(void);// Set window to full screen with L ALT + Enter.
 	void CheckPauseInput(void); 	// Press Tab to pause the game.
 	void CheckDebugMode(void);		// F1 to enter debug mode
+	AEVec2 GetScreenMiddle();
 }
 
 // Overloading vector functions.

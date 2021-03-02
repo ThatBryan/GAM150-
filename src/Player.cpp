@@ -16,6 +16,7 @@ void Player::Reset(void)
 	active = true;
 	sprite.pos = startingPos;
 	jumpspeed_y = jumpspeed;
+	sprite.direction = 0;
 }
 
 void Player::Update() {
@@ -44,10 +45,10 @@ void Player::Unload(void) {
 }
 void Player::Update_Position(void)
 {
-	static f32 maxY = AEGfxGetWinMaxY();
-	static f32 maxX = AEGfxGetWinMaxX();
-	static f32 minY = AEGfxGetWinMinY();
-	static f32 minX = AEGfxGetWinMinX();
+	static f32 maxY = static_cast<f32>(AEGetWindowHeight());
+	static f32 maxX = static_cast<f32>(AEGetWindowWidth());
+	static f32 minY = 0;
+	static f32 minX = 0;
 
 	if (!jump && (AEInputCheckTriggered(AEVK_W) || AEInputCheckTriggered(AEVK_UP)))
 	{
@@ -60,7 +61,7 @@ void Player::Update_Position(void)
 	{
 		if (sprite.pos.y + sprite.height / 2 <= maxY)
 		{
-			sprite.pos.y += jumpspeed_y;
+			sprite.pos.y -= jumpspeed_y;
 
 			jumpspeed_y -= .2f;
 			if (jumpspeed_y < -5.0f)
@@ -104,7 +105,7 @@ void Player::Update_Position(void)
 	}
 
 	if (DebugMode) {
-	AEVec2 Mouse = Utilities::GetMousePos();
+	AEVec2 Mouse = Utils::GetMousePos();
 	if (AETestPointToRect(&Mouse, &sprite.pos, sprite.width, sprite.height))
 	{
 		if (AEInputCheckCurr(AEVK_LBUTTON))
@@ -123,7 +124,7 @@ void Player::Update_Position(void)
 
 	}
 	playerBB.pos = sprite.pos;
-	feetBB.pos = AEVec2{ sprite.pos.x, sprite.pos.y - player_collider_offset };
+	feetBB.pos = AEVec2{ sprite.pos.x, sprite.pos.y + player_collider_offset };
 }
 
 //void Player::GravityManager(void)
@@ -148,7 +149,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 			//	//enemy[i].active = false;
 			if (AETestRectToRect(&enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, &playerBB.pos, playerBB.width, playerBB.height))
 			{
-			if (enemy[i].headBB.pos.y < feetBB.pos.y) {
+			if (enemy[i].headBB.pos.y > feetBB.pos.y) {
 				if(DebugMode)
 					printf("enemy dies\n");
 				enemy[i].active = false;

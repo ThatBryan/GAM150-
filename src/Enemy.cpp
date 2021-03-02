@@ -28,7 +28,7 @@ void Enemies::Update_Position(void)
 		enemyBB.pos = sprite.pos;
 		if (type == Enemy_Slime)
 		{
-			headBB.pos.y += 20.0f;
+			headBB.pos.y -= 20.0f;
 		}
 
 		counter += 1.0f;
@@ -43,10 +43,10 @@ void Enemies::Update_Position(void)
 	{
 		// Sine-Wave
 		sprite.pos.x += bat_speed;
-		sprite.pos.y = 20 * sin(sprite.pos.x * 2 * 3.14159 / 180); // y = amplitude * sin(x * period * pi / 180)
+		sprite.pos.y = 20 * sin(static_cast<f32>(sprite.pos.x) * 2.0f * 3.14159 / 180.0f); // y = amplitude * sin(x * period * pi / 180)
 
 		bat_counter += 1.0f;
-		if (bat_counter > 550)
+		if (bat_counter > 120)
 		{
 			bat_speed *= -1;
 			bat_counter = 0.0f;
@@ -88,6 +88,7 @@ void Enemies::Reset(std::vector <Enemies>& enemy)
 	{
 		enemy[i].sprite.pos = enemy[i].spawnPos;
 		enemy[i].active = true;
+		enemy[i].sprite.direction = 0;
 	}
 }
 void Enemies::Unload(void)
