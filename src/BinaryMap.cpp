@@ -61,11 +61,11 @@ int ImportMapDataFromFile(const char* FileName)
 		BinaryCollisionArray = (int**)calloc(BINARY_MAP_HEIGHT, sizeof(int*));
 		for (size_t i = 0; i < BINARY_MAP_HEIGHT; ++i)
 		{
-			MapData[i] = (int*)calloc(BINARY_MAP_WIDTH, sizeof(int));
+			MapData[i] = new (int[BINARY_MAP_WIDTH]);
 		}
 		for (size_t i = 0; i < BINARY_MAP_HEIGHT; ++i)
 		{
-			BinaryCollisionArray[i] = (int*)calloc(BINARY_MAP_WIDTH, sizeof(int));
+			BinaryCollisionArray[i] = new (int[BINARY_MAP_WIDTH]);
 		}
 		for (size_t i = 0; i < BINARY_MAP_HEIGHT; ++i)
 		{
@@ -89,15 +89,32 @@ int ImportMapDataFromFile(const char* FileName)
 				}
 			}
 		}
+		fclose(mapFile);
 		for (size_t i = 0; i < BINARY_MAP_HEIGHT; ++i)
 		{
 			for (size_t j = 0; j < BINARY_MAP_WIDTH; ++j)
 			{
 				if (MapData[i][j] == TYPE_OBJECT_EMPTY)
 					continue;
-				else if (MapData[i][j] == TYPE_OBJECT_COLLAPSIBLE)
+				else if (MapData[i][j] == TYPE_OBJECT_COLLAPSIBLE);
+				// Make grass tile
+				else if (MapData[i][j] == TYPE_OBJECT_NON_COLLAPSIBLE);
+				// Make granite tile
+				else if (MapData[i][j] == TYPE_OBJECT_SPECIAL);
+				// Make special tile
+				else if (MapData[i][j] == TYPE_OBJECT_GOAL);
+				// Make Goal tile
+				else if (MapData[i][j] == TYPE_OBJECT_JUMPERMAN);
+				// Summon Jumperman
+				else if (MapData[i][j] == TYPE_OBJECT_SLIME);
+				// Summon Slime
+				else if (MapData[i][j] == TYPE_OBJECT_BAT);
+				// Summon Bat
+				else if (MapData[i][j] == TYPE_OBJECT_SQUIRREL);
+				// Summon Squirrel
 
-		fclose(mapFile);
+			}
+		}
 		return 1;
 	}
 	return 0;
@@ -110,11 +127,11 @@ void FreeMapData(void)
 {
 	for (size_t i = 0; i < BINARY_MAP_HEIGHT; ++i)
 	{
-		free(MapData[i]);
-		free(BinaryCollisionArray[i]);
+		delete (MapData[i]);
+		delete (BinaryCollisionArray[i]);
 	}
-	free(MapData);
-	free(BinaryCollisionArray);
+	delete (MapData);
+	delete (BinaryCollisionArray);
 }
 
 /*

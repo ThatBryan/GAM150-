@@ -11,8 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BinaryMap.cpp" />
     <ClCompile Include="src\AudioManager.cpp" />
+    <ClCompile Include="src\BinaryMap.cpp" />
     <ClCompile Include="src\Constants.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
@@ -26,8 +26,8 @@
     <ClCompile Include="src\Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BinaryMap.h" />
     <ClInclude Include="src\AudioManager.h" />
+    <ClInclude Include="src\BinaryMap.h" />
     <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\Enemy.h" />
     <ClInclude Include="src\GameObject.h" />
