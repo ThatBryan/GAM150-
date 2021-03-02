@@ -37,7 +37,7 @@ void Image::Draw_Texture(const f32 alpha, const f32 r, const f32 g, const f32 b,
 {
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-	AEGfxTextureSet(pTex, 0, 0); 
+	AEGfxTextureSet(pTex, 0, 0);
 	AEGfxSetTintColor(r / colorcodeMax, g / colorcodeMax, b / colorcodeMax, a / colorcodeMax);
 	AEGfxSetTransparency(alpha / colorcodeMax);
 	AEGfxSetTransform(transformMtx.m);

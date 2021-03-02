@@ -43,7 +43,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	///////////////////////
 	// Variable declaration
 
-	int gGameRunning = 1;
 	// Variable declaration end
 	///////////////////////////
 
@@ -91,31 +90,35 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			// Handling Input
 			AEInputUpdate();
 
-			g_dt = static_cast<f32>(AEFrameRateControllerGetFrameTime()); //Getting delta time
 			GameStateUpdate(); //Update game state
 			GameStateDraw(); //Render game state
 
 			// Informing the system about the loop's end
 			AESysFrameEnd();
 
+			g_dt = static_cast<f32>(AEFrameRateControllerGetFrameTime()); //Getting delta time
 			if (!paused)
+			{
 				app_time += g_dt;
+			}
 
 			// check if forcing the application to quit
 			if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
+			{
 				gamestateCurr = GS_QUIT;
+			}
 		}
 		GameStateFree(); //Resets the game state
 
 		if (gamestateNext != GS_RESTART)
 		{
 			GameStateUnload(); //Unloads all loaded assets of game state
-			Graphics::Free(); //Free the graphic meshes
+			//Free the graphic meshes
 		}
 
 		gamestatePrev = gamestateCurr;
 		gamestateCurr = gamestateNext;
 	}
-
+	Graphics::FreeFont();
 	AESysExit();
 }
