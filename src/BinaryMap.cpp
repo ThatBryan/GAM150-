@@ -28,7 +28,7 @@ static int** BinaryCollisionArray;
 
 /*
 	This function imports map data from a file, in order to properly read our map data, our format should be as follows:
-	
+
 	Width 5
 	Height 5
 	1 1 1 1 1
@@ -89,6 +89,14 @@ int ImportMapDataFromFile(const char* FileName)
 				}
 			}
 		}
+		for (size_t i = 0; i < BINARY_MAP_HEIGHT; ++i)
+		{
+			for (size_t j = 0; j < BINARY_MAP_WIDTH; ++j)
+			{
+				if (MapData[i][j] == TYPE_OBJECT_EMPTY)
+					continue;
+				else if (MapData[i][j] == TYPE_OBJECT_COLLAPSIBLE)
+
 		fclose(mapFile);
 		return 1;
 	}
@@ -128,7 +136,7 @@ int GetCellValue(int X, int Y)
 	Note*: This function will work only in a normalized grid system
 	Note**: This function places 2 hotspots on each side of the object, but we could always add more for more accurate collision detection :)
 
-	This function returns the flag which we can check to find which side of the object collision happened on. 
+	This function returns the flag which we can check to find which side of the object collision happened on.
 	How to check the flag is currently beyond me.
 */
 int CheckInstanceBinaryMapCollision(float PosX, float PosY,
@@ -180,4 +188,3 @@ void SnapToCell(float* Coordinate)
 {
 	*Coordinate = (int)(*Coordinate) + 0.5f;
 }
-
