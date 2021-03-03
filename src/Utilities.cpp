@@ -5,7 +5,9 @@ int Utils::RandomRangeInt(const s32 lowerBound, const s32 upperBound)
 {
 	return (lowerBound + rand() % (upperBound - lowerBound + 1));
 }
-
+float Utils::RandomRangeFloat(const f32 lowerBound, const f32 upperBound) {
+	return((AERandFloat() * (upperBound - lowerBound) + lowerBound));
+}
 
 AEVec2 AEVec2Set(const f32 x, const f32 y)
 {

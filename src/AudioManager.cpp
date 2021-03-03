@@ -1,8 +1,8 @@
 #include "AudioManager.h"
 
 AudioManager sound;
-std::array <AudioClass, static_cast<int>(Audio::Max)> soundTest{ NULL };
-AudioData soundData[static_cast<int>(Audio::Max)];
+std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest{ NULL };
+AudioData soundData[static_cast<int>(AudioID::Max)];
 
 AudioManager::AudioManager() {
 	if (FMOD::System_Create(&m_pSystem) != FMOD_OK)
@@ -21,7 +21,7 @@ void AudioManager::createAudio(AudioClass* pSound, const char* pFile) {
 	m_pSystem->createSound(pFile, FMOD_ERR_NEEDSHARDWARE, 0, pSound);
 }
 
-void AudioManager::playAudio(AudioClass& Sound, int index, bool bLoop) {
+void AudioManager::playAudio(AudioClass& Sound, AudioID ID, bool bLoop) {
 	if (!bLoop) {
 		Sound->setMode(FMOD_LOOP_OFF);
 	}
@@ -30,31 +30,31 @@ void AudioManager::playAudio(AudioClass& Sound, int index, bool bLoop) {
 		Sound->setMode(FMOD_LOOP_NORMAL);
 		Sound->setLoopCount(-1);
 	}
-	m_pSystem->playSound(Sound, NULL, false, &(soundData[index].channel));
-	soundData[index].channel->setVolume(soundData[index].volume);
+	m_pSystem->playSound(Sound, NULL, false, &(soundData[static_cast<int>(ID)].channel));
+	soundData[static_cast<int>(ID)].channel->setVolume(soundData[static_cast<int>(ID)].volume);
 }
 
 void AudioManager::update() {
 	m_pSystem->update();
-	for (int i = 0; i < static_cast<int>(Audio::Max); ++i) {
+	for (int i = 0; i < static_cast<int>(AudioID::Max); ++i) {
 		soundData[i].channel->setPaused(paused);
 	}
 }
 
 void AudioManager::loadAsset(void) {
-	sound.createAudio(&soundTest[static_cast<int>(Audio::Jump)], "../Assets/Audio/SFX/powerup.wav");
-	sound.createAudio(&soundTest[static_cast<int>(Audio::BGM)], "../Assets/Audio/BGM/gg.wav");
+	sound.createAudio(&soundTest[static_cast<int>(AudioID::Jump)], "../Assets/Audio/SFX/powerup.wav");
+	sound.createAudio(&soundTest[static_cast<int>(AudioID::BGM)], "../Assets/Audio/BGM/gg.wav");
 }
 void AudioManager::unloadAsset(void) {
 	for (int i = 0; i < soundTest.size(); i++) {
 		soundTest[i]->release();
 	}
 }
-void AudioManager::SetVolume(enum Audio index, float volume) {
-	soundData[static_cast<int>(index)].volume = volume;
+void AudioManager::SetVolume(AudioID ID, float volume) {
+	soundData[static_cast<int>(ID)].volume = volume;
 }
 
-void AudioManager::SetMute(enum Audio index) {
+void AudioManager::SetMute(AudioID ID) {
 	bgmMute = !bgmMute;
-	soundData[static_cast<int>(index)].channel->setMute(bgmMute);
+	soundData[static_cast<int>(ID)].channel->setMute(bgmMute);
 }

@@ -7,6 +7,7 @@ namespace Utils
 {
 	// Returns a random int between the specified perimeters.
 	int RandomRangeInt(const s32 lowerBound, const s32 upperBound);
+	float RandomRangeFloat(const f32 lowerBound, const f32 upperBound);
 
 	// Returns half window width/height to be used for calculations.
 	f32 Get_HalfWindowWidth(void);

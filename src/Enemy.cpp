@@ -3,7 +3,7 @@
 float numberOfTicks = 0.0f;
 
 Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
-spawnPos{0, 0}, active{true}, type{0}
+spawnPos{0, 0}, active{true}, type{EnemyType::Slime}
 {
 	ID = EnemyCount;
 	EnemyCount++;
@@ -20,7 +20,7 @@ void Enemies::Update_Position(void)
 	
 	if(DebugMode)
 		sprite.direction -= 1.0f * ID;
-	if (type == static_cast<int>(EnemyType::Slime))
+	if (type == EnemyType::Slime)
 	{
 
 		sprite.pos.x += speed;
@@ -38,7 +38,7 @@ void Enemies::Update_Position(void)
 		}
 	}
 	
-	if (type == static_cast<int>(EnemyType::Bat))
+	if (type == EnemyType::Bat)
 	{
 		// Sine-Wave
 		static AEVec2 startpos = sprite.pos;
@@ -72,9 +72,9 @@ void Enemies::Draw()
 	}
 }
 
-void Enemies::AddNew(std::vector <Enemies>& enemy, const short type, const AEVec2 pos, const f32 width, const f32 height)
+void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 pos, const f32 width, const f32 height)
 {
-	enemy.push_back(Enemies(enemyTex[type], width, height));
+	enemy.push_back(Enemies(enemyTex[static_cast<int>(type)], width, height));
 	enemy[enemy.size() - 1].sprite.pos = pos;
 	enemy[enemy.size() - 1].type = type;
 	enemy[enemy.size() - 1].spawnPos = pos;
