@@ -13,6 +13,9 @@ spawnPos{0, 0}, active{true}, type{EnemyType::Slime}
 
 void Enemies::Update_Position(void)
 {
+	static f32 maxY = static_cast<f32>(AEGetWindowHeight());
+	static f32 maxX = static_cast<f32>(AEGetWindowWidth());
+
 	static float counter = 0.0f;
 	static float speed = 1.0f;
 	static float bat_speed = 1.0f;
@@ -40,17 +43,24 @@ void Enemies::Update_Position(void)
 	
 	if (type == EnemyType::Bat)
 	{
+
 		// Sine-Wave
 		static AEVec2 startpos = sprite.pos;
 		sprite.pos.x += bat_speed;
 		sprite.pos.y = startpos.y + 20 * sin(static_cast<f32>(sprite.pos.x) * 2.0f * 3.14159 / 180.0f); // y = amplitude * sin(x * period * pi / 180)
 
 		bat_counter += 1.0f;
-		if (bat_counter > 120)
+
+		if (sprite.pos.x < 0 || sprite.pos.x + sprite.width / 2 >= maxX || bat_counter > 200)
 		{
 			bat_speed *= -1;
 			bat_counter = 0.0f;
 		}
+		/*else if (bat_counter > 200)
+		{
+			bat_speed *= -1;
+			bat_counter = 0.0f;
+		}*/
 	}
 
 }
