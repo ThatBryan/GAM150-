@@ -26,14 +26,13 @@ void Enemies::Update_Position(void)
 	if (type == EnemyType::Slime)
 	{
 
-		sprite.pos.x += slime_speed;
 		headBB.pos = sprite.pos;
 		enemyBB.pos = sprite.pos;
-
 		headBB.pos.y -= 20.0f;
 
-
+		sprite.pos.x += slime_speed;
 		slime_counter += 1.0f;
+
 		if (slime_counter > 180.0f)
 		{
 			slime_speed *= -1;
@@ -43,6 +42,10 @@ void Enemies::Update_Position(void)
 	
 	if (type == EnemyType::Bat)
 	{
+		headBB.pos = sprite.pos;
+		enemyBB.pos = sprite.pos;
+		headBB.pos.y -= 20.0f;
+
 		// Sine-Wave
 		static AEVec2 startpos = sprite.pos;
 		sprite.pos.x += bat_speed;
