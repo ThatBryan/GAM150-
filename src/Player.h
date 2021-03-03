@@ -9,7 +9,7 @@
 #include "AudioManager.h"
 
 extern AudioManager sound;
-extern std::array <SoundClass, static_cast<int>(Audio::Max)> soundTest;
+extern std::array <AudioClass, static_cast<int>(Audio::Max)> soundTest;
 
 class Player
 {

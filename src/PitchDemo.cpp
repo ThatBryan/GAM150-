@@ -25,12 +25,12 @@ std::vector <Player> player;
 
 enum {GGPen = 0, Victory, Defeat, MAX_IMAGE};
 static std::array <Image, MAX_IMAGE> Images;
-extern SoundData soundData[static_cast<int>(Audio::Max)];
+extern AudioData soundData[static_cast<int>(Audio::Max)];
 
 void Demo::Init(void)
 {
 
-	Demo::Load();
+	Load();
 	UI::Init();
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
 
@@ -70,7 +70,7 @@ void Demo::Init(void)
 	Images[Victory].Init(VictoryScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 	Images[Defeat].Init(GameoverScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 
-	sound.playSound(soundTest[static_cast<int>(Audio::BGM)], static_cast<int>(Audio::BGM), true);
+	sound.playAudio(soundTest[static_cast<int>(Audio::BGM)], static_cast<int>(Audio::BGM), true);
 }
 
 void Demo::Update(void)
@@ -81,12 +81,12 @@ void Demo::Update(void)
 	Utils::CheckPauseInput();
 	Utils::CheckFullScreenInput();
 	Utils::CheckDebugMode();
-	Demo::UpdateManager();
-	Demo::UpdateOverlay();
-	Demo::Render();
+	UpdateManager();
+	UpdateOverlay();
+	Render();
 	UI::Update();
 	if (AEInputCheckTriggered(RESTART_KEY))
-		Demo::Restart();
+		Restart();
 }
 void Demo::Exit(void)
 {
@@ -98,7 +98,7 @@ void Demo::Load(void) {
 	Enemies::LoadTex();
 	Tiles::LoadTex();
 	Player::LoadTex();
-	AudioManager::loadSound();
+	AudioManager::loadAsset();
 	AudioManager::SetVolume(Audio::BGM, 0.2f);
 	AudioManager::SetVolume(Audio::Jump, .5f);
 }
@@ -107,7 +107,7 @@ void Demo::Unload(void)
 	Enemies::Unload();
 	Tiles::Unload();
 	Player::Unload();
-	AudioManager::unloadSound();
+	AudioManager::unloadAsset();
 	for (int i = 0; i < Images.size(); ++i) {
 		Images[i].Free();
 	}

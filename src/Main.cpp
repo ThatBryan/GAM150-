@@ -64,16 +64,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	{
 		// Informing the system about the loop's start
 		AESysFrameStart();
-
 		// Handling Input
 		AEInputUpdate();
-
 		g_dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 		Demo::Update();
-
 		// Informing the system about the loop's end
 		AESysFrameEnd();
-
 		if(!paused)
 			app_time += g_dt;
 

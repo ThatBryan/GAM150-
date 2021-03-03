@@ -1,8 +1,8 @@
 #include "AudioManager.h"
 
 AudioManager sound;
-std::array <SoundClass, static_cast<int>(Audio::Max)> soundTest{ NULL };
-SoundData soundData[static_cast<int>(Audio::Max)];
+std::array <AudioClass, static_cast<int>(Audio::Max)> soundTest{ NULL };
+AudioData soundData[static_cast<int>(Audio::Max)];
 
 AudioManager::AudioManager() {
 	if (FMOD::System_Create(&m_pSystem) != FMOD_OK)
@@ -17,11 +17,11 @@ AudioManager::AudioManager() {
 	}
 	m_pSystem->init(36, FMOD_INIT_NORMAL, NULL);
 }
-void AudioManager::createSound(SoundClass* pSound, const char* pFile) {
+void AudioManager::createAudio(AudioClass* pSound, const char* pFile) {
 	m_pSystem->createSound(pFile, FMOD_ERR_NEEDSHARDWARE, 0, pSound);
 }
 
-void AudioManager::playSound(SoundClass& Sound, int index, bool bLoop) {
+void AudioManager::playAudio(AudioClass& Sound, int index, bool bLoop) {
 	if (!bLoop) {
 		Sound->setMode(FMOD_LOOP_OFF);
 	}
@@ -41,17 +41,13 @@ void AudioManager::update() {
 	}
 }
 
-void AudioManager::releaseSound(SoundClass& Sound) {
-	Sound->release();
+void AudioManager::loadAsset(void) {
+	sound.createAudio(&soundTest[static_cast<int>(Audio::Jump)], "../Assets/Audio/SFX/powerup.wav");
+	sound.createAudio(&soundTest[static_cast<int>(Audio::BGM)], "../Assets/Audio/BGM/gg.wav");
 }
-
-void AudioManager::loadSound(void) {
-	sound.createSound(&soundTest[static_cast<int>(Audio::Jump)], "../Assets/Audio/SFX/powerup.wav");
-	sound.createSound(&soundTest[static_cast<int>(Audio::BGM)], "../Assets/Audio/BGM/gg.wav");
-}
-void AudioManager::unloadSound(void) {
+void AudioManager::unloadAsset(void) {
 	for (int i = 0; i < soundTest.size(); i++) {
-		sound.releaseSound(soundTest[i]);
+		soundTest[i]->release();
 	}
 }
 void AudioManager::SetVolume(enum Audio index, float volume) {
