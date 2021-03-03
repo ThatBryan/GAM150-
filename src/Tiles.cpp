@@ -4,21 +4,21 @@
 extern std::vector <Player> player;
 
 Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
-active{ true }, collapsing{false}, ID{0}, collapseDelay{TileCollapseDelay}, type{0}, spawnPos{0, 0},
+active{ true }, collapsing{ false }, ID{ 0 }, collapseDelay{ TileCollapseDelay }, type{ TileType::Safe }, spawnPos{ 0, 0 },
 ColliderAABB{width, height}
 {
 	ColliderAABB.color.SetColor(150, 0, 0, 150);
 }
 void Tiles::Collapse(void)
 {
-	if (type == static_cast<int>(TileType::Grass) || type == static_cast<int>(TileType::Special))
+	if (type == TileType::Grass || type == TileType::Special)
 	{
 		if (collapseDelay <= 0)
 		{
 			image.pos.y += TileCollapseSpeed;
 		}
 	}
-	if (type == static_cast<int>(TileType::Special)) {
+	if (type == TileType::Special) {
 		if (AETestRectToRect(&player[0].feetBB.pos, player[0].feetBB.width, player[0].feetBB.height, &ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
 			&& (AEInputCheckTriggered(AEVK_DOWN) || AEInputCheckTriggered(AEVK_S)))
 		{
@@ -29,7 +29,7 @@ void Tiles::Collapse(void)
 
 void Tiles::CheckPlayerGoal(std::vector <Player>& player)
 {
-	if (type == static_cast<int>(TileType::Goal))
+	if (type == TileType::Goal)
 	{
 		static AEVec2 GoalPoint = {image.pos.x, image.pos.y - image.height / 2 };
 		if (AETestPointToRect(&GoalPoint, &player[0].sprite.pos, player[0].sprite.width, player[0].sprite.height))
@@ -87,12 +87,12 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 	player[0].gravity = true;
 }
 
-void Tiles::AddTileRow(std::vector <Tiles>& tile, s32 type, size_t num, const f32 width, const f32 height, const AEVec2 pos)
+void Tiles::AddTileRow(std::vector <Tiles>& tile, TileType type, const int num, const f32 width, const f32 height, const AEVec2 pos)
 {
-	size_t VectorSize = tile.size();
-	AEGfxTexture* temp = tileTex[type];
+	int VectorSize = static_cast<int>(tile.size());
+	AEGfxTexture* temp = tileTex[static_cast<int>(type)];
 
-	for (size_t i = VectorSize; i < VectorSize + num; i++)
+	for (int i = VectorSize; i < VectorSize + num; i++)
 	{
 		tile.push_back(Tiles(temp, width, height));
 		tile[i].type = type;
@@ -107,7 +107,7 @@ void Tiles::CollapseNext(std::vector <Tiles>& tiles)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
-		if (tiles[i].type == static_cast<int>(TileType::Grass) || tiles[i].type == static_cast<int>(TileType::Special)) {
+		if (tiles[i].type == TileType::Grass || tiles[i].type == TileType::Special) {
 			if (tiles[i].collapsing && (tiles[i].collapseDelay <= 0))
 			{
 				if (tiles[i].ID + 1 < (int)tiles.size())
@@ -161,26 +161,27 @@ void Tiles::UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& play
 }
 
 void Tiles::LoadTex() {
-	for (int i = 0; i < static_cast<int>(TileType::Max); i++) {
+	for (TileType i = TileType::Grass; i < TileType::Max;) {
 		const char* pTex{ nullptr };
 		switch (i) {
-		case static_cast<int>(TileType::Grass):
+		case TileType::Grass:
 			pTex = GrassTile;
 			break;
-		case static_cast<int>(TileType::Goal):
+		case TileType::Goal:
 			pTex = GoalTile;
 			break;
-		case static_cast<int>(TileType::Safe):
+		case TileType::Safe:
 			pTex = GreyTile;
 			break;
-		case static_cast<int>(TileType::Special):
+		case TileType::Special:
 			pTex = SpecialTile;
 			break;
 		default:
 			return;
 		}
-		tileTex[i] = AEGfxTextureLoad(pTex);
+		tileTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex);
 		AE_ASSERT_MESG(pTex, "Failed to create texture!");
+		i = static_cast<TileType>(static_cast<int>(i) + 1);
 	}
 }
 

@@ -3,7 +3,7 @@
 float numberOfTicks = 0.0f;
 
 Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
-spawnPos{0, 0}, active{true}, type{0}
+spawnPos{0, 0}, active{true}, type{EnemyType::Slime}
 {
 	ID = EnemyCount;
 	EnemyCount++;
@@ -22,8 +22,8 @@ void Enemies::Update_Position(void)
 	static float bat_counter = 0.0f;
 	
 	if(DebugMode)
-		sprite.direction -= 1.0f * ID;
-	if (type == static_cast<int>(EnemyType::Slime))
+		sprite.rotation -= 1.0f * ID;
+	if (type == EnemyType::Slime)
 	{
 
 		sprite.pos.x += slime_speed;
@@ -41,7 +41,7 @@ void Enemies::Update_Position(void)
 		}
 	}
 	
-	if (type == static_cast<int>(EnemyType::Bat))
+	if (type == EnemyType::Bat)
 	{
 		// Sine-Wave
 		static AEVec2 startpos = sprite.pos;
@@ -76,9 +76,9 @@ void Enemies::Draw()
 	}
 }
 
-void Enemies::AddNew(std::vector <Enemies>& enemy, const short type, const AEVec2 pos, const f32 width, const f32 height)
+void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 pos, const f32 width, const f32 height)
 {
-	enemy.push_back(Enemies(enemyTex[type], width, height));
+	enemy.push_back(Enemies(enemyTex[static_cast<int>(type)], width, height));
 	enemy[enemy.size() - 1].sprite.pos = pos;
 	enemy[enemy.size() - 1].type = type;
 	enemy[enemy.size() - 1].spawnPos = pos;
@@ -90,7 +90,7 @@ void Enemies::Reset(std::vector <Enemies>& enemy)
 	{
 		enemy[i].sprite.pos = enemy[i].spawnPos;
 		enemy[i].active = true;
-		enemy[i].sprite.direction = 0;
+		enemy[i].sprite.rotation = 0;
 	}
 }
 void Enemies::Unload(void)
@@ -102,22 +102,23 @@ void Enemies::Unload(void)
 }
 
 void Enemies::LoadTex(void) {
-	for (int i = 0; i < static_cast<int>(EnemyType::Max); i++) {
+	for (EnemyType i = EnemyType::Slime; i < EnemyType::Max;) {
 		const char* pTex = nullptr;
 		switch (i) {
-		case static_cast<int>(EnemyType::Slime):
+		case EnemyType::Slime:
 			pTex = WaterSlimeSprite;
 			break;
-		case static_cast<int>(EnemyType::Bat):
+		case EnemyType::Bat:
 			pTex = FlyingEnemySprite;
 			break;
-		case static_cast<int>(EnemyType::Squirrel):
+		case EnemyType::Squirrel:
 			pTex = SquirrelSprite;
 			break;
 		default:
 			return;
 		}
-		enemyTex[i] = AEGfxTextureLoad(pTex);
+		enemyTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex);
+		i = static_cast<EnemyType>(static_cast<int>(i) + 1);
 		AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	}
 }

@@ -8,12 +8,13 @@
 
 using AudioClass = FMOD::Sound*;
 
-enum class Audio {BGM = 0, Jump, Max };
+enum class AudioID {BGM = 0, Jump, Max };
 
 struct AudioData {
-	int index;
+	AudioID ID;
 	FMOD::Channel* channel;
 	float volume;
+	bool mute = false;
 };
 
 class AudioManager
@@ -23,10 +24,10 @@ class AudioManager
 public:
 	AudioManager();
 	void createAudio(AudioClass*, const char* pFile);
-	void playAudio(AudioClass& pSound, int index, bool bLoop = false);
+	void playAudio(AudioClass& pSound, AudioID ID, bool bLoop = false);
 	void update();
 	static void loadAsset(void);
 	static void unloadAsset(void);
-	static void SetVolume(enum Audio index, float volume);
-	static void SetMute(enum Audio index);
+	static void SetVolume(AudioID ID, float volume);
+	static void SetMute(AudioID ID);
 };

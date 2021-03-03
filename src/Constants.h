@@ -15,7 +15,6 @@ extern const char* GreyTile;
 extern const char* SpecialTile;
 extern const char* FontFile;
 
-
 // Player constants
 extern const float player_speed;
 extern const float player_width;
@@ -41,7 +40,6 @@ extern const float colorcodeMax;
 extern bool paused;
 extern bool DebugMode;
 extern bool fullscreen;
-extern bool bgmMute;
 extern float g_dt;
 extern float app_time;
 

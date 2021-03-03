@@ -12,7 +12,7 @@
 #define TILE_HEIGHT 50.0f
 
 // Initial tile pos
-#define x TILE_WIDTTH / 2.0f
+#define X TILE_WIDTTH / 2.0f
 #define y2 400
 #define y1 y2 - 150
 #define y3 y2 + 150
@@ -25,22 +25,20 @@ std::vector <Player> player;
 
 enum {GGPen = 0, Victory, Defeat, MAX_IMAGE};
 static std::array <Image, MAX_IMAGE> Images;
-extern AudioData soundData[static_cast<int>(Audio::Max)];
+extern AudioData soundData[static_cast<int>(AudioID::Max)];
 
 void Demo::Init(void)
 {
-
 	Load();
 	UI::Init();
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
 
-	size_t test = (size_t)(AEGetWindowWidth() / TILE_WIDTTH);
-	Tiles::AddTileRow(Demo_Tiles, static_cast<int>(TileType::Special), 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ x, y1 });
-	Tiles::AddTileRow(Demo_Tiles, static_cast<int>(TileType::Safe), 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{x, y1 });
-	Tiles::AddTileRow(Demo_Tiles, static_cast<int>(TileType::Grass), 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{x, y1 });
-	Tiles::AddTileRow(Demo_Tiles2, static_cast<int>(TileType::Grass), 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{x, y2 });
-	Tiles::AddTileRow(Demo_Tiles2, static_cast<int>(TileType::Goal), 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{x, y2 });
-	Tiles::AddTileRow(Demo_Tiles3, static_cast<int>(TileType::Grass), test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ x, y3 });
+	Tiles::AddTileRow(Demo_Tiles, TileType::Special, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ X, y1 });
+	Tiles::AddTileRow(Demo_Tiles, TileType::Safe, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{X, y1 });
+	Tiles::AddTileRow(Demo_Tiles, TileType::Grass, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{X, y1 });
+	Tiles::AddTileRow(Demo_Tiles2, TileType::Grass, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{X, y2 });
+	Tiles::AddTileRow(Demo_Tiles2, TileType::Goal, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{X, y2 });
+	Tiles::AddTileRow(Demo_Tiles3, TileType::Grass, AEGetWindowWidth() / TILE_WIDTTH, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ X, y3 });
 
 
 	TileManager.push_back(&Demo_Tiles);
@@ -55,11 +53,11 @@ void Demo::Init(void)
 	AEVec2 Offset = {0, -TILE_HEIGHT };
 	AEVec2 Offset2 = { 0, -2 * TILE_HEIGHT };
 
-	Enemies::AddNew(enemy, static_cast<int>(EnemyType::Slime), AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, static_cast<int>(EnemyType::Slime), AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, static_cast<int>(EnemyType::Slime), AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, static_cast<int>(EnemyType::Bat), AEVec2Add(DemoEnemyPos4, Offset2), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, static_cast<int>(EnemyType::Squirrel), AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos4, Offset2), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
 
 	player.push_back(Player(Player::playerTex, player_width, player_height));
 	player[0].startingPos = Demo_Tiles2[0].spawnPos;
@@ -70,12 +68,12 @@ void Demo::Init(void)
 	Images[Victory].Init(VictoryScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 	Images[Defeat].Init(GameoverScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 
-	sound.playAudio(soundTest[static_cast<int>(Audio::BGM)], static_cast<int>(Audio::BGM), true);
+	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 }
 
 void Demo::Update(void)
 {
-	sound.update();
+	Audio.update();
 	background.Decrement();
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 	Utils::CheckPauseInput();
@@ -99,8 +97,8 @@ void Demo::Load(void) {
 	Tiles::LoadTex();
 	Player::LoadTex();
 	AudioManager::loadAsset();
-	AudioManager::SetVolume(Audio::BGM, 0.2f);
-	AudioManager::SetVolume(Audio::Jump, .5f);
+	AudioManager::SetVolume(AudioID::BGM, 0.2f);
+	AudioManager::SetVolume(AudioID::Jump, 0.2f);
 }
 void Demo::Unload(void)
 {

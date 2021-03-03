@@ -17,12 +17,12 @@ void Player::Reset(void)
 	active = true;
 	sprite.pos = startingPos;
 	jumpspeed_y = jumpspeed;
-	sprite.direction = 0;
+	sprite.rotation = 0;
 }
 
 void Player::Update() {
 	if(DebugMode)
-		sprite.direction += 1;
+		sprite.rotation += 1;
 	Update_Position();
 
 }
@@ -52,7 +52,7 @@ void Player::Update_Position(void)
 	{
 		if (!DebugMode) {
 			jump = TRUE;
-			sound.playAudio(soundTest[static_cast<int>(Audio::Jump)], static_cast<int>(Audio::Jump));
+			Audio.playAudio(soundTest[static_cast<int>(AudioID::Jump)], AudioID::Jump);
 		}
 	}
 	if (jump)
