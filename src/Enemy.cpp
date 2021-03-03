@@ -23,16 +23,15 @@ void Enemies::Update_Position(void)
 	
 	if(DebugMode)
 		sprite.direction -= 1.0f * ID;
-	if (type == Enemy_Slime)
+	if (type == static_cast<int>(EnemyType::Slime))
 	{
 
 		sprite.pos.x += speed;
 		headBB.pos = sprite.pos;
 		enemyBB.pos = sprite.pos;
-		if (type == Enemy_Slime)
-		{
-			headBB.pos.y -= 20.0f;
-		}
+
+		headBB.pos.y -= 20.0f;
+
 
 		counter += 1.0f;
 		if (counter > 180.0f)
@@ -42,7 +41,7 @@ void Enemies::Update_Position(void)
 		}
 	}
 	
-	if (type == Enemy_Bat)
+	if (type == static_cast<int>(EnemyType::Bat))
 	{
 
 		// Sine-Wave
@@ -68,9 +67,7 @@ void Enemies::Update_Position(void)
 
 void Enemies::Update()
 {
-	if (!paused) {
-		Update_Position();
-	}
+	Update_Position();
 }
 
 void Enemies::Draw()
@@ -104,23 +101,23 @@ void Enemies::Reset(std::vector <Enemies>& enemy)
 }
 void Enemies::Unload(void)
 {
-	for (size_t i = 0; i < Enemy_Max; i++)
+	for (size_t i = 0; i < static_cast<int>(EnemyType::Max); i++)
 	{
 		AEGfxTextureUnload(enemyTex[i]);
 	}
 }
 
 void Enemies::LoadTex(void) {
-	for (int i = 0; i < Enemy_Max; i++) {
+	for (int i = 0; i < static_cast<int>(EnemyType::Max); i++) {
 		const char* pTex = nullptr;
 		switch (i) {
-		case Enemy_Slime:
+		case static_cast<int>(EnemyType::Slime):
 			pTex = WaterSlimeSprite;
 			break;
-		case Enemy_Bat:
+		case static_cast<int>(EnemyType::Bat):
 			pTex = FlyingEnemySprite;
 			break;
-		case Enemy_Squirrel:
+		case static_cast<int>(EnemyType::Squirrel):
 			pTex = SquirrelSprite;
 			break;
 		default:

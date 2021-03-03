@@ -8,8 +8,8 @@
 #include "Constants.h"
 #include "AudioManager.h"
 
-extern SoundSystemClass sound;
-extern std::array <SoundClass, Sound_Max> soundTest;
+extern AudioManager sound;
+extern std::array <AudioClass, static_cast<int>(Audio::Max)> soundTest;
 
 class Player
 {
@@ -33,7 +33,7 @@ public:
 	void CheckEnemyCollision(std::vector <Enemies>& enemy);
 	void Reset(void);
 	void Render(void);
-	//void GravityManager(void);
+	void GravityManager(void);
 	inline void SetWin(void) { win = true; }
 	inline bool GetWinStatus(void) { return win; }
 	inline void SetLose(void) { lose = true; }

@@ -21,11 +21,10 @@ void Player::Reset(void)
 }
 
 void Player::Update() {
-	if (!paused) {
-		if(DebugMode)
-			sprite.direction += 1;
-		Update_Position();
-	}
+	if(DebugMode)
+		sprite.direction += 1;
+	Update_Position();
+
 }
 void Player::Render(void)
 {
@@ -53,7 +52,7 @@ void Player::Update_Position(void)
 	{
 		if (!DebugMode) {
 			jump = TRUE;
-			sound.playSound(soundTest[Sound_Jump], Sound_Jump);
+			sound.playAudio(soundTest[static_cast<int>(Audio::Jump)], static_cast<int>(Audio::Jump));
 		}
 	}
 	if (jump)
@@ -118,14 +117,15 @@ void Player::Update_Position(void)
 	feetBB.pos = AEVec2{ sprite.pos.x, sprite.pos.y + player_collider_offset };
 }
 
-//void Player::GravityManager(void)
-//{
-//	if (gravity)
-//	{
-//		if(DebugMode)
-//			printf("Apply gravity\n");
-//	}
-//}
+void Player::GravityManager(void)
+{
+	if (gravity)
+	{
+		sprite.pos.y += 0.5f;
+		if(DebugMode)
+			printf("Apply gravity\n");
+	}
+}
 
 void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 {

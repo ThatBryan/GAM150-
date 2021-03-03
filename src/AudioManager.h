@@ -6,26 +6,27 @@
 #include <array>
 #include "Constants.h"
 
-using SoundClass = FMOD::Sound*;
-enum Sounds {Sound_BGM, Sound_Jump, Sound_Max };
+using AudioClass = FMOD::Sound*;
 
-struct SoundData {
+enum class Audio {BGM = 0, Jump, Max };
+
+struct AudioData {
 	int index;
 	FMOD::Channel* channel;
 	float volume;
 };
 
-class SoundSystemClass
+class AudioManager
 {
 	// Pointer to the FMOD instance
 	FMOD::System* m_pSystem;
 public:
-	SoundSystemClass();
-	void createSound(SoundClass*, const char* pFile);
-	void playSound(SoundClass& pSound, int index, bool bLoop = false);
-	void releaseSound(SoundClass& pSound);
+	AudioManager();
+	void createAudio(AudioClass*, const char* pFile);
+	void playAudio(AudioClass& pSound, int index, bool bLoop = false);
 	void update();
-	static void loadSound(void);
-	static void unloadSound(void);
-	static void SetVolume(int index, float volume);
+	static void loadAsset(void);
+	static void unloadAsset(void);
+	static void SetVolume(enum Audio index, float volume);
+	static void SetMute(enum Audio index);
 };

@@ -12,7 +12,7 @@
 #define TILE_HEIGHT 50.0f
 
 // Initial tile pos
-#define x TILE_WIDTTH / 2.0f// - 400
+#define x TILE_WIDTTH / 2.0f
 #define y2 400
 #define y1 y2 - 150
 #define y3 y2 + 150
@@ -22,31 +22,26 @@ std::vector <Tiles> Demo_Tiles, Demo_Tiles2, Demo_Tiles3;
 std::vector <std::vector <Tiles>*> TileManager;
 std::vector <Enemies> enemy;
 std::vector <Player> player;
-std::vector <Button> buttonTest;
 
 enum {GGPen = 0, Victory, Defeat, MAX_IMAGE};
 static std::array <Image, MAX_IMAGE> Images;
-extern SoundData soundData[Sound_Max];
+extern AudioData soundData[static_cast<int>(Audio::Max)];
 
 void Demo::Init(void)
 {
 
+	Load();
 	UI::Init();
-	Demo::Load();
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
 
 	size_t test = (size_t)(AEGetWindowWidth() / TILE_WIDTTH);
-	Tiles::AddTileRow(Demo_Tiles, Tile_Special, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ x, y1 });
-	Tiles::AddTileRow(Demo_Tiles, Tile_Safe, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{x, y1 });
-	Tiles::AddTileRow(Demo_Tiles, Tile_Grass, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{x, y1 });
-	Tiles::AddTileRow(Demo_Tiles2, Tile_Grass, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{x, y2 });
-	Tiles::AddTileRow(Demo_Tiles2, Tile_Goal, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{x, y2 });
-	Tiles::AddTileRow(Demo_Tiles3, Tile_Grass, test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ x, y3 });
+	Tiles::AddTileRow(Demo_Tiles, static_cast<int>(TileType::Special), 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ x, y1 });
+	Tiles::AddTileRow(Demo_Tiles, static_cast<int>(TileType::Safe), 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{x, y1 });
+	Tiles::AddTileRow(Demo_Tiles, static_cast<int>(TileType::Grass), 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{x, y1 });
+	Tiles::AddTileRow(Demo_Tiles2, static_cast<int>(TileType::Grass), 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{x, y2 });
+	Tiles::AddTileRow(Demo_Tiles2, static_cast<int>(TileType::Goal), 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{x, y2 });
+	Tiles::AddTileRow(Demo_Tiles3, static_cast<int>(TileType::Grass), test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ x, y3 });
 
-	buttonTest.push_back(Button(100.0, 50.0f, 0.8f));
-	buttonTest[0].Set_Position(AEVec2{ 400.0f, 25.0f});
-	buttonTest[0].Set_Callback(Test_Callback);
-	buttonTest[0].Set_Text("Pause");
 
 	TileManager.push_back(&Demo_Tiles);
 	TileManager.push_back(&Demo_Tiles2);
@@ -60,11 +55,11 @@ void Demo::Init(void)
 	AEVec2 Offset = {0, -TILE_HEIGHT };
 	AEVec2 Offset2 = { 0, -2 * TILE_HEIGHT };
 
-	Enemies::AddNew(enemy, Enemy_Slime, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, Enemy_Slime, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, Enemy_Slime, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, Enemy_Bat, AEVec2Add(DemoEnemyPos4, Offset2), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, Enemy_Squirrel, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, static_cast<int>(EnemyType::Slime), AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, static_cast<int>(EnemyType::Slime), AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, static_cast<int>(EnemyType::Slime), AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, static_cast<int>(EnemyType::Bat), AEVec2Add(DemoEnemyPos4, Offset2), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, static_cast<int>(EnemyType::Squirrel), AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
 
 	player.push_back(Player(Player::playerTex, player_width, player_height));
 	player[0].startingPos = Demo_Tiles2[0].spawnPos;
@@ -75,7 +70,7 @@ void Demo::Init(void)
 	Images[Victory].Init(VictoryScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 	Images[Defeat].Init(GameoverScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 
-	sound.playSound(soundTest[Sound_BGM], Sound_BGM, true);
+	sound.playAudio(soundTest[static_cast<int>(Audio::BGM)], static_cast<int>(Audio::BGM), true);
 }
 
 void Demo::Update(void)
@@ -86,13 +81,12 @@ void Demo::Update(void)
 	Utils::CheckPauseInput();
 	Utils::CheckFullScreenInput();
 	Utils::CheckDebugMode();
-	Demo::UpdateManager();
-	Demo::UpdateOverlay();
-	buttonTest[0].Update();
-	Demo::Render();
+	UpdateManager();
+	UpdateOverlay();
+	Render();
 	UI::Update();
 	if (AEInputCheckTriggered(RESTART_KEY))
-		Demo::Restart();
+		Restart();
 }
 void Demo::Exit(void)
 {
@@ -104,16 +98,16 @@ void Demo::Load(void) {
 	Enemies::LoadTex();
 	Tiles::LoadTex();
 	Player::LoadTex();
-	SoundSystemClass::loadSound();
-	SoundSystemClass::SetVolume(Sound_BGM, 0.1f);
-	SoundSystemClass::SetVolume(Sound_Jump, .5f);
+	AudioManager::loadAsset();
+	AudioManager::SetVolume(Audio::BGM, 0.2f);
+	AudioManager::SetVolume(Audio::Jump, .5f);
 }
 void Demo::Unload(void)
 {
 	Enemies::Unload();
 	Tiles::Unload();
 	Player::Unload();
-	SoundSystemClass::unloadSound();
+	AudioManager::unloadAsset();
 	for (int i = 0; i < Images.size(); ++i) {
 		Images[i].Free();
 	}
@@ -146,18 +140,20 @@ void Demo::Render(void)
 
 void Demo::UpdateManager(void)
 {
-	Tiles::UpdateManager(Demo_Tiles, player, enemy);
-	Tiles::UpdateManager(Demo_Tiles2, player, enemy);
-	Tiles::UpdateManager(Demo_Tiles3, player, enemy);
-	Tiles::CheckPlayerCollision(TileManager, player);
-	//player[0].GravityManager();
-	for (size_t i = 0; i < enemy.size(); i++)
-	{
-		enemy[i].Update();
+	if (!paused) {
+		Tiles::UpdateManager(Demo_Tiles, player, enemy);
+		Tiles::UpdateManager(Demo_Tiles2, player, enemy);
+		Tiles::UpdateManager(Demo_Tiles3, player, enemy);
+		Tiles::CheckPlayerCollision(TileManager, player);
+		player[0].GravityManager();
+		for (size_t i = 0; i < enemy.size(); i++)
+		{
+			enemy[i].Update();
+		}
+		player[0].Update();
+		player[0].CheckEnemyCollision(enemy);
+		CollapsingManager();
 	}
-	player[0].Update();
-	player[0].CheckEnemyCollision(enemy);
-	CollapsingManager();
 }
 
 void Demo::CollapsingManager(void)
