@@ -5,7 +5,7 @@
 #include "UserInterface.h"
 #include "AudioManager.h"
 #include "Button.h"
-extern SoundSystemClass sound;
+extern AudioManager sound;
 namespace Demo
 {
 	//Level main entry points

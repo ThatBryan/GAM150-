@@ -11,14 +11,14 @@ ColliderAABB{width, height}
 }
 void Tiles::Collapse(void)
 {
-	if (type == Tile_Grass || type == Tile_Special)
+	if (type == static_cast<int>(TileType::Grass) || type == static_cast<int>(TileType::Special))
 	{
 		if (collapseDelay <= 0)
 		{
 			image.pos.y += TileCollapseSpeed;
 		}
 	}
-	if (type == Tile_Special) {
+	if (type == static_cast<int>(TileType::Special)) {
 		if (AETestRectToRect(&player[0].feetBB.pos, player[0].feetBB.width, player[0].feetBB.height, &ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
 			&& (AEInputCheckTriggered(AEVK_DOWN) || AEInputCheckTriggered(AEVK_S)))
 		{
@@ -29,7 +29,7 @@ void Tiles::Collapse(void)
 
 void Tiles::CheckPlayerGoal(std::vector <Player>& player)
 {
-	if (type == Tile_Goal)
+	if (type == static_cast<int>(TileType::Goal))
 	{
 		static AEVec2 GoalPoint = {image.pos.x, image.pos.y - image.height / 2 };
 		if (AETestPointToRect(&GoalPoint, &player[0].sprite.pos, player[0].sprite.width, player[0].sprite.height))
@@ -107,7 +107,7 @@ void Tiles::CollapseNext(std::vector <Tiles>& tiles)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
-		if (tiles[i].type == Tile_Grass || tiles[i].type == Tile_Special) {
+		if (tiles[i].type == static_cast<int>(TileType::Grass) || tiles[i].type == static_cast<int>(TileType::Special)) {
 			if (tiles[i].collapsing && (tiles[i].collapseDelay <= 0))
 			{
 				if (tiles[i].ID + 1 < (int)tiles.size())
@@ -135,11 +135,10 @@ void Tiles::Reset(std::vector <Tiles>& tiles)
 }
 void Tiles::Update()
 {
-	if (!paused) {
-		CheckPos();
-		Collapse();
-		DecreaseLifespan();
-	}
+	CheckPos();
+	Collapse();
+	DecreaseLifespan();
+
 }
 void Tiles::Render() {
 	if (active) {
@@ -162,19 +161,19 @@ void Tiles::UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& play
 }
 
 void Tiles::LoadTex() {
-	for (int i = 0; i < Tile_Max; i++) {
+	for (int i = 0; i < static_cast<int>(TileType::Max); i++) {
 		const char* pTex{ nullptr };
 		switch (i) {
-		case Tile_Grass:
+		case static_cast<int>(TileType::Grass):
 			pTex = GrassTile;
 			break;
-		case Tile_Goal:
+		case static_cast<int>(TileType::Goal):
 			pTex = GoalTile;
 			break;
-		case Tile_Safe:
+		case static_cast<int>(TileType::Safe):
 			pTex = GreyTile;
 			break;
-		case Tile_Special:
+		case static_cast<int>(TileType::Special):
 			pTex = SpecialTile;
 			break;
 		default:
@@ -187,7 +186,7 @@ void Tiles::LoadTex() {
 
 void Tiles::Unload()
 {
-	for (size_t i = 0; i < Tile_Max; i++)
+	for (size_t i = 0; i < static_cast<int>(TileType::Max); i++)
 	{
 		AEGfxTextureUnload(tileTex[i]);
 	}

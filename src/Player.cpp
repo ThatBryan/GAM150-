@@ -21,11 +21,10 @@ void Player::Reset(void)
 }
 
 void Player::Update() {
-	if (!paused) {
-		if(DebugMode)
-			sprite.direction += 1;
-		Update_Position();
-	}
+	if(DebugMode)
+		sprite.direction += 1;
+	Update_Position();
+
 }
 void Player::Render(void)
 {
@@ -53,7 +52,7 @@ void Player::Update_Position(void)
 	{
 		if (!DebugMode) {
 			jump = TRUE;
-			sound.playSound(soundTest[Sound_Jump], Sound_Jump);
+			sound.playSound(soundTest[static_cast<int>(Audio::Jump)], static_cast<int>(Audio::Jump));
 		}
 	}
 	if (jump)
