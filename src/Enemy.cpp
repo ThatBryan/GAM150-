@@ -19,7 +19,7 @@ void Enemies::Update_Position(void)
 	static float bat_counter = 0.0f;
 	
 	if(DebugMode)
-		sprite.direction -= 1.0f * ID;
+		sprite.rotation -= 1.0f * ID;
 	if (type == EnemyType::Slime)
 	{
 
@@ -86,7 +86,7 @@ void Enemies::Reset(std::vector <Enemies>& enemy)
 	{
 		enemy[i].sprite.pos = enemy[i].spawnPos;
 		enemy[i].active = true;
-		enemy[i].sprite.direction = 0;
+		enemy[i].sprite.rotation = 0;
 	}
 }
 void Enemies::Unload(void)
