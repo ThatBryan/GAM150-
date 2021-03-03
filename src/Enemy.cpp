@@ -16,8 +16,8 @@ void Enemies::Update_Position(void)
 	static f32 maxY = static_cast<f32>(AEGetWindowHeight());
 	static f32 maxX = static_cast<f32>(AEGetWindowWidth());
 
-	static float counter = 0.0f;
-	static float speed = 1.0f;
+	static float slime_counter = 0.0f;
+	static float slime_speed = 1.0f;
 	static float bat_speed = 1.0f;
 	static float bat_counter = 0.0f;
 	
@@ -26,28 +26,27 @@ void Enemies::Update_Position(void)
 	if (type == static_cast<int>(EnemyType::Slime))
 	{
 
-		sprite.pos.x += speed;
+		sprite.pos.x += slime_speed;
 		headBB.pos = sprite.pos;
 		enemyBB.pos = sprite.pos;
 
 		headBB.pos.y -= 20.0f;
 
 
-		counter += 1.0f;
-		if (counter > 180.0f)
+		slime_counter += 1.0f;
+		if (slime_counter > 180.0f)
 		{
-			speed *= -1;
-			counter = 0.0f;
+			slime_speed *= -1;
+			slime_counter = 0.0f;
 		}
 	}
 	
 	if (type == static_cast<int>(EnemyType::Bat))
 	{
-
 		// Sine-Wave
 		static AEVec2 startpos = sprite.pos;
 		sprite.pos.x += bat_speed;
-		sprite.pos.y = startpos.y + 20 * sin(static_cast<f32>(sprite.pos.x) * 2.0f * 3.14159 / 180.0f); // y = amplitude * sin(x * period * pi / 180)
+		sprite.pos.y = startpos.y + 20 * sin(static_cast<f32>(sprite.pos.x) * 2.0f * PI / 180.0f); // y = amplitude * sin(x * period * pi / 180)
 
 		bat_counter += 1.0f;
 
@@ -56,11 +55,6 @@ void Enemies::Update_Position(void)
 			bat_speed *= -1;
 			bat_counter = 0.0f;
 		}
-		/*else if (bat_counter > 200)
-		{
-			bat_speed *= -1;
-			bat_counter = 0.0f;
-		}*/
 	}
 
 }
