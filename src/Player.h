@@ -8,7 +8,7 @@
 #include "Constants.h"
 #include "AudioManager.h"
 
-extern AudioManager sound;
+extern AudioManager Audio;
 extern std::array <AudioClass, static_cast<int>(Audio::Max)> soundTest;
 
 class Player

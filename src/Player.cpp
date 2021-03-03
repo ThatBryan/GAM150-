@@ -52,7 +52,7 @@ void Player::Update_Position(void)
 	{
 		if (!DebugMode) {
 			jump = TRUE;
-			sound.playAudio(soundTest[static_cast<int>(Audio::Jump)], static_cast<int>(Audio::Jump));
+			Audio.playAudio(soundTest[static_cast<int>(Audio::Jump)], static_cast<int>(Audio::Jump));
 		}
 	}
 	if (jump)

@@ -1,6 +1,6 @@
 #include "AudioManager.h"
 
-AudioManager sound;
+AudioManager Audio;
 std::array <AudioClass, static_cast<int>(Audio::Max)> soundTest{ NULL };
 AudioData soundData[static_cast<int>(Audio::Max)];
 
@@ -17,21 +17,22 @@ AudioManager::AudioManager() {
 	}
 	m_pSystem->init(36, FMOD_INIT_NORMAL, NULL);
 }
-void AudioManager::createAudio(AudioClass* pSound, const char* pFile) {
-	m_pSystem->createSound(pFile, FMOD_ERR_NEEDSHARDWARE, 0, pSound);
+void AudioManager::createAudio(AudioClass* Audio, const char* pFile) {
+	m_pSystem->createSound(pFile, FMOD_ERR_NEEDSHARDWARE, 0, Audio);
 }
 
-void AudioManager::playAudio(AudioClass& Sound, int index, bool bLoop) {
+void AudioManager::playAudio(AudioClass& Audio, int index, bool bLoop) {
 	if (!bLoop) {
-		Sound->setMode(FMOD_LOOP_OFF);
+		Audio->setMode(FMOD_LOOP_OFF);
 	}
 	else
 	{
-		Sound->setMode(FMOD_LOOP_NORMAL);
-		Sound->setLoopCount(-1);
+		Audio->setMode(FMOD_LOOP_NORMAL);
+		Audio->setLoopCount(-1);
 	}
-	m_pSystem->playSound(Sound, NULL, false, &(soundData[index].channel));
+	m_pSystem->playSound(Audio, NULL, false, &(soundData[index].channel));
 	soundData[index].channel->setVolume(soundData[index].volume);
+	soundData[index].mute = false;
 }
 
 void AudioManager::update() {
@@ -42,8 +43,8 @@ void AudioManager::update() {
 }
 
 void AudioManager::loadAsset(void) {
-	sound.createAudio(&soundTest[static_cast<int>(Audio::Jump)], "../Assets/Audio/SFX/powerup.wav");
-	sound.createAudio(&soundTest[static_cast<int>(Audio::BGM)], "../Assets/Audio/BGM/gg.wav");
+	Audio.createAudio(&soundTest[static_cast<int>(Audio::Jump)], "../Assets/Audio/SFX/powerup.wav");
+	Audio.createAudio(&soundTest[static_cast<int>(Audio::BGM)], "../Assets/Audio/BGM/gg.wav");
 }
 void AudioManager::unloadAsset(void) {
 	for (int i = 0; i < soundTest.size(); i++) {
@@ -55,6 +56,6 @@ void AudioManager::SetVolume(enum Audio index, float volume) {
 }
 
 void AudioManager::SetMute(enum Audio index) {
-	bgmMute = !bgmMute;
-	soundData[static_cast<int>(index)].channel->setMute(bgmMute);
+	soundData[static_cast<int>(index)].mute = !(soundData[static_cast<int>(index)].mute);
+	soundData[static_cast<int>(index)].channel->setMute(soundData[static_cast<int>(index)].mute);
 }
