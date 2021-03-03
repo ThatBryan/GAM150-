@@ -9,7 +9,7 @@
 #include "Player.h"
 
 using fn_ptr = void(*)(void);
-enum ColorType{Button_Idle = 0, Button_Hovered, Button_Clicked, Max_Color};
+enum ColorType{Button_Idle = 0, Button_Hovered, Button_Clicked, Button_MaxColor};
 
 class Button {
 public: 
@@ -24,7 +24,7 @@ private:
 	Graphics::Text text;
 	AEVec2 pos;
 	fn_ptr callback;
-	Color buttonState[Max_Color];
+	Color buttonState[Button_MaxColor];
 	void Render();
 	// Check cursor input to determine which color to tint.
 	int Check_Cursor();

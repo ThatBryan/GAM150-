@@ -43,7 +43,7 @@ void Demo::Init(void)
 	Tiles::AddTileRow(Demo_Tiles2, Tile_Goal, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{x, y2 });
 	Tiles::AddTileRow(Demo_Tiles3, Tile_Grass, test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ x, y3 });
 
-	buttonTest.push_back(Button(100.0, 50.0f, 0.8f));
+	buttonTest.push_back(Button(100.0, 50.0f, 0.9f));
 	buttonTest[0].Set_Position(AEVec2{ 400.0f, 25.0f});
 	buttonTest[0].Set_Callback(Test_Callback);
 	buttonTest[0].Set_Text("Pause");
@@ -150,7 +150,7 @@ void Demo::UpdateManager(void)
 	Tiles::UpdateManager(Demo_Tiles2, player, enemy);
 	Tiles::UpdateManager(Demo_Tiles3, player, enemy);
 	Tiles::CheckPlayerCollision(TileManager, player);
-	//player[0].GravityManager();
+	player[0].GravityManager();
 	for (size_t i = 0; i < enemy.size(); i++)
 	{
 		enemy[i].Update();

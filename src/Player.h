@@ -33,7 +33,7 @@ public:
 	void CheckEnemyCollision(std::vector <Enemies>& enemy);
 	void Reset(void);
 	void Render(void);
-	//void GravityManager(void);
+	void GravityManager(void);
 	inline void SetWin(void) { win = true; }
 	inline bool GetWinStatus(void) { return win; }
 	inline void SetLose(void) { lose = true; }

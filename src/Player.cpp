@@ -118,14 +118,15 @@ void Player::Update_Position(void)
 	feetBB.pos = AEVec2{ sprite.pos.x, sprite.pos.y + player_collider_offset };
 }
 
-//void Player::GravityManager(void)
-//{
-//	if (gravity)
-//	{
-//		if(DebugMode)
-//			printf("Apply gravity\n");
-//	}
-//}
+void Player::GravityManager(void)
+{
+	if (gravity)
+	{
+		sprite.pos.y += 0.5f;
+		if(DebugMode)
+			printf("Apply gravity\n");
+	}
+}
 
 void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 {
