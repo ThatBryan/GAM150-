@@ -55,6 +55,6 @@ void AudioManager::SetVolume(AudioID ID, float volume) {
 }
 
 void AudioManager::SetMute(AudioID ID) {
-	bgmMute = !bgmMute;
-	soundData[static_cast<int>(ID)].channel->setMute(bgmMute);
+	soundData[static_cast<int>(ID)].mute = !(soundData[static_cast<int>(ID)].mute);
+	soundData[static_cast<int>(ID)].channel->setMute(soundData[static_cast<int>(ID)].mute);
 }

@@ -99,7 +99,7 @@ void Demo::Load(void) {
 	Player::LoadTex();
 	AudioManager::loadAsset();
 	AudioManager::SetVolume(AudioID::BGM, 0.2f);
-	AudioManager::SetVolume(AudioID::Jump, .5f);
+	AudioManager::SetVolume(AudioID::Jump, 0.2f);
 }
 void Demo::Unload(void)
 {

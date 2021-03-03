@@ -32,7 +32,7 @@ class Tiles
 		static void LoadTex(void);
 		void Render(void);
 
-		static void CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager);
+		//static void CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager);
 		static void CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& player);
 
 		// Add whole new row of tile.

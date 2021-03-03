@@ -31,4 +31,4 @@ private:
 };
 
 inline void Test_Callback(){ paused = !paused; };
-inline void Mute_BGM() { AudioManager::SetMute(AudioID::BGM); }
+inline void Mute_BGM() { AudioManager::SetMute(AudioID::Jump); }
