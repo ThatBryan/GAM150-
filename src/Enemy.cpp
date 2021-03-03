@@ -98,22 +98,23 @@ void Enemies::Unload(void)
 }
 
 void Enemies::LoadTex(void) {
-	for (int i = 0; i < static_cast<int>(EnemyType::Max); i++) {
+	for (EnemyType i = EnemyType::Slime; i < EnemyType::Max;) {
 		const char* pTex = nullptr;
 		switch (i) {
-		case static_cast<int>(EnemyType::Slime):
+		case EnemyType::Slime:
 			pTex = WaterSlimeSprite;
 			break;
-		case static_cast<int>(EnemyType::Bat):
+		case EnemyType::Bat:
 			pTex = FlyingEnemySprite;
 			break;
-		case static_cast<int>(EnemyType::Squirrel):
+		case EnemyType::Squirrel:
 			pTex = SquirrelSprite;
 			break;
 		default:
 			return;
 		}
-		enemyTex[i] = AEGfxTextureLoad(pTex);
+		enemyTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex);
+		i = static_cast<EnemyType>(static_cast<int>(i) + 1);
 		AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	}
 }

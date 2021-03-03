@@ -5,7 +5,7 @@
 #include "AEEngine.h"
 #include "Graphics.h"
 #include "Constants.h"
-enum class EnemyType {Slime = 0, Bat, Squirrel, Max };
+enum class EnemyType {Slime = 0, Bat, Squirrel, Max};
 
 static AEGfxTexture* enemyTex[static_cast<int>(EnemyType::Max)]{ nullptr };
 

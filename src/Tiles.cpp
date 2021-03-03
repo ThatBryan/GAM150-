@@ -161,26 +161,27 @@ void Tiles::UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& play
 }
 
 void Tiles::LoadTex() {
-	for (int i = 0; i < static_cast<int>(TileType::Max); i++) {
+	for (TileType i = TileType::Grass; i < TileType::Max;) {
 		const char* pTex{ nullptr };
 		switch (i) {
-		case static_cast<int>(TileType::Grass):
+		case TileType::Grass:
 			pTex = GrassTile;
 			break;
-		case static_cast<int>(TileType::Goal):
+		case TileType::Goal:
 			pTex = GoalTile;
 			break;
-		case static_cast<int>(TileType::Safe):
+		case TileType::Safe:
 			pTex = GreyTile;
 			break;
-		case static_cast<int>(TileType::Special):
+		case TileType::Special:
 			pTex = SpecialTile;
 			break;
 		default:
 			return;
 		}
-		tileTex[i] = AEGfxTextureLoad(pTex);
+		tileTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex);
 		AE_ASSERT_MESG(pTex, "Failed to create texture!");
+		i = static_cast<TileType>(static_cast<int>(i) + 1);
 	}
 }
 

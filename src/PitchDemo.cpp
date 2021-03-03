@@ -69,12 +69,12 @@ void Demo::Init(void)
 	Images[Victory].Init(VictoryScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 	Images[Defeat].Init(GameoverScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 
-	sound.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
+	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 }
 
 void Demo::Update(void)
 {
-	sound.update();
+	Audio.update();
 	background.Decrement();
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 	Utils::CheckPauseInput();

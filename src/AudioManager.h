@@ -14,6 +14,7 @@ struct AudioData {
 	AudioID ID;
 	FMOD::Channel* channel;
 	float volume;
+	bool mute;
 };
 
 class AudioManager

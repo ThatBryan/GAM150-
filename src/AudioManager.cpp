@@ -1,6 +1,6 @@
 #include "AudioManager.h"
 
-AudioManager sound;
+AudioManager Audio;
 std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest{ NULL };
 AudioData soundData[static_cast<int>(AudioID::Max)];
 
@@ -42,8 +42,8 @@ void AudioManager::update() {
 }
 
 void AudioManager::loadAsset(void) {
-	sound.createAudio(&soundTest[static_cast<int>(AudioID::Jump)], "../Assets/Audio/SFX/powerup.wav");
-	sound.createAudio(&soundTest[static_cast<int>(AudioID::BGM)], "../Assets/Audio/BGM/gg.wav");
+	Audio.createAudio(&soundTest[static_cast<int>(AudioID::Jump)], "../Assets/Audio/SFX/powerup.wav");
+	Audio.createAudio(&soundTest[static_cast<int>(AudioID::BGM)], "../Assets/Audio/BGM/gg.wav");
 }
 void AudioManager::unloadAsset(void) {
 	for (int i = 0; i < soundTest.size(); i++) {
