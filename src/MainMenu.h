@@ -1,4 +1,6 @@
 #pragma once
+#include "Button.h"
+
 namespace MainMenu
 {
 
@@ -8,4 +10,7 @@ namespace MainMenu
 
 	void Load(void);
 	void Unload(void);
+
+	void Buttons_Init(void);
+	void DrawButtons(void);
 }
