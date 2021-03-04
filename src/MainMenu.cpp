@@ -9,7 +9,7 @@ static std::array <Image, MAX_IMAGE> Images;
 
 void MainMenu::Init(void)
 {
-	Load();
+	/*Load();*/
 	Images[Victory].Init(VictoryScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 }
 

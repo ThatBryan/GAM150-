@@ -60,7 +60,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;
 
 	// Initialises the GSM
-	GameStateManagerInit(GS_GAMEPLAY);
+	GameStateManagerInit(GS_MENU);
 
 	//Checks if game state isnt at quit status
 	while (gamestateCurr != GS_QUIT)

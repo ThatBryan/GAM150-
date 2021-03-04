@@ -6,6 +6,7 @@
 enum
 {
 	GS_GAMEPLAY = 0,
+	GS_MENU,
 	GS_RESTART,
 	GS_QUIT
 };

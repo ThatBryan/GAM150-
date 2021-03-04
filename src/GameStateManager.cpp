@@ -1,5 +1,6 @@
 #include "GameStateManager.h"
 #include "PitchDemo.h"
+#include "MainMenu.h"
 
 unsigned int gamestateInit;
 unsigned int gamestateCurr;
@@ -40,6 +41,11 @@ void GameStateManagerUpdate()
 		GameStateFree = Demo::Restart;
 		GameStateUnload = Demo::Exit;
 		break;
+	case GS_MENU:
+		GameStateLoad = MainMenu::Load;
+		GameStateInit = MainMenu::Init;
+		GameStateUpdate = MainMenu::Update;
+		GameStateUnload = MainMenu::Exit;
 	default:
 		printf("FATAL ERROR!\n");
 	}
