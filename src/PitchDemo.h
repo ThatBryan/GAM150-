@@ -4,8 +4,8 @@
 #include "AEEngine.h"
 #include "UserInterface.h"
 #include "AudioManager.h"
-#include "BinaryMap.h"
-extern SoundSystemClass sound;
+#include "Button.h"
+extern AudioManager Audio;
 namespace Demo
 {
 	//Level main entry points

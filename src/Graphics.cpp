@@ -14,8 +14,6 @@ void Color::SetColor(const f32 r, const f32 g, const f32 b, const f32 alpha)
 void Color::Decrement(float i) {
 	r -= i;
 	b -= i;
-	//g -= i;
-	//alpha -= i;
 	if (r <= 0)
 		r = 1.0f;
 	if (g <= 0)
@@ -37,8 +35,8 @@ void Graphics::Free() {
 	AEGfxMeshFree(rectMesh);
 }
 
-Graphics::Text::Text(s8* textBuffer, const f32 scale) : Scale{ scale }, pos{ 0, 0 },
-TextHeight{ 0 }, TextWidth{ 0 }, buffer{ textBuffer }
+Graphics::Text::Text(s8* textBuffer, const f32 scale) : scale{ scale }, pos{ 0, 0 },
+height{ 0 }, width{ 0 }, buffer{ textBuffer }
 {
 	Text::color.SetColor(255.0f, 255.0f, 255.0f, 255.0f);
 }
@@ -48,8 +46,8 @@ AEGfxVertexList* Graphics::Mesh_Rectangle(void)
 	AEGfxMeshStart();
 	AEGfxTriAdd(
 		-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 1.0f,// Bottom Left
-		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f, // Bottom Righ
-		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f); // Top vertic
+		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f, // Bottom Right
+		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f); // Top vertex
 
 	AEGfxTriAdd(
 		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f, //	Bottom R
@@ -60,16 +58,16 @@ AEGfxVertexList* Graphics::Mesh_Rectangle(void)
 
 void Graphics::Rect::SetMatrix(void)
 {
+	static f32 HalfWinHeight = Utils::Get_HalfWindowHeight();
+	static f32 HalfWinWindow = Utils::Get_HalfWindowWidth();
 	AEMtx33	trans, rot, scale;
 	AEMtx33Scale(&scale, width, height);
-	AEMtx33Rot(&rot, direction);
-	AEMtx33Trans(&trans, pos.x, pos.y);
+	AEMtx33Rot(&rot, AEDegToRad(direction));
+	AEMtx33Trans(&trans, -HalfWinWindow + pos.x, HalfWinHeight - pos.y);
 	AEMtx33 temp;
 	AEMtx33Concat(&temp, &rot, &scale);
 	AEMtx33Concat(&transformMtx, &trans, &temp);
 }
-
-enum offsetType{None, Topleft = 1,};
 
 void Graphics::Rect::Draw(const f32 alpha)
 {
@@ -85,40 +83,61 @@ void Graphics::Rect::Draw(const f32 alpha)
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-void Graphics::Text::Draw_Text(const AEVec2 pos)
+void Graphics::Rect::Draw(Color color, const f32 alpha)
 {
-	this->pos.x = pos.x;
-	this->pos.y = pos.y;
-	AEGfxGetPrintSize(fontID, buffer, Scale, TextWidth, TextHeight);
+	SetMatrix();
+	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		
+	AEGfxTextureSet(NULL, 0.0f, 0.0f);
+	AEGfxSetTintColor(color.r, color.g, color.b, color.alpha);
+	AEGfxSetTransparency(alpha / colorcodeMax);
 
-	AEVec2 drawPos = Graphics::Text::Calculate_DrawTextOffset(*this);
+	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxPrint(fontID, buffer, drawPos.x, drawPos.y, Scale, color.r, color.g, color.b);
+	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-AEVec2 Graphics::Text::Calculate_DrawTextOffset(const Text text)
+void Graphics::Text::Draw(const AEVec2 pos)
 {
-	AEVec2 Offset = {0, 0};
+	AEVec2 drawPos = Graphics::Text::Calculate_Offset(pos);
+	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	AEGfxPrint(fontID, buffer, drawPos.x, drawPos.y, scale, color.r, color.g, color.b);
+}
 
-	if (text.pos.x < Utilities::Get_HalfWindowWidth())
-	{
-		Offset.x = Utilities::Get_HalfWindowWidth() / (-Utilities::Get_HalfWindowWidth() - text.pos.x);
-	}
-	else if (text.pos.x > Utilities::Get_HalfWindowWidth())
-	{
-		Offset.x = (text.pos.x - Utilities::Get_HalfWindowWidth()) / ((f32)AEGetWindowWidth());
-	}
-	else
-		Offset.x = 0;
+void Graphics::Text::Draw_Wrapped(const AEVec2 pos)
+{
+	AEGfxGetPrintSize(fontID, buffer, scale, width, height);
+	AEVec2 drawPos = Graphics::Text::Calculate_Offset(pos);
+	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	AEGfxPrint(fontID, buffer, drawPos.x - width / 2.0f, drawPos.y - height / 2.0f, scale, color.r, color.g, color.b);
+}
 
-	if (text.pos.y < Utilities::Get_HalfWindowHeight())
+AEVec2 Graphics::Text::Calculate_Offset(AEVec2 pos)
+{
+	static f32 HalfWinWidth = Utils::Get_HalfWindowWidth();
+	static f32 HalfWinHeight = Utils::Get_HalfWindowHeight();
+	static f32 WinHeight = static_cast<f32>(AEGetWindowHeight());
+	static f32 WinWidth = static_cast<f32>(AEGetWindowWidth());
+
+	AEVec2 Offset{0, 0};
+	if (pos.x < HalfWinWidth) // I want negative
 	{
-		Offset.y = Utilities::Get_HalfWindowHeight() / (-Utilities::Get_HalfWindowHeight() - text.pos.y);
+		Offset.x = (-HalfWinWidth + pos.x) / HalfWinWidth; 
+	}
+	else if (pos.x > HalfWinWidth) // big postive number.
+	{
+		Offset.x = (pos.x - HalfWinWidth) / HalfWinWidth;
 	}
 
-	else if (text.pos.y > Utilities::Get_HalfWindowHeight())
+	if (pos.y > HalfWinHeight) // Big value, prints at bottom of screen.
 	{
-		Offset.y = text.pos.y / (f32)(AEGetWindowHeight());
+		Offset.y = (HalfWinHeight -pos.y) / HalfWinHeight; // Negative (
 	}
+
+	else if (pos.y < HalfWinHeight)  // Small value, prints at top of screen
+	{
+		Offset.y = (HalfWinHeight - pos.y) / HalfWinHeight;
+	}
+	//printf("%.2f %.2f\n", Offset.x, Offset.y);
 	return Offset;
 }

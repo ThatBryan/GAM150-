@@ -7,14 +7,13 @@ const char* VictoryScreen = "../Assets/Art/throwaway.png";
 const char* GameoverScreen = "../Assets/Art/throwaway2.png";
 const char* WaterSlimeSprite = "../Assets/Art/WaterSlime.png";
 const char* FlyingEnemySprite = "../Assets/Art/flying.png";
-const char* SquirrelSprite = "../Assets/Art/flying.png";
+const char* SquirrelSprite = "../Assets/Art/Squirrel.png";
 const char* PlayerSprite = "../Assets/Art/Jumperman.png";
 const char* GrassTile = "../Assets/Art/Grass_Tile.png";
 const char* GoalTile = "../Assets/Art/Goal.png";
-const char* GreyTile = "../Assets/Art/Safe_Tile.png";
 const char* SpecialTile = "../Assets/Art/Special_Tile.png";
+const char* GreyTile = "../Assets/Art/Safe_Tile.png";
 const char* FontFile = "../Assets/Font/Roboto-Regular.ttf";
-
 
 // Player constants
 const float player_speed = 1.5f;

@@ -28,12 +28,13 @@ namespace Graphics
 		f32 height, width;
 
 		void Draw(const f32 alpha = 150.0f);
-		void SetMatrix();
+		void Draw(Color color, const f32 alpha = 150.0f);
 
 		private:
 			AEGfxVertexList* pMesh;
 			AEMtx33 transformMtx;
 			f32 direction;
+			void SetMatrix();
 	};
 
 	class Text
@@ -41,16 +42,19 @@ namespace Graphics
 		public:
 		// Constructor
 		Text(s8* textBuffer, const f32 scale = 1.0f);
+			inline void SetText(s8* text) { buffer = text; }
+			inline s8* GetText() { return buffer; }
 			Color color;
-			f32 TextWidth, TextHeight, Scale;
+			f32 width, height, scale;
 			AEVec2 pos;
 
 			// Calculates the X and Y offset
-			AEVec2 Calculate_DrawTextOffset(const Text text);
-			void Draw_Text(const AEVec2 pos);
+			void Draw(const AEVec2 pos);
+			void Draw_Wrapped(const AEVec2 pos);
 
 		private:
 			s8* buffer;
+			AEVec2 Calculate_Offset(AEVec2 pos);
 	};
 }
 
