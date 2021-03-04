@@ -7,6 +7,7 @@
 #include "Enemy.h"
 #include "Constants.h"
 #include <array>
+#include "GameStateManager.h"
 
 #define TILE_WIDTTH 80.0f
 #define TILE_HEIGHT 50.0f
@@ -29,7 +30,7 @@ extern AudioData soundData[static_cast<int>(AudioID::Max)];
 
 void Demo::Init(void)
 {
-	Load();
+	/*Load();*/
 	UI::Init();
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
 
@@ -81,10 +82,10 @@ void Demo::Update(void)
 	Utils::CheckDebugMode();
 	UpdateManager();
 	UpdateOverlay();
-	Render();
+	/*Render();*/
 	UI::Update();
 	if (AEInputCheckTriggered(RESTART_KEY))
-		Restart();
+		gamestateNext = GS_RESTART;
 }
 void Demo::Exit(void)
 {
