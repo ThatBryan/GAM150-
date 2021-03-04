@@ -10,20 +10,20 @@ enum class EnemyType {Slime = 0, Bat, Squirrel, Max};
 static AEGfxTexture* enemyTex[static_cast<int>(EnemyType::Max)]{ nullptr };
 
 class Player;
-class Enemies : public GameObject
+class Enemies
 {
 	EnemyType type;
 	AEVec2 spawnPos;
 	Graphics::Rect headBB {enemy_width, 5.0f};
 	Graphics::Rect enemyBB {enemy_width, enemy_height};
 	short ID;
-	friend class Player;
+	friend class Player; // Enemy can modify player
+	void Update_Position(void);
 
 public:
 	Enemies(AEGfxTexture* filepath, const f32 width, const f32 height);
 	Image sprite;
 	bool active;
-	void Update_Position(void);
 	void Update(void);
 	void Draw();
 
