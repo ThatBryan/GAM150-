@@ -20,8 +20,8 @@ void Enemies::Update_Position(void)
 	static float slime_speed = 50.0f * g_dt;
 	static float bat_speed = 100.0f * g_dt;
 	static float bat_counter = 5.0f;
-	
-	if(DebugMode)
+
+	if (DebugMode)
 		sprite.rotation -= 1.0f * ID;
 	if (type == EnemyType::Slime)
 	{
@@ -37,7 +37,7 @@ void Enemies::Update_Position(void)
 			slime_counter = 1.0f;
 		}
 	}
-	
+
 	if (type == EnemyType::Bat)
 	{
 		// Sine-Wave
@@ -47,13 +47,12 @@ void Enemies::Update_Position(void)
 
 		bat_counter -= g_dt;
 
-		if (bat_counter < -5.0f || sprite.pos.x < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
+		if (bat_counter < -5.0f || sprite.pos.x < 0 ||  sprite.pos.x + sprite.width / 2 >= maxX)
 		{
 			bat_speed *= -1;
 			bat_counter = 1.0f;
 		}
 	}
-
 }
 
 void Enemies::Update()
