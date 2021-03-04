@@ -38,7 +38,7 @@ void Demo::Init(void)
 	Tiles::AddTileRow(Demo_Tiles, TileType::Grass, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{X, y1 });
 	Tiles::AddTileRow(Demo_Tiles2, TileType::Grass, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{X, y2 });
 	Tiles::AddTileRow(Demo_Tiles2, TileType::Goal, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{X, y2 });
-	Tiles::AddTileRow(Demo_Tiles3, TileType::Grass, AEGetWindowWidth() / TILE_WIDTTH, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ X, y3 });
+	Tiles::AddTileRow(Demo_Tiles3, TileType::Grass, static_cast<int>(AEGetWindowWidth() / TILE_WIDTTH), TILE_WIDTTH, TILE_HEIGHT, AEVec2{ X, y3 });
 
 
 	TileManager.push_back(&Demo_Tiles);
