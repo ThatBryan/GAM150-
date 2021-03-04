@@ -114,7 +114,7 @@ void Player::Update_Position(void)
 
 	}
 	playerBB.pos = sprite.pos;
-	feetBB.pos = AEVec2{ sprite.pos.x, sprite.pos.y + player_collider_offset };
+	feetBB.pos = AEVec2Set(sprite.pos.x, sprite.pos.y + player_collider_offset);
 }
 
 void Player::GravityManager(void)

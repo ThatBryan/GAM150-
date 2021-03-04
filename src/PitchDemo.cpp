@@ -60,7 +60,7 @@ void Demo::Init(void)
 	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
 
 	player.push_back(Player(Player::playerTex, player_width, player_height));
-	player[0].startingPos = Demo_Tiles2[0].spawnPos;
+	player[0].startingPos = Demo_Tiles[0].spawnPos;
 	player[0].startingPos.y -= TILE_HEIGHT;
 	player[0].sprite.pos = player[0].startingPos;
 
@@ -139,6 +139,7 @@ void Demo::Render(void)
 void Demo::UpdateManager(void)
 {
 	if (!paused) {
+		player[0].Update();
 		Tiles::UpdateManager(Demo_Tiles, player, enemy);
 		Tiles::UpdateManager(Demo_Tiles2, player, enemy);
 		Tiles::UpdateManager(Demo_Tiles3, player, enemy);
@@ -148,7 +149,6 @@ void Demo::UpdateManager(void)
 		{
 			enemy[i].Update();
 		}
-		player[0].Update();
 		player[0].CheckEnemyCollision(enemy);
 		CollapsingManager();
 	}

@@ -25,7 +25,7 @@ class Tiles
 		void CheckPos(void);
 		void CheckPlayerGoal(std::vector <Player>& player);
 		void CheckEnemyStatus(std::vector <Enemies> enemy);
-
+		void TileShake(void);
 	public:
 		Tiles(AEGfxTexture*, const f32 width, const f32 height);
 		Image image;

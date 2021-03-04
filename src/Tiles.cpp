@@ -74,8 +74,8 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 		{
 			if (TileManager[i]->at(j).active == false)
 				continue;
-			if (AETestRectToRect(&TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height / 2,
-				&player[0].sprite.pos, 20.0f, 0))
+			if(Utils::ColliderAABB(TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height,
+				player[0].feetBB.pos, player[0].feetBB.width, player[0].feetBB.height))
 			{
 				player[0].gravity = false;
 				if (DebugMode)
@@ -112,12 +112,14 @@ void Tiles::CollapseNext(std::vector <Tiles>& tiles)
 			{
 				if (tiles[i].ID + 1 < (int)tiles.size())
 				{
-					tiles[i + 1].collapsing = true;
+					if(tiles[i + 1].type == TileType::Grass || tiles[i + 1].type == TileType::Special)
+						tiles[i + 1].collapsing = true;
 				}
 
 				if ((tiles[i].ID - 1) >= 0)
 				{
-					tiles[i - 1].collapsing = true;
+					if (tiles[i - 1].type == TileType::Grass || tiles[i - 1].type == TileType::Special)
+						tiles[i - 1].collapsing = true;
 				}
 			}
 		}
@@ -138,6 +140,8 @@ void Tiles::Update()
 	CheckPos();
 	Collapse();
 	DecreaseLifespan();
+	if(collapsing)
+		TileShake();
 
 }
 void Tiles::Render() {
@@ -183,7 +187,6 @@ void Tiles::LoadTex() {
 		AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	}
 }
-
 void Tiles::Unload()
 {
 	for (size_t i = 0; i < static_cast<int>(TileType::Max); i++)
@@ -196,6 +199,10 @@ TileType& operator++(TileType& rhs) {
 	return rhs;
 }
 
+void Tiles::TileShake(void) {
+	AEVec2 ShakeStrength{Utils::RandomRangeFloat(-0.5f, 0.5f), Utils::RandomRangeFloat(-0.5f, 0.5f) };
+	image.pos = AEVec2Add(image.pos, ShakeStrength);
+}
 
 //void Tiles::CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager)
 //{
