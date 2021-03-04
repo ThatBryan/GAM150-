@@ -14,6 +14,8 @@ extern const char* GoalTile;
 extern const char* GreyTile;
 extern const char* SpecialTile;
 extern const char* FontFile;
+extern const char* ButtonTest;
+extern const char* ButtonTest2;
 
 // Player constants
 extern const float player_speed;
