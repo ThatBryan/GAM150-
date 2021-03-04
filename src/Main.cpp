@@ -12,6 +12,7 @@
 #include "PitchDemo.h"
 #include "Constants.h"
 #include "GameStateManager.h"
+#include "MainMenu.h"
 #define _CRTDBG_MAP_ALLOC
 #include <cstdlib>
 #include <crtdbg.h>

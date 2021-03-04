@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Constants.h"
+#include "MainMenu.h"
 #include <array>
 
 #define TILE_WIDTTH 80.0f
