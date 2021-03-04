@@ -5,7 +5,9 @@ int Utils::RandomRangeInt(const s32 lowerBound, const s32 upperBound)
 {
 	return (lowerBound + rand() % (upperBound - lowerBound + 1));
 }
-
+float Utils::RandomRangeFloat(const f32 lowerBound, const f32 upperBound) {
+	return((AERandFloat() * (upperBound - lowerBound) + lowerBound));
+}
 
 AEVec2 AEVec2Set(const f32 x, const f32 y)
 {
@@ -55,8 +57,7 @@ AEVec2 Utils::GetMousePos(void)
 	int mouseX = 0;
 	int mouseY = 0;
 	AEInputGetCursorPosition(&mouseX, &mouseY);
-	//return AEVec2Set((f32)mouseX - AEGfxGetWinMinX(), -(mouseY + AEGfxGetWinMinY())); // (f32)AEGetWindowHeight() - (f32)
-	return AEVec2Set(mouseX, mouseY);
+	return AEVec2Set(static_cast<f32>(mouseX), static_cast<f32>(mouseY));
 }
 
 void Utils::CheckPauseInput(void)

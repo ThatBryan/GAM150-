@@ -3,7 +3,7 @@
 float numberOfTicks = 0.0f;
 
 Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
-spawnPos{0, 0}, active{true}, type{0}
+spawnPos{0, 0}, active{true}, type{EnemyType::Slime}
 {
 	ID = EnemyCount;
 	EnemyCount++;
@@ -13,40 +13,44 @@ spawnPos{0, 0}, active{true}, type{0}
 
 void Enemies::Update_Position(void)
 {
-	static float counter = 0.0f;
-	static float speed = 1.0f;
+	static f32 maxY = static_cast<f32>(AEGetWindowHeight());
+	static f32 maxX = static_cast<f32>(AEGetWindowWidth());
+
+	static float slime_counter = 0.0f;
+	static float slime_speed = 1.0f;
 	static float bat_speed = 1.0f;
 	static float bat_counter = 0.0f;
 	
 	if(DebugMode)
-		sprite.direction -= 1.0f * ID;
-	if (type == Enemy_Slime)
+		sprite.rotation -= 1.0f * ID;
+	if (type == EnemyType::Slime)
 	{
 
-		sprite.pos.x += speed;
+		sprite.pos.x += slime_speed;
 		headBB.pos = sprite.pos;
 		enemyBB.pos = sprite.pos;
-		if (type == Enemy_Slime)
-		{
-			headBB.pos.y -= 20.0f;
-		}
 
-		counter += 1.0f;
-		if (counter > 180.0f)
+		headBB.pos.y -= 20.0f;
+
+
+		slime_counter += 1.0f;
+		if (slime_counter > 180.0f)
 		{
-			speed *= -1;
-			counter = 0.0f;
+			slime_speed *= -1;
+			slime_counter = 0.0f;
 		}
 	}
 	
-	if (type == Enemy_Bat)
+	if (type == EnemyType::Bat)
 	{
 		// Sine-Wave
+		static AEVec2 startpos = sprite.pos;
 		sprite.pos.x += bat_speed;
-		sprite.pos.y = 20 * sin(static_cast<f32>(sprite.pos.x) * 2.0f * 3.14159 / 180.0f); // y = amplitude * sin(x * period * pi / 180)
+		sprite.pos.y = startpos.y + 20 * sin(static_cast<f32>(sprite.pos.x) * 2.0f * PI / 180.0f); // y = amplitude * sin(x * period * pi / 180)
 
 		bat_counter += 1.0f;
-		if (bat_counter > 120)
+
+		if (sprite.pos.x < 0 || sprite.pos.x + sprite.width / 2 >= maxX || bat_counter > 200)
 		{
 			bat_speed *= -1;
 			bat_counter = 0.0f;
@@ -57,9 +61,7 @@ void Enemies::Update_Position(void)
 
 void Enemies::Update()
 {
-	if (!paused) {
-		Update_Position();
-	}
+	Update_Position();
 }
 
 void Enemies::Draw()
@@ -74,9 +76,9 @@ void Enemies::Draw()
 	}
 }
 
-void Enemies::AddNew(std::vector <Enemies>& enemy, const short type, const AEVec2 pos, const f32 width, const f32 height)
+void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 pos, const f32 width, const f32 height)
 {
-	enemy.push_back(Enemies(enemyTex[type], width, height));
+	enemy.push_back(Enemies(enemyTex[static_cast<int>(type)], width, height));
 	enemy[enemy.size() - 1].sprite.pos = pos;
 	enemy[enemy.size() - 1].type = type;
 	enemy[enemy.size() - 1].spawnPos = pos;
@@ -88,34 +90,35 @@ void Enemies::Reset(std::vector <Enemies>& enemy)
 	{
 		enemy[i].sprite.pos = enemy[i].spawnPos;
 		enemy[i].active = true;
-		enemy[i].sprite.direction = 0;
+		enemy[i].sprite.rotation = 0;
 	}
 }
 void Enemies::Unload(void)
 {
-	for (size_t i = 0; i < Enemy_Max; i++)
+	for (size_t i = 0; i < static_cast<int>(EnemyType::Max); i++)
 	{
 		AEGfxTextureUnload(enemyTex[i]);
 	}
 }
 
 void Enemies::LoadTex(void) {
-	for (int i = 0; i < Enemy_Max; i++) {
+	for (EnemyType i = EnemyType::Slime; i < EnemyType::Max;) {
 		const char* pTex = nullptr;
 		switch (i) {
-		case Enemy_Slime:
+		case EnemyType::Slime:
 			pTex = WaterSlimeSprite;
 			break;
-		case Enemy_Bat:
+		case EnemyType::Bat:
 			pTex = FlyingEnemySprite;
 			break;
-		case Enemy_Squirrel:
+		case EnemyType::Squirrel:
 			pTex = SquirrelSprite;
 			break;
 		default:
 			return;
 		}
-		enemyTex[i] = AEGfxTextureLoad(pTex);
+		enemyTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex);
+		i = static_cast<EnemyType>(static_cast<int>(i) + 1);
 		AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	}
 }

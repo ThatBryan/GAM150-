@@ -42,19 +42,20 @@ namespace Graphics
 	{
 		public:
 		// Constructor
+		Text(s8* textBuffer, const f32 scale = 1.0f);
 			inline void SetText(s8* text) { buffer = text; }
 			inline s8* GetText() { return buffer; }
-		Text(s8* textBuffer, const f32 scale = 1.0f);
 			Color color;
-			f32 width, height, Scale;
+			f32 width, height, scale;
 			AEVec2 pos;
 
 			// Calculates the X and Y offset
-			void Draw_Text(const AEVec2 pos);
+			void Draw(const AEVec2 pos);
+			void Draw_Wrapped(const AEVec2 pos);
 
 		private:
 			s8* buffer;
-			AEVec2 Calculate_DrawTextOffset(AEVec2 pos);
+			AEVec2 Calculate_Offset(AEVec2 pos);
 	};
 }
 
