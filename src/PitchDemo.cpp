@@ -7,6 +7,7 @@
 #include "Enemy.h"
 #include "Constants.h"
 #include <array>
+#include "BinaryMap.h"
 
 
 #define TILE_WIDTTH 80.0f
@@ -33,9 +34,9 @@ void Demo::Init(void)
 	UI::Init();
 	Demo::Load();
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
-
+	ImportMapDataFromFile("../testrun.txt");
+	PrintRetrievedInformation();
 	size_t test = (size_t)(AEGetWindowWidth() / TILE_WIDTTH);
-	
 	Tiles::AddTileRow(Demo_Tiles, Tile_Grass, test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY1 });
 	Tiles::AddTileRow(Demo_Tiles2, Tile_Grass, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2 });
 	Tiles::AddTileRow(Demo_Tiles2, Tile_Goal, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ startingX, startingY2 });

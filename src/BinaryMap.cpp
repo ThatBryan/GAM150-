@@ -21,8 +21,22 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include <cstdio>
 #include <fstream>
 #include <string>
+#include "PitchDemo.h"
+#include <vector>
+#include "Utilities.h"
+#include "Graphics.h"
+#include "Player.h"
+#include "Enemy.h"
+#include "Constants.h"
+#include <array>
 
+#define TILE_WIDTTH 80.0f
+#define TILE_HEIGHT 50.0f
 
+#define startingX TILE_WIDTTH / 2.0f - 400
+#define startingY2 -125
+#define startingY1 startingY2 - 150
+#define startingY3 startingY2 + 150
 /*The number of horizontal elements*/
 static int BINARY_MAP_WIDTH;
 
@@ -111,16 +125,61 @@ int ImportMapDataFromFile(const char* FileName)
 		MapData[i] = new int[BINARY_MAP_WIDTH];
 		BinaryCollisionArray[i] = new int[BINARY_MAP_WIDTH];
 	}
-	for (int i = 0; i < BINARY_MAP_HEIGHT; ++i) {
-		for (int j = 0; j < BINARY_MAP_WIDTH; ++j) {
+	for (int i = 0; i < BINARY_MAP_HEIGHT; ++i) 
+	{
+		for (int j = 0; j < BINARY_MAP_WIDTH; ++j) 
+		{
 			ifs >> MapData[i][j];
-			if (MapData[i][j] == TYPE_OBJECT_COLLISION)
-				BinaryCollisionArray[i][j] = TYPE_OBJECT_COLLISION;
+			if (MapData[i][j] > 1 && MapData[i][j] < 5)
+				BinaryCollisionArray[i][j] = 1;
 			else
 				BinaryCollisionArray[i][j] = 0;
 		}
 	}
 	ifs.close();
+	for (int i = 0; i < BINARY_MAP_HEIGHT; ++i)
+	{
+		for (int j = 0; j < BINARY_MAP_WIDTH; ++j)
+		{ // Iterate through mapdata array and construct objects at position [i][j] (Y/X)
+			if (MapData[i][j] == 0)
+			{
+				continue;
+			}
+			if (MapData[i][j] == 1)
+			{
+				//Tiles::AddTileRow()
+			}
+			if (MapData[i][j] == 2)
+			{
+				//construct granite
+			}
+			if (MapData[i][j] == 3)
+			{
+				//construct special
+			}
+			if (MapData[i][j] == 4)
+			{
+				//construct goal
+			}
+			if (MapData[i][j] == 5)
+			{
+				//construct jumperman
+			}
+			if (MapData[i][j] == 6)
+			{
+				//construct slime
+			}
+			if (MapData[i][j] == 7)
+			{
+				//construct bat
+			}
+			if (MapData[i][j] == 8)
+			{
+				//construct squirrel
+			}
+		}
+	}
+
 	return 1;
 }
 
@@ -259,24 +318,24 @@ int CheckInstanceBinaryMapCollision(float PosX, float PosY,
 	float Boty = PosY - scaleY / 2;
 
 	if ((int)LHSy2 <= BINARY_MAP_HEIGHT && (int)LHSx < BINARY_MAP_WIDTH &&
-		BinaryCollisionArray[(int)LHSy1][(int)LHSx] == TYPE_OBJECT_COLLISION ||
-		BinaryCollisionArray[(int)LHSy2][(int)LHSx] == TYPE_OBJECT_COLLISION) {
+		BinaryCollisionArray[(int)LHSy1][(int)LHSx] == 1 ||
+		BinaryCollisionArray[(int)LHSy2][(int)LHSx] == 1) {
 		Flag = Flag | COLLISION_LEFT;
 	}
 	if ((int)RHSy2 <= BINARY_MAP_HEIGHT && (int)RHSx < BINARY_MAP_WIDTH &&
-		BinaryCollisionArray[(int)RHSy1][(int)RHSx] == TYPE_OBJECT_COLLISION ||
-		BinaryCollisionArray[(int)RHSy2][(int)RHSx] == TYPE_OBJECT_COLLISION) {
+		BinaryCollisionArray[(int)RHSy1][(int)RHSx] == 1 ||
+		BinaryCollisionArray[(int)RHSy2][(int)RHSx] == 1) {
 		Flag = Flag | COLLISION_RIGHT;
 	}
 
 	if ((int)Topy <= BINARY_MAP_HEIGHT && (int)Topx2 <= BINARY_MAP_WIDTH &&
-		BinaryCollisionArray[(int)Topy][(int)Topx1] == TYPE_OBJECT_COLLISION ||
-		BinaryCollisionArray[(int)Topy][(int)Topx2] == TYPE_OBJECT_COLLISION) {
+		BinaryCollisionArray[(int)Topy][(int)Topx1] == 1 ||
+		BinaryCollisionArray[(int)Topy][(int)Topx2] == 1) {
 		Flag = Flag | COLLISION_TOP;
 	}
 	if ((int)Boty <= BINARY_MAP_HEIGHT && (int)Botx2 <= BINARY_MAP_WIDTH &&
-		BinaryCollisionArray[(int)Boty][(int)Botx1] == TYPE_OBJECT_COLLISION ||
-		BinaryCollisionArray[(int)Boty][(int)Botx2] == TYPE_OBJECT_COLLISION) {
+		BinaryCollisionArray[(int)Boty][(int)Botx1] == 1 ||
+		BinaryCollisionArray[(int)Boty][(int)Botx2] == 1) {
 		Flag = Flag | COLLISION_BOTTOM;
 	}
 	return Flag;
