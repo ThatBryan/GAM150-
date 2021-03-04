@@ -7,6 +7,7 @@
 #include "Enemy.h"
 
 enum class TileType{ Grass = 0, Goal, Safe, Special, Max };
+TileType& operator++(TileType& rhs);
 
 static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 class Tiles

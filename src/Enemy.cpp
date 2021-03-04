@@ -99,8 +99,9 @@ void Enemies::Unload(void)
 }
 
 void Enemies::LoadTex(void) {
-	for (EnemyType i = EnemyType::Slime; i < EnemyType::Max;) {
+	for (EnemyType i = EnemyType::Slime; i < EnemyType::Max; ++i) {
 		const char* pTex = nullptr;
+		printf("%d\n", i);
 		switch (i) {
 		case EnemyType::Slime:
 			pTex = WaterSlimeSprite;
@@ -115,7 +116,11 @@ void Enemies::LoadTex(void) {
 			return;
 		}
 		enemyTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex);
-		i = static_cast<EnemyType>(static_cast<int>(i) + 1);
 		AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	}
+}
+
+EnemyType& operator++(EnemyType& rhs) {
+	rhs = static_cast<EnemyType>((static_cast<int>(rhs) + 1));
+	return rhs;
 }

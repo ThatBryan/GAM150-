@@ -161,7 +161,7 @@ void Tiles::UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& play
 }
 
 void Tiles::LoadTex() {
-	for (TileType i = TileType::Grass; i < TileType::Max;) {
+	for (TileType i = TileType::Grass; i < TileType::Max; ++i) {
 		const char* pTex{ nullptr };
 		switch (i) {
 		case TileType::Grass:
@@ -181,7 +181,6 @@ void Tiles::LoadTex() {
 		}
 		tileTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex);
 		AE_ASSERT_MESG(pTex, "Failed to create texture!");
-		i = static_cast<TileType>(static_cast<int>(i) + 1);
 	}
 }
 
@@ -192,7 +191,10 @@ void Tiles::Unload()
 		AEGfxTextureUnload(tileTex[i]);
 	}
 }
-
+TileType& operator++(TileType& rhs) {
+	rhs = static_cast<TileType>((static_cast<int>(rhs) + 1));
+	return rhs;
+}
 
 
 //void Tiles::CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager)
