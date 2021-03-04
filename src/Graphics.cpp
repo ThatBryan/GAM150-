@@ -30,13 +30,9 @@ width{width}, height{height}, pos{0, 0}, pMesh{rectMesh}
 	color.SetColor(255, 255, 255, 255);
 }
 
-void Graphics::FreeMesh() {
-	AEGfxMeshFree(rectMesh);
-}
-
-void Graphics::FreeFont()
-{
+void Graphics::Free() {
 	AEGfxDestroyFont(fontID);
+	AEGfxMeshFree(rectMesh);
 }
 
 Graphics::Text::Text(s8* textBuffer, const f32 scale) : Scale{ scale }, pos{ 0, 0 },

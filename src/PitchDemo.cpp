@@ -113,7 +113,6 @@ void Demo::Unload(void)
 	for (int i = 0; i < Images.size(); ++i) {
 		Images[i].Free();
 	}
-	Graphics::FreeMesh();
 }
 
 void Demo::Restart(void)

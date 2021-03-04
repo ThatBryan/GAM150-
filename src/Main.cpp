@@ -105,7 +105,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			// check if forcing the application to quit
 			if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
 			{
-				gamestateCurr = GS_QUIT;
+				gamestateNext = GS_QUIT;
 			}
 		}
 		GameStateFree(); //Resets the game state
@@ -113,12 +113,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		if (gamestateNext != GS_RESTART)
 		{
 			GameStateUnload(); //Unloads all loaded assets of game state
-			//Free the graphic meshes
 		}
 
 		gamestatePrev = gamestateCurr;
 		gamestateCurr = gamestateNext;
 	}
-	Graphics::FreeFont();
+	Graphics::Free();
 	AESysExit();
 }

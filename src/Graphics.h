@@ -16,8 +16,7 @@ namespace Graphics
 {
 	// Sets the mesh for a rectangle and returns a pointer to the AEGfxVertexList
 	AEGfxVertexList* Mesh_Rectangle(void);
-	void FreeMesh();
-	void FreeFont();
+	void Free();
 
 	class Rect
 	{
