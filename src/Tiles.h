@@ -17,25 +17,27 @@ class Tiles
 		bool active, collapsing;
 		Graphics::Rect ColliderAABB;
 
+		// Abstracting away functions so the user cannot call it
+		void DecreaseLifespan(void);
+		void Collapse(void);
+		void CheckPos(void);
+		void CheckPlayerGoal(std::vector <Player>& player);
+		void CheckEnemyStatus(std::vector <Enemies> enemy);
+
 	public:
 		Tiles(AEGfxTexture*, const f32 width, const f32 height);
 		Image image;
 		AEVec2 spawnPos;
-		void Collapse(void);
-		void DecreaseLifespan(void);
-		void CheckPlayerGoal(std::vector <Player>& player);
-		void CheckEnemyStatus(std::vector <Enemies> enemy);
 		void Update(void);
-		void CheckPos(void);
-		static void Unload(void);
-		static void LoadTex(void);
 		void Render(void);
 
-		static void CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager);
+		static void Unload(void);
+		static void LoadTex(void);
+		//static void CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager);
 		static void CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& player);
 
 		// Add whole new row of tile.
-		static void AddTileRow(std::vector < Tiles>& tile, const s32 type, const size_t num, const f32 width, const f32 height, const AEVec2 pos);
+		static void AddTileRow(std::vector < Tiles>& tile, TileType type, const int count, const f32 width, const f32 height, const AEVec2 pos);
 		// Collapse the tile on its left and right if it is collapsible.
 
 		static void CollapseNext(std::vector <Tiles>& tiles);

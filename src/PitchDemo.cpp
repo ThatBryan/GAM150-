@@ -46,17 +46,13 @@ void Demo::Init(void)
 	Demo::Load();
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
 
-	size_t test = (size_t)(AEGetWindowWidth() / TILE_WIDTTH);
-	Tiles::AddTileRow(Demo_Tiles, Tile_Special, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ x, y1 });
-	Tiles::AddTileRow(Demo_Tiles, Tile_Safe, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ x, y1 });
-	Tiles::AddTileRow(Demo_Tiles, Tile_Grass, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ x, y1 });
-	Tiles::AddTileRow(Demo_Tiles2, Tile_Grass, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ x, y2 });
-	Tiles::AddTileRow(Demo_Tiles2, Tile_Goal, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ x, y2 });
-	Tiles::AddTileRow(Demo_Tiles3, Tile_Grass, test, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ x, y3 });
-	buttonTest.push_back(Button(100.0, 50.0f, 0.7f));
-	buttonTest[0].Set_Position(AEVec2{ 400.0f, 25.0f});
-	buttonTest[0].Set_Callback(Test_Callback);
-	buttonTest[0].Set_Text("Pause");
+	Tiles::AddTileRow(Demo_Tiles, TileType::Special, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ X, y1 });
+	Tiles::AddTileRow(Demo_Tiles, TileType::Safe, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{X, y1 });
+	Tiles::AddTileRow(Demo_Tiles, TileType::Grass, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{X, y1 });
+	Tiles::AddTileRow(Demo_Tiles2, TileType::Grass, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{X, y2 });
+	Tiles::AddTileRow(Demo_Tiles2, TileType::Goal, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{X, y2 });
+	Tiles::AddTileRow(Demo_Tiles3, TileType::Grass, static_cast<int>(AEGetWindowWidth() / TILE_WIDTTH), TILE_WIDTTH, TILE_HEIGHT, AEVec2{ X, y3 });
+
 
 	TileManager.push_back(&Demo_Tiles);
 	TileManager.push_back(&Demo_Tiles2);

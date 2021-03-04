@@ -48,9 +48,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	/////////////////
 	// Initialization
-	srand((u32)time(NULL));
+	srand(static_cast<u32>(time(NULL)));
 	// Using custom window procedure
-	AESysInit(hInstance, nCmdShow, 800, 600, 1, 60, true, NULL);
+	AESysInit(hInstance, nCmdShow, 800, 600, 1, 140, true, NULL);
 
 	// Changing the window title
 	AESysSetWindowTitle("JumperMan");

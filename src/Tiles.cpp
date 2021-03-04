@@ -80,12 +80,12 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 	player[0].gravity = true;
 }
 
-void Tiles::AddTileRow(std::vector <Tiles>& tile, s32 type, size_t num, const f32 width, const f32 height, const AEVec2 pos)
+void Tiles::AddTileRow(std::vector <Tiles>& tile, TileType type, const int count, const f32 width, const f32 height, const AEVec2 pos)
 {
 	size_t VectorSize = tile.size();
 	AEGfxTexture* temp = tileTex[type];
 
-	for (size_t i = VectorSize; i < VectorSize + num; i++)
+	for (int i = VectorSize; i < VectorSize + count; i++)
 	{
 		tile.push_back(Tiles(temp, width, height));
 		tile[i].type = type;

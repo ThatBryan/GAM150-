@@ -52,8 +52,7 @@ AEVec2 Utils::GetScreenMiddle() {
 
 AEVec2 Utils::GetMousePos(void)
 {
-	int mouseX = 0;
-	int mouseY = 0;
+	int mouseX = 0, mouseY = 0;
 	AEInputGetCursorPosition(&mouseX, &mouseY);
 	//return AEVec2Set((f32)mouseX - AEGfxGetWinMinX(), -(mouseY + AEGfxGetWinMinY())); // (f32)AEGetWindowHeight() - (f32)
 	return AEVec2Set(mouseX, mouseY);
@@ -62,15 +61,11 @@ AEVec2 Utils::GetMousePos(void)
 void Utils::CheckPauseInput(void)
 {
 	if (AEInputCheckTriggered(PAUSE_KEY))
-	{
 		paused = !paused;
-	}
 }
 
 void Utils::CheckDebugMode(void)
 {
 	if (AEInputCheckTriggered(DEBUG_KEY))
-	{
 		DebugMode = !DebugMode;
-	}
 }

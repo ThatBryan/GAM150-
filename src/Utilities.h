@@ -21,7 +21,7 @@ namespace Utils
 	AEVec2 GetScreenMiddle();
 }
 
-// Overloading vector functions.
+// Overloading vector functions to set result as return value.
 AEVec2 AEVec2Sub(const AEVec2 vec1, const AEVec2 vec2);
 AEVec2 AEVec2Zero(void);
 AEVec2 AEVec2Set(const f32 x, const f32 y);

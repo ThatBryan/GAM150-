@@ -13,8 +13,11 @@ spawnPos{0, 0}, active{true}, type{0}
 
 void Enemies::Update_Position(void)
 {
-	static float counter = 0.0f;
-	static float speed = 1.0f;
+	static f32 maxY = static_cast<f32>(AEGetWindowHeight());
+	static f32 maxX = static_cast<f32>(AEGetWindowWidth());
+
+	static float slime_counter = -2.0f;
+	static float slime_speed = 50.0f * g_dt;
 	static float bat_speed = 1.0f;
 	static float bat_counter = 0.0f;
 	
@@ -22,20 +25,16 @@ void Enemies::Update_Position(void)
 		sprite.direction -= 1.0f * ID;
 	if (type == Enemy_Slime)
 	{
-
-		sprite.pos.x += speed;
+		sprite.pos.x += slime_speed;
 		headBB.pos = sprite.pos;
 		enemyBB.pos = sprite.pos;
-		if (type == Enemy_Slime)
-		{
-			headBB.pos.y -= 20.0f;
-		}
+		headBB.pos.y -= 20.0f;
 
-		counter += 1.0f;
-		if (counter > 180.0f)
+		slime_counter -= g_dt;
+		if (slime_counter < -2.0f)
 		{
-			speed *= -1;
-			counter = 0.0f;
+			slime_speed *= -1;
+			slime_counter = 1.0f;
 		}
 	}
 	
