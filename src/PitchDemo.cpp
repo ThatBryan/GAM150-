@@ -36,6 +36,9 @@ void Demo::Init(void)
 	UI::Init();
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
 
+	ImportMapDataFromFile("../testrun.txt");
+	PrintRetrievedInformation();
+	
 	Tiles::AddTileRow(Demo_Tiles, TileType::Special, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ X, y1 });
 	Tiles::AddTileRow(Demo_Tiles, TileType::Safe, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{X, y1 });
 	Tiles::AddTileRow(Demo_Tiles, TileType::Grass, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{X, y1 });
@@ -112,6 +115,7 @@ void Demo::Unload(void)
 	for (int i = 0; i < Images.size(); ++i) {
 		Images[i].Free();
 	}
+	FreeMapData();
 }
 
 void Demo::Restart(void)
