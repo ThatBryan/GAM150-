@@ -30,7 +30,7 @@ extern AudioData soundData[static_cast<int>(AudioID::Max)];
 
 void Demo::Init(void)
 {
-	Load();
+	/*Load();*/
 	UI::Init();
 	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
 
@@ -82,7 +82,7 @@ void Demo::Update(void)
 	Utils::CheckDebugMode();
 	UpdateManager();
 	UpdateOverlay();
-	Render();
+	/*Render();*/
 	UI::Update();
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Restart();
