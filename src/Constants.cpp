@@ -15,6 +15,7 @@ const char* GreyTile = "../Assets/Art/Safe_Tile.png";
 const char* SpecialTile = "../Assets/Art/Special_Tile.png";
 const char* FontFile = "../Assets/Font/Roboto-Regular.ttf";
 
+
 // Player constants
 const float player_speed = 1.5f;
 const float player_width = 50.0f;

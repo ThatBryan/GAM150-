@@ -4,7 +4,7 @@
 #include "Constants.h"
 #include "Graphics.h"
 
-class Image
+class Image : public GameObject
 {
 	private:
 	AEGfxVertexList* pMesh;
@@ -14,9 +14,9 @@ class Image
 	public:
 		Image(const AEGfxTexture* pTex, const f32 width, const f32 height, const f32 dir = 0); //ctor
 		Image();
-		void Init(const char* pFile, const f32 width, const f32 height, const AEVec2 pos, const f32 rotation = 0, AEGfxVertexList* = rectMesh);
+		void Init(const char* pFile, const f32 width, const f32 height, const AEVec2 pos, const f32 direction = 0, AEGfxVertexList* = rectMesh);
 	Color color;
-	f32 height, width, rotation;
+	f32 height, width, direction;
 	AEVec2 pos;
 
 	inline void Free(void) {AEGfxTextureUnload(pTex);}

@@ -101,22 +101,15 @@ void Graphics::Rect::Draw(Color color, const f32 alpha)
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-void Graphics::Text::Draw(const AEVec2 pos)
+void Graphics::Text::Draw_Text(const AEVec2 pos)
 {
-	AEVec2 drawPos = Graphics::Text::Calculate_Offset(pos);
+	AEGfxGetPrintSize(fontID, buffer, Scale, width, height);
+	AEVec2 drawPos = Graphics::Text::Calculate_DrawTextOffset(pos);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxPrint(fontID, buffer, drawPos.x, drawPos.y, scale, color.r, color.g, color.b);
+	AEGfxPrint(fontID, buffer, drawPos.x, -drawPos.y, Scale, color.r, color.g, color.b);
 }
 
-void Graphics::Text::Draw_Wrapped(const AEVec2 pos)
-{
-	AEGfxGetPrintSize(fontID, buffer, scale, width, height);
-	AEVec2 drawPos = Graphics::Text::Calculate_Offset(pos);
-	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxPrint(fontID, buffer, drawPos.x - width / 2.0f, drawPos.y - height / 2.0f, scale, color.r, color.g, color.b);
-}
-
-AEVec2 Graphics::Text::Calculate_Offset(AEVec2 pos)
+AEVec2 Graphics::Text::Calculate_DrawTextOffset(AEVec2 pos)
 {
 	static f32 HalfWinWidth = Utils::Get_HalfWindowWidth();
 	static f32 HalfWinHeight = Utils::Get_HalfWindowHeight();
@@ -124,23 +117,23 @@ AEVec2 Graphics::Text::Calculate_Offset(AEVec2 pos)
 	static f32 WinWidth = static_cast<f32>(AEGetWindowWidth());
 
 	AEVec2 Offset{0, 0};
-	if (pos.x < HalfWinWidth) // I want negative
+	if (pos.x < HalfWinWidth)
 	{
-		Offset.x = (-HalfWinWidth + pos.x) / HalfWinWidth; 
+		Offset.x = (-HalfWinWidth + pos.x) / HalfWinWidth;
 	}
-	else if (pos.x > HalfWinWidth) // big postive number.
+	else if (pos.x > HalfWinWidth)
 	{
-		Offset.x = (pos.x - HalfWinWidth) / HalfWinWidth;
-	}
-
-	if (pos.y > HalfWinHeight) // Big value, prints at bottom of screen.
-	{
-		Offset.y = (HalfWinHeight -pos.y) / HalfWinHeight; // Negative (
+		Offset.x = (pos.x - HalfWinWidth) / WinWidth;
 	}
 
-	else if (pos.y < HalfWinHeight)  // Small value, prints at top of screen
+	if (pos.y < HalfWinHeight)
 	{
-		Offset.y = (HalfWinHeight - pos.y) / HalfWinHeight;
+		Offset.y = (-HalfWinHeight + pos.y) / HalfWinHeight;
+	}
+
+	else if (pos.y > HalfWinHeight)
+	{
+		Offset.y = pos.y / WinHeight;
 	}
 	//printf("%.2f %.2f\n", Offset.x, Offset.y);
 	return Offset;

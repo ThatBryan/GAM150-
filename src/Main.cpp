@@ -118,23 +118,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		gamestatePrev = gamestateCurr;
 		gamestateCurr = gamestateNext;
-	// Game Loop
-	while (gGameRunning)
-	{
-		// Informing the system about the loop's start
-		AESysFrameStart();
-		// Handling Input
-		AEInputUpdate();
-		g_dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
-		Demo::Update();
-		// Informing the system about the loop's end
-		AESysFrameEnd();
-		if(!paused)
-			app_time += g_dt;
-
-		// check if forcing the application to quit
-		if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
-			gGameRunning = 0;
 	}
 	Graphics::FreeFont();
 	AESysExit();

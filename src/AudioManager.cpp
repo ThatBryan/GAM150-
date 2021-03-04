@@ -1,10 +1,10 @@
 #include "AudioManager.h"
 
-AudioManager Audio;
-std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest{ NULL };
-AudioData soundData[static_cast<int>(AudioID::Max)];
+SoundSystemClass sound;
+std::array <SoundClass, Sound_Max> soundTest{ NULL };
+SoundData soundData[Sound_Max];
 
-AudioManager::AudioManager() {
+SoundSystemClass::SoundSystemClass() {
 	if (FMOD::System_Create(&m_pSystem) != FMOD_OK)
 	{
 		AE_ASSERT("Constructor failed on AudioManager.cpp line 6\n");
@@ -17,11 +17,11 @@ AudioManager::AudioManager() {
 	}
 	m_pSystem->init(36, FMOD_INIT_NORMAL, NULL);
 }
-void AudioManager::createAudio(AudioClass* pSound, const char* pFile) {
+void SoundSystemClass::createSound(SoundClass* pSound, const char* pFile) {
 	m_pSystem->createSound(pFile, FMOD_ERR_NEEDSHARDWARE, 0, pSound);
 }
 
-void AudioManager::playAudio(AudioClass& Sound, AudioID ID, bool bLoop) {
+void SoundSystemClass::playSound(SoundClass& Sound, int index, bool bLoop) {
 	if (!bLoop) {
 		Sound->setMode(FMOD_LOOP_OFF);
 	}
@@ -30,31 +30,30 @@ void AudioManager::playAudio(AudioClass& Sound, AudioID ID, bool bLoop) {
 		Sound->setMode(FMOD_LOOP_NORMAL);
 		Sound->setLoopCount(-1);
 	}
-	m_pSystem->playSound(Sound, NULL, false, &(soundData[static_cast<int>(ID)].channel));
-	soundData[static_cast<int>(ID)].channel->setVolume(soundData[static_cast<int>(ID)].volume);
+	m_pSystem->playSound(Sound, NULL, false, &(soundData[index].channel));
+	soundData[index].channel->setVolume(soundData[index].volume);
 }
 
-void AudioManager::update() {
+void SoundSystemClass::update() {
 	m_pSystem->update();
-	for (int i = 0; i < static_cast<int>(AudioID::Max); ++i) {
-		soundData[i].channel->setPaused(paused);
+	for (int i = 0; i < Sound_Max; ++i) {
+		soundData[i].channel->setMute(paused);
 	}
 }
 
-void AudioManager::loadAsset(void) {
-	Audio.createAudio(&soundTest[static_cast<int>(AudioID::Jump)], "../Assets/Audio/SFX/powerup.wav");
-	Audio.createAudio(&soundTest[static_cast<int>(AudioID::BGM)], "../Assets/Audio/BGM/gg.wav");
+void SoundSystemClass::releaseSound(SoundClass& Sound) {
+	Sound->release();
 }
-void AudioManager::unloadAsset(void) {
+
+void SoundSystemClass::loadSound(void) {
+	sound.createSound(&soundTest[Sound_Jump], "../Assets/Audio/SFX/powerup.wav");
+	sound.createSound(&soundTest[Sound_BGM], "../Assets/Audio/BGM/gg.wav");
+}
+void SoundSystemClass::unloadSound(void) {
 	for (int i = 0; i < soundTest.size(); i++) {
-		soundTest[i]->release();
+		sound.releaseSound(soundTest[i]);
 	}
 }
-void AudioManager::SetVolume(AudioID ID, float volume) {
-	soundData[static_cast<int>(ID)].volume = volume;
-}
-
-void AudioManager::SetMute(AudioID ID) {
-	soundData[static_cast<int>(ID)].mute = !(soundData[static_cast<int>(ID)].mute);
-	soundData[static_cast<int>(ID)].channel->setMute(soundData[static_cast<int>(ID)].mute);
+void SoundSystemClass::SetVolume(int index, float volume) {
+	soundData[index].volume = volume;
 }

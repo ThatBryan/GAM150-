@@ -7,7 +7,6 @@ namespace Utils
 {
 	// Returns a random int between the specified perimeters.
 	int RandomRangeInt(const s32 lowerBound, const s32 upperBound);
-	float RandomRangeFloat(const f32 lowerBound, const f32 upperBound);
 
 	// Returns half window width/height to be used for calculations.
 	f32 Get_HalfWindowWidth(void);
@@ -19,7 +18,7 @@ namespace Utils
 	void CheckFullScreenInput(void);// Set window to full screen with L ALT + Enter.
 	void CheckPauseInput(void); 	// Press Tab to pause the game.
 	void CheckDebugMode(void);		// F1 to enter debug mode
-	AEVec2 GetScreenMiddle(void);
+	AEVec2 GetScreenMiddle();
 }
 
 // Overloading vector functions.

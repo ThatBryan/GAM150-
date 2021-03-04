@@ -4,17 +4,13 @@ char strBuffer[100];
 char strBuffer1[100];
 char strBuffer2[100];
 Graphics::Text FPS_Display(strBuffer, 0.5);
-Graphics::Text LevelDisplay(strBuffer1, 0.5);
-Graphics::Text TimerDisplay(strBuffer2, 0.5);
-
-std::vector <Button> buttonTest;
+Graphics::Text LevelDisplay(strBuffer1);
+Graphics::Text TimerDisplay(strBuffer2);
 
 void UI::Init() {
 
-	UI::Buttons_Init();
-
-	FPS_Display.color.SetColor(0, 0, 0, 255);
-	LevelDisplay.color.SetColor(0, 0, 0, 255);
+	FPS_Display.color.SetColor(255, 0, 0, 255);
+	LevelDisplay.color.SetColor(255, 0, 0, 255);
 	TimerDisplay.color.SetColor(0, 0, 0, 255);
 
 	memset(strBuffer, 0, 100 * sizeof(char));
@@ -32,23 +28,7 @@ void UI::Update() {
 
 void UI::Draw() {
 	if (DebugMode)
-		FPS_Display.Draw(AEVec2Set(0, 100));
-	LevelDisplay.Draw(AEVec2Set(0, 15));
-	TimerDisplay.Draw(AEVec2Set(660, 15));
-	for (size_t i = 0; i < buttonTest.size(); ++i) {
-		buttonTest[i].Update();
-	}
-}
-
-void UI::Buttons_Init() {
-
-	buttonTest.push_back(Button(100.0, 50.0f, 0.9f));
-	buttonTest[0].Set_Position(AEVec2{ 300.0f, 25.0f });
-	buttonTest[0].Set_Callback(Test_Callback);
-	buttonTest[0].Set_Text("Pause");
-
-	buttonTest.push_back(Button(100.0, 50.0f, 0.7f));
-	buttonTest[1].Set_Position(AEVec2{ 500.0f, 25.0f });
-	buttonTest[1].Set_Callback(Mute_BGM);
-	buttonTest[1].Set_Text("Mute BGM");
+		FPS_Display.Draw_Text(AEVec2Set(0, 200));
+	LevelDisplay.Draw_Text(AEVec2Set(0, 25));
+	TimerDisplay.Draw_Text(AEVec2Set(665, 25));
 }

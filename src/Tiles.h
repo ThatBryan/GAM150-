@@ -6,14 +6,13 @@
 #include "Player.h"
 #include "Enemy.h"
 
-enum class TileType{ Grass = 0, Goal, Safe, Special, Max };
+enum TileType {Tile_Grass, Tile_Goal, Tile_Safe, Tile_Special, Tile_Max};
+static AEGfxTexture* tileTex[Tile_Max]{ nullptr };
 
-static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 class Tiles
 {
 	private:
-		short ID;
-		TileType type;
+		short ID, type;
 		f64 collapseDelay;
 		bool active, collapsing;
 		Graphics::Rect ColliderAABB;
@@ -32,11 +31,11 @@ class Tiles
 		static void LoadTex(void);
 		void Render(void);
 
-		//static void CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager);
+		static void CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager);
 		static void CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& player);
 
 		// Add whole new row of tile.
-		static void AddTileRow(std::vector < Tiles>& tile, TileType type, const int num, const f32 width, const f32 height, const AEVec2 pos);
+		static void AddTileRow(std::vector < Tiles>& tile, const s32 type, const size_t num, const f32 width, const f32 height, const AEVec2 pos);
 		// Collapse the tile on its left and right if it is collapsible.
 
 		static void CollapseNext(std::vector <Tiles>& tiles);

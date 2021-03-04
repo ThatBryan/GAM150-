@@ -2,7 +2,7 @@
 
 AEGfxTexture* Player::playerTex{ nullptr };
 
-Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},
+Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height),
 active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpspeed_y{jumpspeed}
 {
 	playerBB.color.SetColor(0, 0, 0, 255.0f);
@@ -13,18 +13,18 @@ void Player::Reset(void)
 {
 	jump = false;
 	win = false;
-	lose = false;
 	active = true;
 	sprite.pos = startingPos;
 	jumpspeed_y = jumpspeed;
-	sprite.rotation = 0;
+	sprite.direction = 0;
 }
 
 void Player::Update() {
-	if(DebugMode)
-		sprite.rotation += 1;
-	Update_Position();
-
+	if (!paused) {
+		if(DebugMode)
+			sprite.direction += 1;
+		Update_Position();
+	}
 }
 void Player::Render(void)
 {
@@ -47,12 +47,14 @@ void Player::Update_Position(void)
 {
 	static f32 maxY = static_cast<f32>(AEGetWindowHeight());
 	static f32 maxX = static_cast<f32>(AEGetWindowWidth());
+	static f32 minY = 0;
+	static f32 minX = 0;
 
 	if (!jump && (AEInputCheckTriggered(AEVK_W) || AEInputCheckTriggered(AEVK_UP)))
 	{
 		if (!DebugMode) {
 			jump = TRUE;
-			Audio.playAudio(soundTest[static_cast<int>(AudioID::Jump)], AudioID::Jump);
+			sound.playSound(soundTest[Sound_Jump], Sound_Jump);
 		}
 	}
 	if (jump)
@@ -77,8 +79,16 @@ void Player::Update_Position(void)
 
 	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
 	{
-		if (sprite.pos.x - sprite.width / 2 >= 0)
+		if (sprite.pos.x - sprite.width / 2 >= minX)
 		sprite.pos.x -= player_speed;
+	}
+
+	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
+	{
+		if (sprite.pos.y - sprite.height / 2 >= 0)
+		{
+			sprite.pos.y -= player_speed;
+		}
 	}
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
 	{
@@ -88,7 +98,7 @@ void Player::Update_Position(void)
 	}
 	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
 	{
-		if (sprite.pos.x - sprite.width / 2 >= 0)
+		if (sprite.pos.x - sprite.width / 2 >= minX)
 		{
 			sprite.pos.x -= player_speed;
 		}
@@ -102,13 +112,13 @@ void Player::Update_Position(void)
 			sprite.pos = Mouse;
 		}
 	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN)) {
-		if (sprite.pos.y + sprite.height / 2 <= maxY) {
-			sprite.pos.y += player_speed;
+		if (sprite.pos.y - sprite.height / 2 >= minY) {
+			sprite.pos.y -= player_speed;
 		}
 	}
 	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP)) {
-		if (sprite.pos.y - sprite.height / 2 >= 0) {
-			sprite.pos.y -= player_speed;
+		if (sprite.pos.y + sprite.height / 2 <= maxY) {
+			sprite.pos.y += player_speed;
 		}
 	}
 
@@ -117,15 +127,14 @@ void Player::Update_Position(void)
 	feetBB.pos = AEVec2{ sprite.pos.x, sprite.pos.y + player_collider_offset };
 }
 
-void Player::GravityManager(void)
-{
-	if (gravity)
-	{
-		sprite.pos.y += 0.5f;
-		if(DebugMode)
-			printf("Apply gravity\n");
-	}
-}
+//void Player::GravityManager(void)
+//{
+//	if (gravity)
+//	{
+//		if(DebugMode)
+//			printf("Apply gravity\n");
+//	}
+//}
 
 void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 {
@@ -133,6 +142,11 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 	{
 		if (enemy[i].active)
 		{
+			//printf("%.2f %.2f %.2f %.2f\n", enemy[i].headBB.pos.x, this->playerBB.pos.x, enemy[i].headBB.pos.y, this->playerBB.pos.y);
+			//enemy[i].headBB.pos.y -= 15.0f;
+			//if (AETestRectToRect(&enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, &this->feetBB.pos, feetBB.width, feetBB.height))// && 
+			//	printf("enemy dies\n");
+			//	//enemy[i].active = false;
 			if (AETestRectToRect(&enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, &playerBB.pos, playerBB.width, playerBB.height))
 			{
 			if (enemy[i].headBB.pos.y > feetBB.pos.y) {
@@ -144,7 +158,6 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 				if(DebugMode)
 					printf("player dies\n");
 				active = false;
-				SetLose();
 			}
 			}
 		}

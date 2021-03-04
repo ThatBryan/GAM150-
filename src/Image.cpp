@@ -2,23 +2,23 @@
 #include "Utilities.h"
 #include <iostream>
 
-Image::Image(const AEGfxTexture* pTex, const f32 width, const f32 height, const f32 dir) : rotation{dir}, 
+Image::Image(const AEGfxTexture* pTex, const f32 width, const f32 height, const f32 dir) : GameObject(), direction{dir}, 
 width{width}, height{height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color{NULL}, transformMtx{NULL}
 {
 	this->pTex = const_cast<AEGfxTexture*>(pTex);
 	pMesh = rectMesh;
 }
-Image::Image() : rotation{0}, width{0}, height{0}, pTex{ nullptr }, 
-pMesh{ nullptr }, pos{ 0, 0 }, color{ NULL }, transformMtx{ NULL } {}
+Image::Image() : GameObject(), direction{0}, width{0}, height{0},
+pTex{ nullptr }, pMesh{ nullptr }, pos{ 0, 0 }, color{ NULL }, transformMtx{ NULL } {}
 
-void Image::Init(const char* pFile, const f32 width, const f32 height, const AEVec2 pos, const f32 rotation, AEGfxVertexList* pMesh){
+void Image::Init(const char* pFile, const f32 width, const f32 height, const AEVec2 pos, const f32 dir, AEGfxVertexList* pMesh){
 	pTex = AEGfxTextureLoad(pFile);
 	AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	this->width = width;
 	this->height = height;
 	this->pMesh = const_cast<AEGfxVertexList*>(pMesh);
 	this->pos = pos;
-	this->rotation = rotation;
+	direction = dir;
 }
 
 void Image::SetMatrix(void)
@@ -27,7 +27,7 @@ void Image::SetMatrix(void)
 	static f32 HalfWinWindow = Utils::Get_HalfWindowWidth();
 	AEMtx33	trans, rot, scale;
 	AEMtx33Scale(&scale, width, height);
-	AEMtx33Rot(&rot, AEDegToRad(rotation));
+	AEMtx33Rot(&rot, AEDegToRad(direction));
 	AEMtx33Trans(&trans, -HalfWinWindow + pos.x, HalfWinHeight - pos.y);
 	AEMtx33 temp;
 	AEMtx33Concat(&temp, &rot, &scale);
