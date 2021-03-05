@@ -1,12 +1,16 @@
 #include "Player.h"
 
 AEGfxTexture* Player::playerTex{ nullptr };
+static f32 maxY;
+static f32 maxX;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},
 active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpspeed_y{jumpspeed}
 {
 	playerBB.color.SetColor(0, 0, 0, 255.0f);
 	feetBB.color.SetColor(255.0f, 255.0f, 0, 255.0f);
+	maxY = static_cast<f32>(AEGetWindowHeight());
+	maxX = static_cast<f32>(AEGetWindowWidth());
 }
 
 void Player::Reset(void)
@@ -23,8 +27,8 @@ void Player::Reset(void)
 void Player::Update() {
 	if(DebugMode)
 		sprite.rotation += 1;
+	CheckOutOfBound();
 	Update_Position();
-
 }
 void Player::Render(void)
 {
@@ -45,8 +49,6 @@ void Player::Unload(void) {
 }
 void Player::Update_Position(void)
 {
-	static f32 maxY = static_cast<f32>(AEGetWindowHeight());
-	static f32 maxX = static_cast<f32>(AEGetWindowWidth());
 
 	if (!jump && (AEInputCheckTriggered(AEVK_W) || AEInputCheckTriggered(AEVK_UP)))
 	{
@@ -117,6 +119,11 @@ void Player::Update_Position(void)
 	feetBB.pos = AEVec2Set(sprite.pos.x, sprite.pos.y + player_collider_offset);
 }
 
+void Player::CheckOutOfBound() {
+	if ((sprite.pos.y - sprite.height / 2) > maxY)
+		SetLose();
+}
+
 void Player::GravityManager(void)
 {
 	if (gravity)
@@ -135,17 +142,16 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 		{
 			if (AETestRectToRect(&enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, &playerBB.pos, playerBB.width, playerBB.height))
 			{
-			if (enemy[i].headBB.pos.y > feetBB.pos.y) {
-				if(DebugMode)
-					printf("enemy dies\n");
-				enemy[i].active = false;
-			}
-			else {
-				if(DebugMode)
-					printf("player dies\n");
-				active = false;
-				SetLose();
-			}
+				if (enemy[i].headBB.pos.y > feetBB.pos.y) {
+					if(DebugMode)
+						printf("enemy dies\n");
+					enemy[i].active = false;
+				}
+				else {
+					if(DebugMode)
+						printf("player dies\n");
+					SetLose();
+				}
 			}
 		}
 	}

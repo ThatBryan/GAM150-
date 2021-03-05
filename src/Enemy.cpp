@@ -100,7 +100,6 @@ void Enemies::Unload(void)
 void Enemies::LoadTex(void) {
 	for (EnemyType i = EnemyType::Slime; i < EnemyType::Max; ++i) {
 		const char* pTex = nullptr;
-		printf("%d\n", i);
 		switch (i) {
 		case EnemyType::Slime:
 			pTex = WaterSlimeSprite;

@@ -17,6 +17,7 @@ private:
 	bool win, lose;
 	float jumpspeed_y;
 	void Update_Position(void);
+	void CheckOutOfBound(void);
 
 public:
 	static AEGfxTexture* playerTex;
@@ -35,7 +36,7 @@ public:
 
 	inline void SetWin(void) { win = true; }
 	inline bool GetWinStatus(void) { return win; }
-	inline void SetLose(void) { lose = true; }
+	inline void SetLose(void) { active = false; lose = true; }
 	inline bool GetLose(void) { return lose; }
 
 	static void LoadTex(void);

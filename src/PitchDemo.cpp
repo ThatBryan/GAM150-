@@ -82,7 +82,6 @@ void Demo::Update(void)
 	Utils::CheckDebugMode();
 	UpdateManager();
 	UpdateOverlay();
-	/*Render();*/
 	UI::Update();
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Restart();

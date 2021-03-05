@@ -58,7 +58,7 @@ void Tiles::CheckEnemyStatus(std::vector <Enemies> enemy)
 	{
 		if (AETestRectToRect(&image.pos, image.width, image.height, &enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height))
 		{
-			if (!enemy[i].active)
+			if (!enemy[i].active && (type == TileType::Grass || type == TileType::Special))
 			{
 				collapsing = true;
 			}
