@@ -1,5 +1,8 @@
 #include "Tiles.h"
 #include <iostream>
+#include "Player.h"
+#include "Enemy.h"
+#include "Utilities.h"
 
 extern std::vector <Player> player;
 
@@ -66,7 +69,7 @@ void Tiles::CheckEnemyStatus(std::vector <Enemies> enemy)
 	}
 }
 
-void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& player)
+void Tiles::CheckPlayerGravity(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& player)
 {
 	for (size_t i = 0; i < TileManager.size(); i++)
 	{
@@ -78,8 +81,8 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 				player[0].feetBB.pos, player[0].feetBB.width, player[0].feetBB.height))
 			{
 				player[0].gravity = false;
-				if (DebugMode)
-					printf("Don't apply gravity\n");
+				//if (DebugMode)
+					//printf("Don't apply gravity\n");
 				return;
 			}
 		}

@@ -1,21 +1,20 @@
 #pragma once
 #include "Image.h"
-#include "Utilities.h"
 #include <vector>
-#include "Graphics.h"
 #include "AEEngine.h"
-#include "Enemy.h"
 #include "Constants.h"
 #include "AudioManager.h"
 
 extern AudioManager Audio;
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
-
+class Enemies;
+class Rect;
 class Player
 {
 private:
 	bool win, lose;
 	float jumpspeed_y;
+	static f32 gravityStrength;
 	void Update_Position(void);
 	void CheckOutOfBound(void);
 

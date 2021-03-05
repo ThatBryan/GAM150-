@@ -1,8 +1,13 @@
 #include "Player.h"
+#include "Enemy.h"
+#include <array>
+#include "Utilities.h"
+#include "Graphics.h"
 
 AEGfxTexture* Player::playerTex{ nullptr };
 static f32 maxY;
 static f32 maxX;
+float Player::gravityStrength = 100.0f;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},
 active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpspeed_y{jumpspeed}
@@ -25,8 +30,8 @@ void Player::Reset(void)
 }
 
 void Player::Update() {
-	if(DebugMode)
-		sprite.rotation += 1;
+	//if(DebugMode)
+	//	sprite.rotation += 1;
 	CheckOutOfBound();
 	Update_Position();
 }
@@ -128,9 +133,10 @@ void Player::GravityManager(void)
 {
 	if (gravity)
 	{
-		sprite.pos.y += 0.5f;
-		if(DebugMode)
-			printf("Apply gravity\n");
+		if(!DebugMode)
+			sprite.pos.y += gravityStrength * g_dt;
+		//if(DebugMode)
+			//printf("Apply gravity\n");
 	}
 }
 
@@ -142,15 +148,16 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 		{
 			if (AETestRectToRect(&enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, &playerBB.pos, playerBB.width, playerBB.height))
 			{
-				if (enemy[i].headBB.pos.y > feetBB.pos.y) {
-					if(DebugMode)
-						printf("enemy dies\n");
+				if(Utils::ColliderAABB(enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, feetBB.pos, feetBB.width, feetBB.height)){
 					enemy[i].active = false;
+					if (DebugMode)
+						printf("enemy dies\n");
 				}
-				else {
-					if(DebugMode)
-						printf("player dies\n");
+				else
+				{
 					SetLose();
+					if (DebugMode)
+						printf("player dies\n");
 				}
 			}
 		}

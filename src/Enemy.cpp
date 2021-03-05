@@ -1,9 +1,15 @@
 #include "Enemy.h"
+#include "Tiles.h"
+#include "Utilities.h"
 
 float numberOfTicks = 0.0f;
+float Enemies::gravityStrength = 100.0f;
+float Enemies::slime_counter = 2.0f, Enemies::slime_speed = 50.0f, Enemies::slimeBBOffset = 22.0f;;
+float Enemies::bat_speed = 100.0f, Enemies::bat_counter = 5.0f;
+
 
 Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
-spawnPos{0, 0}, active{true}, type{EnemyType::Slime}
+spawnPos{0, 0}, active{true}, type{EnemyType::Slime}, isGravity{false}
 {
 	ID = EnemyCount;
 	EnemyCount++;
@@ -16,19 +22,14 @@ void Enemies::Update_Position(void)
 	static f32 maxY = static_cast<f32>(AEGetWindowHeight());
 	static f32 maxX = static_cast<f32>(AEGetWindowWidth());
 
-	static float slime_counter = 2.0f;
-	static float slime_speed = 50.0f * g_dt;
-	static float bat_speed = 100.0f * g_dt;
-	static float bat_counter = 5.0f;
-
-	if (DebugMode)
-		sprite.rotation -= 1.0f * ID;
+	//if (DebugMode)
+	//	sprite.rotation -= 1.0f * ID;
 	if (type == EnemyType::Slime)
 	{
-		sprite.pos.x += slime_speed;
+		sprite.pos.x += slime_speed * g_dt;
 		headBB.pos = sprite.pos;
 		enemyBB.pos = sprite.pos;
-		headBB.pos.y -= 20.0f;
+		headBB.pos.y -= slimeBBOffset;
 
 		slime_counter -= g_dt;
 		if (slime_counter < -2.0f || sprite.pos.x < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
@@ -42,7 +43,7 @@ void Enemies::Update_Position(void)
 	{
 		// Sine-Wave
 		static AEVec2 startpos = sprite.pos;
-		sprite.pos.x += bat_speed;
+		sprite.pos.x += bat_speed*g_dt;
 		sprite.pos.y = startpos.y + 20 * sin(static_cast<f32>(sprite.pos.x) * 2.0f * PI / 180.0f); // y = amplitude * sin(x * period * pi / 180)
 
 		bat_counter -= g_dt;
@@ -55,9 +56,33 @@ void Enemies::Update_Position(void)
 	}
 }
 
+void Enemies::GravityCheck(std::vector <std::vector<Tiles>*>& TileManager) {
+	for (size_t i = 0; i < TileManager.size(); i++)
+	{
+		for (size_t j = 0; j < TileManager[i]->size(); j++)
+		{
+			if (TileManager[i]->at(j).GetActive() == false)
+				continue;
+			if (Utils::ColliderAABB(TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height,
+				enemyBB.pos, enemyBB.width, enemyBB.height))
+			{
+				isGravity = false;
+				return;
+			}
+		}
+	}
+	isGravity = true;
+}
+
+void Enemies::ApplyGravity(void) {
+	if (isGravity)
+		sprite.pos.y += gravityStrength * g_dt;
+}
+
 void Enemies::Update()
 {
 	Update_Position();
+	ApplyGravity();
 }
 
 void Enemies::Draw()
