@@ -5,7 +5,7 @@ char strBuffer1[100];
 char strBuffer2[100];
 Graphics::Text FPS_Display(strBuffer, 0.5);
 Graphics::Text LevelDisplay(strBuffer1, 0.5);
-Graphics::Text TimerDisplay(strBuffer2, 1.0);
+Graphics::Text TimerDisplay(strBuffer2, 0.5f);
 
 std::vector <Button> buttonTest;
 

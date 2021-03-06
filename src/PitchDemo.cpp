@@ -66,7 +66,7 @@ void Demo::Init(void)
 	player[0].startingPos.y -= TILE_HEIGHT;
 	player[0].sprite.pos = player[0].startingPos;
 
-	Images[GGPen].Init(DigipenLogo, static_cast<f32>(AEGetWindowWidth()) - 100.0f, static_cast<f32>(AEGetWindowHeight()) - 150.0f, Utils::GetScreenMiddle());
+	Images[GGPen].Init(DigipenLogoRed, static_cast<f32>(AEGetWindowWidth()) - 100.0f, static_cast<f32>(AEGetWindowHeight()) - 150.0f, Utils::GetScreenMiddle());
 	Images[Victory].Init(VictoryScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 	Images[Defeat].Init(GameoverScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 
@@ -75,6 +75,9 @@ void Demo::Init(void)
 
 void Demo::Update(void)
 {
+	if (!paused)
+		app_time += g_dt;
+
 	Audio.update();
 	background.Decrement();
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
@@ -93,11 +96,10 @@ void Demo::Exit(void)
 }
 
 void Demo::Load(void) {
-	rectMesh = Graphics::Mesh_Rectangle();
-	Enemies::LoadTex();
 	Tiles::LoadTex();
-	Player::LoadTex();
 	AudioManager::loadAsset();
+	Enemies::LoadTex();
+	Player::LoadTex();
 	AudioManager::SetVolume(AudioID::BGM, 0.2f);
 	AudioManager::SetVolume(AudioID::Jump, 0.2f);
 }

@@ -5,7 +5,9 @@
 //Game State List
 enum
 {
-	GS_GAMEPLAY = 0,
+	GS_SPLASH = 0,
+	GS_MAINMENU,
+	GS_GAMEPLAY,
 	GS_RESTART,
 	GS_QUIT
 };
@@ -26,5 +28,5 @@ extern void (*GameStateFree)();
 extern void (*GameStateUnload)();
 
 //Declaring GSM functions
-void GameStateManagerInit(unsigned int gamestateInit);
+void GameStateManagerInit(unsigned int gamestateInit = GS_SPLASH);
 void GameStateManagerUpdate();

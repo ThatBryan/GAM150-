@@ -7,6 +7,7 @@
 
 enum class EnemyType {Slime = 0, Bat, Squirrel, Max};
 EnemyType& operator++(EnemyType& rhs);
+
 static AEGfxTexture* enemyTex[static_cast<int>(EnemyType::Max)]{ nullptr };
 // Foward declarations
 class Player;

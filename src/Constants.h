@@ -2,7 +2,8 @@
 #include "AEEngine.h"
 
 // File Paths
-extern const char* DigipenLogo;
+extern const char* DigipenLogoRed;
+extern const char* DigipenLogoWhite;
 extern const char* VictoryScreen;
 extern const char* GameoverScreen;
 extern const char* WaterSlimeSprite;

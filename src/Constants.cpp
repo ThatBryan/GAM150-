@@ -2,7 +2,8 @@
 #include "Constants.h"
 
 // File Paths
-const char* DigipenLogo = "../Assets/Logo/DigiPen_RED.png";
+const char* DigipenLogoRed = "../Assets/Logo/DigiPen_RED.png";
+const char* DigipenLogoWhite = "../Assets/Logo/DigiPen_WHITE.png";
 const char* VictoryScreen = "../Assets/Art/throwaway.png";
 const char* GameoverScreen = "../Assets/Art/throwaway2.png";
 const char* WaterSlimeSprite = "../Assets/Art/WaterSlime.png";

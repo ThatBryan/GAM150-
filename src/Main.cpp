@@ -60,7 +60,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;
 
 	// Initialises the GSM
-	GameStateManagerInit(GS_GAMEPLAY);
+	GameStateManagerInit();
 	AEToogleFullScreen(fullscreen);
 
 	//Checks if game state isnt at quit status
@@ -93,8 +93,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 			// Informing the system about the loop's end
 			AESysFrameEnd();
-			if (!paused)
-				app_time += g_dt;
 
 			// check if forcing the application to quit
 			if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())

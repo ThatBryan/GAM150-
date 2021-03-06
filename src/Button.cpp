@@ -31,8 +31,7 @@ void Button::Update(void) {
 	AEVec2 Mouse = Utils::GetMousePos();
 	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckReleased(AEVK_LBUTTON))
 	{
-		if (!player[0].GetLose() && !player[0].GetWinStatus())
-			callback();
+		callback();
 	}
 	Render();
 }
@@ -49,4 +48,9 @@ int Button::Check_Cursor() {
 	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height))
 		return Button_Hovered;
 	return Button_Idle;
+}
+
+void Test_Callback() {
+	if (!player[0].GetLose() && !player[0].GetWinStatus())
+	paused = !paused; 
 }

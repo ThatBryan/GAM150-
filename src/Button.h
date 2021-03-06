@@ -30,5 +30,5 @@ private:
 	int Check_Cursor();
 };
 
-inline void Test_Callback(){ paused = !paused; };
+void Test_Callback();
 inline void Mute_BGM() { AudioManager::SetMute(AudioID::BGM); }

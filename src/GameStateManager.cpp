@@ -1,5 +1,7 @@
 #include "GameStateManager.h"
 #include "PitchDemo.h"
+#include "MainMenu.h"
+#include "Splash.h"
 
 unsigned int gamestateInit;
 unsigned int gamestateCurr;
@@ -32,6 +34,24 @@ void GameStateManagerUpdate()
 
 	switch (gamestateCurr)
 	{
+	case GS_SPLASH:
+		GameStateLoad = Splash::Load;
+		GameStateInit = Splash::Init;
+		GameStateUpdate = Splash::Update;
+		GameStateDraw = Splash::Render;
+		GameStateFree = Splash::Free;
+		GameStateUnload = Splash::Unload;
+		break;
+
+	case GS_MAINMENU:
+		GameStateLoad = MainMenu::Load;
+		GameStateInit = MainMenu::Init;
+		GameStateUpdate = MainMenu::Update;
+		GameStateDraw = MainMenu::Render;
+		GameStateFree = MainMenu::Free;
+		GameStateUnload = MainMenu::Unload;
+		break;
+
 	case GS_GAMEPLAY:
 		GameStateLoad = Demo::Load;
 		GameStateInit = Demo::Init;
