@@ -26,7 +26,7 @@ private:
 
 	static float slime_counter, slime_speed, slimeBBOffset;
 	static float bat_speed, bat_counter, batBBOffset;
-	static float squirrel_speed, squirrel_counter, squirrelBBOffset;
+	static float squirrel_speed, squirrel_counter, squirrel_jumpspeed, jump_counter, squirrelBBOffset;
 	static float gravityStrength;
 
 	// Private functions
