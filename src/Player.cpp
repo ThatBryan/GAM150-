@@ -148,17 +148,18 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 		{
 			if (Utils::ColliderAABB(enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, playerBB.pos, playerBB.width, playerBB.height))
 			{
-				if(Utils::ColliderAABB(enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, feetBB.pos, feetBB.width, feetBB.height)){
-					if(!DebugMode)
+				if (Utils::ColliderAABB(enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, feetBB.pos, feetBB.width, feetBB.height)) {
+					if (!DebugMode)
 						enemy[i].active = false;
 					if (DebugMode)
 						printf("enemy dies\n");
 				}
-				else
+				else {
 					if (!DebugMode)
 						SetLose();
 					if (DebugMode)
 						printf("player dies\n");
+
 				}
 			}
 		}

@@ -29,7 +29,7 @@ void Enemies::Update_Position(void)
 
 		sprite.pos.x += slime_speed * g_dt;
 		slime_counter -= g_dt;
-		if (slime_counter < -2.0f || sprite.pos.x < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
+		if (slime_counter < -2.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
 		{
 			slime_speed *= -1.0f;
 			slime_counter = 1.0f;
@@ -46,7 +46,7 @@ void Enemies::Update_Position(void)
 		sprite.pos.y = spawnPos.y + 10 * sin(static_cast<f32>(sprite.pos.x) * 2.0f * PI / 180.0f); // y = amplitude * sin(x * period * pi / 180)
 		bat_counter -= g_dt;
 
-		if (bat_counter < -5.0f || sprite.pos.x < 0 ||  sprite.pos.x + sprite.width / 2 >= maxX)
+		if (bat_counter < -5.0f || sprite.pos.x - sprite.width / 2.0f < 0 ||  sprite.pos.x + sprite.width / 2 >= maxX)
 		{
 			bat_speed *= -1;
 			bat_counter = 1.0f;
@@ -61,7 +61,7 @@ void Enemies::Update_Position(void)
 	{
 		sprite.pos.x += squirrel_speed * g_dt;
 		squirrel_counter -= g_dt;
-		if (squirrel_counter < -2.0f || sprite.pos.x < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
+		if (squirrel_counter < -2.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
 		{
 			squirrel_speed *= -1.0f;
 			squirrel_counter = 1.0f;

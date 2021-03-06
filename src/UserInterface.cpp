@@ -1,11 +1,11 @@
 #include "UserInterface.h"
-
+#include <fstream>
 char strBuffer[100];
 char strBuffer1[100];
 char strBuffer2[100];
 Graphics::Text FPS_Display(strBuffer, 0.5);
 Graphics::Text LevelDisplay(strBuffer1, 0.5);
-Graphics::Text TimerDisplay(strBuffer2, 0.5);
+Graphics::Text TimerDisplay(strBuffer2, 1.0);
 
 std::vector <Button> buttonTest;
 
@@ -37,8 +37,8 @@ void UI::Update() {
 void UI::Draw() {
 	if (DebugMode)
 		FPS_Display.Draw();
-	LevelDisplay.Draw();
 	TimerDisplay.Draw();
+	LevelDisplay.Draw();
 	for (size_t i = 0; i < buttonTest.size(); ++i) {
 		buttonTest[i].Update();
 	}
