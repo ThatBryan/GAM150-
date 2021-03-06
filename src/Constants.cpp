@@ -44,6 +44,6 @@ AEGfxVertexList* rectMesh = nullptr;
 // Miscallenous
 bool paused = false;
 bool DebugMode = false;
-bool fullscreen = true;
+bool fullscreen = false;
 float g_dt = 0;
 float app_time = 0;

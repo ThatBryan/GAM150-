@@ -97,7 +97,7 @@ void Graphics::Rect::Draw(Color color, const f32 alpha)
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-void Graphics::Text::Draw(const AEVec2 pos)
+void Graphics::Text::Draw()
 {
 	AEVec2 drawPos = Graphics::Text::Calculate_Offset(pos);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);

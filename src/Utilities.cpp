@@ -18,7 +18,6 @@ AEVec2 AEVec2Zero()
 {
 	return AEVec2{0, 0};
 }
-
 AEVec2 AEVec2Add(const AEVec2 vec1, const AEVec2 vec2)
 {
 	return AEVec2{ vec1.x + vec2.x, vec1.y + vec2.y };
@@ -40,11 +39,11 @@ void Utils::CheckFullScreenInput(void)
 
 f32 Utils::Get_HalfWindowWidth(void)
 {
-	return (f32)(AEGetWindowWidth() / 2.0f);
+	return static_cast<f32>((AEGetWindowWidth() / 2.0f));
 }
 f32 Utils::Get_HalfWindowHeight(void)
 {
-	return (f32)(AEGetWindowHeight() / 2.0f);
+	return static_cast<f32>((AEGetWindowHeight() / 2.0f));
 }
 AEVec2 Utils::GetScreenMiddle() {
 	static f32 HalfWidth = Utils::Get_HalfWindowWidth();

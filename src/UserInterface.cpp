@@ -21,6 +21,10 @@ void UI::Init() {
 	memset(strBuffer1, 0, 100 * sizeof(char));
 	memset(strBuffer2, 0, 100 * sizeof(char));
 
+	FPS_Display.Set_Pos(AEVec2Set(0, 100));
+	LevelDisplay.Set_Pos(AEVec2Set(0, 15));
+	TimerDisplay.Set_Pos(AEVec2Set(660, 15));
+
 }
 
 void UI::Update() {
@@ -32,9 +36,9 @@ void UI::Update() {
 
 void UI::Draw() {
 	if (DebugMode)
-		FPS_Display.Draw(AEVec2Set(0, 100));
-	LevelDisplay.Draw(AEVec2Set(0, 15));
-	TimerDisplay.Draw(AEVec2Set(660, 15));
+		FPS_Display.Draw();
+	LevelDisplay.Draw();
+	TimerDisplay.Draw();
 	for (size_t i = 0; i < buttonTest.size(); ++i) {
 		buttonTest[i].Update();
 	}

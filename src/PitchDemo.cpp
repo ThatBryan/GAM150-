@@ -20,9 +20,9 @@
 
 Color background;
 std::vector <Tiles> Demo_Tiles, Demo_Tiles2, Demo_Tiles3;
-std::vector <std::vector <Tiles>*> TileManager;
 std::vector <Enemies> enemy;
 std::vector <Player> player;
+std::vector <std::vector <Tiles>*> TileManager;
 
 enum {GGPen = 0, Victory, Defeat, MAX_IMAGE};
 static std::array <Image, MAX_IMAGE> Images;
@@ -46,20 +46,20 @@ void Demo::Init(void)
 	TileManager.push_back(&Demo_Tiles2);
 	TileManager.push_back(&Demo_Tiles3);
 
-	AEVec2 DemoEnemyPos = Demo_Tiles2[2].spawnPos;
-	AEVec2 DemoEnemyPos2 = Demo_Tiles3[6].spawnPos;
-	AEVec2 DemoEnemyPos6 = Demo_Tiles2[4].spawnPos;
+	AEVec2 DemoEnemyPos = Demo_Tiles[2].spawnPos;
+	AEVec2 DemoEnemyPos2 = Demo_Tiles[6].spawnPos;
 	AEVec2 DemoEnemyPos3 = Demo_Tiles[5].spawnPos;
-	AEVec2 DemoEnemyPos4 = Demo_Tiles[8].spawnPos;
-	AEVec2 DemoEnemyPos5 = Demo_Tiles[1].spawnPos;
+	AEVec2 DemoEnemyPos4 = Demo_Tiles2[8].spawnPos;
+	AEVec2 DemoEnemyPos5 = Demo_Tiles2[1].spawnPos;
+	AEVec2 DemoEnemyPos6 = Demo_Tiles3[4].spawnPos;
 	AEVec2 Offset = {0, -TILE_HEIGHT};
 
 	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos6, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2Add(DemoEnemyPos6, Offset), enemy_width, enemy_height);
 
 	player.push_back(Player(Player::playerTex, player_width, player_height));
 	player[0].startingPos = Demo_Tiles[0].spawnPos;

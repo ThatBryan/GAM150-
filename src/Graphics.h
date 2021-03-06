@@ -49,8 +49,9 @@ namespace Graphics
 			AEVec2 pos;
 
 			// Calculates the X and Y offset
-			void Draw(const AEVec2 pos);
+			void Draw();
 			void Draw_Wrapped(const AEVec2 pos);
+			inline void Set_Pos(AEVec2 pos) { this->pos = pos; }
 
 		private:
 			s8* buffer;
