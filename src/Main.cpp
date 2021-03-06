@@ -61,6 +61,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// Initialises the GSM
 	GameStateManagerInit(GS_GAMEPLAY);
+	AEToogleFullScreen(fullscreen);
 
 	//Checks if game state isnt at quit status
 	while (gamestateCurr != GS_QUIT)

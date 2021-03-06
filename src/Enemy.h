@@ -19,14 +19,15 @@ private:
 	EnemyType type;
 	AEVec2 spawnPos;
 	Graphics::Rect headBB {enemy_width, 5.0f};
-	Graphics::Rect enemyBB {enemy_width, enemy_height};
+	Graphics::Rect enemyBB {enemy_width, 10.0f};
 	bool isGravity;
 	unsigned short ID;
-	static float slime_counter, slime_speed;
-	static float bat_speed, bat_counter;
-	static float gravityStrength;
-	static float slimeBBOffset;
 
+
+	static float slime_counter, slime_speed, slimeBBOffset;
+	static float bat_speed, bat_counter, batBBOffset;
+	static float squirrel_speed, squirrel_counter, squirrelBBOffset;
+	static float gravityStrength;
 
 	// Private functions
 	void Update_Position(void);
