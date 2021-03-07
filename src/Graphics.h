@@ -7,7 +7,9 @@ struct Color
 {
 	public:
 	f32 r, g, b, alpha;
-	void SetColor(const f32 r, const f32 g, const f32 b, const f32 alpha);
+	Color(float r, float g, float b, float a);
+	Color();
+	void SetColor(Color color);
 	void Decrement(float i = 0.0001f);
 };
 
@@ -43,8 +45,12 @@ namespace Graphics
 		public:
 		// Constructor
 		Text(s8* textBuffer, const f32 scale = 1.0f);
-			inline void SetText(s8* text) { buffer = text; }
+		Text();
 			inline s8* GetText() { return buffer; }
+			inline void SetText(s8* text) { buffer = text; }
+			inline void SetPos(AEVec2 pos) { this->pos = pos; }
+			inline void SetColor(Color color) { this->color.SetColor(color); }
+			inline void SetScale(f32 scale) { this->scale = scale; }
 			Color color;
 			f32 width, height, scale;
 			AEVec2 pos;

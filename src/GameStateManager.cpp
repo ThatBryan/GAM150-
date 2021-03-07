@@ -39,7 +39,7 @@ void GameStateManagerUpdate()
 		GameStateInit = Splash::Init;
 		GameStateUpdate = Splash::Update;
 		GameStateDraw = Splash::Render;
-		GameStateFree = Splash::Free;
+		GameStateFree = GameStatePlaceholder;
 		GameStateUnload = Splash::Unload;
 		break;
 
@@ -48,7 +48,7 @@ void GameStateManagerUpdate()
 		GameStateInit = MainMenu::Init;
 		GameStateUpdate = MainMenu::Update;
 		GameStateDraw = MainMenu::Render;
-		GameStateFree = MainMenu::Free;
+		GameStateFree = GameStatePlaceholder;
 		GameStateUnload = MainMenu::Unload;
 		break;
 

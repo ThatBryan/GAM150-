@@ -40,6 +40,7 @@ public:
 	bool active;
 	void Update(void);
 	void Draw();
+	inline EnemyType GetType() { return type; }
 	void GravityCheck(std::vector <std::vector<Tiles>*>& TileManager);
 
 	// Add new enemy into the vector.

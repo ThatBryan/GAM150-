@@ -6,5 +6,4 @@ namespace Splash{
 	void Render();
 	void Load();
 	void Unload();
-	void Free();
 }

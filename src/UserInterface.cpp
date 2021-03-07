@@ -13,9 +13,9 @@ void UI::Init() {
 
 	UI::Buttons_Init();
 
-	FPS_Display.color.SetColor(0, 0, 0, 255);
-	LevelDisplay.color.SetColor(0, 0, 0, 255);
-	TimerDisplay.color.SetColor(0, 0, 0, 255);
+	FPS_Display.color.SetColor(Color{ 0, 0, 0, 255 });
+	LevelDisplay.color.SetColor(Color{0, 0, 0, 255});
+	TimerDisplay.color.SetColor(Color{ 0, 0, 0, 255 });
 
 	memset(strBuffer, 0, 100 * sizeof(char));
 	memset(strBuffer1, 0, 100 * sizeof(char));

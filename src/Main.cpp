@@ -57,7 +57,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	fontID = AEGfxCreateFont(FontFile, 30);
 	/*Demo::Init();*/
 
-	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;
+	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl << std::endl;
 
 	// Initialises the GSM
 	GameStateManagerInit();

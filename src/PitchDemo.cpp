@@ -32,7 +32,7 @@ void Demo::Init(void)
 {
 	/*Load();*/
 	UI::Init();
-	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
+	background.SetColor(Color{ 51.0f, 215.0f, 255.0f, 255.0f });
 
 	Tiles::AddTileRow(Demo_Tiles, TileType::Special, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ X, y1 });
 	Tiles::AddTileRow(Demo_Tiles, TileType::Safe, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{X, y1 });
@@ -50,7 +50,7 @@ void Demo::Init(void)
 	AEVec2 DemoEnemyPos2 = Demo_Tiles[6].spawnPos;
 	AEVec2 DemoEnemyPos3 = Demo_Tiles[5].spawnPos;
 	AEVec2 DemoEnemyPos4 = Demo_Tiles2[8].spawnPos;
-	AEVec2 DemoEnemyPos5 = Demo_Tiles2[1].spawnPos;
+	AEVec2 DemoEnemyPos5 = Demo_Tiles2[5].spawnPos;
 	AEVec2 DemoEnemyPos6 = Demo_Tiles3[4].spawnPos;
 	AEVec2 Offset = {0, -TILE_HEIGHT};
 
@@ -62,9 +62,7 @@ void Demo::Init(void)
 	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2Add(DemoEnemyPos6, Offset), enemy_width, enemy_height);
 
 	player.push_back(Player(Player::playerTex, player_width, player_height));
-	player[0].startingPos = Demo_Tiles[0].spawnPos;
-	player[0].startingPos.y -= TILE_HEIGHT;
-	player[0].sprite.pos = player[0].startingPos;
+	player[0].SetPos(AEVec2Sub(Demo_Tiles[0].spawnPos, AEVec2Set(0, -TILE_HEIGHT)));
 
 	Images[GGPen].Init(DigipenLogoRed, static_cast<f32>(AEGetWindowWidth()) - 100.0f, static_cast<f32>(AEGetWindowHeight()) - 150.0f, Utils::GetScreenMiddle());
 	Images[Victory].Init(VictoryScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
