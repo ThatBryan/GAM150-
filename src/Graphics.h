@@ -32,6 +32,7 @@ namespace Graphics
 
 		void Draw(const f32 alpha = 150.0f);
 		void Draw(Color color, const f32 alpha = 150.0f);
+		void DrawTexture(AEGfxTexture* pTex, Color color, const f32 alpha = 150.0f);
 
 		private:
 			AEGfxVertexList* pMesh;

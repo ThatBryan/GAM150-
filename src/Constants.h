@@ -18,6 +18,7 @@ extern const char* SpecialTile;
 extern const char* FontFile;
 extern const char* ButtonTest;
 extern const char* ButtonTest2;
+extern const char* boi;
 
 // Player constants
 extern const float player_speed;

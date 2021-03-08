@@ -111,6 +111,20 @@ void Graphics::Rect::Draw(Color color, const f32 alpha)
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
+void Graphics::Rect::DrawTexture(AEGfxTexture* pTex, Color color, const f32 alpha)
+{
+	SetMatrix();
+	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+
+	AEGfxTextureSet(pTex, 0.0f, 0.0f);
+	AEGfxSetTintColor(color.r, color.g, color.b, color.alpha);
+	AEGfxSetTransparency(alpha / colorcodeMax);
+
+	AEGfxSetTransform(transformMtx.m);
+	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
+}
+
 void Graphics::Text::SetText(s8* text) {
 	buffer = text;
 }

@@ -107,23 +107,23 @@ void MainMenu::QuitGame(void) {
 
 void MainMenu::Buttons_Init() {
 	AEVec2 ScreenMid{ Utils::GetScreenMiddle() };
-	buttons.push_back(Button(200.0f, 50.0f));
+	buttons.push_back(Button(ButtonType::Color, 200.0f, 50.0f));
 	buttons[0].Set_Position(AEVec2Set(ScreenMid.x - buttons[0].GetWidth(), ScreenMid.y - buttons[0].GetHeight()));
 	buttons[0].Set_Text("Start");
 	buttons[0].Set_Callback(StartGame);
 
-	buttons.push_back(Button(200.0f, 50.0f));
+	buttons.push_back(Button(ButtonType::Color, 200.0f, 50.0f));
 	buttons[1].Set_Position(AEVec2Set(ScreenMid.x - buttons[1].GetWidth(), ScreenMid.y + buttons[1].GetHeight()));
 	buttons[1].Set_Text("Quit");
 	buttons[1].Set_Callback(QuitGame);
 
 
-	buttons.push_back(Button(200.0f, 50.0f, 0.75f));
+	buttons.push_back(Button(ButtonType::Color, 200.0f, 50.0f, 0.75f));
 	buttons[2].Set_Position(AEVec2Set(ScreenMid.x + buttons[2].GetWidth(), ScreenMid.y - buttons[2].GetHeight()));
 	buttons[2].Set_Text("Level selection");
 	buttons[2].Set_Callback(placeholder);
 
-	buttons.push_back(Button(200.0f, 50.0f, 0.8f));
+	buttons.push_back(Button(ButtonType::Color, 200.0f, 50.0f, 0.8f));
 	buttons[3].Set_Position(AEVec2Set(ScreenMid.x + buttons[3].GetWidth(), ScreenMid.y + buttons[3].GetHeight()));
 	buttons[3].Set_Text("Leaderboards");
 	buttons[3].Set_Callback(placeholder);

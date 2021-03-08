@@ -44,12 +44,12 @@ void UI::Draw() {
 
 void UI::Buttons_Init() {
 	AEVec2 Midpt{ Utils::GetScreenMiddle() };
-	buttonTest.push_back(Button(150.0, 50.0f, 0.9f));
+	buttonTest.push_back(Button(ButtonType::Color, 150.0, 50.0f, 0.9f));
 	buttonTest[0].Set_Position(AEVec2{ Midpt.x - buttonTest[0].GetWidth(), buttonTest[0].GetHeight() / 2.0f });
 	buttonTest[0].Set_Callback(Test_Callback);
 	buttonTest[0].Set_Text("Pause");
 
-	buttonTest.push_back(Button(150.0, 50.0f, 0.7f));
+	buttonTest.push_back(Button(ButtonType::Color, 150.0, 50.0f, 0.7f));
 	buttonTest[1].Set_Position(AEVec2{ Midpt.x + buttonTest[0].GetWidth(), buttonTest[1].GetHeight() / 2.0f });
 	buttonTest[1].Set_Callback(Mute_BGM);
 	buttonTest[1].Set_Text("Mute BGM");

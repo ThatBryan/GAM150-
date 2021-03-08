@@ -69,8 +69,8 @@ void Demo::Init(void)
 
 	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 
-	buttons.push_back(Button(150.0f, 75.0f, 0.8f));
-	buttons.push_back(Button(150.0f, 75.0f, 0.8f));
+	buttons.push_back(Button(ButtonType::Color, 150.0f, 75.0f, 0.8f));
+	buttons.push_back(Button(ButtonType::Color, 150.0f, 75.0f, 0.8f));
 	buttons[0].Set_Text("Resume");
 	buttons[1].Set_Text("Menu");
 	buttons[0].Set_Callback(Utils::CheckPauseInput);
@@ -78,6 +78,11 @@ void Demo::Init(void)
 	AEVec2 Midpt{ Utils::GetScreenMiddle() };
 	buttons[0].Set_Position(AEVec2{ Midpt.x - buttons[0].GetWidth(), Midpt.y + 2 * buttons[0].GetHeight()});
 	buttons[1].Set_Position(AEVec2{Midpt.x + buttons[0].GetWidth(), Midpt.y + 2 * buttons[0].GetHeight()});
+	buttons[0].SetType(ButtonType::Texture);
+	buttons[0].Set_Texture(boi);
+	buttons[0].SetStateColor(StateColor::Idle, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
+	buttons[0].SetStateColor(StateColor::Hovered, Color{ 255.0f, 0.f, 0.f, 255.0f });
+	buttons[0].Set_TextColor(Color{ 255.0f, 255.0f, 255.0f, 255.0f });
 }
 
 void Demo::Update(void)
@@ -123,6 +128,10 @@ void Demo::Unload(void)
 	Demo_Tiles3.clear();
 	enemy.clear();
 	player.clear();
+
+	for (int i = 0; i < buttons.size(); ++i) {
+		buttons[i].FreeTexture();
+	}
 	buttons.clear();
 	UI::Buttons_Unload();
 }
