@@ -118,35 +118,35 @@ void Demo::Unload(void)
 	Player::Unload();
 	AudioManager::unloadAsset();
 
-	for (int i = 0; i < Images.size(); ++i) {
+	for (size_t i = 0; i < Images.size(); ++i) {
 		Images[i].Free();
 	}
-	int sz = TileManager.size();
-	for (int i = 0; i < sz; ++i) {
+	size_t sz = TileManager.size();
+	for (size_t i = 0; i < sz; ++i) {
 		TileManager.pop_back();
 	}
 	sz = Demo_Tiles.size();
-	for (int i = 0; i < sz; ++i) {
+	for (size_t i = 0; i < sz; ++i) {
 		Demo_Tiles.pop_back();
 	}
 	sz = Demo_Tiles2.size();
-	for (int i = 0; i < sz; ++i) {
+	for (size_t i = 0; i < sz; ++i) {
 		Demo_Tiles2.pop_back();
 	}
 	sz = Demo_Tiles3.size();
-	for (int i = 0; i < sz; ++i) {
+	for (size_t i = 0; i < sz; ++i) {
 		Demo_Tiles3.pop_back();
 	}
 	sz = enemy.size();
-	for(int i = 0 ; i < sz; ++i){
+	for(size_t i = 0 ; i < sz; ++i){
 		enemy.pop_back();
 	}
 	sz = player.size();
-	for (int i = 0; i < sz; ++i) {
+	for (size_t i = 0; i < sz; ++i) {
 		player.pop_back();
 	}
 	sz = buttons.size();
-	for (int i = 0; i < sz; ++i) {
+	for (size_t i = 0; i < sz; ++i) {
 		buttons.pop_back();
 	}
 	UI::Buttons_Unload();
