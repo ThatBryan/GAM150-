@@ -3,13 +3,14 @@
 #include <iostream>
 
 Image::Image(const AEGfxTexture* pTex, const f32 width, const f32 height, const f32 dir) : rotation{dir}, 
-width{width}, height{height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color{NULL}, transformMtx{NULL}
+width{width}, height{height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color(), transformMtx{NULL}
 {
 	this->pTex = const_cast<AEGfxTexture*>(pTex);
 	pMesh = rectMesh;
 }
+
 Image::Image() : rotation{0}, width{0}, height{0}, pTex{ nullptr }, 
-pMesh{ nullptr }, pos{ 0, 0 }, color{ NULL }, transformMtx{ NULL } {}
+pMesh{ nullptr }, pos{ 0, 0 }, transformMtx{ NULL } {}
 
 void Image::Init(const char* pFile, const f32 width, const f32 height, const AEVec2 pos, const f32 rotation, AEGfxVertexList* pMesh){
 	pTex = AEGfxTextureLoad(pFile);

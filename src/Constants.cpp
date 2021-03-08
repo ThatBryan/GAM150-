@@ -2,7 +2,8 @@
 #include "Constants.h"
 
 // File Paths
-const char* DigipenLogo = "../Assets/Logo/DigiPen_RED.png";
+const char* DigipenLogoRed = "../Assets/Logo/DigiPen_RED.png";
+const char* DigipenLogoWhite = "../Assets/Logo/DigiPen_WHITE.png";
 const char* VictoryScreen = "../Assets/Art/throwaway.png";
 const char* GameoverScreen = "../Assets/Art/throwaway2.png";
 const char* WaterSlimeSprite = "../Assets/Art/WaterSlime.png";
@@ -14,6 +15,8 @@ const char* GoalTile = "../Assets/Art/Goal.png";
 const char* SpecialTile = "../Assets/Art/Special_Tile.png";
 const char* GreyTile = "../Assets/Art/Safe_Tile.png";
 const char* FontFile = "../Assets/Font/Roboto-Regular.ttf";
+const char* ButtonTest = "../Assets/Art/Button.png";
+const char* ButtonTest2 = "../Assets/Art/Button2.png";
 
 // Player constants
 const float player_speed = 1.5f;
@@ -22,8 +25,7 @@ const float player_height = 50.0f;
 const float jumpspeed = 5.0f;
 const float enemy_width = 50.0f;
 const float enemy_height = 50.0f;
-const float gravity_strength = 10.0f;
-const float player_collider_offset = 21.0f;
+const float player_collider_offset = 23.0f;
 
 // Tile constants
 const double TileCollapseDelay = 0.5f;

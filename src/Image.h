@@ -1,8 +1,8 @@
 #pragma once
 #include "AEEngine.h"
 #include "GameObject.h"
-#include "Constants.h"
 #include "Graphics.h"
+#include "Constants.h"
 
 class Image
 {

@@ -3,13 +3,24 @@
 #include <iostream>
 #include "Utilities.h"
 
-void Color::SetColor(const f32 r, const f32 g, const f32 b, const f32 alpha)
+Color::Color(float r, float g, float b, float a)
 {
 	this->r = r / colorcodeMax;
 	this->g = g / colorcodeMax;
 	this->b = b / colorcodeMax;
-	this->alpha = alpha / colorcodeMax;
+	this->alpha = a / colorcodeMax;
 }
+
+Color::Color() : r{ 0 }, g{ 0 }, b{ 0 }, alpha{ 0 } {}
+
+void Color::SetColor(Color color)
+{
+	this->r = color.r;
+	this->g = color.g;
+	this->b = color.b;
+	this->alpha = color.alpha;
+}
+
 
 void Color::Decrement(float i) {
 	r -= i;
@@ -27,7 +38,7 @@ void Color::Decrement(float i) {
 Graphics::Rect::Rect(const f32 width, const f32 height, const f32 direction) : direction{direction}, transformMtx{NULL},
 width{width}, height{height}, pos{0, 0}, pMesh{rectMesh}
 {
-	color.SetColor(255, 255, 255, 255);
+	color.SetColor(Color{ 255, 255, 255, 255 });
 }
 
 void Graphics::Free() {
@@ -38,8 +49,15 @@ void Graphics::Free() {
 Graphics::Text::Text(s8* textBuffer, const f32 scale) : scale{ scale }, pos{ 0, 0 },
 height{ 0 }, width{ 0 }, buffer{ textBuffer }
 {
-	Text::color.SetColor(255.0f, 255.0f, 255.0f, 255.0f);
+	Text::color.SetColor(Color{ 255.0f, 255.0f, 255.0f, 255.0f });
 }
+
+Graphics::Text::Text() : scale{0}, pos{ 0, 0 },
+height{ 0 }, width{ 0 }, buffer{ nullptr }, color() {}
+
+
+
+
 
 AEGfxVertexList* Graphics::Mesh_Rectangle(void)
 {
@@ -97,7 +115,7 @@ void Graphics::Rect::Draw(Color color, const f32 alpha)
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-void Graphics::Text::Draw(const AEVec2 pos)
+void Graphics::Text::Draw()
 {
 	AEVec2 drawPos = Graphics::Text::Calculate_Offset(pos);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);

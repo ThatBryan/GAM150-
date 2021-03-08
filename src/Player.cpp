@@ -1,12 +1,21 @@
 #include "Player.h"
+#include "Enemy.h"
+#include <array>
+#include "Utilities.h"
+#include "Graphics.h"
 
 AEGfxTexture* Player::playerTex{ nullptr };
+static f32 maxY;
+static f32 maxX;
+float Player::gravityStrength = 100.0f;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},
 active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpspeed_y{jumpspeed}
 {
-	playerBB.color.SetColor(0, 0, 0, 255.0f);
-	feetBB.color.SetColor(255.0f, 255.0f, 0, 255.0f);
+	playerBB.color.SetColor(Color{ 0, 0, 0, 255.0f });
+	feetBB.color.SetColor(Color{ 255.0f, 255.0f, 0, 255.0f });
+	maxY = static_cast<f32>(AEGetWindowHeight());
+	maxX = static_cast<f32>(AEGetWindowWidth());
 }
 
 void Player::Reset(void)
@@ -21,10 +30,10 @@ void Player::Reset(void)
 }
 
 void Player::Update() {
-	if(DebugMode)
-		sprite.rotation += 1;
+	//if(DebugMode)
+	//	sprite.rotation += 1;
+	CheckOutOfBound();
 	Update_Position();
-
 }
 void Player::Render(void)
 {
@@ -45,8 +54,6 @@ void Player::Unload(void) {
 }
 void Player::Update_Position(void)
 {
-	static f32 maxY = static_cast<f32>(AEGetWindowHeight());
-	static f32 maxX = static_cast<f32>(AEGetWindowWidth());
 
 	if (!jump && (AEInputCheckTriggered(AEVK_W) || AEInputCheckTriggered(AEVK_UP)))
 	{
@@ -114,16 +121,22 @@ void Player::Update_Position(void)
 
 	}
 	playerBB.pos = sprite.pos;
-	feetBB.pos = AEVec2{ sprite.pos.x, sprite.pos.y + player_collider_offset };
+	feetBB.pos = AEVec2Set(sprite.pos.x, sprite.pos.y + player_collider_offset);
+}
+
+void Player::CheckOutOfBound() {
+	if ((sprite.pos.y - sprite.height / 2) > maxY)
+		SetLose();
 }
 
 void Player::GravityManager(void)
 {
 	if (gravity)
 	{
-		sprite.pos.y += 0.5f;
-		if(DebugMode)
-			printf("Apply gravity\n");
+		if(!DebugMode)
+			sprite.pos.y += gravityStrength * g_dt;
+		//if(DebugMode)
+			//printf("Apply gravity\n");
 	}
 }
 
@@ -133,19 +146,21 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 	{
 		if (enemy[i].active)
 		{
-			if (AETestRectToRect(&enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, &playerBB.pos, playerBB.width, playerBB.height))
+			if (Utils::ColliderAABB(enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, playerBB.pos, playerBB.width, playerBB.height))
 			{
-			if (enemy[i].headBB.pos.y > feetBB.pos.y) {
-				if(DebugMode)
-					printf("enemy dies\n");
-				enemy[i].active = false;
-			}
-			else {
-				if(DebugMode)
-					printf("player dies\n");
-				active = false;
-				SetLose();
-			}
+				if (Utils::ColliderAABB(enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, feetBB.pos, feetBB.width, feetBB.height)) {
+					if (!DebugMode)
+						enemy[i].active = false;
+					if (DebugMode)
+						printf("enemy dies\n");
+				}
+				else {
+					if (!DebugMode)
+						SetLose();
+					if (DebugMode)
+						printf("player dies\n");
+
+				}
 			}
 		}
 	}

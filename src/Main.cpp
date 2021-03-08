@@ -45,7 +45,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// Initialization
 	srand(static_cast<u32>(time(NULL)));
 	// Using custom window procedure
-	AESysInit(hInstance, nCmdShow, 800, 600, 1, 140, true, NULL);
+	AESysInit(hInstance, nCmdShow, 800, 600, 1, 60, true, NULL);
 
 	// Changing the window title
 	AESysSetWindowTitle("JumperMan");
@@ -57,10 +57,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	fontID = AEGfxCreateFont(FontFile, 30);
 	/*Demo::Init();*/
 
-	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;
+	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl << std::endl;
 
 	// Initialises the GSM
-	GameStateManagerInit(GS_GAMEPLAY);
+	GameStateManagerInit();
+	AEToogleFullScreen(fullscreen);
 
 	//Checks if game state isnt at quit status
 	while (gamestateCurr != GS_QUIT)
@@ -93,16 +94,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			// Informing the system about the loop's end
 			AESysFrameEnd();
 
-			if (!paused)
-			{
-				app_time += g_dt;
-			}
-
 			// check if forcing the application to quit
 			if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
-			{
 				gamestateNext = GS_QUIT;
-			}
 		}
 		GameStateFree(); //Resets the game state
 

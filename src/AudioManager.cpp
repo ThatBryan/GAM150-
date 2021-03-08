@@ -1,4 +1,6 @@
 #include "AudioManager.h"
+#include <array>
+#include "Constants.h"
 
 AudioManager Audio;
 std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest{ NULL };

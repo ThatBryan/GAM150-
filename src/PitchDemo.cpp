@@ -22,9 +22,9 @@
 
 Color background;
 std::vector <Tiles> Demo_Tiles, Demo_Tiles2, Demo_Tiles3;
-std::vector <std::vector <Tiles>*> TileManager;
 std::vector <Enemies> enemy;
 std::vector <Player> player;
+std::vector <std::vector <Tiles>*> TileManager;
 
 enum {GGPen = 0, Victory, Defeat, MAX_IMAGE};
 static std::array <Image, MAX_IMAGE> Images;
@@ -34,7 +34,7 @@ void Demo::Init(void)
 {
 	/*Load();*/
 	UI::Init();
-	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
+	background.SetColor(Color{ 51.0f, 215.0f, 255.0f, 255.0f });
 
 	ImportMapDataFromFile("../testrun.txt");
 	PrintRetrievedInformation();
@@ -51,26 +51,25 @@ void Demo::Init(void)
 	TileManager.push_back(&Demo_Tiles2);
 	TileManager.push_back(&Demo_Tiles3);
 
-	AEVec2 DemoEnemyPos = Demo_Tiles2[2].spawnPos;
-	AEVec2 DemoEnemyPos2 = Demo_Tiles3[2].spawnPos;
+	AEVec2 DemoEnemyPos = Demo_Tiles[2].spawnPos;
+	AEVec2 DemoEnemyPos2 = Demo_Tiles[6].spawnPos;
 	AEVec2 DemoEnemyPos3 = Demo_Tiles[5].spawnPos;
-	AEVec2 DemoEnemyPos4 = Demo_Tiles[8].spawnPos;
-	AEVec2 DemoEnemyPos5 = Demo_Tiles[1].spawnPos;
-	AEVec2 Offset = {0, -TILE_HEIGHT };
-	AEVec2 Offset2 = { 0, -2 * TILE_HEIGHT };
+	AEVec2 DemoEnemyPos4 = Demo_Tiles2[8].spawnPos;
+	AEVec2 DemoEnemyPos5 = Demo_Tiles2[5].spawnPos;
+	AEVec2 DemoEnemyPos6 = Demo_Tiles3[4].spawnPos;
+	AEVec2 Offset = {0, -TILE_HEIGHT};
 
 	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos4, Offset2), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2Add(DemoEnemyPos6, Offset), enemy_width, enemy_height);
 
 	player.push_back(Player(Player::playerTex, player_width, player_height));
-	player[0].startingPos = Demo_Tiles2[0].spawnPos;
-	player[0].startingPos.y -= TILE_HEIGHT;
-	player[0].sprite.pos = player[0].startingPos;
+	player[0].SetPos(AEVec2Sub(Demo_Tiles[0].spawnPos, AEVec2Set(0, -TILE_HEIGHT)));
 
-	Images[GGPen].Init(DigipenLogo, static_cast<f32>(AEGetWindowWidth()) - 100.0f, static_cast<f32>(AEGetWindowHeight()) - 150.0f, Utils::GetScreenMiddle());
+	Images[GGPen].Init(DigipenLogoRed, static_cast<f32>(AEGetWindowWidth()) - 100.0f, static_cast<f32>(AEGetWindowHeight()) - 150.0f, Utils::GetScreenMiddle());
 	Images[Victory].Init(VictoryScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 	Images[Defeat].Init(GameoverScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 
@@ -79,6 +78,9 @@ void Demo::Init(void)
 
 void Demo::Update(void)
 {
+	if (!paused)
+		app_time += g_dt;
+
 	Audio.update();
 	background.Decrement();
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
@@ -87,7 +89,6 @@ void Demo::Update(void)
 	Utils::CheckDebugMode();
 	UpdateManager();
 	UpdateOverlay();
-	/*Render();*/
 	UI::Update();
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Restart();
@@ -98,11 +99,10 @@ void Demo::Exit(void)
 }
 
 void Demo::Load(void) {
-	rectMesh = Graphics::Mesh_Rectangle();
-	Enemies::LoadTex();
 	Tiles::LoadTex();
-	Player::LoadTex();
 	AudioManager::loadAsset();
+	Enemies::LoadTex();
+	Player::LoadTex();
 	AudioManager::SetVolume(AudioID::BGM, 0.2f);
 	AudioManager::SetVolume(AudioID::Jump, 0.2f);
 }
@@ -132,13 +132,13 @@ void Demo::Restart(void)
 
 void Demo::Render(void)
 {
+	for (size_t i = 0; i < enemy.size(); ++i) {
+		enemy[i].Draw();
+	}
 	for (int i = 0; i < Demo_Tiles.size(); ++i) {
 		Demo_Tiles[i].Render();
 		Demo_Tiles2[i].Render();
 		Demo_Tiles3[i].Render();
-	}
-	for (size_t i = 0; i < enemy.size(); ++i) {
-		enemy[i].Draw();
 	}
 	player[0].Render();
 }
@@ -146,16 +146,17 @@ void Demo::Render(void)
 void Demo::UpdateManager(void)
 {
 	if (!paused) {
+		player[0].Update();
 		Tiles::UpdateManager(Demo_Tiles, player, enemy);
 		Tiles::UpdateManager(Demo_Tiles2, player, enemy);
 		Tiles::UpdateManager(Demo_Tiles3, player, enemy);
-		Tiles::CheckPlayerCollision(TileManager, player);
+		Tiles::CheckPlayerGravity(TileManager, player);
 		player[0].GravityManager();
 		for (size_t i = 0; i < enemy.size(); i++)
 		{
 			enemy[i].Update();
+			enemy[i].GravityCheck(TileManager);
 		}
-		player[0].Update();
 		player[0].CheckEnemyCollision(enemy);
 		CollapsingManager();
 	}
