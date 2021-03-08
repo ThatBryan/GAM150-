@@ -3,9 +3,9 @@
 char strBuffer[100];
 char strBuffer1[100];
 char strBuffer2[100];
-Graphics::Text FPS_Display(strBuffer, 0.5);
-Graphics::Text LevelDisplay(strBuffer1);
-Graphics::Text TimerDisplay(strBuffer2, 0.5f);
+Graphics::Text FPS_Display(strBuffer, 0.5f);
+Graphics::Text LevelDisplay(strBuffer1, 0.8f);
+Graphics::Text TimerDisplay(strBuffer2, 0.8f);
 
 std::vector <Button> buttonTest;
 
@@ -20,12 +20,6 @@ void UI::Init() {
 	memset(strBuffer, 0, 100 * sizeof(char));
 	memset(strBuffer1, 0, 100 * sizeof(char));
 	memset(strBuffer2, 0, 100 * sizeof(char));
-
-
-	FPS_Display.Set_Pos(AEVec2Set(0, 100));
-	//LevelDisplay.Set_Pos(AEVec2Set(0, 15));
-	TimerDisplay.Set_Pos(AEVec2Set(660, 15));
-
 }
 
 void UI::Update() {
@@ -39,9 +33,9 @@ void UI::Draw() {
 	if (DebugMode)
 		FPS_Display.Draw();
 	AEVec2 Pos{ LevelDisplay.GetBufferSize() };
-	printf("%.2f %.2f\n", Pos.x / 2.0f, Pos.y);
-	TimerDisplay.Draw();
-	LevelDisplay.Draw_Wrapped(AEVec2Set(Pos.x / 2.0f, Pos.y));
+	AEVec2 Pos2{ TimerDisplay.GetBufferSize() };
+	TimerDisplay.Draw_Wrapped(AEVec2Set(AEGetWindowWidth() - Pos2.x / 2.0f, Pos2.y / 2.0f));
+	LevelDisplay.Draw_Wrapped(AEVec2Set(Pos.x / 2.0f, Pos.y / 2.0f));
 	if(!paused)
 		for (size_t i = 0; i < buttonTest.size(); ++i) {
 			buttonTest[i].Update();
