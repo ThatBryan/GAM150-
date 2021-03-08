@@ -135,9 +135,9 @@ void Player::CheckOutOfBound() {
 
 void Player::GravityManager(void)
 {
-	if (gravity)
+	if (gravity && !jump)
 	{
-		if(!DebugMode && !jump)
+		if(!DebugMode)
 			sprite.pos.y += gravityStrength * g_dt;
 		//if(DebugMode)
 			//printf("Apply gravity\n");
