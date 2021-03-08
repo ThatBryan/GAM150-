@@ -137,48 +137,48 @@ int ImportMapDataFromFile(const char* FileName)
 		}
 	}
 	ifs.close();
-	for (int i = 0; i < BINARY_MAP_HEIGHT; ++i)
-	{
-		for (int j = 0; j < BINARY_MAP_WIDTH; ++j)
-		{ // Iterate through mapdata array and construct objects at position [i][j] (Y/X)
-			if (MapData[i][j] == 0)
-			{
-				continue;
-			}
-			if (MapData[i][j] == 1)
-			{
-				//Tiles::AddTileRow()
-			}
-			if (MapData[i][j] == 2)
-			{
-				//construct granite
-			}
-			if (MapData[i][j] == 3)
-			{
-				//construct special
-			}
-			if (MapData[i][j] == 4)
-			{
-				//construct goal
-			}
-			if (MapData[i][j] == 5)
-			{
-				//construct jumperman
-			}
-			if (MapData[i][j] == 6)
-			{
-				//construct slime
-			}
-			if (MapData[i][j] == 7)
-			{
-				//construct bat
-			}
-			if (MapData[i][j] == 8)
-			{
-				//construct squirrel
-			}
-		}
-	}
+	//for (int i = 0; i < BINARY_MAP_HEIGHT; ++i)
+	//{
+	//	for (int j = 0; j < BINARY_MAP_WIDTH; ++j)
+	//	{ // Iterate through mapdata array and construct objects at position [i][j] (Y/X)
+	//		if (MapData[i][j] == 0)
+	//		{
+	//			continue;
+	//		}
+	//		if (MapData[i][j] == 1)
+	//		{
+	//			//Tiles::AddTileRow()
+	//		}
+	//		if (MapData[i][j] == 2)
+	//		{
+	//			//construct granite
+	//		}
+	//		if (MapData[i][j] == 3)
+	//		{
+	//			//construct special
+	//		}
+	//		if (MapData[i][j] == 4)
+	//		{
+	//			//construct goal
+	//		}
+	//		if (MapData[i][j] == 5)
+	//		{
+	//			//construct jumperman
+	//		}
+	//		if (MapData[i][j] == 6)
+	//		{
+	//			//construct slime
+	//		}
+	//		if (MapData[i][j] == 7)
+	//		{
+	//			//construct bat
+	//		}
+	//		if (MapData[i][j] == 8)
+	//		{
+	//			//construct squirrel
+	//		}
+	//	}
+	//}
 
 	return 1;
 }
@@ -339,4 +339,9 @@ int CheckInstanceBinaryMapCollision(float PosX, float PosY,
 		Flag = Flag | COLLISION_BOTTOM;
 	}
 	return Flag;
+}
+
+void LoadMap(void)
+{
+
 }

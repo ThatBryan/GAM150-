@@ -36,5 +36,6 @@ void	SnapToCell(float* Coordinate);
 int		ImportMapDataFromFile(const char* FileName);
 void	FreeMapData(void);
 void	PrintRetrievedInformation(void); // for debugging
+void	LoadMap(void);
 
 #endif // BINARY_MAP_H_
