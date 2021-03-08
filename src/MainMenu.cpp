@@ -49,10 +49,6 @@ void MainMenu::Init(void)
 
 void MainMenu::Update(void)
 {
-	if (AEInputCheckTriggered(AEVK_B))
-		gamestateNext = GS_GAMEPLAY;
-	if (AEInputCheckTriggered(AEVK_SPACE))
-		gamestateNext = GS_SPLASH;
 	Audio.update();
 	MainMenu::TestPlayerMovement();
 	MainMenu::TestEnemyMovement();
@@ -172,43 +168,3 @@ void MainMenu::TestPlayerMovement() {
 	Test3 += baseSpeed * g_dt;
 	player[0].sprite.pos.y += 4 * std::sin(Test3 / 7.5f);
 }
-
-// Min Yi stuff
-//
-//void MainMenu::Init(void)
-//{
-//	Images[Victory].Init(VictoryScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
-//
-//	Images[Start_Btn].Init(ButtonTest2, 250.0f, 50.0f, AEVec2({ Utils::Get_HalfWindowWidth(), 400 }));
-//	Images[SelectLevel_Btn].Init(ButtonTest2, 250.0f, 50.0f, AEVec2({ Utils::Get_HalfWindowWidth(), 500 }));
-//
-//	Images[Start_HoverBtn].Init(ButtonTest, 250.0f, 50.0f, AEVec2({ Utils::Get_HalfWindowWidth(), 400 }));
-//	Images[SelectLevel_HoverBtn].Init(ButtonTest, 250.0f, 50.0f, AEVec2({ Utils::Get_HalfWindowWidth(), 500 }));
-//
-//	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
-//}
-
-
-
-//void MainMenu::Render() {
-//
-//	//AEVec2 Mouse = Utils::GetMousePos();
-//	//Images[Victory].Draw_Texture(255);
-//
-//	//Images[Start_Btn].Draw_Texture(255);
-//	//Images[SelectLevel_Btn].Draw_Texture(255);
-//
-//	//if (!AETestPointToRect(&Mouse, &Images[Start_HoverBtn].pos, Images[Start_HoverBtn].width, Images[Start_HoverBtn].height) && !AEInputCheckReleased(AEVK_LBUTTON))
-//	//{
-//	//	Images[Start_HoverBtn].Draw_Texture(255);
-//	//}
-//	//if (!AETestPointToRect(&Mouse, &Images[SelectLevel_HoverBtn].pos, Images[SelectLevel_HoverBtn].width, Images[SelectLevel_HoverBtn].height) && !AEInputCheckReleased(AEVK_LBUTTON))
-//	//{
-//	//	Images[SelectLevel_HoverBtn].Draw_Texture(255);
-//	//}
-//}
-
-
-
-
-

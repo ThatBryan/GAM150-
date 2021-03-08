@@ -29,6 +29,5 @@ private:
 	// Check cursor input to determine which color to tint.
 	int Check_Cursor();
 };
-
 void Test_Callback();
 inline void Mute_BGM() { AudioManager::SetMute(AudioID::BGM); }

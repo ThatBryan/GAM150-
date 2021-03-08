@@ -85,7 +85,6 @@ void Demo::Update(void)
 {
 	if (!paused)
 		app_time += g_dt;
-
 	Audio.update();
 	background.Decrement();
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
@@ -95,8 +94,6 @@ void Demo::Update(void)
 	UI::Update();
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Restart();
-	if (AEInputCheckTriggered(AEVK_SPACE))
-		gamestateNext = GS_SPLASH;
 }
 void Demo::Exit(void)
 {
