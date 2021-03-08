@@ -19,13 +19,13 @@ public:
 	void Set_Text(const char* text);
 	void Set_TextColor(Color color);
 	void Update();
+	void Render();
 private:
 	Graphics::Rect button;
 	Graphics::Text text;
 	AEVec2 pos;
 	fn_ptr callback;
 	Color buttonState[Button_MaxColor];
-	void Render();
 	// Check cursor input to determine which color to tint.
 	int Check_Cursor();
 };

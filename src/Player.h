@@ -13,6 +13,7 @@ class Player
 {
 private:
 	bool win, lose;
+	unsigned int lives;
 	float jumpspeed_y;
 	static f32 gravityStrength;
 	void Update_Position(void);
@@ -23,7 +24,6 @@ public:
 	Player(AEGfxTexture* ,const f32 width, const f32 height);
 	Image sprite;
 	bool active, jump, gravity;
-	int lives;
 	Graphics::Rect playerBB {player_width, player_height};
 	Graphics::Rect feetBB {player_width, 5.0f};
 	AEVec2 startingPos, vel;
@@ -38,6 +38,7 @@ public:
 	inline bool GetWinStatus(void) { return win; }
 	inline void SetLose(void) { active = false; lose = true; }
 	inline bool GetLose(void) { return lose; }
+	inline void DecreaseLife(int count = 1) { lives -= count; }
 
 	static void LoadTex(void);
 	static void Unload(void);

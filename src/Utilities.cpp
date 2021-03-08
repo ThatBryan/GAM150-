@@ -1,4 +1,5 @@
 #include "Utilities.h"
+#include "GameStateManager.h"
 #include <iostream>
 
 int Utils::RandomRangeInt(const s32 lowerBound, const s32 upperBound)
@@ -60,14 +61,17 @@ AEVec2 Utils::GetMousePos(void)
 
 void Utils::CheckPauseInput(void)
 {
-	if (AEInputCheckTriggered(PAUSE_KEY))
-		paused = !paused;
+	paused = !paused;
 }
 
 void Utils::CheckDebugMode(void)
 {
 	if (AEInputCheckTriggered(DEBUG_KEY))
 		DebugMode = !DebugMode;
+}
+
+void Utils::ReturnToMenu(void) {
+	gamestateNext = GS_SPLASH;
 }
 
 bool Utils::ColliderAABB(AEVec2 A, f32 A_width, f32 A_height, AEVec2 B, f32 B_width, f32 B_height) {

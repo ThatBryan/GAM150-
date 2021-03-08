@@ -8,6 +8,7 @@
 #include "Constants.h"
 #include "MainMenu.h"
 #include <array>
+#include "GameStateManager.h"
 
 #define TILE_WIDTTH 80.0f
 #define TILE_HEIGHT 50.0f
@@ -23,14 +24,14 @@ std::vector <Tiles> Demo_Tiles, Demo_Tiles2, Demo_Tiles3;
 std::vector <Enemies> enemy;
 std::vector <Player> player;
 std::vector <std::vector <Tiles>*> TileManager;
+static std::vector<Button> buttons;
 
-enum {GGPen = 0, Victory, Defeat, MAX_IMAGE};
+enum {Pause = 0, Victory, Defeat, MAX_IMAGE};
 static std::array <Image, MAX_IMAGE> Images;
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
 
 void Demo::Init(void)
 {
-	/*Load();*/
 	UI::Init();
 	background.SetColor(Color{ 51.0f, 215.0f, 255.0f, 255.0f });
 
@@ -64,11 +65,20 @@ void Demo::Init(void)
 	player.push_back(Player(Player::playerTex, player_width, player_height));
 	player[0].SetPos(AEVec2Sub(Demo_Tiles[0].spawnPos, AEVec2Set(0, -TILE_HEIGHT)));
 
-	Images[GGPen].Init(DigipenLogoRed, static_cast<f32>(AEGetWindowWidth()) - 100.0f, static_cast<f32>(AEGetWindowHeight()) - 150.0f, Utils::GetScreenMiddle());
-	Images[Victory].Init(VictoryScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
-	Images[Defeat].Init(GameoverScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+	Images[Pause].Init(PauseOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+	Images[Victory].Init(VictoryOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+	Images[Defeat].Init(GameoverOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 
 	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
+
+	buttons.push_back(Button(100.0f, 50.0f, 0.8f));
+	buttons.push_back(Button(100.0f, 50.0f, 0.8f));
+	buttons[0].Set_Text("Resume");
+	buttons[1].Set_Text("Menu");
+	buttons[0].Set_Callback(Utils::CheckPauseInput);
+	buttons[1].Set_Callback(Utils::ReturnToMenu);
+	buttons[0].Set_Position(AEVec2{ 300, 400.0f });
+	buttons[1].Set_Position(AEVec2{ 500, 400.0f });
 }
 
 void Demo::Update(void)
@@ -79,14 +89,14 @@ void Demo::Update(void)
 	Audio.update();
 	background.Decrement();
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
-	Utils::CheckPauseInput();
 	Utils::CheckFullScreenInput();
 	Utils::CheckDebugMode();
 	UpdateManager();
-	UpdateOverlay();
 	UI::Update();
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Restart();
+	if (AEInputCheckTriggered(AEVK_SPACE))
+		gamestateNext = GS_SPLASH;
 }
 void Demo::Exit(void)
 {
@@ -107,9 +117,39 @@ void Demo::Unload(void)
 	Tiles::Unload();
 	Player::Unload();
 	AudioManager::unloadAsset();
+
 	for (int i = 0; i < Images.size(); ++i) {
 		Images[i].Free();
 	}
+	int sz = TileManager.size();
+	for (int i = 0; i < sz; ++i) {
+		TileManager.pop_back();
+	}
+	sz = Demo_Tiles.size();
+	for (int i = 0; i < sz; ++i) {
+		Demo_Tiles.pop_back();
+	}
+	sz = Demo_Tiles2.size();
+	for (int i = 0; i < sz; ++i) {
+		Demo_Tiles2.pop_back();
+	}
+	sz = Demo_Tiles3.size();
+	for (int i = 0; i < sz; ++i) {
+		Demo_Tiles3.pop_back();
+	}
+	sz = enemy.size();
+	for(int i = 0 ; i < sz; ++i){
+		enemy.pop_back();
+	}
+	sz = player.size();
+	for (int i = 0; i < sz; ++i) {
+		player.pop_back();
+	}
+	sz = buttons.size();
+	for (int i = 0; i < sz; ++i) {
+		buttons.pop_back();
+	}
+	UI::Buttons_Unload();
 }
 
 void Demo::Restart(void)
@@ -135,6 +175,7 @@ void Demo::Render(void)
 		Demo_Tiles3[i].Render();
 	}
 	player[0].Render();
+	UpdateOverlay();
 }
 
 void Demo::UpdateManager(void)
@@ -163,24 +204,36 @@ void Demo::CollapsingManager(void)
 	Tiles::CollapseNext(Demo_Tiles3);
 }
 
+
+
 void Demo::UpdateOverlay() {
+	Graphics::Text text;
+	text.SetPos(AEVec2Set(400, 300));
+	text.SetColor(Color{ 0, 0, 0, 255.0f });
+	text.SetScale(2.0f);
+
 	if (paused && player[0].active && !player[0].GetWinStatus())
 	{
-		static float alpha = 255.0f;
-		if (alpha <= 0)
-			alpha = 255.0f;
+		Images[Pause].Draw_Texture(100.0f);
+		text.SetText(const_cast<s8*>("PAUSED"));
+		text.Draw_Wrapped(text.pos);
+		for (int i = 0; i < buttons.size(); ++i) {
+			buttons[i].Update();
+		}
 
-		Images[GGPen].Draw_Texture(alpha);
-		alpha -= 4.0f;
 	}
 	if (player[0].GetLose())
 	{
 		paused = true;
-		Images[Defeat].Draw_Texture(255);
+		Images[Defeat].Draw_Texture(150.0f);
+		text.SetText(const_cast<s8*>("YOU LOSE"));
+		text.Draw_Wrapped(text.pos);
 	}
 	if (player[0].GetWinStatus())
 	{
 		paused = true;
-		Images[Victory].Draw_Texture(255);
+		Images[Victory].Draw_Texture(100.0f);
+		text.SetText(const_cast<s8*>("YOU WIN"));
+		text.Draw_Wrapped(text.pos);
 	}
 }

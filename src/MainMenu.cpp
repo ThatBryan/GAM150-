@@ -20,8 +20,8 @@ static std::vector<Enemies> enemy;
 static std::vector<Tiles> tiles;
 static std::vector<Player> player;
 static Graphics::Text Title;
-
 static AEVec2 ScreenMid;
+
 void MainMenu::Init(void)
 {
 	MainMenu::Buttons_Init();
@@ -49,6 +49,10 @@ void MainMenu::Init(void)
 
 void MainMenu::Update(void)
 {
+	if (AEInputCheckTriggered(AEVK_B))
+		gamestateNext = GS_GAMEPLAY;
+	if (AEInputCheckTriggered(AEVK_SPACE))
+		gamestateNext = GS_SPLASH;
 	Audio.update();
 	MainMenu::TestPlayerMovement();
 	MainMenu::TestEnemyMovement();
@@ -58,7 +62,7 @@ void MainMenu::Update(void)
 	for (int i = 0; i < tiles.size(); ++i) {
 		tiles[i].Update();
 	}
-	player[0].sprite.rotation += 25.0f * g_dt;
+	player[0].sprite.rotation += 100.0f * g_dt;
 }
 
 void MainMenu::Render() {
@@ -84,12 +88,30 @@ void MainMenu::Load(void)
 
 void MainMenu::Unload(void)
 {
+	Enemies::Unload();
 	Tiles::Unload();
 	Player::Unload();
-	Enemies::Unload();
 	AudioManager::unloadAsset();
-	for (int i = 0; i < Images.size(); ++i) {
+	int sz = Images.size();
+	for (int i = 0; i < sz; ++i) {
 		Images[i].Free();
+		Images.pop_back();
+	}
+	sz = buttons.size();
+	for (int i = 0; i < sz; ++i) {
+		buttons.pop_back();
+	}
+	sz = enemy.size();
+	for (int i = 0; i < sz; ++i) {
+		enemy.pop_back();
+	}
+	sz = player.size();
+	for (int i = 0; i < sz; ++i) {
+		player.pop_back();
+	}
+	sz = tiles.size();
+	for (int i = 0; i < sz; ++i) {
+		tiles.pop_back();
 	}
 }
 
@@ -97,7 +119,7 @@ void MainMenu::StartGame(void) {
 	gamestateNext = GS_GAMEPLAY;
 }
 void MainMenu::QuitGame(void) {
-	gamestateNext = GS_QUIT;;
+	gamestateNext = GS_QUIT;
 }
 
 void MainMenu::Buttons_Init() {
@@ -165,7 +187,7 @@ void MainMenu::TestPlayerMovement() {
 }
 
 // Min Yi stuff
-
+//
 //void MainMenu::Init(void)
 //{
 //	Images[Victory].Init(VictoryScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());

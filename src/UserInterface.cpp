@@ -39,9 +39,10 @@ void UI::Draw() {
 		FPS_Display.Draw();
 	TimerDisplay.Draw();
 	LevelDisplay.Draw();
-	for (size_t i = 0; i < buttonTest.size(); ++i) {
-		buttonTest[i].Update();
-	}
+	if(!paused)
+		for (size_t i = 0; i < buttonTest.size(); ++i) {
+			buttonTest[i].Update();
+		}
 }
 
 void UI::Buttons_Init() {
@@ -55,4 +56,12 @@ void UI::Buttons_Init() {
 	buttonTest[1].Set_Position(AEVec2{ 500.0f, 25.0f });
 	buttonTest[1].Set_Callback(Mute_BGM);
 	buttonTest[1].Set_Text("Mute BGM");
+}
+
+void UI::Buttons_Unload()
+{
+	int sz = buttonTest.size();
+	for (int i = 0; i < sz; ++i) {
+		buttonTest.pop_back();
+	}
 }
