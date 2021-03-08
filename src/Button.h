@@ -20,6 +20,8 @@ public:
 	void Set_TextColor(Color color);
 	void Update();
 	void Render();
+	inline float GetHeight() { return button.height; }
+	inline float GetWidth() { return button.width; }
 private:
 	Graphics::Rect button;
 	Graphics::Text text;

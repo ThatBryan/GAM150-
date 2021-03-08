@@ -28,11 +28,11 @@ void MainMenu::Init(void)
 	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 	ScreenMid = Utils::GetScreenMiddle();
 
-	float width = 80.0f, height = 50.0f;
-	Tiles::AddTileRow(tiles, TileType::Grass, AEGetWindowWidth() / static_cast<int>(height), width, height, AEVec2{width / 2.0f, AEGetWindowHeight() - height });
-	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2{260.0f, tiles[0].image.pos.y - height }, 50.0f, 50.0f);
-	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2{520.0f, tiles[0].image.pos.y - height }, 50.0f, 50.0f);
-	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2{710.0f, tiles[0].image.pos.y - height}, 50.0f, 50.0f);
+	const float width = 80.0f, height = 100.0f;
+	Tiles::AddTileRow(tiles, TileType::Grass, AEGetWindowWidth() / static_cast<int>(width), width, height, AEVec2{width / 2.0f, AEGetWindowHeight() - height });
+	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2{260.0f, tiles[0].image.pos.y - height / 2.0f }, 60.0f, 60.0f);
+	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2{520.0f, tiles[0].image.pos.y - height / 2.0f }, 60.0f, 60.0f);
+	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2{710.0f, tiles[0].image.pos.y - height / 2.0f}, 60.0f, 60.0f);
 	
 	player.push_back(Player(Player::playerTex, player_width, player_height));
 	player[0].SetPos(AEVec2Set(player_width / 2.0f, tiles[0].image.pos.y - height * 2 - 5.0f));
@@ -107,24 +107,24 @@ void MainMenu::QuitGame(void) {
 
 void MainMenu::Buttons_Init() {
 	AEVec2 ScreenMid{ Utils::GetScreenMiddle() };
-	buttons.push_back(Button(150, 50.0f));
-	buttons[0].Set_Position(AEVec2Set(ScreenMid.x - 100.0f, ScreenMid.y - 50.0f));
+	buttons.push_back(Button(200.0f, 50.0f));
+	buttons[0].Set_Position(AEVec2Set(ScreenMid.x - buttons[0].GetWidth(), ScreenMid.y - buttons[0].GetHeight()));
 	buttons[0].Set_Text("Start");
 	buttons[0].Set_Callback(StartGame);
 
-	buttons.push_back(Button(150, 50.0f));
-	buttons[1].Set_Position(AEVec2Set(ScreenMid.x - 100.0f, ScreenMid.y + 50.0f));
+	buttons.push_back(Button(200.0f, 50.0f));
+	buttons[1].Set_Position(AEVec2Set(ScreenMid.x - buttons[1].GetWidth(), ScreenMid.y + buttons[1].GetHeight()));
 	buttons[1].Set_Text("Quit");
 	buttons[1].Set_Callback(QuitGame);
 
 
-	buttons.push_back(Button(150, 50.0f, 0.75f));
-	buttons[2].Set_Position(AEVec2Set(ScreenMid.x + 100.0f, ScreenMid.y - 50.0f));
+	buttons.push_back(Button(200.0f, 50.0f, 0.75f));
+	buttons[2].Set_Position(AEVec2Set(ScreenMid.x + buttons[2].GetWidth(), ScreenMid.y - buttons[2].GetHeight()));
 	buttons[2].Set_Text("Level selection");
 	buttons[2].Set_Callback(placeholder);
 
-	buttons.push_back(Button(150, 50.0f, 0.8f));
-	buttons[3].Set_Position(AEVec2Set(ScreenMid.x + 100.0f, ScreenMid.y + 50.0f));
+	buttons.push_back(Button(200.0f, 50.0f, 0.8f));
+	buttons[3].Set_Position(AEVec2Set(ScreenMid.x + buttons[3].GetWidth(), ScreenMid.y + buttons[3].GetHeight()));
 	buttons[3].Set_Text("Leaderboards");
 	buttons[3].Set_Callback(placeholder);
 }

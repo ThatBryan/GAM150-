@@ -45,7 +45,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// Initialization
 	srand(static_cast<u32>(time(NULL)));
 	// Using custom window procedure
-	AESysInit(hInstance, nCmdShow, 800, 600, 1, 60, true, NULL);
+	AESysInit(hInstance, nCmdShow, 1600, 900, 1, 60, true, NULL);
 
 	// Changing the window title
 	AESysSetWindowTitle("JumperMan");
@@ -53,7 +53,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// reset the system modules
 
 	/// Test init functions
-	fontID = AEGfxCreateFont(FontFile, 30);
+	fontID = AEGfxCreateFont(FontFile, 40);
 	rectMesh = Graphics::Mesh_Rectangle();
 
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl << std::endl;

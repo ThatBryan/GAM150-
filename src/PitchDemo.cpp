@@ -10,15 +10,6 @@
 #include <array>
 #include "GameStateManager.h"
 
-#define TILE_WIDTTH 80.0f
-#define TILE_HEIGHT 50.0f
-
-// Initial tile pos
-#define X TILE_WIDTTH / 2.0f
-#define y2 400
-#define y1 y2 - 150
-#define y3 y2 + 150
-
 Color background;
 std::vector <Tiles> Demo_Tiles, Demo_Tiles2, Demo_Tiles3;
 std::vector <Enemies> enemy;
@@ -35,12 +26,19 @@ void Demo::Init(void)
 	UI::Init();
 	background.SetColor(Color{ 51.0f, 215.0f, 255.0f, 255.0f });
 
-	Tiles::AddTileRow(Demo_Tiles, TileType::Special, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ X, y1 });
-	Tiles::AddTileRow(Demo_Tiles, TileType::Safe, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{X, y1 });
-	Tiles::AddTileRow(Demo_Tiles, TileType::Grass, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{X, y1 });
-	Tiles::AddTileRow(Demo_Tiles2, TileType::Grass, 9, TILE_WIDTTH, TILE_HEIGHT, AEVec2{X, y2 });
-	Tiles::AddTileRow(Demo_Tiles2, TileType::Goal, 1, TILE_WIDTTH, TILE_HEIGHT, AEVec2{X, y2 });
-	Tiles::AddTileRow(Demo_Tiles3, TileType::Grass, static_cast<int>(AEGetWindowWidth() / TILE_WIDTTH), TILE_WIDTTH, TILE_HEIGHT, AEVec2{ X, y3 });
+	const float TILE_HEIGHT{ 75.0f };
+	const float TILE_WIDTH{ 100.0f };
+	const float X = TILE_WIDTH / 2;
+	const float Y = static_cast<float>(AEGetWindowHeight() / 2);
+	const float width = static_cast<float>(AEGetWindowWidth() / TILE_WIDTH + 1);
+
+
+	Tiles::AddTileRow(Demo_Tiles, TileType::Special, 4, TILE_WIDTH, TILE_HEIGHT, AEVec2{ X, Y / 3.0f });
+	Tiles::AddTileRow(Demo_Tiles, TileType::Safe, 2, TILE_WIDTH, TILE_HEIGHT, AEVec2{X, Y / 3.0f });
+	Tiles::AddTileRow(Demo_Tiles, TileType::Grass, static_cast<int>((width - 2 - 4)), TILE_WIDTH, TILE_HEIGHT, AEVec2{X, Y / 3.0f });
+	Tiles::AddTileRow(Demo_Tiles2, TileType::Grass, static_cast<int>(width - 2), TILE_WIDTH, TILE_HEIGHT, AEVec2{X, Y });
+	Tiles::AddTileRow(Demo_Tiles2, TileType::Goal, 2, TILE_WIDTH, TILE_HEIGHT, AEVec2{X, Y });
+	Tiles::AddTileRow(Demo_Tiles3, TileType::Grass, static_cast<int>(width), TILE_WIDTH, TILE_HEIGHT, AEVec2{ X, Y + Y / 1.5f });
 
 
 	TileManager.push_back(&Demo_Tiles);
@@ -71,14 +69,15 @@ void Demo::Init(void)
 
 	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 
-	buttons.push_back(Button(100.0f, 50.0f, 0.8f));
-	buttons.push_back(Button(100.0f, 50.0f, 0.8f));
+	buttons.push_back(Button(150.0f, 75.0f, 0.8f));
+	buttons.push_back(Button(150.0f, 75.0f, 0.8f));
 	buttons[0].Set_Text("Resume");
 	buttons[1].Set_Text("Menu");
 	buttons[0].Set_Callback(Utils::CheckPauseInput);
 	buttons[1].Set_Callback(Utils::ReturnToMenu);
-	buttons[0].Set_Position(AEVec2{ 300, 400.0f });
-	buttons[1].Set_Position(AEVec2{ 500, 400.0f });
+	AEVec2 Midpt{ Utils::GetScreenMiddle() };
+	buttons[0].Set_Position(AEVec2{ Midpt.x - buttons[0].GetWidth(), Midpt.y + 2 * buttons[0].GetHeight()});
+	buttons[1].Set_Position(AEVec2{Midpt.x + buttons[0].GetWidth(), Midpt.y + 2 * buttons[0].GetHeight()});
 }
 
 void Demo::Update(void)
@@ -147,7 +146,11 @@ void Demo::Render(void)
 	}
 	for (int i = 0; i < Demo_Tiles.size(); ++i) {
 		Demo_Tiles[i].Render();
+	}
+	for (int i = 0; i < Demo_Tiles2.size(); ++i) {
 		Demo_Tiles2[i].Render();
+	}
+	for (int i = 0; i < Demo_Tiles3.size(); ++i) {
 		Demo_Tiles3[i].Render();
 	}
 	player[0].Render();
@@ -180,11 +183,9 @@ void Demo::CollapsingManager(void)
 	Tiles::CollapseNext(Demo_Tiles3);
 }
 
-
-
 void Demo::UpdateOverlay() {
 	Graphics::Text text;
-	text.SetPos(AEVec2Set(400, 300));
+	text.SetPos(Utils::GetScreenMiddle());
 	text.SetColor(Color{ 0, 0, 0, 255.0f });
 	text.SetScale(2.0f);
 
