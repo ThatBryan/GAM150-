@@ -63,7 +63,7 @@ void Enemies::Update_Position(void)
 	if (type == EnemyType::Squirrel)
 	{
 		sprite.pos.x += squirrel_speed * g_dt;
-		sprite.pos.y -= squirrel_jumpspeed * g_dt * 1.5;
+		sprite.pos.y -= static_cast<f32>(squirrel_jumpspeed) * g_dt;
 		jump_counter -= g_dt;
 		squirrel_counter -= g_dt;
 		
