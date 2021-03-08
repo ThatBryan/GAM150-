@@ -7,6 +7,7 @@
 
 enum class EnemyType {Slime = 0, Bat, Squirrel, Max};
 EnemyType& operator++(EnemyType& rhs);
+
 static AEGfxTexture* enemyTex[static_cast<int>(EnemyType::Max)]{ nullptr };
 // Foward declarations
 class Player;
@@ -39,6 +40,7 @@ public:
 	bool active;
 	void Update(void);
 	void Draw();
+	inline EnemyType GetType() { return type; }
 	void GravityCheck(std::vector <std::vector<Tiles>*>& TileManager);
 
 	// Add new enemy into the vector.

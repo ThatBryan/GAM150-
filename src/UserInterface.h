@@ -12,4 +12,5 @@ namespace UI {
 	void Update();
 	void Draw();
 	void Buttons_Init();
+	void Buttons_Unload();
 }

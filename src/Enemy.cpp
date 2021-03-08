@@ -16,8 +16,8 @@ spawnPos{0, 0}, active{true}, type{EnemyType::Slime}, isGravity{false}
 {
 	ID = EnemyCount;
 	EnemyCount++;
-	headBB.color.SetColor(255.0f, 255.0, 255.0f, 255.0f);
-	enemyBB.color.SetColor(0, 0, 0, 100.0f);
+	headBB.color.SetColor(Color{ 255.0f, 255.0, 255.0f, 255.0f });
+	enemyBB.color.SetColor(Color{ 0, 0, 0, 100.0f });
 }
 
 void Enemies::Update_Position(void)

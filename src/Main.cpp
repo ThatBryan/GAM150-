@@ -51,21 +51,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	AESysSetWindowTitle("JumperMan");
 
 	// reset the system modules
-	AESysReset();
 
 	/// Test init functions
 	fontID = AEGfxCreateFont(FontFile, 30);
-	/*Demo::Init();*/
+	rectMesh = Graphics::Mesh_Rectangle();
 
-	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl;
+	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl << std::endl;
 
 	// Initialises the GSM
-	GameStateManagerInit(GS_GAMEPLAY);
+	GameStateManagerInit();
 	AEToogleFullScreen(fullscreen);
 
 	//Checks if game state isnt at quit status
 	while (gamestateCurr != GS_QUIT)
 	{
+		AESysReset();
 		//checks if game state isnt at restart
 		if (gamestateCurr != GS_RESTART)
 		{
@@ -93,8 +93,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 			// Informing the system about the loop's end
 			AESysFrameEnd();
-			if (!paused)
-				app_time += g_dt;
 
 			// check if forcing the application to quit
 			if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
@@ -111,25 +109,5 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		gamestateCurr = gamestateNext;
 	}
 	Graphics::Free();
-	// Game Loop
-	//while (gGameRunning)
-	//{
-	//	// Informing the system about the loop's start
-	//	AESysFrameStart();
-	//	// Handling Input
-	//	AEInputUpdate();
-	//	g_dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
-	//	Demo::Update();
-	//	// Informing the system about the loop's end
-	//	AESysFrameEnd();
-	//	if(!paused)
-	//		app_time += g_dt;
-
-	//	// check if forcing the application to quit
-	//	if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
-	//		gGameRunning = 0;
-	//}
-	//Demo::Exit();
-	//Graphics::Free();
 	AESysExit();
 }

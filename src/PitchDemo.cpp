@@ -8,6 +8,7 @@
 #include "Constants.h"
 #include "MainMenu.h"
 #include <array>
+#include "GameStateManager.h"
 
 #define TILE_WIDTTH 80.0f
 #define TILE_HEIGHT 50.0f
@@ -23,16 +24,16 @@ std::vector <Tiles> Demo_Tiles, Demo_Tiles2, Demo_Tiles3;
 std::vector <Enemies> enemy;
 std::vector <Player> player;
 std::vector <std::vector <Tiles>*> TileManager;
+static std::vector<Button> buttons;
 
-enum {GGPen = 0, Victory, Defeat, MAX_IMAGE};
+enum {Pause = 0, Victory, Defeat, MAX_IMAGE};
 static std::array <Image, MAX_IMAGE> Images;
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
 
 void Demo::Init(void)
 {
-	/*Load();*/
 	UI::Init();
-	background.SetColor(51.0f, 215.0f, 255.0f, 255.0f);
+	background.SetColor(Color{ 51.0f, 215.0f, 255.0f, 255.0f });
 
 	Tiles::AddTileRow(Demo_Tiles, TileType::Special, 4, TILE_WIDTTH, TILE_HEIGHT, AEVec2{ X, y1 });
 	Tiles::AddTileRow(Demo_Tiles, TileType::Safe, 2, TILE_WIDTTH, TILE_HEIGHT, AEVec2{X, y1 });
@@ -50,7 +51,7 @@ void Demo::Init(void)
 	AEVec2 DemoEnemyPos2 = Demo_Tiles[6].spawnPos;
 	AEVec2 DemoEnemyPos3 = Demo_Tiles[5].spawnPos;
 	AEVec2 DemoEnemyPos4 = Demo_Tiles2[8].spawnPos;
-	AEVec2 DemoEnemyPos5 = Demo_Tiles2[1].spawnPos;
+	AEVec2 DemoEnemyPos5 = Demo_Tiles2[5].spawnPos;
 	AEVec2 DemoEnemyPos6 = Demo_Tiles3[4].spawnPos;
 	AEVec2 Offset = {0, -TILE_HEIGHT};
 
@@ -62,27 +63,34 @@ void Demo::Init(void)
 	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2Add(DemoEnemyPos6, Offset), enemy_width, enemy_height);
 
 	player.push_back(Player(Player::playerTex, player_width, player_height));
-	player[0].startingPos = Demo_Tiles[0].spawnPos;
-	player[0].startingPos.y -= TILE_HEIGHT;
-	player[0].sprite.pos = player[0].startingPos;
+	player[0].SetPos(AEVec2Sub(Demo_Tiles[0].spawnPos, AEVec2Set(0, -TILE_HEIGHT)));
 
-	Images[GGPen].Init(DigipenLogo, static_cast<f32>(AEGetWindowWidth()) - 100.0f, static_cast<f32>(AEGetWindowHeight()) - 150.0f, Utils::GetScreenMiddle());
-	Images[Victory].Init(VictoryScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
-	Images[Defeat].Init(GameoverScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+	Images[Pause].Init(PauseOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+	Images[Victory].Init(VictoryOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+	Images[Defeat].Init(GameoverOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 
 	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
+
+	buttons.push_back(Button(100.0f, 50.0f, 0.8f));
+	buttons.push_back(Button(100.0f, 50.0f, 0.8f));
+	buttons[0].Set_Text("Resume");
+	buttons[1].Set_Text("Menu");
+	buttons[0].Set_Callback(Utils::CheckPauseInput);
+	buttons[1].Set_Callback(Utils::ReturnToMenu);
+	buttons[0].Set_Position(AEVec2{ 300, 400.0f });
+	buttons[1].Set_Position(AEVec2{ 500, 400.0f });
 }
 
 void Demo::Update(void)
 {
+	if (!paused)
+		app_time += g_dt;
 	Audio.update();
 	background.Decrement();
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
-	Utils::CheckPauseInput();
 	Utils::CheckFullScreenInput();
 	Utils::CheckDebugMode();
 	UpdateManager();
-	UpdateOverlay();
 	UI::Update();
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Restart();
@@ -93,11 +101,10 @@ void Demo::Exit(void)
 }
 
 void Demo::Load(void) {
-	rectMesh = Graphics::Mesh_Rectangle();
-	Enemies::LoadTex();
 	Tiles::LoadTex();
-	Player::LoadTex();
 	AudioManager::loadAsset();
+	Enemies::LoadTex();
+	Player::LoadTex();
 	AudioManager::SetVolume(AudioID::BGM, 0.2f);
 	AudioManager::SetVolume(AudioID::Jump, 0.2f);
 }
@@ -107,9 +114,18 @@ void Demo::Unload(void)
 	Tiles::Unload();
 	Player::Unload();
 	AudioManager::unloadAsset();
-	for (int i = 0; i < Images.size(); ++i) {
+
+	for (size_t i = 0; i < Images.size(); ++i) {
 		Images[i].Free();
 	}
+	TileManager.clear();
+	Demo_Tiles.clear();
+	Demo_Tiles2.clear();
+	Demo_Tiles3.clear();
+	enemy.clear();
+	player.clear();
+	buttons.clear();
+	UI::Buttons_Unload();
 }
 
 void Demo::Restart(void)
@@ -135,6 +151,7 @@ void Demo::Render(void)
 		Demo_Tiles3[i].Render();
 	}
 	player[0].Render();
+	UpdateOverlay();
 }
 
 void Demo::UpdateManager(void)
@@ -163,24 +180,36 @@ void Demo::CollapsingManager(void)
 	Tiles::CollapseNext(Demo_Tiles3);
 }
 
+
+
 void Demo::UpdateOverlay() {
+	Graphics::Text text;
+	text.SetPos(AEVec2Set(400, 300));
+	text.SetColor(Color{ 0, 0, 0, 255.0f });
+	text.SetScale(2.0f);
+
 	if (paused && player[0].active && !player[0].GetWinStatus())
 	{
-		static float alpha = 255.0f;
-		if (alpha <= 0)
-			alpha = 255.0f;
+		Images[Pause].Draw_Texture(100.0f);
+		text.SetText(const_cast<s8*>("PAUSED"));
+		text.Draw_Wrapped(text.pos);
+		for (int i = 0; i < buttons.size(); ++i) {
+			buttons[i].Update();
+		}
 
-		Images[GGPen].Draw_Texture(alpha);
-		alpha -= 4.0f;
 	}
 	if (player[0].GetLose())
 	{
 		paused = true;
-		Images[Defeat].Draw_Texture(255);
+		Images[Defeat].Draw_Texture(150.0f);
+		text.SetText(const_cast<s8*>("YOU LOSE"));
+		text.Draw_Wrapped(text.pos);
 	}
 	if (player[0].GetWinStatus())
 	{
 		paused = true;
-		Images[Victory].Draw_Texture(255);
+		Images[Victory].Draw_Texture(100.0f);
+		text.SetText(const_cast<s8*>("YOU WIN"));
+		text.Draw_Wrapped(text.pos);
 	}
 }
