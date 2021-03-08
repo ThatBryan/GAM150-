@@ -79,7 +79,7 @@ void Demo::Init(void)
 	buttons[0].Set_Position(AEVec2{ Midpt.x - buttons[0].GetWidth(), Midpt.y + 2 * buttons[0].GetHeight()});
 	buttons[1].Set_Position(AEVec2{Midpt.x + buttons[0].GetWidth(), Midpt.y + 2 * buttons[0].GetHeight()});
 	buttons[0].SetType(ButtonType::Texture);
-	buttons[0].Set_Texture(boi);
+	buttons[0].Set_Texture(ButtonTest2);
 	buttons[0].SetStateColor(StateColor::Idle, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
 	buttons[0].SetStateColor(StateColor::Hovered, Color{ 255.0f, 0.f, 0.f, 255.0f });
 	buttons[0].Set_TextColor(Color{ 255.0f, 255.0f, 255.0f, 255.0f });
