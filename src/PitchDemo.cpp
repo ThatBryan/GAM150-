@@ -121,34 +121,13 @@ void Demo::Unload(void)
 	for (size_t i = 0; i < Images.size(); ++i) {
 		Images[i].Free();
 	}
-	size_t sz = TileManager.size();
-	for (size_t i = 0; i < sz; ++i) {
-		TileManager.pop_back();
-	}
-	sz = Demo_Tiles.size();
-	for (size_t i = 0; i < sz; ++i) {
-		Demo_Tiles.pop_back();
-	}
-	sz = Demo_Tiles2.size();
-	for (size_t i = 0; i < sz; ++i) {
-		Demo_Tiles2.pop_back();
-	}
-	sz = Demo_Tiles3.size();
-	for (size_t i = 0; i < sz; ++i) {
-		Demo_Tiles3.pop_back();
-	}
-	sz = enemy.size();
-	for(size_t i = 0 ; i < sz; ++i){
-		enemy.pop_back();
-	}
-	sz = player.size();
-	for (size_t i = 0; i < sz; ++i) {
-		player.pop_back();
-	}
-	sz = buttons.size();
-	for (size_t i = 0; i < sz; ++i) {
-		buttons.pop_back();
-	}
+	TileManager.clear();
+	Demo_Tiles.clear();
+	Demo_Tiles2.clear();
+	Demo_Tiles3.clear();
+	enemy.clear();
+	player.clear();
+	buttons.clear();
 	UI::Buttons_Unload();
 }
 

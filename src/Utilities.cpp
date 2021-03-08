@@ -71,7 +71,7 @@ void Utils::CheckDebugMode(void)
 }
 
 void Utils::ReturnToMenu(void) {
-	gamestateNext = GS_SPLASH;
+	gamestateNext = GS_MAINMENU;
 }
 
 bool Utils::ColliderAABB(AEVec2 A, f32 A_width, f32 A_height, AEVec2 B, f32 B_width, f32 B_height) {

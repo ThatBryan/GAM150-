@@ -60,8 +60,5 @@ void UI::Buttons_Init() {
 
 void UI::Buttons_Unload()
 {
-	size_t sz = buttonTest.size();
-	for (size_t i = 0; i < sz; ++i) {
-		buttonTest.pop_back();
-	}
+	buttonTest.clear();
 }

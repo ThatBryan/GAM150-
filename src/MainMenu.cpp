@@ -92,27 +92,14 @@ void MainMenu::Unload(void)
 	Tiles::Unload();
 	Player::Unload();
 	AudioManager::unloadAsset();
-	size_t sz = Images.size();
-	for (size_t i = 0; i < sz; ++i) {
+	for (size_t i = 0; i < Images.size(); ++i) {
 		Images[i].Free();
-		Images.pop_back();
 	}
-	sz = buttons.size();
-	for (size_t i = 0; i < sz; ++i) {
-		buttons.pop_back();
-	}
-	sz = enemy.size();
-	for (size_t i = 0; i < sz; ++i) {
-		enemy.pop_back();
-	}
-	sz = player.size();
-	for (size_t i = 0; i < sz; ++i) {
-		player.pop_back();
-	}
-	sz = tiles.size();
-	for (size_t i = 0; i < sz; ++i) {
-		tiles.pop_back();
-	}
+	Images.clear();
+	enemy.clear();
+	buttons.clear();
+	player.clear();
+	tiles.clear();
 }
 
 void MainMenu::StartGame(void) {
