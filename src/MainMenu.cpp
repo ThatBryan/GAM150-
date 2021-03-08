@@ -29,7 +29,8 @@ void MainMenu::Init(void)
 	ScreenMid = Utils::GetScreenMiddle();
 
 	const float width = 80.0f, height = 100.0f;
-	Tiles::AddTileRow(tiles, TileType::Grass, AEGetWindowWidth() / static_cast<int>(width), width, height, AEVec2{width / 2.0f, AEGetWindowHeight() - height });
+	int size = static_cast<int>(AEGetWindowWidth() / width);
+	Tiles::AddTileRow(tiles, TileType::Grass, size + 1, width, height, AEVec2{width / 2.0f, AEGetWindowHeight() - height });
 	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2{260.0f, tiles[0].image.pos.y - height / 2.0f }, 60.0f, 60.0f);
 	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2{520.0f, tiles[0].image.pos.y - height / 2.0f }, 60.0f, 60.0f);
 	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2{710.0f, tiles[0].image.pos.y - height / 2.0f}, 60.0f, 60.0f);
