@@ -137,7 +137,7 @@ void Player::GravityManager(void)
 {
 	if (gravity)
 	{
-		if(!DebugMode)
+		if(!DebugMode && !jump)
 			sprite.pos.y += gravityStrength * g_dt;
 		//if(DebugMode)
 			//printf("Apply gravity\n");
