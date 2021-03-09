@@ -7,17 +7,20 @@
 
 extern AudioManager Audio;
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
+enum class MovementState { Left = 0, Right};
 class Enemies;
 class Rect;
 class Player
 {
 private:
 	bool win, lose;
+	MovementState direction;
 	unsigned int lives;
 	float jumpspeed_y;
 	static f32 gravityStrength;
 	void Update_Position(void);
 	void CheckOutOfBound(void);
+	void ChangeDirection(void);
 
 public:
 	static AEGfxTexture* playerTex;
