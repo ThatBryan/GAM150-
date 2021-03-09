@@ -8,8 +8,8 @@ float Enemies::gravityStrength = 100.0f;
 
 float Enemies::slime_counter = 2.0f, Enemies::slime_speed = 50.0f, Enemies::slimeBBOffset = 22.0f;
 float Enemies::bat_counter = 5.0f, Enemies::bat_speed = 100.0f, Enemies::batBBOffset = 2.0;
-float Enemies::squirrel_counter = 4.0f, Enemies::squirrel_speed = 100.0f, Enemies::squirrelBBOffset = 10.0f,
-Enemies::jump_counter = 0.5f, Enemies::squirrel_jumpspeed = 30.0f;
+float Enemies::squirrel_counter = 4.0f, Enemies::squirrel_speed = 110.0f, Enemies::squirrelBBOffset = 10.0f,
+Enemies::jump_counter = 0.5f, Enemies::squirrel_jumpspeed = 25.0f;
 
 Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
 spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, dirChange{ false }, counter{ 0 }, jumpCounter{ 0 },
@@ -49,16 +49,16 @@ void Enemies::Update_Position(void)
 	if (type == EnemyType::Bat)
 	{
 		// Sine-Wave
-		sprite.pos.x += velocity*g_dt;
+		sprite.pos.x += velocity * g_dt;
 		sprite.pos.y = spawnPos.y + 10 * sin(static_cast<f32>(sprite.pos.x) * 2.0f * PI / 180.0f); // y = amplitude * sin(x * period * pi / 180)
 		counter -= g_dt;
 
-		if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 ||  sprite.pos.x + sprite.width / 2 >= maxX)
+		if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
 		{
 			velocity *= -1;
 			ChangeDirection();
 			counter = Enemies::bat_counter;
-		}		
+		}
 		headBB.pos = sprite.pos;
 		enemyBB.pos = sprite.pos;
 		enemyBB.pos.y += 5.0f;
@@ -66,23 +66,24 @@ void Enemies::Update_Position(void)
 		return;
 	}
 
+
 	if (type == EnemyType::Squirrel)
 	{
 		sprite.pos.x += velocity * g_dt;
-		sprite.pos.y -= static_cast<f32>(squirrel_jumpspeed) * g_dt;
-		jumpCounter -= g_dt;
+		sprite.pos.y += static_cast<f32>(jumpvelocity) * g_dt;
 		counter -= g_dt;
-		
+		jumpcounter -= g_dt;
+
 		if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
 		{
-			velocity *= -1.0f;
+			velocity *= -1;
 			ChangeDirection();
 			counter = Enemies::squirrel_counter;
 		}
-		if (jumpCounter < 0.0f)
+		if (jumpcounter < 0.0f)
 		{
-			squirrel_jumpspeed *= -1.0f;
-			jumpCounter = Enemies::jump_counter;
+			jumpvelocity *= -1.0f;
+			jumpcounter = Enemies::jump_counter;
 		}
 
 		headBB.pos = sprite.pos;
@@ -90,6 +91,7 @@ void Enemies::Update_Position(void)
 		enemyBB.pos.y += 10.0f;
 		headBB.pos.y -= squirrelBBOffset;
 		return;
+
 	}
 }
 
@@ -140,7 +142,7 @@ void Enemies::Draw()
 
 void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 pos, const f32 width, const f32 height)
 {
-	float bbHeight{ height }, counter{ 0 }, vel{ 0 }, jump{ 0 };
+	float bbHeight{ height }, counter{ 0 }, vel{ 0 }, jumpcounter{ 0 }, jumpvel{ 0 };
 	switch (type) {
 	case EnemyType::Bat:
 		bbHeight = 20.0f;
@@ -150,8 +152,9 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 	case EnemyType::Squirrel:
 		bbHeight = 43.0f;
 		counter = Enemies::squirrel_counter;
-		vel = 100.0f;
-		jump = 1.0f;
+		vel = Enemies::squirrel_speed;
+		jumpcounter = Enemies::jump_counter;
+		jumpvel = Enemies::squirrel_jumpspeed;
 		break;
 	case EnemyType::Slime:
 		counter = Enemies::slime_counter;
@@ -167,7 +170,8 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 	enemy[enemy.size() - 1].enemyBB.height = bbHeight;
 	enemy[enemy.size() - 1].counter = counter;
 	enemy[enemy.size() - 1].velocity = vel;
-	enemy[enemy.size() - 1].jumpCounter = jump;
+	enemy[enemy.size() - 1].jumpcounter = jumpcounter;
+	enemy[enemy.size() - 1].jumpvelocity = jumpvel;
 }
 
 void Enemies::Reset(std::vector <Enemies>& enemy)
