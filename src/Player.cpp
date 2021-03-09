@@ -72,10 +72,15 @@ void Player::Update_Position(void)
 		{
 			sprite.pos.y -= jumpvel;
 
-			jumpvel -= .2f;
+			jumpvel -= 0.2f; // velocity decrease as y increases
 			if (jumpvel < -5.0f)
 			{
 				jump = false;
+				jumpvel = 5.0f;
+			}
+			if (!gravity) // reset counter if player's feet touches the ground
+			{
+				jump = true;
 				jumpvel = 5.0f;
 			}
 		}
