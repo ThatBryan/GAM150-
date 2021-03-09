@@ -111,7 +111,7 @@ void Enemies::ApplyGravity(void) {
 void Enemies::Update()
 {
 	Update_Position();
-	//ApplyGravity();
+	ApplyGravity();
 }
 
 void Enemies::Draw()
