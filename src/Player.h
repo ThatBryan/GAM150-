@@ -16,7 +16,7 @@ private:
 	bool win, lose;
 	MovementState direction;
 	unsigned int lives;
-	float jumpspeed_y;
+	float jumpvel;
 	static f32 gravityStrength;
 	void Update_Position(void);
 	void CheckOutOfBound(void);

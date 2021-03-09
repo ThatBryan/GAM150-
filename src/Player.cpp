@@ -11,7 +11,7 @@ static f32 maxX;
 float Player::gravityStrength = 150.0f;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},
-active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpspeed_y{jumpspeed},
+active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{player_jumpvel},
 lives{3}, direction{MovementState::Right}
 {
 	playerBB.color.SetColor(Color{ 0, 0, 0, 255.0f });
@@ -27,7 +27,7 @@ void Player::Reset(void)
 	lose = false;
 	active = true;
 	sprite.pos = startingPos;
-	jumpspeed_y = jumpspeed;
+	jumpvel = player_jumpvel;
 	sprite.rotation = 0;
 }
 
@@ -70,13 +70,13 @@ void Player::Update_Position(void)
 	{
 		if (sprite.pos.y + sprite.height / 2 <= maxY)
 		{
-			sprite.pos.y -= jumpspeed_y;
+			sprite.pos.y -= jumpvel;
 
-			jumpspeed_y -= .2f;
-			if (jumpspeed_y < -5.0f)
+			jumpvel -= .2f;
+			if (jumpvel < -5.0f)
 			{
-				jump = FALSE;
-				jumpspeed_y = 5.0f;
+				jump = false;
+				jumpvel = 5.0f;
 			}
 		}
 	}
