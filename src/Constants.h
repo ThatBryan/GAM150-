@@ -28,7 +28,8 @@ extern const float player_height;
 extern const float jumpspeed;
 extern const float enemy_width;
 extern const float enemy_height;
-extern const float player_collider_offset;
+extern const float player_collider_offset_y;
+extern const float player_collider_offset_x;
 
 // Tile constants
 extern const double TileCollapseDelay;

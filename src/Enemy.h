@@ -33,7 +33,6 @@ private:
 	// Private functions
 	void Update_Position(void);
 	void ApplyGravity(void);
-	void ChangeDirection();
 
 public:
 	Enemies(AEGfxTexture* filepath, const f32 width, const f32 height);

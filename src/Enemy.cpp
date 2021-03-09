@@ -12,8 +12,8 @@ float Enemies::squirrel_counter = 4.0f, Enemies::squirrel_speed = 110.0f, Enemie
 Enemies::jump_counter = 0.5f, Enemies::squirrel_jumpspeed = 25.0f;
 
 Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
-spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, dirChange{ false }, counter{ 0 }, jumpCounter{ 0 },
-velocity{0}
+spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, dirChange{ false }, counter{ 0 }, jumpcounter{ 0 },
+velocity{ 0 }, jumpvelocity{ 0 }
 {
 	ID = EnemyCount;
 	EnemyCount++;
@@ -36,7 +36,7 @@ void Enemies::Update_Position(void)
 		counter -= g_dt;
 		if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
 		{
-			ChangeDirection();
+			sprite.ReflectAboutYAxis();
 			velocity *= -1.0f;
 			counter = Enemies::slime_counter;
 		}
@@ -56,7 +56,7 @@ void Enemies::Update_Position(void)
 		if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
 		{
 			velocity *= -1;
-			ChangeDirection();
+			sprite.ReflectAboutYAxis();
 			counter = Enemies::bat_counter;
 		}
 		headBB.pos = sprite.pos;
@@ -77,7 +77,7 @@ void Enemies::Update_Position(void)
 		if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
 		{
 			velocity *= -1;
-			ChangeDirection();
+			sprite.ReflectAboutYAxis();
 			counter = Enemies::squirrel_counter;
 		}
 		if (jumpcounter < 0.0f)
@@ -91,7 +91,6 @@ void Enemies::Update_Position(void)
 		enemyBB.pos.y += 10.0f;
 		headBB.pos.y -= squirrelBBOffset;
 		return;
-
 	}
 }
 
@@ -111,10 +110,6 @@ void Enemies::GravityCheck(std::vector <std::vector<Tiles>*>& TileManager) {
 		}
 	}
 	isGravity = true;
-}
-
-void Enemies::ChangeDirection() {
-	sprite.width *= -1.0f;
 }
 
 void Enemies::ApplyGravity(void) {

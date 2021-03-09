@@ -28,7 +28,8 @@ const float player_height = 50.0f;
 const float jumpspeed = 5.0f;
 const float enemy_width = 50.0f;
 const float enemy_height = 50.0f;
-const float player_collider_offset = 24.0f;
+const float player_collider_offset_y = 24.0f;
+const float player_collider_offset_x = 6.0f;
 
 // Tile constants
 const double TileCollapseDelay = 0.5f;
