@@ -80,6 +80,7 @@ void Tiles::CheckPlayerGravity(std::vector <std::vector<Tiles>*>& TileManager, s
 			if(Utils::ColliderAABB(TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height,
 				player[0].feetBB.pos, player[0].feetBB.width, player[0].feetBB.height)){
 				player[0].gravity = false;
+				player[0].jump = false;
 				//if (DebugMode)
 					//printf("Don't apply gravity\n");
 				return;
@@ -103,6 +104,14 @@ void Tiles::AddTileRow(std::vector <Tiles>& tile, TileType type, const int count
 		tile[i].image.pos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2));
 	}
 
+}
+void Tiles::AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, const f32 height, AEVec2 pos) {
+	AEGfxTexture* temp = tileTex[static_cast<int>(type)];
+	tile.push_back(Tiles(temp, width, height));
+	tile[tile.size() - 1].type = type;
+	tile[tile.size() - 1].ID = tile.size() - 1;
+	tile[tile.size() - 1].image.pos = AEVec2Set(pos.x + width / 2.0f, pos.y + height / 2.0f);
+	tile[tile.size() - 1].spawnPos = tile[tile.size() - 1].image.pos;
 }
 
 void Tiles::CollapseNext(std::vector <Tiles>& tiles)
