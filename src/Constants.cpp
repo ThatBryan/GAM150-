@@ -22,7 +22,7 @@ const char* boi = "../Assets/Art/boi.png";
 const char* HeartSprite = "../Assets/Art/Heart.png";
 
 // Player constants
-const float player_speed = 2.5f;
+const float player_speed = 150.0f;
 const float player_width = 50.0f;
 const float player_height = 50.0f;
 const float jumpspeed = 5.0f;
