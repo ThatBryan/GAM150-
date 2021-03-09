@@ -21,7 +21,6 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include <cstdio>
 #include <fstream>
 #include <string>
-#include "PitchDemo.h"
 #include <vector>
 #include "Utilities.h"
 #include "Graphics.h"
@@ -29,6 +28,8 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "Enemy.h"
 #include "Constants.h"
 #include <array>
+#include "GameObject.h"
+#include "AEEngine.h"
 
 #define TILE_WIDTTH 80.0f
 #define TILE_HEIGHT 50.0f
@@ -137,48 +138,7 @@ int ImportMapDataFromFile(const char* FileName)
 		}
 	}
 	ifs.close();
-	//for (int i = 0; i < BINARY_MAP_HEIGHT; ++i)
-	//{
-	//	for (int j = 0; j < BINARY_MAP_WIDTH; ++j)
-	//	{ // Iterate through mapdata array and construct objects at position [i][j] (Y/X)
-	//		if (MapData[i][j] == 0)
-	//		{
-	//			continue;
-	//		}
-	//		if (MapData[i][j] == 1)
-	//		{
-	//			//Tiles::AddTileRow()
-	//		}
-	//		if (MapData[i][j] == 2)
-	//		{
-	//			//construct granite
-	//		}
-	//		if (MapData[i][j] == 3)
-	//		{
-	//			//construct special
-	//		}
-	//		if (MapData[i][j] == 4)
-	//		{
-	//			//construct goal
-	//		}
-	//		if (MapData[i][j] == 5)
-	//		{
-	//			//construct jumperman
-	//		}
-	//		if (MapData[i][j] == 6)
-	//		{
-	//			//construct slime
-	//		}
-	//		if (MapData[i][j] == 7)
-	//		{
-	//			//construct bat
-	//		}
-	//		if (MapData[i][j] == 8)
-	//		{
-	//			//construct squirrel
-	//		}
-	//	}
-	//}
+	
 
 	return 1;
 }
@@ -341,7 +301,50 @@ int CheckInstanceBinaryMapCollision(float PosX, float PosY,
 	return Flag;
 }
 
-void LoadMap(void)
+void MapInit(void)
 {
-
+	GameObjectInst* pInst;
+	AEVec2 Pos;
+	for (int i = 0; i < BINARY_MAP_HEIGHT; ++i)
+	{
+		for (int j = 0; j < BINARY_MAP_WIDTH; ++j)
+		{ // Iterate through mapdata array and construct objects at position [i][j] (Y/X)
+			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::EMPTY))
+			{
+				pInst = gameObjectInstCreate
+			}
+			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::COLLAPSIBLE))
+			{
+				
+			}
+			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::NON_COLLAPSIBLE))
+			{
+				
+			}
+			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SPECIAL))
+			{
+				
+			}
+			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::GOAL))
+			{
+				
+			}
+			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::JUMPERMAN))
+			{
+				
+			}
+			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SLIME))
+			{
+				
+			}
+			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::BAT))
+			{
+				
+			}
+			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SQUIRREL))
+			{
+				
+			}
+		}
+	}
 }

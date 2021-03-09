@@ -30,6 +30,8 @@ enum {GGPen = 0, Victory, Defeat, MAX_IMAGE};
 static std::array <Image, MAX_IMAGE> Images;
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
 
+
+
 void Demo::Init(void)
 {
 	/*Load();*/

@@ -5,7 +5,7 @@ class GameObject
 {
 	public:
 		GameObject();
-		unsigned int type;
+		TYPE_OBJECT type;
 		AEVec2 pos;
 };
 
@@ -13,7 +13,7 @@ class GameObjectInst
 {
 	public:
 		GameObjectInst();
-		GameObject* pObject;	// pointer to the 'original'
+		GameObject*		pObject;	// pointer to the 'original'
 		unsigned int	flag;		// bit flag or-ed together
 		float			scale;
 		AEVec2			posCurr;	// object current position
@@ -31,9 +31,13 @@ class GameObjectInst
 		void* pUserData;
 
 		//State of the object instance
-		enum			STATE state;
-		enum			INNER_STATE innerState;
+		enum class		STATE state;
+		enum class		INNER_STATE innerState;
 
 		//General purpose counter (This variable will be used for the enemy state machine)
 		double			counter;
 };
+
+GameObjectInst* gameObjInstCreate(unsigned int type, float scale,
+	AEVec2* pPos, AEVec2* pVel,
+	float dir, enum class STATE startState);
