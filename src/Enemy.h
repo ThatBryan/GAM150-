@@ -21,9 +21,9 @@ private:
 	AEVec2 spawnPos;
 	Graphics::Rect headBB {enemy_width, 5.0f};
 	Graphics::Rect enemyBB {enemy_width, 10.0f};
-	bool isGravity;
+	bool isGravity, dirChange;
 	unsigned short ID;
-
+	float counter, velocity, jumpCounter;
 
 	static float slime_counter, slime_speed, slimeBBOffset;
 	static float bat_speed, bat_counter, batBBOffset;
@@ -33,6 +33,7 @@ private:
 	// Private functions
 	void Update_Position(void);
 	void ApplyGravity(void);
+	void ChangeDirection();
 
 public:
 	Enemies(AEGfxTexture* filepath, const f32 width, const f32 height);
@@ -42,7 +43,6 @@ public:
 	void Draw();
 	inline EnemyType GetType() { return type; }
 	void GravityCheck(std::vector <std::vector<Tiles>*>& TileManager);
-
 	// Add new enemy into the vector.
 	static void LoadTex(void);
 	static void AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 pos, const f32 width, const f32 height);

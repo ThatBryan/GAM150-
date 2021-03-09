@@ -4,8 +4,9 @@
 // File Paths
 extern const char* DigipenLogoRed;
 extern const char* DigipenLogoWhite;
-extern const char* VictoryScreen;
-extern const char* GameoverScreen;
+extern const char* PauseOverlay;
+extern const char* VictoryOverlay;
+extern const char* GameoverOverlay;
 extern const char* WaterSlimeSprite;
 extern const char* FlyingEnemySprite;
 extern const char* SquirrelSprite;
@@ -17,6 +18,7 @@ extern const char* SpecialTile;
 extern const char* FontFile;
 extern const char* ButtonTest;
 extern const char* ButtonTest2;
+extern const char* boi;
 
 // Player constants
 extern const float player_speed;

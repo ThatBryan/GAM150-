@@ -32,6 +32,7 @@ namespace Graphics
 
 		void Draw(const f32 alpha = 150.0f);
 		void Draw(Color color, const f32 alpha = 150.0f);
+		void DrawTexture(AEGfxTexture* pTex, Color color, const f32 alpha = 150.0f);
 
 		private:
 			AEGfxVertexList* pMesh;
@@ -47,7 +48,7 @@ namespace Graphics
 		Text(s8* textBuffer, const f32 scale = 1.0f);
 		Text();
 			inline s8* GetText() { return buffer; }
-			inline void SetText(s8* text) { buffer = text; }
+			void SetText(s8* text);
 			inline void SetPos(AEVec2 pos) { this->pos = pos; }
 			inline void SetColor(Color color) { this->color.SetColor(color); }
 			inline void SetScale(f32 scale) { this->scale = scale; }
@@ -59,6 +60,7 @@ namespace Graphics
 			void Draw();
 			void Draw_Wrapped(const AEVec2 pos);
 			inline void Set_Pos(AEVec2 pos) { this->pos = pos; }
+			AEVec2 GetBufferSize();
 
 		private:
 			s8* buffer;

@@ -31,7 +31,6 @@ void Splash::Render() {
 	splash.Draw_Texture(alpha);
 }
 void Splash::Load() {
-	rectMesh = Graphics::Mesh_Rectangle();
 }
 void Splash::Unload() {
 	splash.Free();

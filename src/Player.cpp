@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include <array>
 #include "Utilities.h"
+#include "PitchDemo.h"
 #include "Graphics.h"
 
 AEGfxTexture* Player::playerTex{ nullptr };
@@ -10,7 +11,8 @@ static f32 maxX;
 float Player::gravityStrength = 100.0f;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},
-active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpspeed_y{jumpspeed}
+active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpspeed_y{jumpspeed},
+lives{3}
 {
 	playerBB.color.SetColor(Color{ 0, 0, 0, 255.0f });
 	feetBB.color.SetColor(Color{ 255.0f, 255.0f, 0, 255.0f });
@@ -34,6 +36,8 @@ void Player::Update() {
 	//	sprite.rotation += 1;
 	CheckOutOfBound();
 	Update_Position();
+	if (lives <= 0)
+		SetLose();
 }
 void Player::Render(void)
 {
@@ -131,7 +135,7 @@ void Player::CheckOutOfBound() {
 
 void Player::GravityManager(void)
 {
-	if (gravity)
+	if (gravity && !jump)
 	{
 		if(!DebugMode)
 			sprite.pos.y += gravityStrength * g_dt;
@@ -155,8 +159,11 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 						printf("enemy dies\n");
 				}
 				else {
-					if (!DebugMode)
-						SetLose();
+					if (!DebugMode) {
+						DecreaseLife();
+						Reset();
+						printf("%d\n", lives);
+					}
 					if (DebugMode)
 						printf("player dies\n");
 

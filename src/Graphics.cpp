@@ -55,10 +55,6 @@ height{ 0 }, width{ 0 }, buffer{ textBuffer }
 Graphics::Text::Text() : scale{0}, pos{ 0, 0 },
 height{ 0 }, width{ 0 }, buffer{ nullptr }, color() {}
 
-
-
-
-
 AEGfxVertexList* Graphics::Mesh_Rectangle(void)
 {
 	AEGfxMeshStart();
@@ -115,6 +111,24 @@ void Graphics::Rect::Draw(Color color, const f32 alpha)
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
+void Graphics::Rect::DrawTexture(AEGfxTexture* pTex, Color color, const f32 alpha)
+{
+	SetMatrix();
+	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+
+	AEGfxTextureSet(pTex, 0.0f, 0.0f);
+	AEGfxSetTintColor(color.r, color.g, color.b, color.alpha);
+	AEGfxSetTransparency(alpha / colorcodeMax);
+
+	AEGfxSetTransform(transformMtx.m);
+	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
+}
+
+void Graphics::Text::SetText(s8* text) {
+	buffer = text;
+}
+
 void Graphics::Text::Draw()
 {
 	AEVec2 drawPos = Graphics::Text::Calculate_Offset(pos);
@@ -158,4 +172,11 @@ AEVec2 Graphics::Text::Calculate_Offset(AEVec2 pos)
 	}
 	//printf("%.2f %.2f\n", Offset.x, Offset.y);
 	return Offset;
+}
+
+AEVec2 Graphics::Text::GetBufferSize()
+{
+	AEGfxGetPrintSize(fontID, buffer, scale, width, height);
+	
+	return AEVec2{ width / 2 * AEGetWindowWidth(), height / 2 * AEGetWindowHeight() };
 }

@@ -2,11 +2,11 @@
 
 extern std::vector <Player> player;
 
-Button::Button(const f32 width, const f32 height, const f32 scale) : button(width, height), text(nullptr, scale)
-, pos{ 0,0 }, callback{ nullptr }{
-	buttonState[Button_Idle] = { 0, 255.0f, 0, 255.0f };
-	buttonState[Button_Hovered] = { 255.0f, 255.0f, 0, 255.0f };
-	buttonState[Button_Clicked] = { 0, 0, 255.0f, 255.0f };
+Button::Button(ButtonType Type, const f32 width, const f32 height, const f32 scale) : button(width, height), text(nullptr, scale)
+, pos{ 0,0 }, callback{ nullptr }, pTex{ nullptr }, type{Type}{
+	buttonState[static_cast<int>(ButtonState::Idle)] = { 0, 255.0f, 0, 255.0f };
+	buttonState[static_cast<int>(ButtonState::Hovered)] = { 255.0f, 255.0f, 0, 255.0f };
+	buttonState[static_cast<int>(ButtonState::Clicked)] = { 0, 0, 255.0f, 255.0f };
 	text.color = { 0, 0, 0, 255.0f };
 }
 
@@ -27,6 +27,10 @@ void Button::Set_TextColor(Color color) {
 	text.color = color;
 }
 
+void Button::SetStateColor(ButtonState state, Color color) {
+	buttonState[static_cast<int>(state)] = color;
+}
+
 void Button::Update(void) {
 	AEVec2 Mouse = Utils::GetMousePos();
 	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckReleased(AEVK_LBUTTON))
@@ -37,17 +41,24 @@ void Button::Update(void) {
 }
 
 void Button::Render(void) {
-	button.Draw(buttonState[Check_Cursor()], 255.0f);
+	switch (type) {
+	case ButtonType::Color:
+		button.Draw(static_cast<Color>(buttonState[static_cast<int>(Check_Cursor())]), 255.0f);
+		break;
+	case ButtonType::Texture:
+		button.DrawTexture(pTex, static_cast<Color>(buttonState[static_cast<int>(Check_Cursor())]), 255.0f);
+		break;
+	}
 	text.Draw_Wrapped(text.pos);
 }
 
-int Button::Check_Cursor() {
+ButtonState Button::Check_Cursor() {
 	AEVec2 Mouse = Utils::GetMousePos();
 	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckCurr(AEVK_LBUTTON))
-		return Button_Clicked;
+		return ButtonState::Clicked;
 	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height))
-		return Button_Hovered;
-	return Button_Idle;
+		return ButtonState::Hovered;
+	return ButtonState::Idle;
 }
 
 void Test_Callback() {

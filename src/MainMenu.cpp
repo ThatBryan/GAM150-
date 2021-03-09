@@ -13,26 +13,27 @@
 #include <cmath>
 
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
-enum Overlay{Victory = 0, Start_Btn, SelectLevel_Btn, Start_HoverBtn, SelectLevel_HoverBtn, MAX_IMAGE };
+//enum Overlay{Victory = 0, Start_Btn, SelectLevel_Btn, Start_HoverBtn, SelectLevel_HoverBtn, MAX_IMAGE };
 static std::vector <Image> Images;
 static std::vector<Button> buttons;
 static std::vector<Enemies> enemy;
 static std::vector<Tiles> tiles;
 static std::vector<Player> player;
 static Graphics::Text Title;
-
 static AEVec2 ScreenMid;
+
 void MainMenu::Init(void)
 {
 	MainMenu::Buttons_Init();
 	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 	ScreenMid = Utils::GetScreenMiddle();
 
-	float width = 80.0f, height = 50.0f;
-	Tiles::AddTileRow(tiles, TileType::Grass, AEGetWindowWidth() / static_cast<int>(height), width, height, AEVec2{width / 2.0f, AEGetWindowHeight() - height });
-	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2{260.0f, tiles[0].image.pos.y - height }, 50.0f, 50.0f);
-	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2{520.0f, tiles[0].image.pos.y - height }, 50.0f, 50.0f);
-	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2{710.0f, tiles[0].image.pos.y - height}, 50.0f, 50.0f);
+	const float width = 80.0f, height = 100.0f;
+	int size = static_cast<int>(AEGetWindowWidth() / width);
+	Tiles::AddTileRow(tiles, TileType::Grass, size + 1, width, height, AEVec2{width / 2.0f, AEGetWindowHeight() - height });
+	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2{260.0f, tiles[0].image.pos.y - height / 2.0f }, 60.0f, 60.0f);
+	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2{520.0f, tiles[0].image.pos.y - height / 2.0f }, 60.0f, 60.0f);
+	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2{710.0f, tiles[0].image.pos.y - height / 2.0f}, 60.0f, 60.0f);
 	
 	player.push_back(Player(Player::playerTex, player_width, player_height));
 	player[0].SetPos(AEVec2Set(player_width / 2.0f, tiles[0].image.pos.y - height * 2 - 5.0f));
@@ -44,7 +45,6 @@ void MainMenu::Init(void)
 	Title.SetText(const_cast<s8*>("JUMPERMAN"));
 	Title.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	Title.SetScale(1.0f);
-
 }
 
 void MainMenu::Update(void)
@@ -58,7 +58,7 @@ void MainMenu::Update(void)
 	for (int i = 0; i < tiles.size(); ++i) {
 		tiles[i].Update();
 	}
-	player[0].sprite.rotation += 25.0f * g_dt;
+	player[0].sprite.rotation += 100.0f * g_dt;
 }
 
 void MainMenu::Render() {
@@ -69,7 +69,7 @@ void MainMenu::Render() {
 		enemy[i].sprite.Draw_Texture(255.0f);
 	}
 	player[0].sprite.Draw_Texture(255.0f);
-	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - 200.0f));
+	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - AEGetWindowHeight() / 4));
 }
 
 void MainMenu::Load(void)
@@ -84,42 +84,48 @@ void MainMenu::Load(void)
 
 void MainMenu::Unload(void)
 {
+	Enemies::Unload();
 	Tiles::Unload();
 	Player::Unload();
-	Enemies::Unload();
 	AudioManager::unloadAsset();
-	for (int i = 0; i < Images.size(); ++i) {
+	for (size_t i = 0; i < Images.size(); ++i) {
 		Images[i].Free();
 	}
+	Images.clear();
+	enemy.clear();
+	buttons.clear();
+	player.clear();
+	tiles.clear();
+	EnemyCount = 0;
 }
 
 void MainMenu::StartGame(void) {
 	gamestateNext = GS_GAMEPLAY;
 }
 void MainMenu::QuitGame(void) {
-	gamestateNext = GS_QUIT;;
+	gamestateNext = GS_QUIT;
 }
 
 void MainMenu::Buttons_Init() {
 	AEVec2 ScreenMid{ Utils::GetScreenMiddle() };
-	buttons.push_back(Button(150, 50.0f));
-	buttons[0].Set_Position(AEVec2Set(ScreenMid.x - 100.0f, ScreenMid.y - 50.0f));
+	buttons.push_back(Button(ButtonType::Color, 200.0f, 50.0f));
+	buttons[0].Set_Position(AEVec2Set(ScreenMid.x - buttons[0].GetWidth(), ScreenMid.y - buttons[0].GetHeight()));
 	buttons[0].Set_Text("Start");
 	buttons[0].Set_Callback(StartGame);
 
-	buttons.push_back(Button(150, 50.0f));
-	buttons[1].Set_Position(AEVec2Set(ScreenMid.x - 100.0f, ScreenMid.y + 50.0f));
+	buttons.push_back(Button(ButtonType::Color, 200.0f, 50.0f));
+	buttons[1].Set_Position(AEVec2Set(ScreenMid.x - buttons[1].GetWidth(), ScreenMid.y + buttons[1].GetHeight()));
 	buttons[1].Set_Text("Quit");
 	buttons[1].Set_Callback(QuitGame);
 
 
-	buttons.push_back(Button(150, 50.0f, 0.75f));
-	buttons[2].Set_Position(AEVec2Set(ScreenMid.x + 100.0f, ScreenMid.y - 50.0f));
+	buttons.push_back(Button(ButtonType::Color, 200.0f, 50.0f, 0.75f));
+	buttons[2].Set_Position(AEVec2Set(ScreenMid.x + buttons[2].GetWidth(), ScreenMid.y - buttons[2].GetHeight()));
 	buttons[2].Set_Text("Level selection");
 	buttons[2].Set_Callback(placeholder);
 
-	buttons.push_back(Button(150, 50.0f, 0.8f));
-	buttons[3].Set_Position(AEVec2Set(ScreenMid.x + 100.0f, ScreenMid.y + 50.0f));
+	buttons.push_back(Button(ButtonType::Color, 200.0f, 50.0f, 0.8f));
+	buttons[3].Set_Position(AEVec2Set(ScreenMid.x + buttons[3].GetWidth(), ScreenMid.y + buttons[3].GetHeight()));
 	buttons[3].Set_Text("Leaderboards");
 	buttons[3].Set_Callback(placeholder);
 }
@@ -163,43 +169,3 @@ void MainMenu::TestPlayerMovement() {
 	Test3 += baseSpeed * g_dt;
 	player[0].sprite.pos.y += 4 * std::sin(Test3 / 7.5f);
 }
-
-// Min Yi stuff
-
-//void MainMenu::Init(void)
-//{
-//	Images[Victory].Init(VictoryScreen, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
-//
-//	Images[Start_Btn].Init(ButtonTest2, 250.0f, 50.0f, AEVec2({ Utils::Get_HalfWindowWidth(), 400 }));
-//	Images[SelectLevel_Btn].Init(ButtonTest2, 250.0f, 50.0f, AEVec2({ Utils::Get_HalfWindowWidth(), 500 }));
-//
-//	Images[Start_HoverBtn].Init(ButtonTest, 250.0f, 50.0f, AEVec2({ Utils::Get_HalfWindowWidth(), 400 }));
-//	Images[SelectLevel_HoverBtn].Init(ButtonTest, 250.0f, 50.0f, AEVec2({ Utils::Get_HalfWindowWidth(), 500 }));
-//
-//	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
-//}
-
-
-
-//void MainMenu::Render() {
-//
-//	//AEVec2 Mouse = Utils::GetMousePos();
-//	//Images[Victory].Draw_Texture(255);
-//
-//	//Images[Start_Btn].Draw_Texture(255);
-//	//Images[SelectLevel_Btn].Draw_Texture(255);
-//
-//	//if (!AETestPointToRect(&Mouse, &Images[Start_HoverBtn].pos, Images[Start_HoverBtn].width, Images[Start_HoverBtn].height) && !AEInputCheckReleased(AEVK_LBUTTON))
-//	//{
-//	//	Images[Start_HoverBtn].Draw_Texture(255);
-//	//}
-//	//if (!AETestPointToRect(&Mouse, &Images[SelectLevel_HoverBtn].pos, Images[SelectLevel_HoverBtn].width, Images[SelectLevel_HoverBtn].height) && !AEInputCheckReleased(AEVK_LBUTTON))
-//	//{
-//	//	Images[SelectLevel_HoverBtn].Draw_Texture(255);
-//	//}
-//}
-
-
-
-
-
