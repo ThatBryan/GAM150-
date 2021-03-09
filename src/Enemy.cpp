@@ -8,10 +8,10 @@ float Enemies::gravityStrength = 100.0f;
 
 float Enemies::slime_counter = 2.0f, Enemies::slime_speed = 50.0f, Enemies::slimeBBOffset = 22.0f;
 float Enemies::bat_counter = 5.0f, Enemies::bat_speed = 100.0f, Enemies::batBBOffset = 2.0;
-float Enemies::squirrel_counter = 4.0f, Enemies::squirrel_speed = 100.0f, Enemies::squirrelBBOffset = 10.0f,
+float Enemies::squirrel_counter = 4.0f, Enemies::squirrel_speed = 110.0f, Enemies::squirrelBBOffset = 10.0f,
 Enemies::jump_counter = 0.5f, Enemies::squirrel_jumpspeed = 25.0f;
 
-Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
+Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height),
 spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, dirChange{ false }, counter{ 0 }, jumpcounter{ 0 }
 {
 	ID = EnemyCount;
@@ -52,12 +52,12 @@ void Enemies::Update_Position(void)
 		sprite.pos.y = spawnPos.y + 10 * sin(static_cast<f32>(sprite.pos.x) * 2.0f * PI / 180.0f); // y = amplitude * sin(x * period * pi / 180)
 		counter -= g_dt;
 
-		if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 ||  sprite.pos.x + sprite.width / 2 >= maxX)
+		if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
 		{
 			velocity *= -1;
 			ChangeDirection();
 			counter = Enemies::bat_counter;
-		}		
+		}
 		headBB.pos = sprite.pos;
 		enemyBB.pos = sprite.pos;
 		enemyBB.pos.y += 5.0f;
@@ -69,10 +69,9 @@ void Enemies::Update_Position(void)
 	if (type == EnemyType::Squirrel)
 	{
 		sprite.pos.x += velocity * g_dt;
-		sprite.pos.y += jumpvelocity * g_dt * 1.5;
+		sprite.pos.y += static_cast<f32>(jumpvelocity) * g_dt;
 		counter -= g_dt;
 		jumpcounter -= g_dt;
-		printf("%f", sprite.pos.y);
 
 		if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
 		{
@@ -91,7 +90,7 @@ void Enemies::Update_Position(void)
 		enemyBB.pos.y += 10.0f;
 		headBB.pos.y -= squirrelBBOffset;
 		return;
-		
+
 	}
 }
 
