@@ -152,6 +152,7 @@ void Demo::Restart(void)
 	player[0].SetLives(3);
 	paused = false;
 	app_time = 0;
+	UI::ResetLives();
 }
 
 void Demo::Render(void)

@@ -8,7 +8,7 @@
 AEGfxTexture* Player::playerTex{ nullptr };
 static f32 maxY;
 static f32 maxX;
-float Player::gravityStrength = 100.0f;
+float Player::gravityStrength = 150.0f;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},
 active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpspeed_y{jumpspeed},
@@ -162,6 +162,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 				else {
 					if (!DebugMode) {
 						DecreaseLife();
+						UI::DecreaseLife();
 						Reset();
 						printf("%d\n", lives);
 					}

@@ -37,6 +37,7 @@ public:
 	void GravityManager(void);
 	inline void SetPos(AEVec2 pos) { this->sprite.pos = pos; this->startingPos = pos; }
 	inline void SetLives(unsigned int Lives) { lives = Lives; }
+	inline int GetLives(void) { return lives; }
 	inline void SetWin(void) { win = true; }
 	inline bool GetWinStatus(void) { return win; }
 	inline void SetLose(void) { active = false; lose = true; }

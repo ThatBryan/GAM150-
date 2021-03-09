@@ -19,6 +19,7 @@ extern const char* FontFile;
 extern const char* ButtonTest;
 extern const char* ButtonTest2;
 extern const char* boi;
+extern const char* HeartSprite;
 
 // Player constants
 extern const float player_speed;

@@ -13,7 +13,6 @@
 #include <cmath>
 
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
-//enum Overlay{Victory = 0, Start_Btn, SelectLevel_Btn, Start_HoverBtn, SelectLevel_HoverBtn, MAX_IMAGE };
 static std::vector <Image> Images;
 static std::vector<Button> buttons;
 static std::vector<Enemies> enemy;

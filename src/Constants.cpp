@@ -19,10 +19,10 @@ const char* FontFile = "../Assets/Font/Roboto-Regular.ttf";
 const char* ButtonTest = "../Assets/Art/Button.png";
 const char* ButtonTest2 = "../Assets/Art/PlanetTexture.png";
 const char* boi = "../Assets/Art/boi.png";
-const char* Heart = "../Assets/Art/PlanetTexture.png";
+const char* HeartSprite = "../Assets/Art/Heart.png";
 
 // Player constants
-const float player_speed = 1.5f;
+const float player_speed = 2.5f;
 const float player_width = 50.0f;
 const float player_height = 50.0f;
 const float jumpspeed = 5.0f;

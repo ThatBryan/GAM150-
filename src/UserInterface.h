@@ -13,4 +13,8 @@ namespace UI {
 	void Draw();
 	void Buttons_Init();
 	void Buttons_Unload();
+
+	static int LivesCount;
+	void DecreaseLife();
+	void ResetLives();
 }

@@ -8,6 +8,7 @@ Graphics::Text LevelDisplay(strBuffer1, 0.5f);
 Graphics::Text TimerDisplay(strBuffer2, 0.5f);
 
 std::vector <Button> buttonTest;
+Image lives;
 
 void UI::Init() {
 
@@ -20,6 +21,10 @@ void UI::Init() {
 	memset(strBuffer, 0, 100 * sizeof(char));
 	memset(strBuffer1, 0, 100 * sizeof(char));
 	memset(strBuffer2, 0, 100 * sizeof(char));
+
+	UI::LivesCount = 3;
+
+	lives.Init(HeartSprite, 35.0f, 35.0f, AEVec2Zero());
 }
 
 void UI::Update() {
@@ -40,6 +45,9 @@ void UI::Draw() {
 		for (size_t i = 0; i < buttonTest.size(); ++i) {
 			buttonTest[i].Update();
 		}
+	for (int i = 0; i < UI::LivesCount; ++i) {
+		lives.Draw_Texture(AEVec2Set(lives.width / 2.0f + i * 50.0f , 50.0f), 255.0f);
+	}
 }
 
 void UI::Buttons_Init() {
@@ -55,7 +63,16 @@ void UI::Buttons_Init() {
 	buttonTest[1].Set_Text("Mute BGM");
 }
 
+void UI::DecreaseLife() {
+	UI::LivesCount--;
+}
+
+void UI::ResetLives() {
+	UI::LivesCount = 3;
+}
+
 void UI::Buttons_Unload()
 {
 	buttonTest.clear();
+	lives.Free();
 }
