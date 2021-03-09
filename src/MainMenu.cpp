@@ -96,6 +96,7 @@ void MainMenu::Unload(void)
 	buttons.clear();
 	player.clear();
 	tiles.clear();
+	EnemyCount = 0;
 }
 
 void MainMenu::StartGame(void) {

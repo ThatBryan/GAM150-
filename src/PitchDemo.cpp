@@ -45,7 +45,7 @@ void Demo::Init(void)
 	TileManager.push_back(&Demo_Tiles2);
 	TileManager.push_back(&Demo_Tiles3);
 
-	AEVec2 DemoEnemyPos = Demo_Tiles[2].spawnPos;
+	AEVec2 DemoEnemyPos = Demo_Tiles[4].spawnPos;
 	AEVec2 DemoEnemyPos2 = Demo_Tiles[6].spawnPos;
 	AEVec2 DemoEnemyPos3 = Demo_Tiles[5].spawnPos;
 	AEVec2 DemoEnemyPos4 = Demo_Tiles2[8].spawnPos;
@@ -55,10 +55,11 @@ void Demo::Init(void)
 
 	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
+	//Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
+	//Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
+	//Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2Add(DemoEnemyPos6, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
 
 	player.push_back(Player(Player::playerTex, player_width, player_height));
 	player[0].SetPos(AEVec2Sub(Demo_Tiles[0].spawnPos, AEVec2Set(0, -TILE_HEIGHT)));
@@ -69,20 +70,23 @@ void Demo::Init(void)
 
 	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 
-	buttons.push_back(Button(ButtonType::Color, 150.0f, 75.0f, 0.8f));
-	buttons.push_back(Button(ButtonType::Color, 150.0f, 75.0f, 0.8f));
-	buttons[0].Set_Text("Resume");
-	buttons[1].Set_Text("Menu");
-	buttons[0].Set_Callback(Utils::CheckPauseInput);
-	buttons[1].Set_Callback(Utils::ReturnToMenu);
 	AEVec2 Midpt{ Utils::GetScreenMiddle() };
-	buttons[0].Set_Position(AEVec2{ Midpt.x - buttons[0].GetWidth(), Midpt.y + 2 * buttons[0].GetHeight()});
+	// Regular colored button.
+	buttons.push_back(Button(ButtonType::Color, 150.0f, 75.0f, 0.8f));
+	buttons.push_back(Button(ButtonType::Color, 150.0f, 75.0f, 0.8f));
+	buttons[1].Set_Callback(Utils::ReturnToMenu);
 	buttons[1].Set_Position(AEVec2{Midpt.x + buttons[0].GetWidth(), Midpt.y + 2 * buttons[0].GetHeight()});
+	buttons[1].Set_Text("Menu");
+
+	// Textured button.
+	buttons[0].Set_Text("Resume");
+	buttons[0].Set_Callback(Utils::CheckPauseInput);
+	buttons[0].Set_Position(AEVec2{ Midpt.x - buttons[0].GetWidth(), Midpt.y + 2 * buttons[0].GetHeight()});
 	buttons[0].SetType(ButtonType::Texture);
 	buttons[0].Set_Texture(ButtonTest2);
 
-	buttons[0].SetStateColor(StateColor::Idle, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
-	buttons[0].SetStateColor(StateColor::Hovered, Color{ 255.0f, 0.f, 0.f, 255.0f });
+	buttons[0].SetStateColor(ButtonState::Idle, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
+	buttons[0].SetStateColor(ButtonState::Hovered, Color{ 255.0f, 0.f, 0.f, 255.0f });
 	buttons[0].Set_TextColor(Color{ 255.0f, 255.0f, 255.0f, 255.0f });
 }
 
@@ -166,6 +170,7 @@ void Demo::Render(void)
 	}
 	player[0].Render();
 	UpdateOverlay();
+	AEVec2 Mid{ Utils::GetScreenMiddle() };
 }
 
 void Demo::UpdateManager(void)
