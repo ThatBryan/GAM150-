@@ -81,7 +81,6 @@ void Enemies::Update_Position(void)
 		if (jumpCounter < 0.0f)
 		{
 			squirrel_jumpspeed *= -1.0f;
-			printf("Change y vel\n");
 			jumpCounter = Enemies::jump_counter;
 		}
 

@@ -12,7 +12,7 @@ float Player::gravityStrength = 100.0f;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},
 active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpspeed_y{jumpspeed},
-lives{3}
+lives{3}, direction{MovementState::Left}
 {
 	playerBB.color.SetColor(Color{ 0, 0, 0, 255.0f });
 	feetBB.color.SetColor(Color{ 255.0f, 255.0f, 0, 255.0f });
@@ -59,7 +59,7 @@ void Player::Unload(void) {
 void Player::Update_Position(void)
 {
 
-	if (!jump && (AEInputCheckTriggered(AEVK_W) || AEInputCheckTriggered(AEVK_UP)))
+	if (!jump && !gravity && (AEInputCheckTriggered(AEVK_W) || AEInputCheckTriggered(AEVK_UP)))
 	{
 		if (!DebugMode) {
 			jump = TRUE;
@@ -84,24 +84,21 @@ void Player::Update_Position(void)
 	{
 		if (sprite.pos.x + sprite.width / 2 <= maxX)
 			sprite.pos.x += player_speed;
+
+		if (direction != MovementState::Left) {
+			ChangeDirection();
+			direction = MovementState::Left;
+		}
 	}
 
 	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
 	{
 		if (sprite.pos.x - sprite.width / 2 >= 0)
-		sprite.pos.x -= player_speed;
-	}
-	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
-	{
-		if (sprite.pos.x + sprite.width / 2 <= maxX)
-			sprite.pos.x += player_speed;
-
-	}
-	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT) && !AEInputCheckCurr(AEVK_W) && !AEInputCheckCurr(AEVK_UP))
-	{
-		if (sprite.pos.x - sprite.width / 2 >= 0)
-		{
 			sprite.pos.x -= player_speed;
+
+		if (direction != MovementState::Right) {
+			ChangeDirection();
+			direction = MovementState::Right;
 		}
 	}
 
@@ -126,6 +123,10 @@ void Player::Update_Position(void)
 	}
 	playerBB.pos = sprite.pos;
 	feetBB.pos = AEVec2Set(sprite.pos.x, sprite.pos.y + player_collider_offset);
+}
+
+void Player::ChangeDirection() {
+	sprite.width *= -1.0f;
 }
 
 void Player::CheckOutOfBound() {
