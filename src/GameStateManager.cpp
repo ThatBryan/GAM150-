@@ -1,6 +1,7 @@
 #include "GameStateManager.h"
 #include "PitchDemo.h"
 #include "MainMenu.h"
+#include "Splash.h"
 
 unsigned int gamestateInit;
 unsigned int gamestateCurr;
@@ -33,6 +34,24 @@ void GameStateManagerUpdate()
 
 	switch (gamestateCurr)
 	{
+	case GS_SPLASH:
+		GameStateLoad = Splash::Load;
+		GameStateInit = Splash::Init;
+		GameStateUpdate = Splash::Update;
+		GameStateDraw = Splash::Render;
+		GameStateFree = GameStatePlaceholder;
+		GameStateUnload = Splash::Unload;
+		break;
+
+	case GS_MAINMENU:
+		GameStateLoad = MainMenu::Load;
+		GameStateInit = MainMenu::Init;
+		GameStateUpdate = MainMenu::Update;
+		GameStateDraw = MainMenu::Render;
+		GameStateFree = GameStatePlaceholder;
+		GameStateUnload = MainMenu::Unload;
+		break;
+
 	case GS_GAMEPLAY:
 		GameStateLoad = Demo::Load;
 		GameStateInit = Demo::Init;
@@ -41,11 +60,6 @@ void GameStateManagerUpdate()
 		GameStateFree = Demo::Restart;
 		GameStateUnload = Demo::Exit;
 		break;
-	case GS_MENU:
-		GameStateLoad = MainMenu::Load;
-		GameStateInit = MainMenu::Init;
-		GameStateUpdate = MainMenu::Update;
-		GameStateUnload = MainMenu::Exit;
 	default:
 		printf("FATAL ERROR!\n");
 	}

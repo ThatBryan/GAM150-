@@ -2,9 +2,11 @@
 #include "AEEngine.h"
 
 // File Paths
-extern const char* DigipenLogo;
-extern const char* VictoryScreen;
-extern const char* GameoverScreen;
+extern const char* DigipenLogoRed;
+extern const char* DigipenLogoWhite;
+extern const char* PauseOverlay;
+extern const char* VictoryOverlay;
+extern const char* GameoverOverlay;
 extern const char* WaterSlimeSprite;
 extern const char* FlyingEnemySprite;
 extern const char* SquirrelSprite;
@@ -14,6 +16,9 @@ extern const char* GoalTile;
 extern const char* GreyTile;
 extern const char* SpecialTile;
 extern const char* FontFile;
+extern const char* ButtonTest;
+extern const char* ButtonTest2;
+extern const char* boi;
 
 // Player constants
 extern const float player_speed;
@@ -22,7 +27,6 @@ extern const float player_height;
 extern const float jumpspeed;
 extern const float enemy_width;
 extern const float enemy_height;
-extern const float gravity_strength;
 extern const float player_collider_offset;
 
 // Tile constants

@@ -1,5 +1,8 @@
 #include "Tiles.h"
 #include <iostream>
+#include "Player.h"
+#include "Enemy.h"
+#include "Utilities.h"
 
 extern std::vector <Player> player;
 
@@ -7,7 +10,7 @@ Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image
 active{ true }, collapsing{ false }, ID{ 0 }, collapseDelay{ TileCollapseDelay }, type{ TileType::Safe }, spawnPos{ 0, 0 },
 ColliderAABB{width, height}
 {
-	ColliderAABB.color.SetColor(150, 0, 0, 150);
+	ColliderAABB.color.SetColor(Color{ 150, 0, 0, 150 });
 }
 void Tiles::Collapse(void)
 {
@@ -31,7 +34,7 @@ void Tiles::CheckPlayerGoal(std::vector <Player>& player)
 {
 	if (type == TileType::Goal)
 	{
-		static AEVec2 GoalPoint = {image.pos.x, image.pos.y - image.height / 2 };
+		static AEVec2 GoalPoint = {image.pos.x, image.pos.y - image.height / 2  - 1.0f};
 		if (AETestPointToRect(&GoalPoint, &player[0].sprite.pos, player[0].sprite.width, player[0].sprite.height))
 			player[(player.size() - 1)].SetWin();
 	}
@@ -58,7 +61,7 @@ void Tiles::CheckEnemyStatus(std::vector <Enemies> enemy)
 	{
 		if (AETestRectToRect(&image.pos, image.width, image.height, &enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height))
 		{
-			if (!enemy[i].active)
+			if (!enemy[i].active && (type == TileType::Grass || type == TileType::Special))
 			{
 				collapsing = true;
 			}
@@ -66,7 +69,7 @@ void Tiles::CheckEnemyStatus(std::vector <Enemies> enemy)
 	}
 }
 
-void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& player)
+void Tiles::CheckPlayerGravity(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& player)
 {
 	for (size_t i = 0; i < TileManager.size(); i++)
 	{
@@ -74,12 +77,11 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 		{
 			if (TileManager[i]->at(j).active == false)
 				continue;
-			if (AETestRectToRect(&TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height / 2,
-				&player[0].sprite.pos, 20.0f, 0))
-			{
+			if(Utils::ColliderAABB(TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height,
+				player[0].feetBB.pos, player[0].feetBB.width, player[0].feetBB.height)){
 				player[0].gravity = false;
-				if (DebugMode)
-					printf("Don't apply gravity\n");
+				//if (DebugMode)
+					//printf("Don't apply gravity\n");
 				return;
 			}
 		}
@@ -112,12 +114,14 @@ void Tiles::CollapseNext(std::vector <Tiles>& tiles)
 			{
 				if (tiles[i].ID + 1 < (int)tiles.size())
 				{
-					tiles[i + 1].collapsing = true;
+					if(tiles[i + 1].type == TileType::Grass || tiles[i + 1].type == TileType::Special)
+						tiles[i + 1].collapsing = true;
 				}
 
 				if ((tiles[i].ID - 1) >= 0)
 				{
-					tiles[i - 1].collapsing = true;
+					if (tiles[i - 1].type == TileType::Grass || tiles[i - 1].type == TileType::Special)
+						tiles[i - 1].collapsing = true;
 				}
 			}
 		}
@@ -138,6 +142,8 @@ void Tiles::Update()
 	CheckPos();
 	Collapse();
 	DecreaseLifespan();
+	if(collapsing)
+		TileShake();
 
 }
 void Tiles::Render() {
@@ -161,7 +167,7 @@ void Tiles::UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& play
 }
 
 void Tiles::LoadTex() {
-	for (TileType i = TileType::Grass; i < TileType::Max;) {
+	for (TileType i = TileType::Grass; i < TileType::Max; ++i) {
 		const char* pTex{ nullptr };
 		switch (i) {
 		case TileType::Grass:
@@ -181,10 +187,8 @@ void Tiles::LoadTex() {
 		}
 		tileTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex);
 		AE_ASSERT_MESG(pTex, "Failed to create texture!");
-		i = static_cast<TileType>(static_cast<int>(i) + 1);
 	}
 }
-
 void Tiles::Unload()
 {
 	for (size_t i = 0; i < static_cast<int>(TileType::Max); i++)
@@ -192,8 +196,15 @@ void Tiles::Unload()
 		AEGfxTextureUnload(tileTex[i]);
 	}
 }
+TileType& operator++(TileType& rhs) {
+	rhs = static_cast<TileType>((static_cast<int>(rhs) + 1));
+	return rhs;
+}
 
-
+void Tiles::TileShake(void) {
+	AEVec2 ShakeStrength{Utils::RandomRangeFloat(-0.5f, 0.5f), Utils::RandomRangeFloat(-0.5f, 0.5f) };
+	image.pos = AEVec2Add(image.pos, ShakeStrength);
+}
 
 //void Tiles::CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager)
 //{
