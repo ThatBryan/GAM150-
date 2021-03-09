@@ -49,9 +49,9 @@ void Demo::Init(void)
 
 	AEVec2 DemoEnemyPos = Demo_Tiles[0].spawnPos;
 	AEVec2 DemoEnemyPos2 = Demo_Tiles[6].spawnPos;
-	AEVec2 DemoEnemyPos3 = Demo_Tiles[9].spawnPos;
-	AEVec2 DemoEnemyPos4 = Demo_Tiles2[8].spawnPos;
-	AEVec2 DemoEnemyPos5 = Demo_Tiles2[5].spawnPos;
+	AEVec2 DemoEnemyPos3 = Demo_Tiles[7].spawnPos;
+	AEVec2 DemoEnemyPos4 = Demo_Tiles2[5].spawnPos;
+	AEVec2 DemoEnemyPos5 = Demo_Tiles2[4].spawnPos;
 	AEVec2 DemoEnemyPos6 = Demo_Tiles3[4].spawnPos;
 	AEVec2 Offset = {0, -TILE_HEIGHT};
 
