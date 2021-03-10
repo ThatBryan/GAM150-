@@ -80,7 +80,6 @@ void Player::Update_Position(void)
 			}
 			if (!gravity) // reset counter if player's feet touches the ground
 			{
-				jump = true;
 				jumpvel = 5.0f;
 			}
 		}

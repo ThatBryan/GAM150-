@@ -38,8 +38,8 @@ void Demo::Init(void)
 	Tiles::AddTileRow(Demo_Tiles, TileType::Grass, static_cast<int>((width - 2 - 4)), TILE_WIDTH, TILE_HEIGHT, AEVec2{X, Y / 3.0f });
 	Tiles::AddTileRow(Demo_Tiles2, TileType::Special, static_cast<int>(width - 2), TILE_WIDTH, TILE_HEIGHT, AEVec2{X, Y });
 	Tiles::AddTileRow(Demo_Tiles2, TileType::Goal, 2, TILE_WIDTH, TILE_HEIGHT, AEVec2{X, Y });
-	Tiles::AddTile(Demo_Tiles2, TileType::Grass, 25.0f, 25.0f, AEVec2{ 200.0f, 350.0f });
-	Tiles::AddTile(Demo_Tiles2, TileType::Grass, 25.0f, 25.0f, AEVec2{ 250.0f, 300.0f });
+	Tiles::AddTile(Demo_Tiles2, TileType::Grass, 35.0f, 35.0f, AEVec2{ 200.0f, 350.0f });
+	Tiles::AddTile(Demo_Tiles2, TileType::Grass, 35.0f, 35.0f, AEVec2{ 250.0f, 300.0f });
 	Tiles::AddTileRow(Demo_Tiles3, TileType::Grass, static_cast<int>(width), TILE_WIDTH, TILE_HEIGHT, AEVec2{ X, Y + Y / 1.5f });
 
 

@@ -75,6 +75,34 @@ void Utils::ReturnToMenu(void) {
 }
 
 bool Utils::ColliderAABB(AEVec2 A, f32 A_width, f32 A_height, AEVec2 B, f32 B_width, f32 B_height) {
+	
+	float x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, x7, y7, x8, y8;
+
+	// Bottom
+	x1 = A.x + 1 / 4 * A_width;
+	y1 = A.y;
+	x2 = A.x + 3 / 4 * A_width;
+	y2 = A.y;
+
+	// Right
+	x3 = A.x + A_width;
+	y3 = A.y + 1 / 4 * A_width;
+	x4 = A.x + A_width;
+	y4 = A.y + 3 / 4 * A_width;
+
+	// Top
+	x5 = A.x + 1 / 4 * A_width;
+	y5 = A.y + A_height;
+	x6 = A.x + 3 / 4 * A_width;
+	y6 = A.y + A_height;
+
+	// Left
+	x7 = A.x;
+	y7 = A.y + 1 / 4 * A_width;
+	x8 = A.x;
+	y8 = A.y + 3 / 4 * A_width;
+
+
 	if (A.x + A_width / 2.0f < B.x - B_width / 2.0f ||
 		A.y - A_height / 2.0f > B.y + B_height / 2.0f ||
 		A.x - A_width / 2.0f > B.x + B_width / 2.0f ||
@@ -83,5 +111,9 @@ bool Utils::ColliderAABB(AEVec2 A, f32 A_width, f32 A_height, AEVec2 B, f32 B_wi
 		//printf("%.2f %.2f %.2f %.2f\n", B.x, B.y, B_width, B_height);
 		return false;
 	}
+
+	
+
+
 	return true;
 }
