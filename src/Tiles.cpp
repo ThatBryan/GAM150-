@@ -18,7 +18,7 @@ void Tiles::Collapse(void)
 	{
 		if (collapseDelay <= 0)
 		{
-			image.pos.y += TileCollapseSpeed;
+			image.pos.y += TileCollapseSpeed * g_dt;
 		}
 	}
 	if (type == TileType::Special) {
@@ -59,9 +59,9 @@ void Tiles::CheckEnemyStatus(std::vector <Enemies> enemy)
 {
 	for (size_t i = 0; i < enemy.size(); i++)
 	{
-		if (AETestRectToRect(&image.pos, image.width, image.height, &enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height))
+		if (enemy[i].active == false && (type == TileType::Grass || type == TileType::Special))
 		{
-			if (!enemy[i].active && (type == TileType::Grass || type == TileType::Special))
+			if (Utils::ColliderAABB(image.pos, image.width, image.height, enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height))
 			{
 				collapsing = true;
 			}
@@ -80,6 +80,7 @@ void Tiles::CheckPlayerGravity(std::vector <std::vector<Tiles>*>& TileManager, s
 			if(Utils::ColliderAABB(TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height,
 				player[0].feetBB.pos, player[0].feetBB.width, player[0].feetBB.height)){
 				player[0].gravity = false;
+				player[0].jump = false;
 				//if (DebugMode)
 					//printf("Don't apply gravity\n");
 				return;
@@ -98,11 +99,19 @@ void Tiles::AddTileRow(std::vector <Tiles>& tile, TileType type, const int count
 	{
 		tile.push_back(Tiles(temp, width, height));
 		tile[i].type = type;
-		tile[i].ID = static_cast<short>(i);
+		//tile[i].ID = static_cast<short>(i);
 		tile[i].spawnPos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2));
 		tile[i].image.pos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2));
 	}
 
+}
+void Tiles::AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, const f32 height, AEVec2 pos) {
+	AEGfxTexture* temp = tileTex[static_cast<int>(type)];
+	tile.push_back(Tiles(temp, width, height));
+	tile[tile.size() - 1].type = type;
+	//tile[tile.size() - 1].ID = tile.size() - 1;
+	tile[tile.size() - 1].image.pos = AEVec2Set(pos.x + width / 2.0f, pos.y + height / 2.0f);
+	tile[tile.size() - 1].spawnPos = tile[tile.size() - 1].image.pos;
 }
 
 void Tiles::CollapseNext(std::vector <Tiles>& tiles)
@@ -110,15 +119,14 @@ void Tiles::CollapseNext(std::vector <Tiles>& tiles)
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
 		if (tiles[i].type == TileType::Grass || tiles[i].type == TileType::Special) {
-			if (tiles[i].collapsing && (tiles[i].collapseDelay <= 0))
-			{
-				if (tiles[i].ID + 1 < (int)tiles.size())
+			if (tiles[i].collapseDelay <= 0) {
+
+				if (i < tiles.size() - 1)//&& tiles[i].i)
 				{
 					if(tiles[i + 1].type == TileType::Grass || tiles[i + 1].type == TileType::Special)
 						tiles[i + 1].collapsing = true;
 				}
-
-				if ((tiles[i].ID - 1) >= 0)
+				if (i > 0)
 				{
 					if (tiles[i - 1].type == TileType::Grass || tiles[i - 1].type == TileType::Special)
 						tiles[i - 1].collapsing = true;
@@ -171,16 +179,16 @@ void Tiles::LoadTex() {
 		const char* pTex{ nullptr };
 		switch (i) {
 		case TileType::Grass:
-			pTex = GrassTile;
+			pTex = FP::GrassTile;
 			break;
 		case TileType::Goal:
-			pTex = GoalTile;
+			pTex = FP::GoalTile;
 			break;
 		case TileType::Safe:
-			pTex = GreyTile;
+			pTex = FP::GreyTile;
 			break;
 		case TileType::Special:
-			pTex = SpecialTile;
+			pTex = FP::SpecialTile;
 			break;
 		default:
 			return;
@@ -204,6 +212,24 @@ TileType& operator++(TileType& rhs) {
 void Tiles::TileShake(void) {
 	AEVec2 ShakeStrength{Utils::RandomRangeFloat(-0.5f, 0.5f), Utils::RandomRangeFloat(-0.5f, 0.5f) };
 	image.pos = AEVec2Add(image.pos, ShakeStrength);
+}
+void Tiles::TestingManager(std::vector<std::vector<Tiles>*>& TileManager) {
+	for (size_t i = 0; i < TileManager.size(); ++i) {
+		for (size_t j = 0; j < TileManager[i]->size(); ++j) {
+			if (TileManager[i]->at(j).type == TileType::Grass || TileManager[i]->at(j).type == TileType::Special) {
+				if (TileManager[i]->at(j).collapseDelay <= 0) {
+					if (i < TileManager.size() - 1){
+						if (TileManager[i]->at(j).type == TileType::Grass || TileManager[i]->at(j).type == TileType::Special)
+							TileManager[i]->at(j).collapsing = true;
+					}
+					if (i > 0){
+						if (TileManager[i]->at(j).type == TileType::Grass || TileManager[i]->at(j).type == TileType::Special)
+							TileManager[i]->at(j).collapsing = true;
+					}
+				}
+			}
+		}
+	}
 }
 
 //void Tiles::CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager)

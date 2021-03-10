@@ -13,9 +13,9 @@ const float splashDuration = 3.0f;
 void Splash::Init() {
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	if (Utils::RandomRangeInt(0, 1))
-		splash.Init(DigipenLogoRed, 800.0f, 194.0f,Utils::GetScreenMiddle());
+		splash.Init(FP::DigipenLogoRed, 800.0f, 194.0f,Utils::GetScreenMiddle());
 	else
-		splash.Init(DigipenLogoWhite, 800.0f, 194.0f, Utils::GetScreenMiddle());
+		splash.Init(FP::DigipenLogoWhite, 800.0f, 194.0f, Utils::GetScreenMiddle());
 
 	splashLife = splashDuration;
 	alpha = 255.0f;

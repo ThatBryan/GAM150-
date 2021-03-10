@@ -13,7 +13,6 @@
 #include <cmath>
 
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
-//enum Overlay{Victory = 0, Start_Btn, SelectLevel_Btn, Start_HoverBtn, SelectLevel_HoverBtn, MAX_IMAGE };
 static std::vector <Image> Images;
 static std::vector<Button> buttons;
 static std::vector<Enemies> enemy;
@@ -21,6 +20,7 @@ static std::vector<Tiles> tiles;
 static std::vector<Player> player;
 static Graphics::Text Title;
 static AEVec2 ScreenMid;
+static std::vector<Graphics::Circle> TEST;
 
 void MainMenu::Init(void)
 {
@@ -45,6 +45,8 @@ void MainMenu::Init(void)
 	Title.SetText(const_cast<s8*>("JUMPERMAN"));
 	Title.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	Title.SetScale(1.0f);
+	TEST.push_back(Graphics::Circle(50.0f , 50.0f));
+	TEST[0].pos = Utils::GetScreenMiddle();
 }
 
 void MainMenu::Update(void)
@@ -70,6 +72,7 @@ void MainMenu::Render() {
 	}
 	player[0].sprite.Draw_Texture(255.0f);
 	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - AEGetWindowHeight() / 4));
+	TEST[0].Draw(255.0f);
 }
 
 void MainMenu::Load(void)

@@ -39,19 +39,21 @@ void Demo::Init(void)
 	UI::Init();
 	background.SetColor(Color{ 51.0f, 215.0f, 255.0f, 255.0f });
 
-	const float TILE_HEIGHT{ 75.0f };
-	const float TILE_WIDTH{ 100.0f };
+	const float TILE_HEIGHT{ 60.0f };
+	const float TILE_WIDTH{ 75.0f };
 	const float X = TILE_WIDTH / 2;
 	const float Y = static_cast<float>(AEGetWindowHeight() / 2);
 	const float width = static_cast<float>(AEGetWindowWidth() / TILE_WIDTH + 1);
 
 
-	Tiles::AddTileRow(Demo_Tiles, TileType::Special, 4, TILE_WIDTH, TILE_HEIGHT, AEVec2{ X, Y / 3.0f });
-	Tiles::AddTileRow(Demo_Tiles, TileType::Safe, 2, TILE_WIDTH, TILE_HEIGHT, AEVec2{X, Y / 3.0f });
-	Tiles::AddTileRow(Demo_Tiles, TileType::Grass, static_cast<int>((width - 2 - 4)), TILE_WIDTH, TILE_HEIGHT, AEVec2{X, Y / 3.0f });
+	Tiles::AddTileRow(Demo_Tiles, TileType::Special, 4, TILE_WIDTH, TILE_HEIGHT, AEVec2{ X, Y / 2.0f });
+	Tiles::AddTileRow(Demo_Tiles, TileType::Safe, 2, TILE_WIDTH, TILE_HEIGHT, AEVec2{X, Y / 2.0f });
+	Tiles::AddTileRow(Demo_Tiles, TileType::Grass, static_cast<int>((width - 2 - 4)), TILE_WIDTH, TILE_HEIGHT, AEVec2{X, Y / 2.0f });
 	Tiles::AddTileRow(Demo_Tiles2, TileType::Grass, static_cast<int>(width - 2), TILE_WIDTH, TILE_HEIGHT, AEVec2{X, Y });
 	Tiles::AddTileRow(Demo_Tiles2, TileType::Goal, 2, TILE_WIDTH, TILE_HEIGHT, AEVec2{X, Y });
-	Tiles::AddTileRow(Demo_Tiles3, TileType::Grass, static_cast<int>(width), TILE_WIDTH, TILE_HEIGHT, AEVec2{ X, Y + Y / 1.5f });
+	Tiles::AddTile(Demo_Tiles2, TileType::Grass, 25.0f, 25.0f, AEVec2{ 200.0f, 350.0f });
+	Tiles::AddTile(Demo_Tiles2, TileType::Grass, 25.0f, 25.0f, AEVec2{ 250.0f, 300.0f });
+	Tiles::AddTileRow(Demo_Tiles3, TileType::Grass, static_cast<int>(width), TILE_WIDTH, TILE_HEIGHT, AEVec2{ X, Y + Y / 2 });
 
 
 	TileManager.push_back(&Demo_Tiles);
@@ -60,30 +62,30 @@ void Demo::Init(void)
 
 	AEVec2 DemoEnemyPos = Demo_Tiles[0].spawnPos;
 	AEVec2 DemoEnemyPos2 = Demo_Tiles[6].spawnPos;
-	AEVec2 DemoEnemyPos3 = Demo_Tiles[9].spawnPos;
-	AEVec2 DemoEnemyPos4 = Demo_Tiles2[8].spawnPos;
+	AEVec2 DemoEnemyPos3 = Demo_Tiles[6].spawnPos;
+	AEVec2 DemoEnemyPos4 = Demo_Tiles2[6].spawnPos;
 	AEVec2 DemoEnemyPos5 = Demo_Tiles2[5].spawnPos;
 	AEVec2 DemoEnemyPos6 = Demo_Tiles3[4].spawnPos;
-	AEVec2 Offset = {0, -TILE_HEIGHT};
+	AEVec2 Offset = {0, -TILE_HEIGHT + 10.0f};
 
-	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);/*
+	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);*/
+	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
+	//Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2Add(DemoEnemyPos6, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
 
 	player.push_back(Player(Player::playerTex, player_width, player_height));
 	player[0].SetPos(AEVec2Sub(Demo_Tiles[0].spawnPos, AEVec2Set(0, -TILE_HEIGHT)));
 
-	Images[Pause].Init(PauseOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
-	Images[Victory].Init(VictoryOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
-	Images[Defeat].Init(GameoverOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+	Images[Pause].Init(FP::PauseOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+	Images[Victory].Init(FP::VictoryOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+	Images[Defeat].Init(FP::GameoverOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 
 	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 
 	AEVec2 Midpt{ Utils::GetScreenMiddle() };
+
 	// Regular colored button.
 	buttons.push_back(Button(ButtonType::Color, 150.0f, 75.0f, 0.8f));
 	buttons.push_back(Button(ButtonType::Color, 150.0f, 75.0f, 0.8f));
@@ -96,7 +98,7 @@ void Demo::Init(void)
 	buttons[0].Set_Callback(Utils::CheckPauseInput);
 	buttons[0].Set_Position(AEVec2{ Midpt.x - buttons[0].GetWidth(), Midpt.y + 2 * buttons[0].GetHeight()});
 	buttons[0].SetType(ButtonType::Texture);
-	buttons[0].Set_Texture(ButtonTest2);
+	buttons[0].Set_Texture(FP::ButtonTest2);
 
 	buttons[0].SetStateColor(ButtonState::Idle, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
 	buttons[0].SetStateColor(ButtonState::Hovered, Color{ 255.0f, 0.f, 0.f, 255.0f });
@@ -166,6 +168,7 @@ void Demo::Restart(void)
 	player[0].SetLives(3);
 	paused = false;
 	app_time = 0;
+	UI::ResetLives();
 }
 
 void Demo::Render(void)
@@ -210,7 +213,7 @@ void Demo::CollapsingManager(void)
 {
 	Tiles::CollapseNext(Demo_Tiles);
 	Tiles::CollapseNext(Demo_Tiles2);	
-	Tiles::CollapseNext(Demo_Tiles3);
+	//Tiles::CollapseNext(Demo_Tiles3);
 }
 
 void Demo::UpdateOverlay() {

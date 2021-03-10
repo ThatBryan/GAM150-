@@ -35,25 +35,21 @@ void Color::Decrement(float i) {
 		alpha = 1.0f;
 }
 
-Graphics::Rect::Rect(const f32 width, const f32 height, const f32 direction) : direction{direction}, transformMtx{NULL},
-width{width}, height{height}, pos{0, 0}, pMesh{rectMesh}
+
+void Graphics::Load_Meshes(void)
 {
-	color.SetColor(Color{ 255, 255, 255, 255 });
+	Mesh::Rect = Graphics::Mesh_Rectangle();
+	AE_ASSERT_MESG(Mesh::Rect, "fail to create object!!");
+
+	Mesh::Circle = Graphics::Mesh_Circle();
+	AE_ASSERT_MESG(Mesh::Circle, "fail to create object!!");
 }
 
 void Graphics::Free() {
-	AEGfxDestroyFont(fontID);
-	AEGfxMeshFree(rectMesh);
+	AEGfxDestroyFont(font::ID);
+	AEGfxMeshFree(Mesh::Rect);
+	AEGfxMeshFree(Mesh::Circle);
 }
-
-Graphics::Text::Text(s8* textBuffer, const f32 scale) : scale{ scale }, pos{ 0, 0 },
-height{ 0 }, width{ 0 }, buffer{ textBuffer }
-{
-	Text::color.SetColor(Color{ 255.0f, 255.0f, 255.0f, 255.0f });
-}
-
-Graphics::Text::Text() : scale{0}, pos{ 0, 0 },
-height{ 0 }, width{ 0 }, buffer{ nullptr }, color() {}
 
 AEGfxVertexList* Graphics::Mesh_Rectangle(void)
 {
@@ -70,10 +66,32 @@ AEGfxVertexList* Graphics::Mesh_Rectangle(void)
 	return AEGfxMeshEnd();
 }
 
+AEGfxVertexList* Graphics::Mesh_Circle(void)
+{
+	AEGfxMeshStart();
+	//Creating the circle shape
+	int Parts = 12;
+	for (float i = 0; i < Parts; ++i)
+	{
+		AEGfxTriAdd(
+			0.0f, 0.0f, 0xFFFFFF00, 0.0f, 0.0f,
+			cosf(i * 2 * PI / Parts) * 0.5f, sinf(i * 2 * PI / Parts) * 0.5f, 0xFFFFFF00, 0.0f, 0.0f,
+			cosf((i + 1) * 2 * PI / Parts) * 0.5f, sinf((i + 1) * 2 * PI / Parts) * 0.5f, 0xFFFFFF00, 0.0f, 0.0f);
+	}
+
+	return AEGfxMeshEnd();
+}
+
+Graphics::Rect::Rect(const f32 width, const f32 height, const f32 direction, AEGfxVertexList* Mesh) : direction{ direction }, transformMtx{ NULL },
+width{ width }, height{ height }, pos{ 0, 0 }, pMesh{Mesh}
+{
+	color.SetColor(Color{ 255, 255, 255, 255 });
+}
+
 void Graphics::Rect::SetMatrix(void)
 {
-	static f32 HalfWinHeight = Utils::Get_HalfWindowHeight();
-	static f32 HalfWinWindow = Utils::Get_HalfWindowWidth();
+	static f32 HalfWinHeight{ Utils::Get_HalfWindowHeight() };
+	static f32 HalfWinWindow{ Utils::Get_HalfWindowWidth() };
 	AEMtx33	trans, rot, scale;
 	AEMtx33Scale(&scale, width, height);
 	AEMtx33Rot(&rot, AEDegToRad(direction));
@@ -125,6 +143,22 @@ void Graphics::Rect::DrawTexture(AEGfxTexture* pTex, Color color, const f32 alph
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
+Graphics::Circle::Circle(const f32 width, const f32 height, const f32 direction, AEGfxVertexList* Mesh) : Rect(width, height, direction, Mesh)
+{
+	color.SetColor(Color{ 255, 255, 255, 255 });
+}
+
+Graphics::Text::Text(s8* textBuffer, const f32 scale) : scale{ scale }, pos{ 0, 0 },
+height{ 0 }, width{ 0 }, buffer{ textBuffer }
+{
+	Text::color.SetColor(Color{ 255.0f, 255.0f, 255.0f, 255.0f });
+}
+
+Graphics::Text::Text() : scale{ 0 }, pos{ 0, 0 },
+height{ 0 }, width{ 0 }, buffer{ nullptr }, color() {}
+
+
+
 void Graphics::Text::SetText(s8* text) {
 	buffer = text;
 }
@@ -133,23 +167,23 @@ void Graphics::Text::Draw()
 {
 	AEVec2 drawPos = Graphics::Text::Calculate_Offset(pos);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxPrint(fontID, buffer, drawPos.x, drawPos.y, scale, color.r, color.g, color.b);
+	AEGfxPrint(font::ID, buffer, drawPos.x, drawPos.y, scale, color.r, color.g, color.b);
 }
 
 void Graphics::Text::Draw_Wrapped(const AEVec2 pos)
 {
-	AEGfxGetPrintSize(fontID, buffer, scale, width, height);
+	AEGfxGetPrintSize(font::ID, buffer, scale, width, height);
 	AEVec2 drawPos = Graphics::Text::Calculate_Offset(pos);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxPrint(fontID, buffer, drawPos.x - width / 2.0f, drawPos.y - height / 2.0f, scale, color.r, color.g, color.b);
+	AEGfxPrint(font::ID, buffer, drawPos.x - width / 2.0f, drawPos.y - height / 2.0f, scale, color.r, color.g, color.b);
 }
 
 AEVec2 Graphics::Text::Calculate_Offset(AEVec2 pos)
 {
-	static f32 HalfWinWidth = Utils::Get_HalfWindowWidth();
-	static f32 HalfWinHeight = Utils::Get_HalfWindowHeight();
-	static f32 WinHeight = static_cast<f32>(AEGetWindowHeight());
-	static f32 WinWidth = static_cast<f32>(AEGetWindowWidth());
+	f32 HalfWinWidth = Utils::Get_HalfWindowWidth();
+	f32 HalfWinHeight = Utils::Get_HalfWindowHeight();
+	f32 WinHeight = static_cast<f32>(AEGetWindowHeight());
+	f32 WinWidth = static_cast<f32>(AEGetWindowWidth());
 
 	AEVec2 Offset{0, 0};
 	if (pos.x < HalfWinWidth) // I want negative
@@ -176,7 +210,7 @@ AEVec2 Graphics::Text::Calculate_Offset(AEVec2 pos)
 
 AEVec2 Graphics::Text::GetBufferSize()
 {
-	AEGfxGetPrintSize(fontID, buffer, scale, width, height);
+	AEGfxGetPrintSize(font::ID, buffer, scale, width, height);
 	
 	return AEVec2{ width / 2 * AEGetWindowWidth(), height / 2 * AEGetWindowHeight() };
 }
