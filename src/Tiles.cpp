@@ -59,11 +59,13 @@ void Tiles::CheckEnemyStatus(std::vector <Enemies> enemy)
 {
 	for (size_t i = 0; i < enemy.size(); i++)
 	{
-		if (enemy[i].active == false && (type == TileType::Grass || type == TileType::Special))
+		if (enemy[i].getKilled() && (type == TileType::Grass || type == TileType::Special))
 		{
 			if (Utils::ColliderAABB(image.pos, image.width, image.height, enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height))
 			{
 				collapsing = true;
+				enemy[i].setKilled(false);
+				enemy[i].active = false;
 			}
 		}
 	}

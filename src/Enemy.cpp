@@ -13,7 +13,7 @@ Enemies::jump_counter = 0.5f, Enemies::squirrel_jumpspeed = 25.0f;
 
 Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
 spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, counter{ 0 }, jumpcounter{ 0 },
-velocity{ 0 }, jumpvelocity{ 0 }{
+velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }{
 	ID = EnemyCount;
 	EnemyCount++;
 	headBB.color.SetColor(Color{ 255.0f, 255.0, 255.0f, 255.0f });
@@ -26,7 +26,7 @@ void Enemies::Update_Position(void)
 	maxX = static_cast<f32>(AEGetWindowWidth());
 	maxY = static_cast<f32>(AEGetWindowHeight());
 
-	if (active) {
+	if (active && !killed) {
 		switch (type) {
 		case EnemyType::Slime:
 			Slime_Movement(maxX, maxY);
@@ -123,17 +123,31 @@ void Enemies::Slime_Movement(f32 maxX, f32 maxY)
 	headBB.pos.y -= slimeBBOffset;
 }
 
+void Enemies::DecrementAlpha(void)
+{
+	static float Timer = 2.0f;
+	if (Timer <= 0.0f)
+		Timer = 2.0f;
+	if (killed) {
+		Timer -= g_dt;
+		alpha = Timer / 2.0f * alpha;
+		printf("%.2f\n", alpha);
+	}
+
+}
+
 void Enemies::Update()
 {
 	Update_Position();
 	ApplyGravity();
+	DecrementAlpha();
 }
 
 void Enemies::Draw()
 {
 	if (active)
 	{
-		sprite.Draw_Texture(255.0f);
+		sprite.Draw_Texture(alpha);
 		if (DebugMode) {
 			headBB.Draw();
 			enemyBB.Draw();
@@ -183,6 +197,8 @@ void Enemies::Reset(std::vector <Enemies>& enemy)
 		enemy[i].sprite.pos = enemy[i].spawnPos;
 		enemy[i].active = true;
 		enemy[i].sprite.rotation = 0;
+		enemy[i].killed = false;
+		enemy[i].alpha = 255.0f;
 	}
 }
 void Enemies::Unload(void)

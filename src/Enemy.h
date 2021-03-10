@@ -22,9 +22,9 @@ private:
 	AEVec2 spawnPos;
 	Graphics::Rect headBB {enemy_width, 5.0f};
 	Graphics::Rect enemyBB {enemy_width, 10.0f};
-	bool isGravity;
+	bool isGravity, killed;
+	float counter, velocity, jumpcounter, jumpvelocity, alpha;
 	unsigned short ID;
-	float counter, velocity, jumpcounter, jumpvelocity;
 
 	static float slime_counter, slime_speed, slimeBBOffset;
 	static float bat_speed, bat_counter, batBBOffset;
@@ -37,6 +37,7 @@ private:
 	void Bat_Movement(f32 maxX, f32 maxY);
 	void Squirrel_Movement(f32 maxX, f32 maxY);
 	void Slime_Movement(f32 maxX, f32 maxY);
+	void DecrementAlpha(void);
 
 public:
 	Enemies(AEGfxTexture* filepath, const f32 width, const f32 height);
@@ -45,6 +46,8 @@ public:
 	void Update(void);
 	void Draw();
 	inline EnemyType GetType() { return type; }
+	inline bool getKilled() { return killed; }
+	inline void setKilled(bool status = true) { killed = status; }
 
 	void GravityCheck(std::vector <std::vector<Tiles>*>& TileManager);
 	// Add new enemy into the vector.

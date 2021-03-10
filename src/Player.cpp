@@ -156,7 +156,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 			{
 				if (Utils::ColliderAABB(enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, feetBB.pos, feetBB.width, feetBB.height)) {
 					//if (!DebugMode)
-						enemy[i].active = false;
+					enemy[i].setKilled();
 					if (DebugMode)
 						printf("enemy dies\n");
 				}

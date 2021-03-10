@@ -49,7 +49,7 @@ class Tiles
 		static void AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, const f32 height, AEVec2 pos);
 		// Collapse the tile on its left and right if it is collapsible.
 		static void CollapseNext(std::vector <Tiles>& tiles);
-		// Handles the collision between the enemy and tiles, and enemy with player.
+		// Handles the collision between the enemy and tiles, and enemy with player from the level.
 		static void UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& player, std::vector <Enemies>& enemy);
 };
 // Archieve
