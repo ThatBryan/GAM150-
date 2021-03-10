@@ -52,7 +52,7 @@ void Enemies::GravityCheck(std::vector <std::vector<Tiles>*>& TileManager) {
 				enemyBB.pos, enemyBB.width, enemyBB.height))
 			{
 				isGravity = false;
-				
+				return;
 			}
 		}
 	}
