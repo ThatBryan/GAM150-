@@ -42,6 +42,7 @@ class Tiles
 		// Resets the level.
 		static void Reset(std::vector <Tiles>& tiles);
 		static void CheckPlayerGravity(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& player);
+		static void TestingManager(std::vector<std::vector<Tiles>*>& TileManager);
 
 		// Add whole new row of tile.
 		static void AddTileRow(std::vector < Tiles>& tile, TileType type, const int count, const f32 width, const f32 height, const AEVec2 pos);
@@ -50,7 +51,6 @@ class Tiles
 		static void CollapseNext(std::vector <Tiles>& tiles);
 		// Handles the collision between the enemy and tiles, and enemy with player.
 		static void UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& player, std::vector <Enemies>& enemy);
-		static void TestingManager(std::vector<std::vector<Tiles>*>& TileManager);
 };
 // Archieve
 //static void CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager);

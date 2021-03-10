@@ -82,8 +82,8 @@ AEGfxVertexList* Graphics::Mesh_Circle(void)
 	return AEGfxMeshEnd();
 }
 
-Graphics::Rect::Rect(const f32 width, const f32 height, const f32 direction) : direction{ direction }, transformMtx{ NULL },
-width{ width }, height{ height }, pos{ 0, 0 }, pMesh{ Mesh::Rect }
+Graphics::Rect::Rect(const f32 width, const f32 height, const f32 direction, AEGfxVertexList* Mesh) : direction{ direction }, transformMtx{ NULL },
+width{ width }, height{ height }, pos{ 0, 0 }, pMesh{Mesh}
 {
 	color.SetColor(Color{ 255, 255, 255, 255 });
 }
@@ -143,64 +143,9 @@ void Graphics::Rect::DrawTexture(AEGfxTexture* pTex, Color color, const f32 alph
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-void Graphics::Circle::SetMatrix(void)
-{
-	f32 HalfWinHeight{ Utils::Get_HalfWindowHeight()};
-	f32 HalfWinWindow{ Utils::Get_HalfWindowWidth()};
-	AEMtx33	trans, rot, scale;
-	AEMtx33Scale(&scale, width, height);
-	AEMtx33Rot(&rot, AEDegToRad(direction));
-	AEMtx33Trans(&trans, -HalfWinWindow + pos.x, HalfWinHeight - pos.y);
-	AEMtx33 temp;
-	AEMtx33Concat(&temp, &rot, &scale);
-	AEMtx33Concat(&transformMtx, &trans, &temp);
-}
-
-Graphics::Circle::Circle(const f32 width, const f32 height, const f32 direction) : direction{ direction }, transformMtx{ NULL },
-width{ width }, height{ height }, pos{ 0, 0 }, pMesh{ Mesh::Circle }
+Graphics::Circle::Circle(const f32 width, const f32 height, const f32 direction, AEGfxVertexList* Mesh) : Rect(width, height, direction, Mesh)
 {
 	color.SetColor(Color{ 255, 255, 255, 255 });
-}
-void Graphics::Circle::Draw(const f32 alpha)
-{
-	SetMatrix();
-	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-
-	AEGfxTextureSet(NULL, 0.0f, 0.0f);
-	AEGfxSetTintColor(color.r, color.g, color.b, color.alpha);
-	AEGfxSetTransparency(alpha / colorcodeMax);
-
-	AEGfxSetTransform(transformMtx.m);
-	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
-}
-
-void Graphics::Circle::Draw(Color color, const f32 alpha)
-{
-	SetMatrix();
-	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-
-	AEGfxTextureSet(NULL, 0.0f, 0.0f);
-	AEGfxSetTintColor(color.r, color.g, color.b, color.alpha);
-	AEGfxSetTransparency(alpha / colorcodeMax);
-
-	AEGfxSetTransform(transformMtx.m);
-	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
-}
-
-void Graphics::Circle::DrawTexture(AEGfxTexture* pTex, Color color, const f32 alpha)
-{
-	SetMatrix();
-	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-
-	AEGfxTextureSet(pTex, 0.0f, 0.0f);
-	AEGfxSetTintColor(color.r, color.g, color.b, color.alpha);
-	AEGfxSetTransparency(alpha / colorcodeMax);
-
-	AEGfxSetTransform(transformMtx.m);
-	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
 Graphics::Text::Text(s8* textBuffer, const f32 scale) : scale{ scale }, pos{ 0, 0 },
