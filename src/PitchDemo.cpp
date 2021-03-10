@@ -55,15 +55,15 @@ void Demo::Init(void)
 	AEVec2 DemoEnemyPos6 = Demo_Tiles3[4].spawnPos;
 	AEVec2 Offset = {0, -TILE_HEIGHT + 10.0f};
 
-	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);/*
-	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);*/
-	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
+	//Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
+	//Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
+	//Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
+	//Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
 	//Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2Add(DemoEnemyPos6, Offset), enemy_width, enemy_height);
 
 	player.push_back(Player(Player::playerTex, player_width, player_height));
-	player[0].SetPos(AEVec2Sub(Demo_Tiles[0].spawnPos, AEVec2Set(0, -TILE_HEIGHT)));
+	player[0].SetPos(AEVec2Sub(Demo_Tiles3[0].spawnPos, AEVec2Set(0, TILE_HEIGHT)));
 
 	Images[Pause].Init(FP::PauseOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 	Images[Victory].Init(FP::VictoryOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
@@ -81,11 +81,11 @@ void Demo::Init(void)
 	buttons[1].Set_Text("Menu");
 
 	// Textured button.
-	buttons[0].Set_Text("Resume");
+	buttons[0].Set_Text("");
 	buttons[0].Set_Callback(Utils::CheckPauseInput);
 	buttons[0].Set_Position(AEVec2{ Midpt.x - buttons[0].GetWidth(), Midpt.y + 2 * buttons[0].GetHeight()});
 	buttons[0].SetType(ButtonType::Texture);
-	buttons[0].Set_Texture(FP::ButtonTest2);
+	buttons[0].Set_Texture(FP::ButtonTest);
 
 	buttons[0].SetStateColor(ButtonState::Idle, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
 	buttons[0].SetStateColor(ButtonState::Hovered, Color{ 255.0f, 0.f, 0.f, 255.0f });
@@ -182,7 +182,6 @@ void Demo::UpdateManager(void)
 		player[0].Update();
 		Tiles::UpdateManager(Demo_Tiles, player, enemy);
 		Tiles::UpdateManager(Demo_Tiles2, player, enemy);
-		Tiles::UpdateManager(Demo_Tiles3, player, enemy);
 		Tiles::CheckPlayerGravity(TileManager, player);
 		player[0].GravityManager();
 		for (size_t i = 0; i < enemy.size(); i++)
@@ -190,6 +189,7 @@ void Demo::UpdateManager(void)
 			enemy[i].Update();
 			enemy[i].GravityCheck(TileManager);
 		}
+		Tiles::UpdateManager(Demo_Tiles3, player, enemy);
 		player[0].CheckEnemyCollision(enemy);
 		CollapsingManager();
 	}
@@ -199,7 +199,7 @@ void Demo::CollapsingManager(void)
 {
 	Tiles::CollapseNext(Demo_Tiles);
 	Tiles::CollapseNext(Demo_Tiles2);	
-	//Tiles::CollapseNext(Demo_Tiles3);
+	Tiles::CollapseNext(Demo_Tiles3);
 }
 
 void Demo::UpdateOverlay() {

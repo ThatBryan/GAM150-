@@ -13,7 +13,7 @@ Enemies::jump_counter = 0.5f, Enemies::squirrel_jumpspeed = 25.0f;
 
 Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
 spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, counter{ 0 }, jumpcounter{ 0 },
-velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }{
+velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }, alphaTimer{ 1.0f }{
 	ID = EnemyCount;
 	EnemyCount++;
 	headBB.color.SetColor(Color{ 255.0f, 255.0, 255.0f, 255.0f });
@@ -60,7 +60,7 @@ void Enemies::GravityCheck(std::vector <std::vector<Tiles>*>& TileManager) {
 }
 
 void Enemies::ApplyGravity(void) {
-	if (isGravity)
+	if (isGravity && !killed)
 		sprite.pos.y += gravityStrength * g_dt;
 }
 
@@ -122,16 +122,16 @@ void Enemies::Slime_Movement(f32 maxX, f32 maxY)
 	enemyBB.pos = sprite.pos;
 	headBB.pos.y -= slimeBBOffset;
 }
-
 void Enemies::DecrementAlpha(void)
 {
-	static float Timer = 2.0f;
-	if (Timer <= 0.0f)
-		Timer = 2.0f;
+	static const float Timer{ alphaTimer };
+	static const float Alpha{ 255.0f };
+
+	if (alphaTimer <= 0)
+		active = false;
 	if (killed) {
-		Timer -= g_dt;
-		alpha = Timer / 2.0f * alpha;
-		printf("%.2f\n", alpha);
+		alphaTimer -= g_dt;
+		alpha = (alphaTimer / Timer) * Alpha;
 	}
 
 }
@@ -196,9 +196,10 @@ void Enemies::Reset(std::vector <Enemies>& enemy)
 	{
 		enemy[i].sprite.pos = enemy[i].spawnPos;
 		enemy[i].active = true;
-		enemy[i].sprite.rotation = 0;
 		enemy[i].killed = false;
+		enemy[i].sprite.rotation = 0;
 		enemy[i].alpha = 255.0f;
+		enemy[i].alphaTimer = 1.0f;
 	}
 }
 void Enemies::Unload(void)

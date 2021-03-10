@@ -23,7 +23,7 @@ private:
 	Graphics::Rect headBB {enemy_width, 5.0f};
 	Graphics::Rect enemyBB {enemy_width, 10.0f};
 	bool isGravity, killed;
-	float counter, velocity, jumpcounter, jumpvelocity, alpha;
+	float counter, velocity, jumpcounter, jumpvelocity, alpha, alphaTimer;
 	unsigned short ID;
 
 	static float slime_counter, slime_speed, slimeBBOffset;

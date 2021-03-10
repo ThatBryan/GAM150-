@@ -70,7 +70,7 @@ AEGfxVertexList* Graphics::Mesh_Circle(void)
 {
 	AEGfxMeshStart();
 	//Creating the circle shape
-	int Parts = 12;
+	int Parts = 30;
 	for (float i = 0; i < Parts; ++i)
 	{
 		AEGfxTriAdd(
@@ -78,7 +78,6 @@ AEGfxVertexList* Graphics::Mesh_Circle(void)
 			cosf(i * 2 * PI / Parts) * 0.5f, sinf(i * 2 * PI / Parts) * 0.5f, 0xFFFFFF00, 0.0f, 0.0f,
 			cosf((i + 1) * 2 * PI / Parts) * 0.5f, sinf((i + 1) * 2 * PI / Parts) * 0.5f, 0xFFFFFF00, 0.0f, 0.0f);
 	}
-
 	return AEGfxMeshEnd();
 }
 
@@ -105,11 +104,9 @@ void Graphics::Rect::Draw(const f32 alpha)
 {
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	
 	AEGfxTextureSet(NULL, 0.0f, 0.0f);
 	AEGfxSetTintColor(color.r, color.g , color.b, color.alpha);
 	AEGfxSetTransparency(alpha / colorcodeMax);
-
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
@@ -119,11 +116,9 @@ void Graphics::Rect::Draw(Color color, const f32 alpha)
 {
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-		
 	AEGfxTextureSet(NULL, 0.0f, 0.0f);
 	AEGfxSetTintColor(color.r, color.g, color.b, color.alpha);
 	AEGfxSetTransparency(alpha / colorcodeMax);
-
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
@@ -133,11 +128,9 @@ void Graphics::Rect::DrawTexture(AEGfxTexture* pTex, Color color, const f32 alph
 {
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-
 	AEGfxTextureSet(pTex, 0.0f, 0.0f);
 	AEGfxSetTintColor(color.r, color.g, color.b, color.alpha);
 	AEGfxSetTransparency(alpha / colorcodeMax);
-
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
