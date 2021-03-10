@@ -86,5 +86,6 @@ bool Utils::ColliderAABB(AEVec2 A, f32 A_width, f32 A_height, AEVec2 B, f32 B_wi
 		//printf("%.2f %.2f %.2f %.2f\n", B.x, B.y, B_width, B_height);
 		return false;
 	}
+
 	return true;
 }
