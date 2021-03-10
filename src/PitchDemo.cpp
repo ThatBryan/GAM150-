@@ -81,7 +81,7 @@ void Demo::Init(void)
 	buttons[1].Set_Text("Menu");
 
 	// Textured button.
-	buttons[0].Set_Text("Resume");
+	buttons[0].Set_Text("RESUME");
 	buttons[0].Set_Callback(Utils::CheckPauseInput);
 	buttons[0].Set_Position(AEVec2{ Midpt.x - buttons[0].GetWidth(), Midpt.y + 2 * buttons[0].GetHeight()});
 }

@@ -24,9 +24,9 @@ static std::vector<Graphics::Circle> TEST;
 
 void MainMenu::Init(void)
 {
+	ScreenMid = Utils::GetScreenMiddle();
 	MainMenu::Buttons_Init();
 	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
-	ScreenMid = Utils::GetScreenMiddle();
 
 	const float width = 80.0f, height = 100.0f;
 	int size = static_cast<int>(AEGetWindowWidth() / width);
