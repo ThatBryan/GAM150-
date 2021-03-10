@@ -21,7 +21,7 @@ private:
 	AEVec2 spawnPos;
 	Graphics::Rect headBB {enemy_width, 5.0f};
 	Graphics::Rect enemyBB {enemy_width, 10.0f};
-	bool isGravity, dirChange;
+	bool isGravity;
 	unsigned short ID;
 	float counter, velocity, jumpcounter, jumpvelocity;
 
@@ -41,6 +41,7 @@ public:
 	void Update(void);
 	void Draw();
 	inline EnemyType GetType() { return type; }
+
 	void GravityCheck(std::vector <std::vector<Tiles>*>& TileManager);
 	// Add new enemy into the vector.
 	static void LoadTex(void);

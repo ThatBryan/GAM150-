@@ -44,6 +44,26 @@ namespace Graphics
 			void SetMatrix();
 	};
 
+	class Circle
+	{
+	public:
+		Circle(const f32 width = 50.0f, const f32 height = 10.0f, const f32 direction = 0);
+
+		Color color;
+		AEVec2 pos;
+		f32 height, width;
+
+		void Draw(const f32 alpha = 150.0f);
+		void Draw(Color color, const f32 alpha = 150.0f);
+		void DrawTexture(AEGfxTexture* pTex, Color color, const f32 alpha = 150.0f);
+
+	private:
+		AEGfxVertexList* pMesh;
+		AEMtx33 transformMtx;
+		f32 direction;
+		void SetMatrix();
+	};
+
 	class Text
 	{
 		public:

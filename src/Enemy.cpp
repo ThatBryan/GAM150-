@@ -12,7 +12,7 @@ float Enemies::squirrel_counter = 4.0f, Enemies::squirrel_speed = 110.0f, Enemie
 Enemies::jump_counter = 0.5f, Enemies::squirrel_jumpspeed = 25.0f;
 
 Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
-spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, dirChange{ false }, counter{ 0 }, jumpcounter{ 0 },
+spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, counter{ 0 }, jumpcounter{ 0 },
 velocity{ 0 }, jumpvelocity{ 0 }
 {
 	ID = EnemyCount;
