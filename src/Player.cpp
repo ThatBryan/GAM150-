@@ -34,10 +34,10 @@ void Player::Reset(void)
 void Player::Update() {
 	//if(DebugMode)
 	//	sprite.rotation += 1;
-	CheckOutOfBound();
-	Update_Position();
 	if (lives <= 0)
 		SetLose();
+	CheckOutOfBound();
+	Update_Position();
 }
 void Player::Render(void)
 {
@@ -49,7 +49,7 @@ void Player::Render(void)
 	}
 }
 void Player::LoadTex(void) {
-	playerTex = AEGfxTextureLoad(PlayerSprite);
+	playerTex = AEGfxTextureLoad(FP::PlayerSprite);
 	AE_ASSERT_MESG(playerTex, "Failed to create texture!");
 }
 
@@ -90,7 +90,7 @@ void Player::Update_Position(void)
 			sprite.pos.x += player_speed * g_dt;
 
 		if (direction != MovementState::Right) {
-			ChangeDirection();
+			sprite.ReflectAboutYAxis();
 			direction = MovementState::Right;
 		}
 	}
@@ -101,7 +101,7 @@ void Player::Update_Position(void)
 			sprite.pos.x -= player_speed * g_dt;
 
 		if (direction != MovementState::Left) {
-			ChangeDirection();
+			sprite.ReflectAboutYAxis();
 			direction = MovementState::Left;
 		}
 
@@ -127,7 +127,7 @@ void Player::Update_Position(void)
 
 	}
 	playerBB.pos = sprite.pos;
-	feetBB.pos = AEVec2Set(sprite.pos.x, sprite.pos.y + player_collider_offset);
+	feetBB.pos = AEVec2Set(sprite.pos.x + player_collider_offset_x, sprite.pos.y + player_collider_offset_y);
 }
 
 void Player::ChangeDirection() {
@@ -159,7 +159,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 			if (Utils::ColliderAABB(enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, playerBB.pos, playerBB.width, playerBB.height))
 			{
 				if (Utils::ColliderAABB(enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, feetBB.pos, feetBB.width, feetBB.height)) {
-					if (!DebugMode)
+					//if (!DebugMode)
 						enemy[i].active = false;
 					if (DebugMode)
 						printf("enemy dies\n");

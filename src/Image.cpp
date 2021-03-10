@@ -6,7 +6,7 @@ Image::Image(const AEGfxTexture* pTex, const f32 width, const f32 height, const 
 width{width}, height{height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color(), transformMtx{NULL}
 {
 	this->pTex = const_cast<AEGfxTexture*>(pTex);
-	pMesh = rectMesh;
+	pMesh = Mesh::Rect;
 }
 
 Image::Image() : rotation{0}, width{0}, height{0}, pTex{ nullptr }, 

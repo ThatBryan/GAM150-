@@ -15,8 +15,8 @@ class Player
 private:
 	bool win, lose;
 	MovementState direction;
-	unsigned int lives;
-	float jumpvel;
+	int lives;
+	float jumpspeed_y;
 	static f32 gravityStrength;
 	void Update_Position(void);
 	void CheckOutOfBound(void);

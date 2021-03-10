@@ -13,6 +13,7 @@ static AEGfxTexture* enemyTex[static_cast<int>(EnemyType::Max)]{ nullptr };
 class Player;
 class Tiles;
 
+using fn_ptr = void(*)(void);
 class Enemies
 {
 private:
@@ -21,7 +22,7 @@ private:
 	AEVec2 spawnPos;
 	Graphics::Rect headBB {enemy_width, 5.0f};
 	Graphics::Rect enemyBB {enemy_width, 10.0f};
-	bool isGravity, dirChange;
+	bool isGravity;
 	unsigned short ID;
 	float counter, velocity, jumpcounter, jumpvelocity;
 
@@ -33,7 +34,9 @@ private:
 	// Private functions
 	void Update_Position(void);
 	void ApplyGravity(void);
-	void ChangeDirection();
+	void Bat_Movement(f32 maxX, f32 maxY);
+	void Squirrel_Movement(f32 maxX, f32 maxY);
+	void Slime_Movement(f32 maxX, f32 maxY);
 
 public:
 	Enemies(AEGfxTexture* filepath, const f32 width, const f32 height);
@@ -42,6 +45,7 @@ public:
 	void Update(void);
 	void Draw();
 	inline EnemyType GetType() { return type; }
+
 	void GravityCheck(std::vector <std::vector<Tiles>*>& TileManager);
 	// Add new enemy into the vector.
 	static void LoadTex(void);
