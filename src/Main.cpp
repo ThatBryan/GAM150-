@@ -35,9 +35,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	//int * pi = new int;
 	///////////////////////
-	// Variable declaration
-
-	int gGameRunning = 1;
 	// Variable declaration end
 	///////////////////////////
 

@@ -154,7 +154,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 {
 	for (size_t i = 0; i < enemy.size(); i++)
 	{
-		if (enemy[i].active)
+		if (!enemy[i].getKilled())
 		{
 			if (Utils::ColliderAABB(enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, playerBB.pos, playerBB.width, playerBB.height))
 			{

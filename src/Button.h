@@ -20,7 +20,7 @@ public:
 	void Set_Text(const char* text);
 	void Set_TextColor(Color color);
 	void SetStateColor(ButtonState state, Color color);
-	inline void SetType(ButtonType type) { this->type = type; }
+	inline void SetType(ButtonType Type) {type = Type; }
 	inline void Set_Texture(const char* pFile) { pTex = AEGfxTextureLoad(pFile); }
 	inline void FreeTexture() {if (pTex) AEGfxTextureUnload(pTex);}
 	inline float GetHeight() { return button.height; }

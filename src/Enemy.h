@@ -34,9 +34,9 @@ private:
 	// Private functions
 	void Update_Position(void);
 	void ApplyGravity(void);
-	void Bat_Movement(f32 maxX, f32 maxY);
-	void Squirrel_Movement(f32 maxX, f32 maxY);
-	void Slime_Movement(f32 maxX, f32 maxY);
+	void Bat_Movement(f32 maxX);
+	void Squirrel_Movement(f32 maxX);
+	void Slime_Movement(f32 maxX);
 	void DecrementAlpha(void);
 
 public:

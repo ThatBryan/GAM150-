@@ -30,13 +30,13 @@ void Tiles::Collapse(void)
 	}
 }
 
-void Tiles::CheckPlayerGoal(std::vector <Player>& player)
+void Tiles::CheckPlayerGoal(std::vector <Player>& Player)
 {
 	if (type == TileType::Goal)
 	{
 		static AEVec2 GoalPoint = {image.pos.x, image.pos.y - image.height / 2  - 1.0f};
-		if (AETestPointToRect(&GoalPoint, &player[0].sprite.pos, player[0].sprite.width, player[0].sprite.height))
-			player[(player.size() - 1)].SetWin();
+		if (AETestPointToRect(&GoalPoint, &Player[0].sprite.pos, Player[0].sprite.width, Player[0].sprite.height))
+			Player[(player.size() - 1)].SetWin();
 	}
 }
 
@@ -69,7 +69,7 @@ void Tiles::CheckEnemyStatus(std::vector<Enemies>& enemy)
 	}
 }
 
-void Tiles::CheckPlayerGravity(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& player)
+void Tiles::CheckPlayerGravity(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& Player)
 {
 	for (size_t i = 0; i < TileManager.size(); i++)
 	{
@@ -78,9 +78,9 @@ void Tiles::CheckPlayerGravity(std::vector <std::vector<Tiles>*>& TileManager, s
 			if (TileManager[i]->at(j).active == false)
 				continue;
 			if(Utils::ColliderAABB(TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height,
-				player[0].feetBB.pos, player[0].feetBB.width, player[0].feetBB.height)){
-				player[0].gravity = false;
-				player[0].jump = false;
+				Player[0].feetBB.pos, Player[0].feetBB.width, Player[0].feetBB.height)){
+				Player[0].gravity = false;
+				Player[0].jump = false;
 				//if (DebugMode)
 					//printf("Don't apply gravity\n");
 				return;
@@ -158,7 +158,7 @@ void Tiles::Render() {
 			ColliderAABB.Draw();
 	}
 }
-void Tiles::UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& player, std::vector <Enemies>& enemy)
+void Tiles::UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& Player, std::vector <Enemies>& enemy)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
@@ -166,7 +166,7 @@ void Tiles::UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& play
 			continue;
 
 		tiles[i].CheckEnemyStatus(enemy);
-		tiles[i].CheckPlayerGoal(player);
+		tiles[i].CheckPlayerGoal(Player);
 		tiles[i].Update();
 	}
 }

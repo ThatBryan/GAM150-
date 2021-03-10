@@ -110,7 +110,6 @@ void MainMenu::QuitGame(void) {
 }
 
 void MainMenu::Buttons_Init() {
-	AEVec2 ScreenMid{ Utils::GetScreenMiddle() };
 	buttons.push_back(Button(ButtonType::Color, 200.0f, 50.0f));
 	buttons[0].Set_Position(AEVec2Set(ScreenMid.x - buttons[0].GetWidth(), ScreenMid.y - buttons[0].GetHeight()));
 	buttons[0].Set_Text("Start");
