@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Utilities.h"
 
+
 Color::Color(float r, float g, float b, float a)
 {
 	this->r = r / colorcodeMax;
@@ -23,16 +24,15 @@ void Color::SetColor(Color color)
 
 
 void Color::Decrement(float i) {
-	r -= i;
-	b -= i;
+	r -= i * g_dt;
+	b -= i * g_dt;
+	g -= i * g_dt;
 	if (r <= 0)
-		r = 1.0f;
+		r *= -1.0f;
 	if (g <= 0)
-		g = 1.0f;
+		g *= -1.0f;
 	if (b <= 0)
-		b = 1.0f;
-	if (alpha <= 0)
-		alpha = 1.0f;
+		b *= -1.0f;
 }
 
 

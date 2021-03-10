@@ -11,7 +11,7 @@ struct Color
 	Color(float r, float g, float b, float a);
 	Color();
 	void SetColor(Color color);
-	void Decrement(float i = 0.0001f);
+	void Decrement(float i = 0.1f);
 };
 
 

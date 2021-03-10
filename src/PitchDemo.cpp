@@ -91,7 +91,7 @@ void Demo::Update(void)
 	if (!paused)
 		app_time += g_dt;
 	Audio.update();
-	background.Decrement();
+	//background.Decrement();
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 	Utils::CheckFullScreenInput();
 	Utils::CheckDebugMode();
