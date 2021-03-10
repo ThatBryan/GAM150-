@@ -13,6 +13,7 @@ void MapInit(void)
 {
 	Map map = GetMap();
 	AEVec2 Pos;
+	f32 grid_height{ static_cast<f32>(AEGetWindowHeight() / map.Height) }, grid_width{ static_cast<f32>(AEGetWindowWidth() / map.Width) };
 	for (int i = 0; i < map.Height; ++i)
 	{
 		for (int j = 0; j < map.Width; ++j)
@@ -21,45 +22,37 @@ void MapInit(void)
 			{
 				continue;
 			}
-			if (map.MapData[i][j] == static_cast<int>(TYPE_OBJECT::COLLAPSIBLE))
+			else if (map.MapData[i][j] == static_cast<int>(TYPE_OBJECT::COLLAPSIBLE))
 			{
-				Tiles::AddTile(tilemap, TileType::Grass, AEGetWindowWidth() / map.Width, AEGetWindowHeight() / map.Height, AEVec2Set( j * 80, i * 80 ));
-				continue;
+				Tiles::AddTile(tilemap, TileType::Grass, grid_width, grid_height, AEVec2Set( j * grid_width, i * grid_height ));
 			}
-			if (map.MapData[i][j] == static_cast<int>(TYPE_OBJECT::NON_COLLAPSIBLE))
+			else if (map.MapData[i][j] == static_cast<int>(TYPE_OBJECT::NON_COLLAPSIBLE))
 			{
-				Tiles::AddTile(tilemap, TileType::Safe, AEGetWindowWidth() / map.Width, AEGetWindowHeight() / map.Height, AEVec2Set(j * 80, i * 80));
-				continue;
+				Tiles::AddTile(tilemap, TileType::Safe, grid_width, grid_height, AEVec2Set(j * grid_width, i * grid_height));
 			}
-			if (map.MapData[i][j] == static_cast<int>(TYPE_OBJECT::SPECIAL))
+			else if (map.MapData[i][j] == static_cast<int>(TYPE_OBJECT::SPECIAL))
 			{
-				Tiles::AddTile(tilemap, TileType::Special, AEGetWindowWidth() / map.Width, AEGetWindowHeight() / map.Height, AEVec2Set(j * 80, i * 80));
-				continue;
+				Tiles::AddTile(tilemap, TileType::Special, grid_width, grid_height, AEVec2Set(j * grid_width, i * grid_height));
 			}
-			if (map.MapData[i][j] == static_cast<int>(TYPE_OBJECT::GOAL))
+			else if (map.MapData[i][j] == static_cast<int>(TYPE_OBJECT::GOAL))
 			{
-				Tiles::AddTile(tilemap, TileType::Goal, AEGetWindowWidth() / map.Width, AEGetWindowHeight() / map.Height, AEVec2Set(j * 80, i * 80));
-				continue;
+				Tiles::AddTile(tilemap, TileType::Goal, grid_width, grid_height, AEVec2Set(j * grid_width, i * grid_height));
 			}
-			if (map.MapData[i][j] == static_cast<int>(TYPE_OBJECT::JUMPERMAN))
+			else if (map.MapData[i][j] == static_cast<int>(TYPE_OBJECT::JUMPERMAN))
 			{
-				continue;
 				// Do smth later
 			}
-			if (map.MapData[i][j] == static_cast<int>(TYPE_OBJECT::SLIME))
+			else if (map.MapData[i][j] == static_cast<int>(TYPE_OBJECT::SLIME))
 			{
-				Enemies::AddNew(enemies, EnemyType::Slime, AEVec2Set(j * 80, i * 80), enemy_width, enemy_height);
-				continue;
+				Enemies::AddNew(enemies, EnemyType::Slime, AEVec2Set(j * grid_width, i * grid_height), enemy_width, enemy_height);
 			}
-			if (map.MapData[i][j] == static_cast<int>(TYPE_OBJECT::BAT))
+			else if (map.MapData[i][j] == static_cast<int>(TYPE_OBJECT::BAT))
 			{
-				Enemies::AddNew(enemies, EnemyType::Bat, AEVec2Set(j * 80,i * 80), enemy_width, enemy_height);
-				continue;
+				Enemies::AddNew(enemies, EnemyType::Bat, AEVec2Set(j * grid_width,i * grid_height), enemy_width, enemy_height);
 			}
-			if (map.MapData[i][j] == static_cast<int>(TYPE_OBJECT::SQUIRREL))
+			else if (map.MapData[i][j] == static_cast<int>(TYPE_OBJECT::SQUIRREL))
 			{
-				Enemies::AddNew(enemies, EnemyType::Squirrel, AEVec2Set(j * 80, i * 80), enemy_width, enemy_height);
-				continue;
+				Enemies::AddNew(enemies, EnemyType::Squirrel, AEVec2Set(j * grid_width, i * grid_height), enemy_width, enemy_height);
 			}
 		}
 	}
@@ -70,6 +63,7 @@ void MapUpdate()
 	for (size_t i = 0; i < tilemap.size(); ++i)
 	{
 		tilemap[i].Update();
+//		enemies[i].Update();
 	}
 }
 
@@ -78,6 +72,7 @@ void MapRender()
 	for (size_t i = 0; i < tilemap.size(); ++i)
 	{
 		tilemap[i].Render();
+//		enemies[i].Render();
 	}
 }
 
@@ -91,4 +86,5 @@ void MapUnload()
 {
 	Tiles::Unload();
 	Enemies::Unload();
+	FreeMapData();
 }
