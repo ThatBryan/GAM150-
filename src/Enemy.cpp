@@ -2,6 +2,7 @@
 #include "Tiles.h"
 #include "Utilities.h"
 
+
 bool jump = FALSE;
 
 float Enemies::gravityStrength = 100.0f;

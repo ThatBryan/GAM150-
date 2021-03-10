@@ -2,6 +2,7 @@
 #include "PitchDemo.h"
 #include "MainMenu.h"
 #include "Splash.h"
+#include "TestLevel.h"
 
 unsigned int gamestateInit;
 unsigned int gamestateCurr;
@@ -59,6 +60,14 @@ void GameStateManagerUpdate()
 		GameStateDraw = Demo::Render;
 		GameStateFree = Demo::Restart;
 		GameStateUnload = Demo::Exit;
+		break;
+	case GS_TEST:
+		GameStateLoad = MapLoad;
+		GameStateInit = MapInit;
+		GameStateUpdate = MapUpdate;
+		GameStateDraw = MapRender;
+		GameStateFree = GameStatePlaceholder;
+		GameStateUnload = MapUnload;
 		break;
 	default:
 		printf("FATAL ERROR!\n");

@@ -1,6 +1,5 @@
 #pragma once
 #include "AEEngine.h"
-#include "GameObject.h"
 #include "Graphics.h"
 #include "Constants.h"
 

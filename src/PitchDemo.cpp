@@ -11,14 +11,9 @@
 #include "BinaryMap.h"
 
 
-#define TILE_WIDTTH 80.0f
-#define TILE_HEIGHT 50.0f
 
-// Initial tile pos
-#define X TILE_WIDTTH / 2.0f
-#define y2 400
-#define y1 y2 - 150
-#define y3 y2 + 150
+
+
 #include "GameStateManager.h"
 
 Color background;

@@ -9,6 +9,7 @@ enum
 	GS_MAINMENU,
 	GS_GAMEPLAY,
 	GS_RESTART,
+	GS_TEST,
 	GS_QUIT
 };
 
@@ -28,7 +29,7 @@ extern void (*GameStateFree)();
 extern void (*GameStateUnload)();
 
 //Declaring GSM functions
-void GameStateManagerInit(unsigned int gamestateInit = GS_MAINMENU);
+void GameStateManagerInit(unsigned int gamestateInit = GS_TEST);
 void GameStateManagerUpdate();
 
 

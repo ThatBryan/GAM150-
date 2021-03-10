@@ -28,7 +28,6 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "Enemy.h"
 #include "Constants.h"
 #include <array>
-#include "GameObject.h"
 #include "AEEngine.h"
 
 #define TILE_WIDTTH 80.0f
@@ -304,6 +303,7 @@ int CheckInstanceBinaryMapCollision(float PosX, float PosY,
 Map GetMap()
 {
 	struct Map map;
+	ImportMapDataFromFile("../testrun.txt");
 	map.MapData = MapData;
 	map.BinaryCollision = BinaryCollisionArray;
 	map.Width = BINARY_MAP_WIDTH;
