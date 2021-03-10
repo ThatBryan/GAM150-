@@ -8,11 +8,11 @@
 AEGfxTexture* Player::playerTex{ nullptr };
 static f32 maxY;
 static f32 maxX;
-float Player::gravityStrength = 100.0f;
+float Player::gravityStrength = 150.0f;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},
 active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpspeed_y{jumpspeed},
-lives{3}, direction{MovementState::Left}
+lives{3}, direction{MovementState::Right}
 {
 	playerBB.color.SetColor(Color{ 0, 0, 0, 255.0f });
 	feetBB.color.SetColor(Color{ 255.0f, 255.0f, 0, 255.0f });
@@ -34,10 +34,10 @@ void Player::Reset(void)
 void Player::Update() {
 	//if(DebugMode)
 	//	sprite.rotation += 1;
-	CheckOutOfBound();
-	Update_Position();
 	if (lives <= 0)
 		SetLose();
+	CheckOutOfBound();
+	Update_Position();
 }
 void Player::Render(void)
 {
@@ -49,7 +49,7 @@ void Player::Render(void)
 	}
 }
 void Player::LoadTex(void) {
-	playerTex = AEGfxTextureLoad(PlayerSprite);
+	playerTex = AEGfxTextureLoad(FP::PlayerSprite);
 	AE_ASSERT_MESG(playerTex, "Failed to create texture!");
 }
 
@@ -83,23 +83,24 @@ void Player::Update_Position(void)
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
 	{
 		if (sprite.pos.x + sprite.width / 2 <= maxX)
-			sprite.pos.x += player_speed;
+			sprite.pos.x += player_speed * g_dt;
 
-		if (direction != MovementState::Left) {
-			ChangeDirection();
-			direction = MovementState::Left;
+		if (direction != MovementState::Right) {
+			sprite.ReflectAboutYAxis();
+			direction = MovementState::Right;
 		}
 	}
 
 	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
 	{
-		if (sprite.pos.x - sprite.width / 2 >= 0)
-			sprite.pos.x -= player_speed;
+		if (sprite.pos.x >= 0 - sprite.width / 2.0f)
+			sprite.pos.x -= player_speed * g_dt;
 
-		if (direction != MovementState::Right) {
-			ChangeDirection();
-			direction = MovementState::Right;
+		if (direction != MovementState::Left) {
+			sprite.ReflectAboutYAxis();
+			direction = MovementState::Left;
 		}
+
 	}
 
 	if (DebugMode) {
@@ -111,18 +112,18 @@ void Player::Update_Position(void)
 		}
 	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN)) {
 		if (sprite.pos.y + sprite.height / 2 <= maxY) {
-			sprite.pos.y += player_speed;
+			sprite.pos.y += player_speed * g_dt;
 		}
 	}
 	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP)) {
 		if (sprite.pos.y - sprite.height / 2 >= 0) {
-			sprite.pos.y -= player_speed;
+			sprite.pos.y -= player_speed * g_dt;
 		}
 	}
 
 	}
 	playerBB.pos = sprite.pos;
-	feetBB.pos = AEVec2Set(sprite.pos.x, sprite.pos.y + player_collider_offset);
+	feetBB.pos = AEVec2Set(sprite.pos.x + player_collider_offset_x, sprite.pos.y + player_collider_offset_y);
 }
 
 void Player::ChangeDirection() {
@@ -154,7 +155,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 			if (Utils::ColliderAABB(enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, playerBB.pos, playerBB.width, playerBB.height))
 			{
 				if (Utils::ColliderAABB(enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, feetBB.pos, feetBB.width, feetBB.height)) {
-					if (!DebugMode)
+					//if (!DebugMode)
 						enemy[i].active = false;
 					if (DebugMode)
 						printf("enemy dies\n");
@@ -162,6 +163,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 				else {
 					if (!DebugMode) {
 						DecreaseLife();
+						UI::DecreaseLife();
 						Reset();
 						printf("%d\n", lives);
 					}

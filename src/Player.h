@@ -15,7 +15,7 @@ class Player
 private:
 	bool win, lose;
 	MovementState direction;
-	unsigned int lives;
+	int lives;
 	float jumpspeed_y;
 	static f32 gravityStrength;
 	void Update_Position(void);
@@ -28,7 +28,7 @@ public:
 	Image sprite;
 	bool active, jump, gravity;
 	Graphics::Rect playerBB {player_width, player_height};
-	Graphics::Rect feetBB {player_width, 5.0f};
+	Graphics::Rect feetBB {player_width / 2.0f, 5.0f};
 	AEVec2 startingPos, vel;
 	void Update(void);
 	void Render(void);
@@ -37,6 +37,7 @@ public:
 	void GravityManager(void);
 	inline void SetPos(AEVec2 pos) { this->sprite.pos = pos; this->startingPos = pos; }
 	inline void SetLives(unsigned int Lives) { lives = Lives; }
+	inline int GetLives(void) { return lives; }
 	inline void SetWin(void) { win = true; }
 	inline bool GetWinStatus(void) { return win; }
 	inline void SetLose(void) { active = false; lose = true; }

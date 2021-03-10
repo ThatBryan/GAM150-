@@ -20,8 +20,7 @@ class Tiles
 		f64 collapseDelay;
 		bool active, collapsing;
 		Graphics::Rect ColliderAABB;
-
-		// Abstracting away functions so the user cannot call it
+		// Abstraction
 		void DecreaseLifespan(void);
 		void Collapse(void);
 		void CheckPos(void);
@@ -43,9 +42,11 @@ class Tiles
 		// Resets the level.
 		static void Reset(std::vector <Tiles>& tiles);
 		static void CheckPlayerGravity(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& player);
+		static void TestingManager(std::vector<std::vector<Tiles>*>& TileManager);
 
 		// Add whole new row of tile.
 		static void AddTileRow(std::vector < Tiles>& tile, TileType type, const int count, const f32 width, const f32 height, const AEVec2 pos);
+		static void AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, const f32 height, AEVec2 pos);
 		// Collapse the tile on its left and right if it is collapsible.
 		static void CollapseNext(std::vector <Tiles>& tiles);
 		// Handles the collision between the enemy and tiles, and enemy with player.

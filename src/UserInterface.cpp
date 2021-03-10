@@ -8,6 +8,7 @@ Graphics::Text LevelDisplay(strBuffer1, 0.5f);
 Graphics::Text TimerDisplay(strBuffer2, 0.5f);
 
 std::vector <Button> buttonTest;
+Image lives;
 
 void UI::Init() {
 
@@ -20,6 +21,10 @@ void UI::Init() {
 	memset(strBuffer, 0, 100 * sizeof(char));
 	memset(strBuffer1, 0, 100 * sizeof(char));
 	memset(strBuffer2, 0, 100 * sizeof(char));
+
+	UI::LivesCount = 3;
+
+	lives.Init(FP::HeartSprite, 35.0f, 35.0f, AEVec2Zero());
 }
 
 void UI::Update() {
@@ -40,22 +45,35 @@ void UI::Draw() {
 		for (size_t i = 0; i < buttonTest.size(); ++i) {
 			buttonTest[i].Update();
 		}
+	for (int i = 0; i < UI::LivesCount; ++i) {
+		lives.Draw_Texture(AEVec2Set(lives.width / 2.0f + i * 50.0f , 50.0f), 255.0f);
+	}
 }
 
 void UI::Buttons_Init() {
+	const float buttonWidth{ 100.0f }, buttonHeight{ 50.0f };
 	AEVec2 Midpt{ Utils::GetScreenMiddle() };
-	buttonTest.push_back(Button(ButtonType::Color, 150.0, 50.0f, 0.9f));
+	buttonTest.push_back(Button(ButtonType::Color, buttonWidth, buttonHeight, 0.5f));
 	buttonTest[0].Set_Position(AEVec2{ Midpt.x - buttonTest[0].GetWidth(), buttonTest[0].GetHeight() / 2.0f });
 	buttonTest[0].Set_Callback(Test_Callback);
 	buttonTest[0].Set_Text("Pause");
 
-	buttonTest.push_back(Button(ButtonType::Color, 150.0, 50.0f, 0.7f));
+	buttonTest.push_back(Button(ButtonType::Color, buttonWidth, buttonHeight, 0.5f));
 	buttonTest[1].Set_Position(AEVec2{ Midpt.x + buttonTest[0].GetWidth(), buttonTest[1].GetHeight() / 2.0f });
 	buttonTest[1].Set_Callback(Mute_BGM);
 	buttonTest[1].Set_Text("Mute BGM");
 }
 
+void UI::DecreaseLife() {
+	UI::LivesCount--;
+}
+
+void UI::ResetLives() {
+	UI::LivesCount = 3;
+}
+
 void UI::Buttons_Unload()
 {
 	buttonTest.clear();
+	lives.Free();
 }
