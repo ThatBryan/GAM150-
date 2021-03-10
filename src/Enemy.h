@@ -13,6 +13,7 @@ static AEGfxTexture* enemyTex[static_cast<int>(EnemyType::Max)]{ nullptr };
 class Player;
 class Tiles;
 
+using fn_ptr = void(*)(void);
 class Enemies
 {
 private:
@@ -33,6 +34,9 @@ private:
 	// Private functions
 	void Update_Position(void);
 	void ApplyGravity(void);
+	void Bat_Movement(f32 maxX, f32 maxY);
+	void Squirrel_Movement(f32 maxX, f32 maxY);
+	void Slime_Movement(f32 maxX, f32 maxY);
 
 public:
 	Enemies(AEGfxTexture* filepath, const f32 width, const f32 height);

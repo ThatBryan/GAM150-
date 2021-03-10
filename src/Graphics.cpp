@@ -235,10 +235,10 @@ void Graphics::Text::Draw_Wrapped(const AEVec2 pos)
 
 AEVec2 Graphics::Text::Calculate_Offset(AEVec2 pos)
 {
-	static f32 HalfWinWidth = Utils::Get_HalfWindowWidth();
-	static f32 HalfWinHeight = Utils::Get_HalfWindowHeight();
-	static f32 WinHeight = static_cast<f32>(AEGetWindowHeight());
-	static f32 WinWidth = static_cast<f32>(AEGetWindowWidth());
+	f32 HalfWinWidth = Utils::Get_HalfWindowWidth();
+	f32 HalfWinHeight = Utils::Get_HalfWindowHeight();
+	f32 WinHeight = static_cast<f32>(AEGetWindowHeight());
+	f32 WinWidth = static_cast<f32>(AEGetWindowWidth());
 
 	AEVec2 Offset{0, 0};
 	if (pos.x < HalfWinWidth) // I want negative
