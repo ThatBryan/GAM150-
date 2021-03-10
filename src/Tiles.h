@@ -42,6 +42,7 @@ class Tiles
 		// Resets the level.
 		static void Reset(std::vector <Tiles>& tiles);
 		static void CheckPlayerGravity(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& player);
+		static void TestingManager(std::vector<std::vector<Tiles>*>& TileManager);
 
 		// Add whole new row of tile.
 		static void AddTileRow(std::vector < Tiles>& tile, TileType type, const int count, const f32 width, const f32 height, const AEVec2 pos);

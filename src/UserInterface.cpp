@@ -24,7 +24,7 @@ void UI::Init() {
 
 	UI::LivesCount = 3;
 
-	lives.Init(HeartSprite, 35.0f, 35.0f, AEVec2Zero());
+	lives.Init(FP::HeartSprite, 35.0f, 35.0f, AEVec2Zero());
 }
 
 void UI::Update() {
@@ -51,13 +51,14 @@ void UI::Draw() {
 }
 
 void UI::Buttons_Init() {
+	const float buttonWidth{ 100.0f }, buttonHeight{ 50.0f };
 	AEVec2 Midpt{ Utils::GetScreenMiddle() };
-	buttonTest.push_back(Button(ButtonType::Color, 150.0, 50.0f, 0.9f));
+	buttonTest.push_back(Button(ButtonType::Color, buttonWidth, buttonHeight, 0.5f));
 	buttonTest[0].Set_Position(AEVec2{ Midpt.x - buttonTest[0].GetWidth(), buttonTest[0].GetHeight() / 2.0f });
 	buttonTest[0].Set_Callback(Test_Callback);
 	buttonTest[0].Set_Text("Pause");
 
-	buttonTest.push_back(Button(ButtonType::Color, 150.0, 50.0f, 0.7f));
+	buttonTest.push_back(Button(ButtonType::Color, buttonWidth, buttonHeight, 0.5f));
 	buttonTest[1].Set_Position(AEVec2{ Midpt.x + buttonTest[0].GetWidth(), buttonTest[1].GetHeight() / 2.0f });
 	buttonTest[1].Set_Callback(Mute_BGM);
 	buttonTest[1].Set_Text("Mute BGM");

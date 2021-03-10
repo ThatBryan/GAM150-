@@ -53,8 +53,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// reset the system modules
 
 	/// Test init functions
-	fontID = AEGfxCreateFont(FontFile, 40);
-	rectMesh = Graphics::Mesh_Rectangle();
+	font::ID = AEGfxCreateFont(FP::FontFile, 40);
+	Graphics::Load_Meshes();
 
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl << std::endl;
 
