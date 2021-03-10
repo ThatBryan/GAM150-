@@ -301,50 +301,12 @@ int CheckInstanceBinaryMapCollision(float PosX, float PosY,
 	return Flag;
 }
 
-void MapInit(void)
+Map GetMap()
 {
-	GameObjectInst* pInst;
-	AEVec2 Pos;
-	for (int i = 0; i < BINARY_MAP_HEIGHT; ++i)
-	{
-		for (int j = 0; j < BINARY_MAP_WIDTH; ++j)
-		{ // Iterate through mapdata array and construct objects at position [i][j] (Y/X)
-			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::EMPTY))
-			{
-				pInst = gameObjectInstCreate
-			}
-			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::COLLAPSIBLE))
-			{
-				
-			}
-			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::NON_COLLAPSIBLE))
-			{
-				
-			}
-			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SPECIAL))
-			{
-				
-			}
-			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::GOAL))
-			{
-				
-			}
-			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::JUMPERMAN))
-			{
-				
-			}
-			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SLIME))
-			{
-				
-			}
-			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::BAT))
-			{
-				
-			}
-			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SQUIRREL))
-			{
-				
-			}
-		}
-	}
+	struct Map map;
+	map.MapData = MapData;
+	map.BinaryCollision = BinaryCollisionArray;
+	map.Width = BINARY_MAP_WIDTH;
+	map.Height = BINARY_MAP_HEIGHT;
+	return map;
 }

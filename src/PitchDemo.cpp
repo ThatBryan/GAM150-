@@ -11,7 +11,8 @@
 #include "BinaryMap.h"
 
 
-
+#define TILE_WIDTTH 80.0f
+#define TILE_HEIGHT 50.0f
 
 // Initial tile pos
 #define X TILE_WIDTTH / 2.0f
