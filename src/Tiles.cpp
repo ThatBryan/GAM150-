@@ -22,11 +22,11 @@ void Tiles::Collapse(void)
 		}
 	}
 	if (type == TileType::Special) {
-		if (AETestRectToRect(&player[0].feetBB.pos, player[0].feetBB.width, player[0].feetBB.height, &ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
-			&& (AEInputCheckTriggered(AEVK_DOWN) || AEInputCheckTriggered(AEVK_S)))
-		{
-			collapsing = true;
-		}
+		//if (AETestRectToRect(&player[0].feetBB.pos, player[0].feetBB.width, player[0].feetBB.height, &ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
+		//	&& (AEInputCheckTriggered(AEVK_DOWN) || AEInputCheckTriggered(AEVK_S)))
+		//{
+		//	collapsing = true;
+		//}
 	}
 }
 
