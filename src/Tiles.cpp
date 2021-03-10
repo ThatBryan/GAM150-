@@ -179,16 +179,16 @@ void Tiles::LoadTex() {
 		const char* pTex{ nullptr };
 		switch (i) {
 		case TileType::Grass:
-			pTex = GrassTile;
+			pTex = FP::GrassTile;
 			break;
 		case TileType::Goal:
-			pTex = GoalTile;
+			pTex = FP::GoalTile;
 			break;
 		case TileType::Safe:
-			pTex = GreyTile;
+			pTex = FP::GreyTile;
 			break;
 		case TileType::Special:
-			pTex = SpecialTile;
+			pTex = FP::SpecialTile;
 			break;
 		default:
 			return;

@@ -1,25 +1,29 @@
 #pragma once
 #include "AEEngine.h"
 
-// File Paths
-extern const char* DigipenLogoRed;
-extern const char* DigipenLogoWhite;
-extern const char* PauseOverlay;
-extern const char* VictoryOverlay;
-extern const char* GameoverOverlay;
-extern const char* WaterSlimeSprite;
-extern const char* FlyingEnemySprite;
-extern const char* SquirrelSprite;
-extern const char* PlayerSprite;
-extern const char* GrassTile;
-extern const char* GoalTile;
-extern const char* GreyTile;
-extern const char* SpecialTile;
-extern const char* FontFile;
-extern const char* ButtonTest;
-extern const char* ButtonTest2;
-extern const char* boi;
-extern const char* HeartSprite;
+
+namespace FilePaths {
+	extern const char* DigipenLogoRed;
+	extern const char* DigipenLogoWhite;
+	extern const char* PauseOverlay;
+	extern const char* VictoryOverlay;
+	extern const char* GameoverOverlay;
+	extern const char* WaterSlimeSprite;
+	extern const char* FlyingEnemySprite;
+	extern const char* SquirrelSprite;
+	extern const char* PlayerSprite;
+	extern const char* GrassTile;
+	extern const char* GoalTile;
+	extern const char* GreyTile;
+	extern const char* SpecialTile;
+	extern const char* FontFile;
+	extern const char* ButtonTest;
+	extern const char* ButtonTest2;
+	extern const char* boi;
+	extern const char* HeartSprite;
+}
+
+namespace FP = FilePaths; // Short hand 
 
 // Player constants
 extern const float player_speed;
@@ -50,8 +54,14 @@ extern float g_dt;
 extern float app_time;
 
 // Graphics stuff
-extern char fontID;
-extern AEGfxVertexList* rectMesh;
+namespace font {
+	extern char ID;
+}
+
+namespace Mesh {
+	extern AEGfxVertexList* Rect;
+	extern AEGfxVertexList* Circle;
+}
 
 // Hot key bindings.
 #define PAUSE_KEY AEVK_TAB 

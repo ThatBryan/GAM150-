@@ -24,7 +24,7 @@ void UI::Init() {
 
 	UI::LivesCount = 3;
 
-	lives.Init(HeartSprite, 35.0f, 35.0f, AEVec2Zero());
+	lives.Init(FP::HeartSprite, 35.0f, 35.0f, AEVec2Zero());
 }
 
 void UI::Update() {

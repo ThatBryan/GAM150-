@@ -36,14 +36,15 @@ void Color::Decrement(float i) {
 }
 
 Graphics::Rect::Rect(const f32 width, const f32 height, const f32 direction) : direction{direction}, transformMtx{NULL},
-width{width}, height{height}, pos{0, 0}, pMesh{rectMesh}
+width{width}, height{height}, pos{0, 0}, pMesh{Mesh::Rect}
 {
 	color.SetColor(Color{ 255, 255, 255, 255 });
 }
 
 void Graphics::Free() {
-	AEGfxDestroyFont(fontID);
-	AEGfxMeshFree(rectMesh);
+	AEGfxDestroyFont(font::ID);
+	AEGfxMeshFree(Mesh::Rect);
+	AEGfxMeshFree(Mesh::Circle);
 }
 
 Graphics::Text::Text(s8* textBuffer, const f32 scale) : scale{ scale }, pos{ 0, 0 },
@@ -54,6 +55,15 @@ height{ 0 }, width{ 0 }, buffer{ textBuffer }
 
 Graphics::Text::Text() : scale{0}, pos{ 0, 0 },
 height{ 0 }, width{ 0 }, buffer{ nullptr }, color() {}
+
+void Graphics::Load_Meshes(void)
+{
+	Mesh::Rect = Graphics::Mesh_Rectangle();
+	AE_ASSERT_MESG(Mesh::Rect, "fail to create object!!");
+
+	Mesh::Circle = Graphics::Mesh_Circle();
+	AE_ASSERT_MESG(Mesh::Circle, "fail to create object!!");
+}
 
 AEGfxVertexList* Graphics::Mesh_Rectangle(void)
 {
@@ -67,6 +77,22 @@ AEGfxVertexList* Graphics::Mesh_Rectangle(void)
 		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f, //	Bottom R
 		0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 0.0f,	 //	Top Righ
 		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);//	Top Left
+	return AEGfxMeshEnd();
+}
+
+AEGfxVertexList* Graphics::Mesh_Circle(void)
+{
+	AEGfxMeshStart();
+	//Creating the circle shape
+	int Parts = 12;
+	for (float i = 0; i < Parts; ++i)
+	{
+		AEGfxTriAdd(
+			0.0f, 0.0f, 0xFFFFFF00, 0.0f, 0.0f,
+			cosf(i * 2 * PI / Parts) * 0.5f, sinf(i * 2 * PI / Parts) * 0.5f, 0xFFFFFF00, 0.0f, 0.0f,
+			cosf((i + 1) * 2 * PI / Parts) * 0.5f, sinf((i + 1) * 2 * PI / Parts) * 0.5f, 0xFFFFFF00, 0.0f, 0.0f);
+	}
+
 	return AEGfxMeshEnd();
 }
 
@@ -133,15 +159,15 @@ void Graphics::Text::Draw()
 {
 	AEVec2 drawPos = Graphics::Text::Calculate_Offset(pos);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxPrint(fontID, buffer, drawPos.x, drawPos.y, scale, color.r, color.g, color.b);
+	AEGfxPrint(font::ID, buffer, drawPos.x, drawPos.y, scale, color.r, color.g, color.b);
 }
 
 void Graphics::Text::Draw_Wrapped(const AEVec2 pos)
 {
-	AEGfxGetPrintSize(fontID, buffer, scale, width, height);
+	AEGfxGetPrintSize(font::ID, buffer, scale, width, height);
 	AEVec2 drawPos = Graphics::Text::Calculate_Offset(pos);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxPrint(fontID, buffer, drawPos.x - width / 2.0f, drawPos.y - height / 2.0f, scale, color.r, color.g, color.b);
+	AEGfxPrint(font::ID, buffer, drawPos.x - width / 2.0f, drawPos.y - height / 2.0f, scale, color.r, color.g, color.b);
 }
 
 AEVec2 Graphics::Text::Calculate_Offset(AEVec2 pos)
@@ -176,7 +202,7 @@ AEVec2 Graphics::Text::Calculate_Offset(AEVec2 pos)
 
 AEVec2 Graphics::Text::GetBufferSize()
 {
-	AEGfxGetPrintSize(fontID, buffer, scale, width, height);
+	AEGfxGetPrintSize(font::ID, buffer, scale, width, height);
 	
 	return AEVec2{ width / 2 * AEGetWindowWidth(), height / 2 * AEGetWindowHeight() };
 }
