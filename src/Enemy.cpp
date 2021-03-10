@@ -29,68 +29,70 @@ void Enemies::Update_Position(void)
 	maxX = static_cast<f32>(AEGetWindowWidth());
 	maxY = static_cast<f32>(AEGetWindowHeight());
 
-	if (type == EnemyType::Slime)
-	{
-
-		sprite.pos.x -= velocity * g_dt;
-		counter -= g_dt;
-		if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
+	if (active) {
+		if (type == EnemyType::Slime)
 		{
-			sprite.ReflectAboutYAxis();
-			velocity *= -1.0f;
-			counter = Enemies::slime_counter;
-		}
-		headBB.pos = sprite.pos;
-		enemyBB.pos = sprite.pos;
-		headBB.pos.y -= slimeBBOffset;
-		return;
-	}
-
-	if (type == EnemyType::Bat)
-	{
-		// Sine-Wave
-		sprite.pos.x += velocity * g_dt;
-		sprite.pos.y = spawnPos.y + 10 * sin(static_cast<f32>(sprite.pos.x) * 2.0f * PI / 180.0f); // y = amplitude * sin(x * period * pi / 180)
-		counter -= g_dt;
-
-		if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
-		{
-			velocity *= -1;
-			sprite.ReflectAboutYAxis();
-			counter = Enemies::bat_counter;
-		}
-		headBB.pos = sprite.pos;
-		enemyBB.pos = sprite.pos;
-		enemyBB.pos.y += 5.0f;
-		headBB.pos.y -= batBBOffset;
-		return;
-	}
-
-
-	if (type == EnemyType::Squirrel)
-	{
-		sprite.pos.x += velocity * g_dt;
-		sprite.pos.y += static_cast<f32>(jumpvelocity) * g_dt;
-		counter -= g_dt;
-		jumpcounter -= g_dt;
-
-		if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
-		{
-			velocity *= -1;
-			sprite.ReflectAboutYAxis();
-			counter = Enemies::squirrel_counter;
-		}
-		if (jumpcounter < 0.0f)
-		{
-			jumpvelocity *= -1.0f;
-			jumpcounter = Enemies::jump_counter;
+			printf("%.2f\n", sprite.pos.y);
+			sprite.pos.x -= velocity * g_dt;
+			counter -= g_dt;
+			if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
+			{
+				sprite.ReflectAboutYAxis();
+				velocity *= -1.0f;
+				counter = Enemies::slime_counter;
+			}
+			headBB.pos = sprite.pos;
+			enemyBB.pos = sprite.pos;
+			headBB.pos.y -= slimeBBOffset;
+			return;
 		}
 
-		headBB.pos = sprite.pos;
-		enemyBB.pos = sprite.pos;
-		enemyBB.pos.y += 10.0f;
-		headBB.pos.y -= squirrelBBOffset;
-		return;
+		if (type == EnemyType::Bat)
+		{
+			// Sine-Wave
+			sprite.pos.x += velocity * g_dt;
+			sprite.pos.y = spawnPos.y + 10 * sin(static_cast<f32>(sprite.pos.x) * 2.0f * PI / 180.0f); // y = amplitude * sin(x * period * pi / 180)
+			counter -= g_dt;
+
+			if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
+			{
+				velocity *= -1;
+				sprite.ReflectAboutYAxis();
+				counter = Enemies::bat_counter;
+			}
+			headBB.pos = sprite.pos;
+			enemyBB.pos = sprite.pos;
+			enemyBB.pos.y += 5.0f;
+			headBB.pos.y -= batBBOffset;
+			return;
+		}
+
+
+		if (type == EnemyType::Squirrel)
+		{
+			sprite.pos.x += velocity * g_dt;
+			sprite.pos.y += static_cast<f32>(jumpvelocity) * g_dt;
+			counter -= g_dt;
+			jumpcounter -= g_dt;
+
+			if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
+			{
+				velocity *= -1;
+				sprite.ReflectAboutYAxis();
+				counter = Enemies::squirrel_counter;
+			}
+			if (jumpcounter < 0.0f)
+			{
+				jumpvelocity *= -1.0f;
+				jumpcounter = Enemies::jump_counter;
+			}
+
+			headBB.pos = sprite.pos;
+			enemyBB.pos = sprite.pos;
+			enemyBB.pos.y += 10.0f;
+			headBB.pos.y -= squirrelBBOffset;
+			return;
+		}
 	}
 }
 

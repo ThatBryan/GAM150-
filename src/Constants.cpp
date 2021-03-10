@@ -33,7 +33,7 @@ const float player_collider_offset_x = 6.0f;
 
 // Tile constants
 const double TileCollapseDelay = 0.5f;
-const float TileCollapseSpeed = 5.0f;
+const float TileCollapseSpeed = 250.0f;
 
 // Enemy stuff
 short EnemyCount = 1;

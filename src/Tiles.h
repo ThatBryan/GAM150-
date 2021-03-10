@@ -50,6 +50,7 @@ class Tiles
 		static void CollapseNext(std::vector <Tiles>& tiles);
 		// Handles the collision between the enemy and tiles, and enemy with player.
 		static void UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& player, std::vector <Enemies>& enemy);
+		static void TestingManager(std::vector<std::vector<Tiles>*>& TileManager);
 };
 // Archieve
 //static void CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager);
