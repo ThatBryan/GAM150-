@@ -29,15 +29,15 @@ enum class TYPE_OBJECT
 };
 
 
-struct Map
-{
-	int** MapData;
-	int** BinaryCollision;
-	int Width;
-	int Height;
-};
+//struct Map
+//{
+	extern int** MapData;
+	extern int** BinaryCollision;
+	extern int Map_Width;
+	extern int Map_Height;
+//};
 
-Map GetMap(void);
+//Map GetMap(void);
 int		GetCellValue(int X, int Y);
 int		CheckInstanceBinaryMapCollision(float PosX, float PosY,
 	float scaleX, float scaleY);

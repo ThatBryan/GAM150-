@@ -2,7 +2,7 @@
 #include <vector>
 
 
-void MapInit();
+void TestLevelInit();
 void MapUpdate();
 void MapLoad();
 void MapRender();

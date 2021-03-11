@@ -63,7 +63,7 @@ void GameStateManagerUpdate()
 		break;
 	case GS_TEST:
 		GameStateLoad = MapLoad;
-		GameStateInit = MapInit;
+		GameStateInit = TestLevelInit;
 		GameStateUpdate = MapUpdate;
 		GameStateDraw = MapRender;
 		GameStateFree = GameStatePlaceholder;

@@ -38,36 +38,36 @@ written consent of DigiPen Institute of Technology is prohibited.
 #define startingY1 startingY2 - 150
 #define startingY3 startingY2 + 150
 /*The number of horizontal elements*/
-static int BINARY_MAP_WIDTH;
+int Map_Width;
 
 /*The number of vertical elements*/
-static int BINARY_MAP_HEIGHT;
+int Map_Height;
 
 /*This will contain all the data of the map, which will be retreived from a file
 when the "ImportMapDataFromFile" function is called*/
-static int** MapData;
+int** MapData;
 
 /*This will contain the collision data of the binary map. It will be filled in the
 "ImportMapDataFromFile" after filling "MapData". Basically, if an array element
 in MapData is 1, it represents a collision cell, any other value is a non-collision
 cell*/
-static int** BinaryCollisionArray;
+int** BinaryCollision;
 
 
 /******************************************************************************/
 /*!
 	This function opens the file name "FileName" and retrieves all the map data.
-	It allocates memory for the 2 arrays: MapData & BinaryCollisionArray
-	The first line in this file is the width of the map.
-	The second line in this file is the height of the map.
+	It allocates memory for the 2 arrays: MapData & BinaryCollision
+	The first line in this file is the Map_Width of the map.
+	The second line in this file is the Map_Height of the map.
 	The remaining part of the file is a series of numbers
 	Each number represents the ID (or value) of a different element in the
 	double dimensionaly array.
 
 	Example:
 
-	Width 5
-	Height 5
+	Map_Width 5
+	Map_Height 5
 	1 1 1 1 1
 	1 1 1 3 1
 	1 4 2 0 1
@@ -75,7 +75,7 @@ static int** BinaryCollisionArray;
 	1 1 1 1 1
 
 
-	After importing the above data, "MapData" and " BinaryCollisionArray"
+	After importing the above data, "MapData" and " BinaryCollision"
 	should be
 
 	1 1 1 1 1
@@ -113,27 +113,27 @@ int ImportMapDataFromFile(const char* FileName)
 		std::string Map;
 		std::getline(ifs, Map);
 		Map.erase(0, Map.find_first_of("1234567890"));
-		if (i == 0) // loop count 0 will be the reading of width data.
-			BINARY_MAP_WIDTH = std::stoi(Map);
+		if (i == 0) // loop count 0 will be the reading of Map_Width data.
+			Map_Width = std::stoi(Map);
 		else       // Next loop will read height data
-			BINARY_MAP_HEIGHT = std::stoi(Map);
+			Map_Height = std::stoi(Map);
 	}
-	MapData = new int* [BINARY_MAP_HEIGHT];
-	BinaryCollisionArray = new int* [BINARY_MAP_HEIGHT];
+	MapData = new int* [Map_Height];
+	BinaryCollision = new int* [Map_Height];
 
-	for (int i = 0; i < BINARY_MAP_HEIGHT; i++) {
-		MapData[i] = new int[BINARY_MAP_WIDTH];
-		BinaryCollisionArray[i] = new int[BINARY_MAP_WIDTH];
+	for (int i = 0; i < Map_Height; i++) {
+		MapData[i] = new int[Map_Width];
+		BinaryCollision[i] = new int[Map_Width];
 	}
-	for (int i = 0; i < BINARY_MAP_HEIGHT; ++i) 
+	for (int i = 0; i < Map_Height; ++i) 
 	{
-		for (int j = 0; j < BINARY_MAP_WIDTH; ++j) 
+		for (int j = 0; j < Map_Width; ++j) 
 		{
 			ifs >> MapData[i][j];
 			if (MapData[i][j] > 1 && MapData[i][j] < 5)
-				BinaryCollisionArray[i][j] = 1;
+				BinaryCollision[i][j] = 1;
 			else
-				BinaryCollisionArray[i][j] = 0;
+				BinaryCollision[i][j] = 0;
 		}
 	}
 	ifs.close();
@@ -145,19 +145,19 @@ int ImportMapDataFromFile(const char* FileName)
 /******************************************************************************/
 /*!
 	This function frees the memory that was allocated for the 2 arrays MapData
-	& BinaryCollisionArray which was allocated in the "ImportMapDataFromFile"
+	& BinaryCollision which was allocated in the "ImportMapDataFromFile"
 	function
  */
  /******************************************************************************/
 void FreeMapData(void)
 {
 	// Returns the memory to the freestore.
-	for (int i = 0; i < BINARY_MAP_HEIGHT; ++i) {
+	for (int i = 0; i < Map_Height; ++i) {
 		delete[] MapData[i];
-		delete[] BinaryCollisionArray[i];
+		delete[] BinaryCollision[i];
 	}
 	delete[] MapData;
-	delete[] BinaryCollisionArray;
+	delete[] BinaryCollision;
 }
 
 /******************************************************************************/
@@ -169,9 +169,9 @@ void FreeMapData(void)
 void PrintRetrievedInformation(void)
 {
 	// Use of double for loop an array index address syntax to print
-	// Both MapData and BinaryCollisionArray 
-	for (int i = 0; i < BINARY_MAP_HEIGHT; ++i) {
-		for (int j = 0; j < BINARY_MAP_WIDTH; ++j) {
+	// Both MapData and BinaryCollision 
+	for (int i = 0; i < Map_Height; ++i) {
+		for (int j = 0; j < Map_Width; ++j) {
 			printf("%d ", MapData[i][j]);
 		}
 		printf("\n");
@@ -180,7 +180,7 @@ void PrintRetrievedInformation(void)
 
 /******************************************************************************/
 /*!
-	This function retrieves the value of the element (X;Y) in BinaryCollisionArray.
+	This function retrieves the value of the element (X;Y) in BinaryCollision.
 	Before retrieving the value, it should check that the supplied X and Y values
 	are not out of bounds (in that case return 0)
  */
@@ -188,9 +188,9 @@ void PrintRetrievedInformation(void)
 int GetCellValue(int X, int Y)
 {
 	// Check if out of bound
-	if (X < 0 || Y < 0 || X >= BINARY_MAP_WIDTH || Y >= BINARY_MAP_HEIGHT)
+	if (X < 0 || Y < 0 || X >= Map_Width || Y >= Map_Height)
 		return 0;
-	return BinaryCollisionArray[Y][X];
+	return BinaryCollision[Y][X];
 }
 
 /******************************************************************************/
@@ -199,7 +199,7 @@ int GetCellValue(int X, int Y)
 	It is used when a sprite is colliding with a collision area from one
 	or more side.
 	To snap the value sent by "Coordinate", find its integral part by type
-	casting it to an integer, then add 0.5 (which is half the cell's width
+	casting it to an integer, then add 0.5 (which is half the cell's Map_Width
 	or height)
  */
  /******************************************************************************/
@@ -246,7 +246,7 @@ void SnapToCell(float* Coordinate)
 int CheckInstanceBinaryMapCollision(float PosX, float PosY,
 	float scaleX, float scaleY)
 {	// Error checking for provided Pos
-	if ((int)PosX > BINARY_MAP_WIDTH || (int)PosX < 0 || (int)PosY >= BINARY_MAP_HEIGHT || (int)PosY < 0)
+	if ((int)PosX > Map_Width || (int)PosX < 0 || (int)PosY >= Map_Height || (int)PosY < 0)
 	{
 		printf("\nPosition %.2f %.2f provided is invalid! Flag '-1' will be returned\n\n", PosX, PosY);
 		return -1;
@@ -276,37 +276,37 @@ int CheckInstanceBinaryMapCollision(float PosX, float PosY,
 	float Botx2 = PosX + scaleX / 4; // R
 	float Boty = PosY - scaleY / 2;
 
-	if ((int)LHSy2 <= BINARY_MAP_HEIGHT && (int)LHSx < BINARY_MAP_WIDTH &&
-		BinaryCollisionArray[(int)LHSy1][(int)LHSx] == 1 ||
-		BinaryCollisionArray[(int)LHSy2][(int)LHSx] == 1) {
+	if ((int)LHSy2 <= Map_Height && (int)LHSx < Map_Width &&
+		BinaryCollision[(int)LHSy1][(int)LHSx] == 1 ||
+		BinaryCollision[(int)LHSy2][(int)LHSx] == 1) {
 		Flag = Flag | COLLISION_LEFT;
 	}
-	if ((int)RHSy2 <= BINARY_MAP_HEIGHT && (int)RHSx < BINARY_MAP_WIDTH &&
-		BinaryCollisionArray[(int)RHSy1][(int)RHSx] == 1 ||
-		BinaryCollisionArray[(int)RHSy2][(int)RHSx] == 1) {
+	if ((int)RHSy2 <= Map_Height && (int)RHSx < Map_Width &&
+		BinaryCollision[(int)RHSy1][(int)RHSx] == 1 ||
+		BinaryCollision[(int)RHSy2][(int)RHSx] == 1) {
 		Flag = Flag | COLLISION_RIGHT;
 	}
 
-	if ((int)Topy <= BINARY_MAP_HEIGHT && (int)Topx2 <= BINARY_MAP_WIDTH &&
-		BinaryCollisionArray[(int)Topy][(int)Topx1] == 1 ||
-		BinaryCollisionArray[(int)Topy][(int)Topx2] == 1) {
+	if ((int)Topy <= Map_Height && (int)Topx2 <= Map_Width &&
+		BinaryCollision[(int)Topy][(int)Topx1] == 1 ||
+		BinaryCollision[(int)Topy][(int)Topx2] == 1) {
 		Flag = Flag | COLLISION_TOP;
 	}
-	if ((int)Boty <= BINARY_MAP_HEIGHT && (int)Botx2 <= BINARY_MAP_WIDTH &&
-		BinaryCollisionArray[(int)Boty][(int)Botx1] == 1 ||
-		BinaryCollisionArray[(int)Boty][(int)Botx2] == 1) {
+	if ((int)Boty <= Map_Height && (int)Botx2 <= Map_Width &&
+		BinaryCollision[(int)Boty][(int)Botx1] == 1 ||
+		BinaryCollision[(int)Boty][(int)Botx2] == 1) {
 		Flag = Flag | COLLISION_BOTTOM;
 	}
 	return Flag;
 }
 
-Map GetMap()
-{
-	struct Map map;
-	ImportMapDataFromFile("../testrun.txt");
-	map.MapData = MapData;
-	map.BinaryCollision = BinaryCollisionArray;
-	map.Width = BINARY_MAP_WIDTH;
-	map.Height = BINARY_MAP_HEIGHT;
-	return map;
-}
+//Map GetMap()
+//{
+//	struct Map map;
+//	ImportMapDataFromFile("../testrun.txt");
+//	map.MapData = MapData;
+//	map.BinaryCollision = BinaryCollision;
+//	map.Map_Width = Map_Width;
+//	map.Map_Height = Map_Height;
+//	return map;
+//}
