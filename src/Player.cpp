@@ -26,8 +26,7 @@ void Player::Reset(void)
 	win = false;
 	lose = false;
 	active = true;
-	if(!DebugMode)
-		sprite.pos = startingPos;
+	sprite.pos = startingPos;
 	jumpvel = player_jumpvel;
 	sprite.rotation = 0;
 }
