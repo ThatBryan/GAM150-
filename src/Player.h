@@ -42,7 +42,7 @@ public:
 	inline bool GetWinStatus(void) { return win; }
 	inline void SetLose(void) { active = false; lose = true; }
 	inline bool GetLose(void) { return lose; }
-	inline void DecreaseLife(int count = 1) { lives -= count; }
+	inline void DecreaseLife(int count = 1) { lives -= count;}
 
 	static void LoadTex(void);
 	static void Unload(void);

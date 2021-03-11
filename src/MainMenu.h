@@ -21,6 +21,9 @@ namespace MainMenu
 	void TestEnemyMovement(void);
 	void TestPlayerMovement(void);
 
-	// Min yi's
-	void DrawButtons(void);
+	void SwitchToLevelSelection(void);
+	void SwitchToMainMenu(void);
+
+	void TestLevelSelectionUpdate(void);
+	void TestLevelSelectionRender(void);
 }

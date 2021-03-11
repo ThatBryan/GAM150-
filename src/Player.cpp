@@ -35,10 +35,10 @@ void Player::Reset(void)
 void Player::Update() {
 	//if(DebugMode)
 	//	sprite.rotation += 1;
-	if (lives <= 0)
-		SetLose();
 	CheckOutOfBound();
 	Update_Position();
+	if (lives <= 0)
+		SetLose();
 }
 void Player::Render(void)
 {
@@ -168,7 +168,8 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 					if (!DebugMode) {
 						DecreaseLife();
 						UI::DecreaseLife();
-						Reset();
+						if(lives > 0)
+							Reset();
 						printf("%d\n", lives);
 					}
 					if (DebugMode)
