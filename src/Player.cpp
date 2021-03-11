@@ -79,12 +79,14 @@ void Player::Update_Position(void)
 				jump = false;
 				jumpvel = 5.0f;
 			}
-			if (!gravity) // reset counter if player's feet touches the ground
-			{
-				jumpvel = 5.0f;
-			}
 		}
 	}
+
+	if (!gravity) // reset counter if player's feet touches the ground
+	{
+		jumpvel = 5.0f;
+	}
+
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
 	{
 		if (sprite.pos.x + sprite.width / 2 <= maxX)
