@@ -47,8 +47,9 @@ namespace Graphics
 
 	class Circle : public Rect
 	{
-		public:
-			Circle(const f32 width = 50.0f, const f32 height = 10.0f, const f32 direction = 0, AEGfxVertexList* Mesh = Mesh::Circle);
+	public:
+		Circle(const f32 radius, const f32 direction = 0, AEGfxVertexList* Mesh = Mesh::Circle);
+		Circle();
 	};
 
 	class Text

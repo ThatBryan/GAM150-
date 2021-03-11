@@ -12,6 +12,7 @@
 #include "Tiles.h"
 #include <cmath>
 #include <string>
+#include "Particles.h"
 
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
 static std::vector <Image> Images;
@@ -22,6 +23,7 @@ static std::vector<Tiles> tiles;
 static std::vector<Player> player;
 static Graphics::Text Title;
 static AEVec2 ScreenMid;
+static Particles pTest;
 
 void MainMenu::Init(void)
 {
@@ -47,6 +49,8 @@ void MainMenu::Init(void)
 	Title.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	Title.SetScale(1.0f);
 
+	pTest.Particles_Create(ScreenMid, 5.0f, 10.0f);
+	pTest.Particles_SetColor(Color{ 0.0f, 0.0f, 255.0f, 255.0f });
 }
 
 void MainMenu::Update(void)
@@ -61,6 +65,7 @@ void MainMenu::Update(void)
 		tiles[i].Update();
 	}
 	player[0].sprite.rotation += 100.0f * g_dt;
+	pTest.Particles_Update();
 }
 
 void MainMenu::Render() {
@@ -72,6 +77,7 @@ void MainMenu::Render() {
 	}
 	player[0].sprite.Draw_Texture(255.0f);
 	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - AEGetWindowHeight() / 4));
+	pTest.Particles_Render();
 }
 
 void MainMenu::Load(void)

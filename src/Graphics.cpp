@@ -136,10 +136,12 @@ void Graphics::Rect::DrawTexture(AEGfxTexture* pTex, Color C, const f32 alpha)
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-Graphics::Circle::Circle(const f32 width, const f32 height, const f32 direction, AEGfxVertexList* Mesh) : Rect(width, height, direction, Mesh)
+Graphics::Circle::Circle(const f32 radius, const f32 direction, AEGfxVertexList* Mesh) : Rect(radius, radius, direction, Mesh)
 {
 	color.SetColor(Color{ 255, 255, 255, 255 });
 }
+
+Graphics::Circle::Circle() : Rect(0.0f, 0.0f, 0.0f, Mesh::Circle) {}
 
 Graphics::Text::Text(s8* textBuffer, const f32 scale) : scale{ scale }, pos{ 0, 0 },
 height{ 0 }, width{ 0 }, buffer{ textBuffer }
