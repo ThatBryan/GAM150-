@@ -107,8 +107,7 @@
       <AdditionalDependencies>Alpha_EngineD.lib;fmodL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)Extern\AlphaEngine_V3.08\lib" "$(OutDir)"
-xcopy /y /d "$(SolutionDir)\Extern\core\lib\x64" "$(OutDir)"
+      <Command>xcopy /y /d "$(SolutionDir)\Extern\lib" "$(OutDir)"
 xcopy /y /d /i /s "$(SolutionDir)\Assets" "$(OutDir)\Assets"</Command>
     </PostBuildEvent>
     <PostBuildEvent>
