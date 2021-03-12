@@ -158,8 +158,8 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 			if (Utils::ColliderAABB(enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, playerBB.pos, playerBB.width, playerBB.height))
 			{
 				if (Utils::ColliderAABB(enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, feetBB.pos, sprite.width, feetBB.height)) {
-					//if (!DebugMode)
-					enemy[i].setKilled();
+					if (!DebugMode)
+						enemy[i].setKilled();
 					if (DebugMode)
 						printf("enemy dies\n");
 				}
@@ -169,7 +169,6 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 						UI::DecreaseLife();
 						if(lives > 0)
 							Reset();
-						printf("%d\n", lives);
 					}
 					if (DebugMode)
 						printf("player dies\n");

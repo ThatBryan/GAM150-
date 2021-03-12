@@ -54,7 +54,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Graphics::Load_Meshes();
 
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl << std::endl;
-
+	std::cout << "\nUse keys WASD to navigate around the game\n";
+	std::cout << "\nKey F1 enables debug mode during gameplay\n";
+	std::cout << "\nL ALT + Enter streches to full screen during gameplay\n";
 	// Initialises the GSM
 	GameStateManagerInit();
 	AEToogleFullScreen(fullscreen);

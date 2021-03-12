@@ -23,7 +23,6 @@ static std::vector<Tiles> tiles;
 static std::vector<Player> player;
 static Graphics::Text Title;
 static AEVec2 ScreenMid;
-static Particles pTest;
 
 void MainMenu::Init(void)
 {
@@ -48,9 +47,6 @@ void MainMenu::Init(void)
 	Title.SetText(const_cast<s8*>("JUMPERMAN"));
 	Title.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	Title.SetScale(1.0f);
-
-	pTest.Particles_Create(ScreenMid, 5.0f, 10.0f);
-	pTest.Particles_SetColor(Color{ 0.0f, 0.0f, 255.0f, 255.0f });
 }
 
 void MainMenu::Update(void)
@@ -65,7 +61,6 @@ void MainMenu::Update(void)
 		tiles[i].Update();
 	}
 	player[0].sprite.rotation += 100.0f * g_dt;
-	pTest.Particles_Update();
 }
 
 void MainMenu::Render() {
@@ -77,7 +72,6 @@ void MainMenu::Render() {
 	}
 	player[0].sprite.Draw_Texture(255.0f);
 	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - AEGetWindowHeight() / 4));
-	pTest.Particles_Render();
 }
 
 void MainMenu::Load(void)
@@ -141,11 +135,13 @@ void MainMenu::Buttons_Init() {
 		LevelButtons[i].Set_Callback(placeholder);
 		LevelButtons[i].Set_TextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 		LevelButtons[i].Set_Position(AEVec2Zero());
+		//std::string tmp{ "Level " + std::to_string(i + 1) };
+		//LevelButtons[i].Set_Text(tmp.c_str());
 	}
 
 	for (unsigned int i = 0; i < 3; ++i) {
 		for (unsigned int j = 0; j < 3; ++j) 
-			LevelButtons[(i*3) + j].Set_Position(AEVec2Set(175.0f + 225.0f * i, 162.5f + 150.0f * j));// Mid = 400. 400 - 75, 325. 325 - 150 175. // 600 / 3, 200 - 37.5
+			LevelButtons[(i*3) + j].Set_Position(AEVec2Set(175.0f + 225.0f * i, 162.5f + 150.0f * j));// Mid = 400. 400 - 75, 325. 325 - 150 175.0f // 600 / 3, 200 - 37.5 = 162.5f
 		}
 	LevelButtons[0].Set_Text("Level 1");
 	LevelButtons[1].Set_Text("Level 2");

@@ -157,14 +157,15 @@ void Enemies::Draw()
 void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 pos, const f32 width, const f32 height)
 {
 	float bbHeight{ height }, counter{ 0 }, vel{ 0 }, jumpcounter{ 0 }, jumpvel{ 0 };
+	const float BatBBOffset{ 20.0f }, squirrelBBOffset{ 43.0f };
 	switch (type) {
 	case EnemyType::Bat:
-		bbHeight = 20.0f;
+		bbHeight = BatBBOffset;
 		counter = Enemies::bat_counter;
 		vel = Enemies::bat_speed;
 		break;
 	case EnemyType::Squirrel:
-		bbHeight = 43.0f;
+		bbHeight = squirrelBBOffset;
 		counter = Enemies::squirrel_counter;
 		vel = Enemies::squirrel_speed;
 		jumpcounter = Enemies::jump_counter;
