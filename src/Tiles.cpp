@@ -22,11 +22,29 @@ void Tiles::Collapse(void)
 		}
 	}
 	if (type == TileType::Special) {
-		//if (AETestRectToRect(&player[0].feetBB.pos, player[0].feetBB.width, player[0].feetBB.height, &ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
-		//	&& (AEInputCheckTriggered(AEVK_DOWN) || AEInputCheckTriggered(AEVK_S)))
-		//{
-		//	collapsing = true;
-		//}
+		if (AETestRectToRect(&player[0].feetBB.pos, player[0].feetBB.width, player[0].feetBB.height, &ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
+			&& (AEInputCheckTriggered(AEVK_DOWN) || AEInputCheckTriggered(AEVK_S)))
+		{
+			collapsing = true;
+		}
+	}
+}
+
+void Tiles::Collapse(Player& player)
+{
+	if (type == TileType::Grass || type == TileType::Special)
+	{
+		if (collapseDelay <= 0)
+		{
+			image.pos.y += TileCollapseSpeed * g_dt;
+		}
+	}
+	if (type == TileType::Special) {
+		if (AETestRectToRect(&player.feetBB.pos, player.feetBB.width, player.feetBB.height, &ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
+			&& (AEInputCheckTriggered(AEVK_DOWN) || AEInputCheckTriggered(AEVK_S)))
+		{
+			collapsing = true;
+		}
 	}
 }
 
@@ -151,6 +169,16 @@ void Tiles::Update()
 	Collapse();
 	DecreaseLifespan();
 	if(collapsing)
+		TileShake();
+
+}
+
+void Tiles::Update(Player& player)
+{
+	CheckPos();
+	Collapse(player);
+	DecreaseLifespan();
+	if (collapsing)
 		TileShake();
 
 }

@@ -23,6 +23,7 @@ class Tiles
 		// Abstraction
 		void DecreaseLifespan(void);
 		void Collapse(void);
+		void Collapse(Player& player);
 		void CheckPos(void);
 		void CheckPlayerGoal(std::vector <Player>& player);
 		void CheckEnemyStatus(std::vector <Enemies> enemy);
@@ -32,6 +33,7 @@ class Tiles
 		Image image;
 		AEVec2 spawnPos;
 		void Update(void);
+		void Update(Player& player);
 		void Render(void);
 
 		inline bool GetActive() { return active; }
