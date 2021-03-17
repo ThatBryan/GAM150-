@@ -9,9 +9,9 @@
 
 std::vector<Tiles> tilemap;
 std::vector<Enemies> enemies;
-//std::vector<Player> player;
+std::vector<Player> Jumperman;
 
-void TestLevelInit(void)
+void MapInit(void)
 {
 //	Map map = GetMap();
 	ImportMapDataFromFile("../testrun.txt");
@@ -44,6 +44,7 @@ void TestLevelInit(void)
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::JUMPERMAN))
 			{
 				// Do smth later
+				Player::CreatePlayer(Jumperman, AEVec2Set(j * grid_width, i * grid_height), player_width, player_height);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SLIME))
 			{
@@ -68,7 +69,7 @@ void MapUpdate()
 		tilemap[i].Update();
 //		enemies[i].Update();
 	}
-//	player[0].Update();
+	Jumperman[0].Update();
 }
 
 void MapRender()
@@ -78,7 +79,7 @@ void MapRender()
 		tilemap[i].Render();
 //		enemies[i].Render();
 	}
-//	player[0].Render();
+	Jumperman[0].Render();
 }
 
 void MapLoad()

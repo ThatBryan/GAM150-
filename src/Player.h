@@ -46,4 +46,6 @@ public:
 
 	static void LoadTex(void);
 	static void Unload(void);
+
+	static void CreatePlayer(std::vector <Player>& player, const AEVec2 pos, const f32 width, const f32 height);
 };
