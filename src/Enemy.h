@@ -12,7 +12,6 @@ EnemyType& operator++(EnemyType& rhs);
 class Player;
 class Tiles;
 
-using fn_ptr = void(*)(void);
 class Enemies
 {
 private:
@@ -46,7 +45,7 @@ public:
 	void Draw();
 	inline EnemyType GetType() { return type; }
 	inline bool getKilled() { return killed; }
-	inline void setKilled(bool status = true) { killed = status; }
+	void setKilled(bool status = true);
 
 	void GravityCheck(std::vector <std::vector<Tiles>*>& TileManager);
 	// Add new enemy into the vector.

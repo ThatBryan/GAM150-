@@ -142,7 +142,7 @@ void Graphics::Rect::Draw(Color C, const f32 alpha)
 	AEGfxSetTintColor(C.r, C.g, C.b, C.alpha);
 	AEGfxSetTransparency(alpha / colorcodeMax);
 	AEGfxSetTransform(transformMtx.m);
-	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	AEGfxSetBlendMode(AE_GFX_BM_NONE);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 

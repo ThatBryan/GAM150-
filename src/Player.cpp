@@ -4,6 +4,7 @@
 #include "Utilities.h"
 #include "PitchDemo.h"
 #include "Graphics.h"
+#include "Particles.h"
 
 AEGfxTexture* Player::playerTex{ nullptr };
 static f32 maxY;
@@ -160,6 +161,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 				if (Utils::ColliderAABB(enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, feetBB.pos, sprite.width, feetBB.height)) {
 					if (!DebugMode)
 						enemy[i].setKilled();
+
 					if (DebugMode)
 						printf("enemy dies\n");
 				}

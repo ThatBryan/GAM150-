@@ -8,10 +8,11 @@ const float maxAlpha = 255.0f;
 
 Particles::Particles() : pMesh{ Mesh::Circle }, rotation{0}, active{ true }, vel{ AEVec2{0.0f, 0.0f} }, alpha{ 0.0f },
 lifeSpan{ 0.0f }, currentLifespan{ 0.0f }, pTex{ nullptr }, pos{ AEVec2{0.0f, 0.0f} }, height{ 0 }, width{ 0 },
-transformMtx{ NULL }{}
+transformMtx{ NULL }, rotation_rate{ 0 }{}
 
-void Particles::Create(AEVec2 Pos, Color color, int count, float speed, float radius, float lifespan, AEGfxTexture* Texture)
+void Particles::Create(AEVec2 Pos, AEVec2 Vel, Color color, int count, float speed, float Rotation_rate, float radius, float lifespan, AEGfxTexture* Texture)
 {
+	// Try to reuse container
 	for (size_t i = 0; i < p.size() ; ++i) {
 		if (count < 0)
 			return;
@@ -26,21 +27,20 @@ void Particles::Create(AEVec2 Pos, Color color, int count, float speed, float ra
 			p[i].alpha = Utils::RandomRangeFloat(50.0f, 255.0f);
 			p[i].pos = Pos;
 			p[i].color = color;
+			AEVec2Scale(&p[i].vel, &Vel, speed);
+			p[i].rotation_rate = Rotation_rate;
 
-			if (p[i].pTex)
+			if (Texture)
 				p[i].pMesh = Mesh::Rect;
-
-			AEVec2 Temp{ AEVec2Set(Utils::RandomRangeFloat(-1.0f, 1.0f), Utils::RandomRangeFloat(-1.0f, 1.0f)) };
-			AEVec2Normalize(&Temp, &Temp);
-			AEVec2Scale(&Temp, &Temp, speed);
-			p[i].vel = Temp;
+			else
+				p[i].pMesh = Mesh::Circle;
 			--count;
 		}
 	}
+	
 	for (int i = 0; i < count; ++i) {
 		p.push_back(Particles());
 		Particles& particle = p.back();
-		particle.active = true;
 		particle.active = true;
 		particle.lifeSpan = lifespan;
 		particle.currentLifespan = lifespan;
@@ -50,20 +50,20 @@ void Particles::Create(AEVec2 Pos, Color color, int count, float speed, float ra
 		particle.alpha = Utils::RandomRangeFloat(50.0f, 255.0f);
 		particle.pos = Pos;
 		particle.color = color;
+		particle.vel = Vel;
+		AEVec2Scale(&particle.vel, &Vel, speed);
+		particle.rotation_rate = Rotation_rate;
 
-		if (p.back().pTex)
-			p.back().pMesh = Mesh::Rect;
-
-		AEVec2 Temp{ AEVec2Set(Utils::RandomRangeFloat(-1.0f, 1.0f), Utils::RandomRangeFloat(-1.0f, 1.0f)) };
-		AEVec2Normalize(&Temp, &Temp);
-		AEVec2Scale(&Temp, &Temp, speed);
-		particle.vel = Temp;
+		if (Texture)
+			particle.pMesh = Mesh::Rect;
+		else
+			particle.pMesh = Mesh::Circle;
 	}
 }
 
 void Particles::Update()
 {
-	std::cout << p.size() << std::endl;
+	//std::cout << p.size() << std::endl;
 	for (size_t i = 0; i < p.size(); ++i) {
 		if (p[i].active == false)
 			continue;
@@ -75,6 +75,7 @@ void Particles::Update()
 			p[i].currentLifespan -= g_dt;
 			AEVec2ScaleAdd(&p[i].pos, &p[i].vel, &p[i].pos, g_dt);
 			p[i].alpha = (p[i].currentLifespan / p[i].lifeSpan) * maxAlpha;
+			p[i].rotation += p[i].rotation_rate * g_dt;
 		}
 	}
 }
@@ -96,7 +97,7 @@ void Particles::Render()
 		}
 
 		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-		AEGfxSetTintColor(p[i].color.r, p[i].color.g, p[i].color.b, 1.0f);
+		AEGfxSetTintColor(p[i].color.r, p[i].color.g, p[i].color.b, p[i].color.alpha);
 		AEGfxSetTransparency(p[i].alpha / maxAlpha);
 		AEGfxSetTransform(p[i].transformMtx.m);
 		AEGfxMeshDraw(p[i].pMesh, AE_GFX_MDM_TRIANGLES);
@@ -105,17 +106,9 @@ void Particles::Render()
 
 void Particles::Unload()
 {
-	//for (size_t i = 0; i < p.size(); ++i) {
-	//	if (p[i].pTex)
-	//		AEGfxTextureUnload(p[i].pTex);
-	//}
 	p.clear();
 }
 
-void Particles::Set_Color(Color _color)
-{
-	color.Set(_color);
-}
 
 void Particles::Set_Matrix()
 {

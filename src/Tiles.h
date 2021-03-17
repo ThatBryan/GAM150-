@@ -5,7 +5,6 @@
 #include "Constants.h"
 
 enum class TileType{ Grass = 0, Goal, Safe, Special, Max };
-static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 TileType& operator++(TileType& rhs);
 
 // Foward declaration

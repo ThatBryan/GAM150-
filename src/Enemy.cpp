@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "Tiles.h"
 #include "Utilities.h"
+#include "Particles.h"
 
 bool jump = FALSE;
 
@@ -235,4 +236,13 @@ void Enemies::LoadTex(void) {
 EnemyType& operator++(EnemyType& rhs) {
 	rhs = static_cast<EnemyType>((static_cast<int>(rhs) + 1));
 	return rhs;
+}
+
+void Enemies::setKilled(bool status) {
+	killed = status;
+	if (killed) {
+		for (int i = 0; i < 50; ++i) {
+			Particles::Create(sprite.pos, Utils::GetRandomVel(), Color::CreateRandomColor(), 1, 75.0f, Utils::RandomRangeFloat(0, 50.0f), 25.0f, 3.0f, enemyTex[static_cast<int>(type)]);
+		}
+	}
 }

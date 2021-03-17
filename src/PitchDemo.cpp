@@ -9,6 +9,7 @@
 #include "MainMenu.h"
 #include <array>
 #include "GameStateManager.h"
+#include "Particles.h"
 
 Color background;
 std::vector <Tiles> Demo_Tiles, Demo_Tiles2, Demo_Tiles3;
@@ -77,7 +78,7 @@ void Demo::Init(void)
 		buttons.push_back(Button(ButtonType::Color, 150.0f, 75.0f, 0.8f));
 	}
 
-	buttons[0].Set_Text("Test");
+	buttons[0].Set_Text("Resume");
 	buttons[0].Set_Callback(Utils::CheckPauseInput);
 	buttons[1].Set_Callback(Utils::ReturnToMenu);
 	buttons[1].Set_Position(AEVec2{Midpt.x + buttons[0].GetWidth(), Midpt.y * 2 - buttons[0].GetHeight() / 2.0f });
@@ -110,6 +111,7 @@ void Demo::Update(void)
 	Utils::CheckDebugMode();
 	UpdateManager();
 	UI::Update();
+	Particles::Update();
 	if (AEInputCheckTriggered(RESTART_KEY))
 		Restart();
 }
@@ -142,6 +144,7 @@ void Demo::Unload(void)
 	Demo_Tiles3.clear();
 	enemy.clear();
 	player.clear();
+	Particles::Unload();
 
 	for (int i = 0; i < buttons.size(); ++i) {
 		buttons[i].FreeTexture();
@@ -180,7 +183,8 @@ void Demo::Render(void)
 	}
 	player[0].Render();
 	UpdateOverlay();
-	AEVec2 Mid{ Utils::GetScreenMiddle() };
+
+	Particles::Render();
 }
 
 void Demo::UpdateManager(void)

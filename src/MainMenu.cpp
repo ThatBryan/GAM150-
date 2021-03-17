@@ -50,14 +50,16 @@ void MainMenu::Init(void)
 
 	test = AEGfxTextureLoad(FP::boi);
 	for (int i = 0; i < 50; ++i) {
-		Particles::Create(ScreenMid, Color::CreateRandomColor(), 1, 50.0f, 20.0f, 3.0f, test);
+		Particles::Create(ScreenMid, Utils::GetRandomVel(), Color::CreateRandomColor(), 1, 100.0f, Utils::RandomRangeFloat(0.0f, 500.0f), 50.0f, 10.0f, test);
 	}
 }
 
 void MainMenu::Update(void)
 {
 	if (AEInputCheckTriggered(AEVK_SPACE)) {
-		Particles::Create(Utils::GetRandomPos(), Color::CreateRandomColor(), 100, 50.0f, 20.0f, 3.0f, test);
+		for (int i = 0; i < 100; ++i) {
+			Particles::Create(Utils::GetRandomPos(), Utils::GetRandomVel(), Color::CreateRandomColor(), 1, 50.0f, Utils::RandomRangeFloat(0.0f, 500.0f), 50.0f, 3.0f);
+		}
 	}
 	Audio.update();
 	MainMenu::TestPlayerMovement();
@@ -224,7 +226,7 @@ void MainMenu::TestLevelSelectionUpdate(void)
 void MainMenu::TestLevelSelectionRender(void)
 {
 	static Graphics::Text Level;
-	Level.SetText(const_cast<s8*>("Level Selection"));
+	Level.SetText("Level Selection");
 	Level.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	Level.SetScale(1.0f);
 

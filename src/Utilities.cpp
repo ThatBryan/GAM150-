@@ -60,6 +60,13 @@ AEVec2 Utils::GetRandomPos(void)
 	return AEVec2{ Utils::RandomRangeFloat(0, Width), Utils::RandomRangeFloat(0, Height)};
 }
 
+AEVec2 Utils::GetRandomVel(void)
+{
+	AEVec2 Vel{ Utils::RandomRangeFloat(-1.0f, 1.0f), Utils::RandomRangeFloat(-1.0f, 1.0f) };
+	AEVec2Normalize(&Vel, &Vel);
+	return Vel;
+}
+
 AEVec2 Utils::GetMousePos(void)
 {
 	int mouseX = 0, mouseY = 0;
