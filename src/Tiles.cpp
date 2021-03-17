@@ -10,7 +10,7 @@ Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image
 active{ true }, collapsing{ false }, ID{ 0 }, collapseDelay{ TileCollapseDelay }, type{ TileType::Safe }, spawnPos{ 0, 0 },
 ColliderAABB{width, height}
 {
-	ColliderAABB.color.SetColor(Color{ 150, 0, 0, 150 });
+	ColliderAABB.color.Set(Color{ 150, 0, 0, 150 });
 }
 void Tiles::Collapse(void)
 {
@@ -34,9 +34,10 @@ void Tiles::CheckPlayerGoal(std::vector <Player>& Player)
 {
 	if (type == TileType::Goal)
 	{
-		static AEVec2 GoalPoint = {image.pos.x, image.pos.y - image.height / 2  - 1.0f};
-		if (AETestPointToRect(&GoalPoint, &Player[0].sprite.pos, Player[0].sprite.width, Player[0].sprite.height))
+		AEVec2 GoalPoint = {image.pos.x, image.pos.y - image.height / 2.0f};
+		if (AETestPointToRect(&GoalPoint, &Player[0].feetBB.pos, Player[0].feetBB.width, Player[0].feetBB.height))
 			Player[(player.size() - 1)].SetWin();
+		//if(Utils::ColliderAABB(player[0].feetBB.pos, player[0].feetBB.width, player[0].feetBB.height, image.pos, image.width, image.height))
 	}
 }
 
