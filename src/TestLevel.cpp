@@ -14,7 +14,7 @@ std::vector<Player> Jumperman;
 void MapInit(void)
 {
 //	Map map = GetMap();
-	ImportMapDataFromFile("./testrun.txt");
+	ImportMapDataFromFile("../testrun.txt");
 	AEVec2 Pos;
 	f32 grid_height{ static_cast<f32>(AEGetWindowHeight() / Map_Height) }, grid_width{ static_cast<f32>(AEGetWindowWidth() / Map_Width) };
 	for (int i = 0; i < Map_Height; ++i)
