@@ -93,6 +93,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			// Informing the system about the loop's end
 			AESysFrameEnd();
 
+			if (g_dt > 0.01667f) // 1 / 60fps;
+				g_dt = 0.01667f;
+
 			// check if forcing the application to quit
 			if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
 				gamestateNext = GS_QUIT;

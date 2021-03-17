@@ -47,6 +47,8 @@ void MainMenu::Init(void)
 	Title.SetText(const_cast<s8*>("JUMPERMAN"));
 	Title.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	Title.SetScale(1.0f);
+
+	Particles::Create(ScreenMid, 10, 5.0f, 50.0f, 5.0f);
 }
 
 void MainMenu::Update(void)
@@ -61,6 +63,7 @@ void MainMenu::Update(void)
 		tiles[i].Update();
 	}
 	player[0].sprite.rotation += 100.0f * g_dt;
+	Particles::Update();
 }
 
 void MainMenu::Render() {
@@ -72,6 +75,7 @@ void MainMenu::Render() {
 	}
 	player[0].sprite.Draw_Texture(255.0f);
 	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - AEGetWindowHeight() / 4));
+	Particles::Render();
 }
 
 void MainMenu::Load(void)

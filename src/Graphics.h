@@ -23,12 +23,15 @@ namespace Graphics
 	void Load_Meshes(void);
 	AEGfxVertexList* Mesh_Rectangle(void);
 	AEGfxVertexList* Mesh_Circle(void);
+	void SetMatrix(AEVec2 Pos);
+	void Draw_toPos(AEVec2 Pos, Color color, const f32 alpha);
+
 	void Free();
 
 	class Rect
 	{
 		public:
-			Rect(const f32 width = 50.0f, const f32 height = 10.0f, const f32 direction = 0, AEGfxVertexList* = Mesh::Rect);
+			Rect(const f32 width = 50.0f, const f32 height = 10.0f, const f32 rotation = 0, AEGfxVertexList* = Mesh::Rect);
 
 		Color color;
 		AEVec2 pos;
@@ -41,7 +44,7 @@ namespace Graphics
 		private:
 			AEGfxVertexList* pMesh;
 			AEMtx33 transformMtx;
-			f32 direction;
+			f32 rotation;
 			void SetMatrix();
 	};
 

@@ -81,7 +81,7 @@ AEGfxVertexList* Graphics::Mesh_Circle(void)
 	return AEGfxMeshEnd();
 }
 
-Graphics::Rect::Rect(const f32 width, const f32 height, const f32 direction, AEGfxVertexList* Mesh) : direction{ direction }, transformMtx{ NULL },
+Graphics::Rect::Rect(const f32 width, const f32 height, const f32 direction, AEGfxVertexList* Mesh) : rotation{ direction }, transformMtx{ NULL },
 width{ width }, height{ height }, pos{ 0, 0 }, pMesh{Mesh}
 {
 	color.SetColor(Color{ 255, 255, 255, 255 });
@@ -93,8 +93,22 @@ void Graphics::Rect::SetMatrix(void)
 	static f32 HalfWinWindow{ Utils::Get_HalfWindowWidth() };
 	AEMtx33	trans, rot, scale;
 	AEMtx33Scale(&scale, width, height);
-	AEMtx33Rot(&rot, AEDegToRad(direction));
+	AEMtx33Rot(&rot, AEDegToRad(rotation));
 	AEMtx33Trans(&trans, -HalfWinWindow + pos.x, HalfWinHeight - pos.y);
+	AEMtx33 temp;
+	AEMtx33Concat(&temp, &rot, &scale);
+	AEMtx33Concat(&transformMtx, &trans, &temp);
+}
+
+void Graphics::Rect::SetMatrix(AEVec2 Pos)
+{
+	static f32 HalfWinHeight, HalfWinWindow;
+	HalfWinHeight = Utils::Get_HalfWindowHeight();
+	HalfWinWindow = Utils::Get_HalfWindowWidth();
+	AEMtx33	trans, rot, scale;
+	AEMtx33Scale(&scale, width, height);
+	AEMtx33Rot(&rot, AEDegToRad(rotation));
+	AEMtx33Trans(&trans, -HalfWinWindow + Pos.x, HalfWinHeight - Pos.y);
 	AEMtx33 temp;
 	AEMtx33Concat(&temp, &rot, &scale);
 	AEMtx33Concat(&transformMtx, &trans, &temp);
@@ -130,6 +144,17 @@ void Graphics::Rect::DrawTexture(AEGfxTexture* pTex, Color C, const f32 alpha)
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 	AEGfxTextureSet(pTex, 0.0f, 0.0f);
 	AEGfxSetTintColor(C.r, C.g, C.b, C.alpha);
+	AEGfxSetTransparency(alpha / colorcodeMax);
+	AEGfxSetTransform(transformMtx.m);
+	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
+}
+
+void Graphics::Draw_toPos(AEVec2 Pos, Color c, const f32 alpha)
+{
+	SetMatrix(Pos);
+	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+	AEGfxSetTintColor(c.r, c.g, c.b, c.alpha);
 	AEGfxSetTransparency(alpha / colorcodeMax);
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);

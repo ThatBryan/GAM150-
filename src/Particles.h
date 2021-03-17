@@ -1,20 +1,20 @@
 #pragma once
 #include "AEEngine.h"
 #include "Graphics.h"
+#include <vector>
 
-
-//const int particlesNum{ 50 };
-//class Particles : public Graphics::Circle{
-//	public:
-//		Particles();
-//		void Particles_Create(AEVec2 Pos, float radius, float lifespan, AEGfxTexture* Texture = nullptr);
-//		void Particles_Update();
-//		void Particles_Render();
-//		void Particles_SetColor(Color color);
-//	private:
-//		bool active;
-//		AEGfxTexture* pTex;
-//		float lifeSpan, currentLifespan, alpha;
-//		AEVec2 vel[particlesNum];
-//		AEVec2 pos[particlesNum];
-//};
+class Particles : public Graphics::Circle{
+	public:
+		Particles();
+		static void Create(AEVec2 Pos, int count, float speed, float radius, float lifespan, AEGfxTexture* Texture = nullptr);
+		static void Update();
+		static void Render();
+		static void Unload();
+		void Set_Color(Color color);
+	private:
+		bool active;
+		AEGfxTexture* pTex;
+		float lifeSpan, currentLifespan, alpha;
+		AEVec2 vel;
+		AEVec2 pos;
+};
