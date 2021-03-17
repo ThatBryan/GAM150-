@@ -1,6 +1,7 @@
 #include "Graphics.h"
 #include "Image.h"
 #include <iostream>
+#include <cstring>
 #include "Utilities.h"
 
 
@@ -164,18 +165,24 @@ Graphics::Circle::Circle(const f32 radius, const f32 direction, AEGfxVertexList*
 
 Graphics::Circle::Circle() : Rect(0.0f, 0.0f, 0.0f, Mesh::Circle) {}
 
-Graphics::Text::Text(s8* textBuffer, const f32 scale) : scale{ scale }, pos{ 0, 0 },
-height{ 0 }, width{ 0 }, buffer{ textBuffer }
+Graphics::Text::Text(std::string textBuffer, const f32 scale) : scale{ scale }, pos{ 0, 0 },
+height{ 0 }, width{ 0 }, buffer()
 {
+	buffer = textBuffer;
 	Text::color.Set(Color{ 255.0f, 255.0f, 255.0f, 255.0f });
 }
 
 Graphics::Text::Text() : scale{ 0 }, pos{ 0, 0 },
-height{ 0 }, width{ 0 }, buffer{ nullptr }, color() {}
+height{ 0 }, width{ 0 }, buffer(), color() {}
+
+Graphics::Text::~Text()
+{
+
+}
 
 
 
-void Graphics::Text::SetText(s8* text) {
+void Graphics::Text::SetText(std::string text) {
 	buffer = text;
 }
 
@@ -183,15 +190,15 @@ void Graphics::Text::Draw()
 {
 	AEVec2 drawPos = Graphics::Text::Calculate_Offset(pos);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxPrint(font::ID, buffer, drawPos.x, drawPos.y, scale, color.r, color.g, color.b);
+	AEGfxPrint(font::ID, const_cast<s8*>(buffer.c_str()), drawPos.x, drawPos.y, scale, color.r, color.g, color.b);
 }
 
 void Graphics::Text::Draw_Wrapped(const AEVec2 Pos)
 {
-	AEGfxGetPrintSize(font::ID, buffer, scale, width, height);
+	AEGfxGetPrintSize(font::ID, const_cast<s8*>(buffer.c_str()), scale, width, height);
 	AEVec2 drawPos = Graphics::Text::Calculate_Offset(Pos);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxPrint(font::ID, buffer, drawPos.x - width / 2.0f, drawPos.y - height / 2.0f, scale, color.r, color.g, color.b);
+	AEGfxPrint(font::ID, const_cast<s8*>(buffer.c_str()), drawPos.x - width / 2.0f, drawPos.y - height / 2.0f, scale, color.r, color.g, color.b);
 }
 
 AEVec2 Graphics::Text::Calculate_Offset(AEVec2 Pos)
@@ -226,7 +233,7 @@ AEVec2 Graphics::Text::Calculate_Offset(AEVec2 Pos)
 
 AEVec2 Graphics::Text::GetBufferSize()
 {
-	AEGfxGetPrintSize(font::ID, buffer, scale, width, height);
+	AEGfxGetPrintSize(font::ID, const_cast<s8*>(buffer.c_str()), scale, width, height);
 	
 	return AEVec2{ width / 2 * AEGetWindowWidth(), height / 2 * AEGetWindowHeight() };
 }

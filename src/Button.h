@@ -17,7 +17,7 @@ public:
 	Button(ButtonType Type, const f32 width, const f32 height, const f32 textScale = 1.0f);
 	void Set_Position(const AEVec2 pos);
 	void Set_Callback(fn_ptr function);
-	void Set_Text(const char* text);
+	void Set_Text(std::string text);
 	void Set_TextColor(Color color);
 	void SetStateColor(ButtonState state, Color color);
 	inline void SetType(ButtonType Type) {type = Type; }

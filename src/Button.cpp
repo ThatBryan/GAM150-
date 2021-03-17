@@ -2,7 +2,7 @@
 
 extern std::vector <Player> player;
 
-Button::Button(ButtonType Type, const f32 width, const f32 height, const f32 scale) : button(width, height), text(nullptr, scale)
+Button::Button(ButtonType Type, const f32 width, const f32 height, const f32 scale) : button(width, height), text(std::string(), scale)
 , pos{ 0,0 }, callback{ nullptr }, pTex{ nullptr }, type{Type}{
 	buttonState[static_cast<int>(ButtonState::Idle)] = { 0, 255.0f, 0, 255.0f };
 	buttonState[static_cast<int>(ButtonState::Hovered)] = { 255.0f, 255.0f, 0, 255.0f };
@@ -19,8 +19,8 @@ void Button::Set_Callback(fn_ptr fnc_ptr) {
 	this->callback = fnc_ptr;
 }
 
-void Button::Set_Text(const char* Text) {
-	text.SetText(const_cast<s8*>(Text));
+void Button::Set_Text(std::string Text) {
+	text.SetText(Text);
 }
 
 void Button::Set_TextColor(Color color) {

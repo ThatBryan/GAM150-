@@ -108,9 +108,10 @@ void Tiles::AddTileRow(std::vector <Tiles>& tile, TileType type, const int count
 void Tiles::AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, const f32 height, AEVec2 pos) {
 	AEGfxTexture* temp = tileTex[static_cast<int>(type)];
 	tile.push_back(Tiles(temp, width, height));
-	tile[tile.size() - 1].type = type;
-	tile[tile.size() - 1].image.pos = AEVec2Set(pos.x + width / 2.0f, pos.y + height / 2.0f);
-	tile[tile.size() - 1].spawnPos = tile[tile.size() - 1].image.pos;
+	Tiles& Tile = tile.back();
+	Tile.type = type;
+	Tile.image.pos = AEVec2Set(pos.x + width / 2.0f, pos.y + height / 2.0f);
+	Tile.spawnPos = tile[tile.size() - 1].image.pos;
 }
 
 void Tiles::CollapseNext(std::vector <Tiles>& tiles)

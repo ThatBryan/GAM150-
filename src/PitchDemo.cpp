@@ -77,7 +77,7 @@ void Demo::Init(void)
 		buttons.push_back(Button(ButtonType::Color, 150.0f, 75.0f, 0.8f));
 	}
 
-	buttons[0].Set_Text("RESUME");
+	buttons[0].Set_Text("Test");
 	buttons[0].Set_Callback(Utils::CheckPauseInput);
 	buttons[1].Set_Callback(Utils::ReturnToMenu);
 	buttons[1].Set_Position(AEVec2{Midpt.x + buttons[0].GetWidth(), Midpt.y * 2 - buttons[0].GetHeight() / 2.0f });

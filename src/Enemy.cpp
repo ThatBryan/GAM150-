@@ -180,14 +180,15 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 		break;
 	}
 	enemy.push_back(Enemies(enemyTex[static_cast<int>(type)], width, height));
-	enemy[enemy.size() - 1].sprite.pos = pos;
-	enemy[enemy.size() - 1].type = type;
-	enemy[enemy.size() - 1].spawnPos = pos;
-	enemy[enemy.size() - 1].enemyBB.height = bbHeight;
-	enemy[enemy.size() - 1].counter = counter;
-	enemy[enemy.size() - 1].velocity = vel;
-	enemy[enemy.size() - 1].jumpcounter = jumpcounter;
-	enemy[enemy.size() - 1].jumpvelocity = jumpvel;
+	Enemies& Enemy = enemy.back();
+	Enemy.sprite.pos = pos;
+	Enemy.type = type;
+	Enemy.spawnPos = pos;
+	Enemy.enemyBB.height = bbHeight;
+	Enemy.counter = counter;
+	Enemy.velocity = vel;
+	Enemy.jumpcounter = jumpcounter;
+	Enemy.jumpvelocity = jumpvel;
 }
 
 void Enemies::Reset(std::vector <Enemies>& enemy)

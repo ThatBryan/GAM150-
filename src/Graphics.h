@@ -1,6 +1,7 @@
 #pragma once
 #include "AEEngine.h"
 #include "Constants.h"
+#include <string>
 
 //https://htmlcolorcodes.com/
 
@@ -59,10 +60,11 @@ namespace Graphics
 	{
 		public:
 		// Constructor
-		Text(s8* textBuffer, const f32 scale = 1.0f);
+		Text(std::string, const f32 scale = 1.0f);
 		Text();
-			inline s8* GetText() { return buffer; }
-			void SetText(s8* text);
+		~Text();
+			inline s8* GetText() { return const_cast<s8*>(buffer.c_str()); }
+			void SetText(std::string text);
 			inline void SetPos(AEVec2 Pos) { pos = Pos; }
 			inline void SetColor(Color c) { color.Set(c); }
 			inline void SetScale(f32 Scale) { scale = Scale; }
@@ -77,7 +79,8 @@ namespace Graphics
 			AEVec2 GetBufferSize();
 
 		private:
-			s8* buffer;
+			/*s8* buffer;*/
+			std::string buffer;
 			AEVec2 Calculate_Offset(AEVec2 pos);
 	};
 }

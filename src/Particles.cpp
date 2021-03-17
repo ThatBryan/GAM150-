@@ -98,7 +98,6 @@ void Particles::Render()
 		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 		AEGfxSetTintColor(p[i].color.r, p[i].color.g, p[i].color.b, 1.0f);
 		AEGfxSetTransparency(p[i].alpha / maxAlpha);
-		//AEGfxSetTransparency(1.0f);
 		AEGfxSetTransform(p[i].transformMtx.m);
 		AEGfxMeshDraw(p[i].pMesh, AE_GFX_MDM_TRIANGLES);
 	}
@@ -106,10 +105,10 @@ void Particles::Render()
 
 void Particles::Unload()
 {
-	for (size_t i = 0; i < p.size(); ++i) {
-		if (p[i].pTex)
-			AEGfxTextureUnload(p[i].pTex);
-	}
+	//for (size_t i = 0; i < p.size(); ++i) {
+	//	if (p[i].pTex)
+	//		AEGfxTextureUnload(p[i].pTex);
+	//}
 	p.clear();
 }
 

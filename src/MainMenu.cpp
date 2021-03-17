@@ -44,7 +44,7 @@ void MainMenu::Init(void)
 	background.Set(Color{ 51.0f, 215.0f, 255.0f, 255.0f });
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 	
-	Title.SetText(const_cast<s8*>("JUMPERMAN"));
+	Title.SetText("JUMPERMAN");
 	Title.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	Title.SetScale(1.0f);
 
@@ -52,7 +52,6 @@ void MainMenu::Init(void)
 	for (int i = 0; i < 50; ++i) {
 		Particles::Create(ScreenMid, Color::CreateRandomColor(), 1, 50.0f, 20.0f, 3.0f, test);
 	}
-
 }
 
 void MainMenu::Update(void)
@@ -122,23 +121,22 @@ void MainMenu::QuitGame(void) {
 }
 
 void MainMenu::Buttons_Init() {
-	buttons.push_back(Button(ButtonType::Color, 200.0f, 50.0f));
+	for (int i = 0; i < 4; ++i) {
+		buttons.push_back(Button(ButtonType::Color, 200.0f, 50.0f, 0.7f));
+	}
 	buttons[0].Set_Position(AEVec2Set(ScreenMid.x - buttons[0].GetWidth(), ScreenMid.y - buttons[0].GetHeight()));
 	buttons[0].Set_Text("Start");
 	buttons[0].Set_Callback(StartGame);
 
-	buttons.push_back(Button(ButtonType::Color, 200.0f, 50.0f));
 	buttons[1].Set_Position(AEVec2Set(ScreenMid.x - buttons[1].GetWidth(), ScreenMid.y + buttons[1].GetHeight()));
 	buttons[1].Set_Text("Quit");
 	buttons[1].Set_Callback(QuitGame);
 
 
-	buttons.push_back(Button(ButtonType::Color, 200.0f, 50.0f, 0.75f));
 	buttons[2].Set_Position(AEVec2Set(ScreenMid.x + buttons[2].GetWidth(), ScreenMid.y - buttons[2].GetHeight()));
 	buttons[2].Set_Text("Level selection");
 	buttons[2].Set_Callback(MainMenu::SwitchToLevelSelection);
 
-	buttons.push_back(Button(ButtonType::Color, 200.0f, 50.0f, 0.8f));
 	buttons[3].Set_Position(AEVec2Set(ScreenMid.x + buttons[3].GetWidth(), ScreenMid.y + buttons[3].GetHeight()));
 	buttons[3].Set_Text("Leaderboards");
 	buttons[3].Set_Callback(placeholder);
@@ -148,23 +146,15 @@ void MainMenu::Buttons_Init() {
 		LevelButtons[i].Set_Callback(placeholder);
 		LevelButtons[i].Set_TextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 		LevelButtons[i].Set_Position(AEVec2Zero());
-		//std::string tmp{ "Level " + std::to_string(i + 1) };
-		//LevelButtons[i].Set_Text(tmp.c_str());
+		std::string tmp{ "Level " + std::to_string(i + 1) };
+		LevelButtons[i].Set_Text(tmp.c_str());
 	}
 
-	for (unsigned int i = 0; i < 3; ++i) {
-		for (unsigned int j = 0; j < 3; ++j) 
-			LevelButtons[(i*3) + j].Set_Position(AEVec2Set(175.0f + 225.0f * i, 162.5f + 150.0f * j));// Mid = 400. 400 - 75, 325. 325 - 150 175.0f // 600 / 3, 200 - 37.5 = 162.5f
+	for (size_t i = 0; i < 3; ++i) {
+		for (size_t j = 0; j < 3; ++j) 
+			LevelButtons[(i *3) + j].Set_Position(AEVec2Set(175.0f + 225.0f * i, 162.5f + 150.0f * j));// Mid = 400. 400 - 75, 325. 325 - 150 175.0f // 600 / 3, 200 - 37.5 = 162.5f
 		}
-	LevelButtons[0].Set_Text("Level 1");
-	LevelButtons[1].Set_Text("Level 2");
-	LevelButtons[2].Set_Text("Level 3");
-	LevelButtons[3].Set_Text("Level 4");
-	LevelButtons[4].Set_Text("Level 5");
-	LevelButtons[5].Set_Text("Level 6");
-	LevelButtons[6].Set_Text("Level 7");
-	LevelButtons[7].Set_Text("Level 8");
-	LevelButtons[8].Set_Text("Level 9");
+
 	LevelButtons[9].Set_Position(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() - LevelButtons[9].GetHeight() / 2.0f)));
 	LevelButtons[9].Set_Text("Exit");
 	LevelButtons[9].Set_Callback(MainMenu::SwitchToMainMenu);
