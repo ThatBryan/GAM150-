@@ -19,8 +19,8 @@ namespace FilePaths {
 	extern const char* FontFile;
 	extern const char* ButtonTest;
 	extern const char* ButtonTest2;
-	extern const char* boi;
 	extern const char* HeartSprite;
+	extern const char* boi;
 }
 
 namespace FP = FilePaths; // Short hand 
@@ -29,7 +29,7 @@ namespace FP = FilePaths; // Short hand
 extern const float player_speed;
 extern const float player_width;
 extern const float player_height;
-extern const float jumpspeed;
+extern const float player_jumpvel;
 extern const float enemy_width;
 extern const float enemy_height;
 extern const float player_collider_offset_y;

@@ -11,7 +11,7 @@ struct Color
 	Color(float r, float g, float b, float a);
 	Color();
 	void SetColor(Color color);
-	void Decrement(float i = 0.0001f);
+	void Decrement(float i = 0.1f);
 };
 
 
@@ -59,9 +59,9 @@ namespace Graphics
 		Text();
 			inline s8* GetText() { return buffer; }
 			void SetText(s8* text);
-			inline void SetPos(AEVec2 pos) { this->pos = pos; }
-			inline void SetColor(Color color) { this->color.SetColor(color); }
-			inline void SetScale(f32 scale) { this->scale = scale; }
+			inline void SetPos(AEVec2 Pos) { pos = Pos; }
+			inline void SetColor(Color c) { color.SetColor(c); }
+			inline void SetScale(f32 Scale) { scale = Scale; }
 			Color color;
 			f32 width, height, scale;
 			AEVec2 pos;
@@ -69,7 +69,7 @@ namespace Graphics
 			// Calculates the X and Y offset
 			void Draw();
 			void Draw_Wrapped(const AEVec2 pos);
-			inline void Set_Pos(AEVec2 pos) { this->pos = pos; }
+			inline void Set_Pos(AEVec2 Pos) {pos = Pos; }
 			AEVec2 GetBufferSize();
 
 		private:

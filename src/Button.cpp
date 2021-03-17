@@ -10,17 +10,17 @@ Button::Button(ButtonType Type, const f32 width, const f32 height, const f32 sca
 	text.color = { 0, 0, 0, 255.0f };
 }
 
-void Button::Set_Position(const AEVec2 pos) {
-	button.pos = pos;
-	text.pos = pos;
+void Button::Set_Position(const AEVec2 Pos) {
+	button.pos = Pos;
+	text.pos = Pos;
 }
 
 void Button::Set_Callback(fn_ptr fnc_ptr) {
 	this->callback = fnc_ptr;
 }
 
-void Button::Set_Text(const char* text) {
-	this->text.SetText(const_cast<s8*>(text));
+void Button::Set_Text(const char* Text) {
+	text.SetText(const_cast<s8*>(Text));
 }
 
 void Button::Set_TextColor(Color color) {

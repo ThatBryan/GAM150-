@@ -55,15 +55,15 @@ void Demo::Init(void)
 	AEVec2 DemoEnemyPos6 = Demo_Tiles3[4].spawnPos;
 	AEVec2 Offset = {0, -TILE_HEIGHT + 10.0f};
 
-	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);/*
+	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos2, Offset), enemy_width, enemy_height);
-	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);*/
+	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos3, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos4, Offset), enemy_width, enemy_height);
-	//Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
+	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2Add(DemoEnemyPos5, Offset), enemy_width, enemy_height);
 	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2Add(DemoEnemyPos6, Offset), enemy_width, enemy_height);
 
 	player.push_back(Player(Player::playerTex, player_width, player_height));
-	player[0].SetPos(AEVec2Sub(Demo_Tiles[0].spawnPos, AEVec2Set(0, -TILE_HEIGHT)));
+	player[0].SetPos(AEVec2Sub(Demo_Tiles3[0].spawnPos, AEVec2Set(0, TILE_HEIGHT)));
 
 	Images[Pause].Init(FP::PauseOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 	Images[Victory].Init(FP::VictoryOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
@@ -74,22 +74,30 @@ void Demo::Init(void)
 	AEVec2 Midpt{ Utils::GetScreenMiddle() };
 
 	// Regular colored button.
-	buttons.push_back(Button(ButtonType::Color, 150.0f, 75.0f, 0.8f));
-	buttons.push_back(Button(ButtonType::Color, 150.0f, 75.0f, 0.8f));
-	buttons[1].Set_Callback(Utils::ReturnToMenu);
-	buttons[1].Set_Position(AEVec2{Midpt.x + buttons[0].GetWidth(), Midpt.y + 2 * buttons[0].GetHeight()});
-	buttons[1].Set_Text("Menu");
+	for (int i = 0; i < 6; ++i) {
+		buttons.push_back(Button(ButtonType::Color, 150.0f, 75.0f, 0.8f));
+	}
 
-	// Textured button.
-	buttons[0].Set_Text("Resume");
+	buttons[0].Set_Text("RESUME");
 	buttons[0].Set_Callback(Utils::CheckPauseInput);
-	buttons[0].Set_Position(AEVec2{ Midpt.x - buttons[0].GetWidth(), Midpt.y + 2 * buttons[0].GetHeight()});
-	buttons[0].SetType(ButtonType::Texture);
-	buttons[0].Set_Texture(FP::ButtonTest2);
+	buttons[1].Set_Callback(Utils::ReturnToMenu);
+	buttons[1].Set_Position(AEVec2{Midpt.x + buttons[0].GetWidth(), Midpt.y * 2 - buttons[0].GetHeight() / 2.0f });
+	buttons[1].Set_Text("Menu");
+	buttons[2].Set_Callback(Utils::ReturnToMenu);
+	buttons[2].Set_Text("Menu");
+	buttons[3].Set_Text("Next Level");
+	buttons[3].Set_Callback(MainMenu::placeholder);
+	buttons[4].Set_Callback(Utils::ReturnToMenu);
+	buttons[4].Set_Text("Menu");
+	buttons[5].Set_Text("Retry");
+	buttons[5].Set_Callback(Demo::Restart);
 
-	buttons[0].SetStateColor(ButtonState::Idle, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
-	buttons[0].SetStateColor(ButtonState::Hovered, Color{ 255.0f, 0.f, 0.f, 255.0f });
-	buttons[0].Set_TextColor(Color{ 255.0f, 255.0f, 255.0f, 255.0f });
+	for (int i = 0; i < buttons.size(); ++i) {
+		if(i % 2 == 0)
+			buttons[i].Set_Position(AEVec2{ Midpt.x + buttons[i].GetWidth(), Midpt.y * 2 - buttons[i].GetHeight() / 2.0f });
+		else
+			buttons[i].Set_Position(AEVec2{ Midpt.x - buttons[i].GetWidth(), Midpt.y * 2 - buttons[i].GetHeight() / 2.0f });
+	}
 }
 
 void Demo::Update(void)
@@ -97,7 +105,7 @@ void Demo::Update(void)
 	if (!paused)
 		app_time += g_dt;
 	Audio.update();
-	background.Decrement();
+	//background.Decrement();
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 	Utils::CheckFullScreenInput();
 	Utils::CheckDebugMode();
@@ -182,7 +190,6 @@ void Demo::UpdateManager(void)
 		player[0].Update();
 		Tiles::UpdateManager(Demo_Tiles, player, enemy);
 		Tiles::UpdateManager(Demo_Tiles2, player, enemy);
-		Tiles::UpdateManager(Demo_Tiles3, player, enemy);
 		Tiles::CheckPlayerGravity(TileManager, player);
 		player[0].GravityManager();
 		for (size_t i = 0; i < enemy.size(); i++)
@@ -190,6 +197,7 @@ void Demo::UpdateManager(void)
 			enemy[i].Update();
 			enemy[i].GravityCheck(TileManager);
 		}
+		Tiles::UpdateManager(Demo_Tiles3, player, enemy);
 		player[0].CheckEnemyCollision(enemy);
 		CollapsingManager();
 	}
@@ -199,7 +207,7 @@ void Demo::CollapsingManager(void)
 {
 	Tiles::CollapseNext(Demo_Tiles);
 	Tiles::CollapseNext(Demo_Tiles2);	
-	//Tiles::CollapseNext(Demo_Tiles3);
+	Tiles::CollapseNext(Demo_Tiles3);
 }
 
 void Demo::UpdateOverlay() {
@@ -213,7 +221,7 @@ void Demo::UpdateOverlay() {
 		Images[Pause].Draw_Texture(100.0f);
 		text.SetText(const_cast<s8*>("PAUSED"));
 		text.Draw_Wrapped(text.pos);
-		for (int i = 0; i < buttons.size(); ++i) {
+		for (int i = 0; i < 2; ++i) {
 			buttons[i].Update();
 		}
 
@@ -224,6 +232,9 @@ void Demo::UpdateOverlay() {
 		Images[Defeat].Draw_Texture(150.0f);
 		text.SetText(const_cast<s8*>("YOU LOSE"));
 		text.Draw_Wrapped(text.pos);
+		for (int i = 4; i < buttons.size(); ++i) {
+			buttons[i].Update();
+		}
 	}
 	if (player[0].GetWinStatus())
 	{
@@ -231,5 +242,8 @@ void Demo::UpdateOverlay() {
 		Images[Victory].Draw_Texture(100.0f);
 		text.SetText(const_cast<s8*>("YOU WIN"));
 		text.Draw_Wrapped(text.pos);
+		for (int i = 2; i < 4; ++i) {
+			buttons[i].Update();
+		}
 	}
 }

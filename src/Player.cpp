@@ -11,7 +11,7 @@ static f32 maxX;
 float Player::gravityStrength = 150.0f;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},
-active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpspeed_y{jumpspeed},
+active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{player_jumpvel},
 lives{3}, direction{MovementState::Right}
 {
 	playerBB.color.SetColor(Color{ 0, 0, 0, 255.0f });
@@ -26,18 +26,19 @@ void Player::Reset(void)
 	win = false;
 	lose = false;
 	active = true;
-	sprite.pos = startingPos;
-	jumpspeed_y = jumpspeed;
+	if(!DebugMode)
+		sprite.pos = startingPos;
+	jumpvel = player_jumpvel;
 	sprite.rotation = 0;
 }
 
 void Player::Update() {
 	//if(DebugMode)
 	//	sprite.rotation += 1;
-	if (lives <= 0)
-		SetLose();
 	CheckOutOfBound();
 	Update_Position();
+	if (lives <= 0)
+		SetLose();
 }
 void Player::Render(void)
 {
@@ -70,16 +71,22 @@ void Player::Update_Position(void)
 	{
 		if (sprite.pos.y + sprite.height / 2 <= maxY)
 		{
-			sprite.pos.y -= jumpspeed_y;
+			sprite.pos.y -= jumpvel;
 
-			jumpspeed_y -= .2f;
-			if (jumpspeed_y < -5.0f)
+			jumpvel -= 0.2f; // velocity decrease as y increases
+			if (jumpvel < -5.0f)
 			{
-				jump = FALSE;
-				jumpspeed_y = 5.0f;
+				jump = false;
+				jumpvel = 5.0f;
 			}
 		}
 	}
+
+	if (!gravity) // reset counter if player's feet touches the ground
+	{
+		jumpvel = 5.0f;
+	}
+
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
 	{
 		if (sprite.pos.x + sprite.width / 2 <= maxX)
@@ -120,7 +127,6 @@ void Player::Update_Position(void)
 			sprite.pos.y -= player_speed * g_dt;
 		}
 	}
-
 	}
 	playerBB.pos = sprite.pos;
 	feetBB.pos = AEVec2Set(sprite.pos.x + player_collider_offset_x, sprite.pos.y + player_collider_offset_y);
@@ -150,13 +156,13 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 {
 	for (size_t i = 0; i < enemy.size(); i++)
 	{
-		if (enemy[i].active)
+		if (!enemy[i].getKilled())
 		{
 			if (Utils::ColliderAABB(enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, playerBB.pos, playerBB.width, playerBB.height))
 			{
-				if (Utils::ColliderAABB(enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, feetBB.pos, feetBB.width, feetBB.height)) {
+				if (Utils::ColliderAABB(enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, feetBB.pos, sprite.width, feetBB.height)) {
 					//if (!DebugMode)
-						enemy[i].active = false;
+					enemy[i].setKilled();
 					if (DebugMode)
 						printf("enemy dies\n");
 				}
@@ -164,12 +170,12 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 					if (!DebugMode) {
 						DecreaseLife();
 						UI::DecreaseLife();
-						Reset();
+						if(lives > 0)
+							Reset();
 						printf("%d\n", lives);
 					}
 					if (DebugMode)
 						printf("player dies\n");
-
 				}
 			}
 		}

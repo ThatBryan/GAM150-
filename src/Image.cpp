@@ -13,14 +13,14 @@ Image::Image() : rotation{0}, width{0}, height{0}, pTex{ nullptr },
 pMesh{ nullptr }, pos{ 0, 0 }, transformMtx{ NULL } {	
 }
 
-void Image::Init(const char* pFile, const f32 width, const f32 height, const AEVec2 pos, const f32 rotation, AEGfxVertexList* pMesh){
+void Image::Init(const char* pFile, const f32 Width, const f32 Height, const AEVec2 Pos, const f32 Rotation, AEGfxVertexList* Mesh){
 	pTex = AEGfxTextureLoad(pFile);
 	AE_ASSERT_MESG(pTex, "Failed to create texture!");
-	this->width = width;
-	this->height = height;
-	this->pMesh = const_cast<AEGfxVertexList*>(pMesh);
-	this->pos = pos;
-	this->rotation = rotation;
+	pMesh = const_cast<AEGfxVertexList*>(Mesh);
+	width = Width;
+	height = Height;
+	pos = Pos;
+	rotation = Rotation;
 }
 
 void Image::SetMatrix(void)

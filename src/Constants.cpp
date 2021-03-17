@@ -16,7 +16,7 @@ namespace FilePaths {
 	const char* SpecialTile = "../Assets/Art/Special_Tile.png";
 	const char* GreyTile = "../Assets/Art/Safe_Tile.png";
 	const char* FontFile = "../Assets/Font/Roboto-Regular.ttf";
-	const char* ButtonTest = "../Assets/Art/Button.png";
+	const char* ButtonTest = "../Assets/Art/ResumeButton.png";
 	const char* ButtonTest2 = "../Assets/Art/PlanetTexture.png";
 	const char* boi = "../Assets/Art/boi.png";
 	const char* HeartSprite = "../Assets/Art/Heart.png";
@@ -26,7 +26,7 @@ namespace FilePaths {
 const float player_speed = 150.0f;
 const float player_width = 50.0f;
 const float player_height = 50.0f;
-const float jumpspeed = 5.0f;
+const float player_jumpvel = 5.0f;
 const float enemy_width = 50.0f;
 const float enemy_height = 50.0f;
 const float player_collider_offset_y = 24.0f;

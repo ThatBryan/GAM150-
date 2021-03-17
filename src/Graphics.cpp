@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Utilities.h"
 
+
 Color::Color(float r, float g, float b, float a)
 {
 	this->r = r / colorcodeMax;
@@ -23,16 +24,15 @@ void Color::SetColor(Color color)
 
 
 void Color::Decrement(float i) {
-	r -= i;
-	b -= i;
+	r -= i * g_dt;
+	b -= i * g_dt;
+	g -= i * g_dt;
 	if (r <= 0)
-		r = 1.0f;
+		r *= -1.0f;
 	if (g <= 0)
-		g = 1.0f;
+		g *= -1.0f;
 	if (b <= 0)
-		b = 1.0f;
-	if (alpha <= 0)
-		alpha = 1.0f;
+		b *= -1.0f;
 }
 
 
@@ -70,7 +70,7 @@ AEGfxVertexList* Graphics::Mesh_Circle(void)
 {
 	AEGfxMeshStart();
 	//Creating the circle shape
-	int Parts = 12;
+	int Parts = 30;
 	for (float i = 0; i < Parts; ++i)
 	{
 		AEGfxTriAdd(
@@ -78,7 +78,6 @@ AEGfxVertexList* Graphics::Mesh_Circle(void)
 			cosf(i * 2 * PI / Parts) * 0.5f, sinf(i * 2 * PI / Parts) * 0.5f, 0xFFFFFF00, 0.0f, 0.0f,
 			cosf((i + 1) * 2 * PI / Parts) * 0.5f, sinf((i + 1) * 2 * PI / Parts) * 0.5f, 0xFFFFFF00, 0.0f, 0.0f);
 	}
-
 	return AEGfxMeshEnd();
 }
 
@@ -105,39 +104,33 @@ void Graphics::Rect::Draw(const f32 alpha)
 {
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	
 	AEGfxTextureSet(NULL, 0.0f, 0.0f);
 	AEGfxSetTintColor(color.r, color.g , color.b, color.alpha);
 	AEGfxSetTransparency(alpha / colorcodeMax);
-
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-void Graphics::Rect::Draw(Color color, const f32 alpha)
+void Graphics::Rect::Draw(Color C, const f32 alpha)
 {
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-		
 	AEGfxTextureSet(NULL, 0.0f, 0.0f);
-	AEGfxSetTintColor(color.r, color.g, color.b, color.alpha);
+	AEGfxSetTintColor(C.r, C.g, C.b, C.alpha);
 	AEGfxSetTransparency(alpha / colorcodeMax);
-
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-void Graphics::Rect::DrawTexture(AEGfxTexture* pTex, Color color, const f32 alpha)
+void Graphics::Rect::DrawTexture(AEGfxTexture* pTex, Color C, const f32 alpha)
 {
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-
 	AEGfxTextureSet(pTex, 0.0f, 0.0f);
-	AEGfxSetTintColor(color.r, color.g, color.b, color.alpha);
+	AEGfxSetTintColor(C.r, C.g, C.b, C.alpha);
 	AEGfxSetTransparency(alpha / colorcodeMax);
-
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
@@ -170,39 +163,39 @@ void Graphics::Text::Draw()
 	AEGfxPrint(font::ID, buffer, drawPos.x, drawPos.y, scale, color.r, color.g, color.b);
 }
 
-void Graphics::Text::Draw_Wrapped(const AEVec2 pos)
+void Graphics::Text::Draw_Wrapped(const AEVec2 Pos)
 {
 	AEGfxGetPrintSize(font::ID, buffer, scale, width, height);
-	AEVec2 drawPos = Graphics::Text::Calculate_Offset(pos);
+	AEVec2 drawPos = Graphics::Text::Calculate_Offset(Pos);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxPrint(font::ID, buffer, drawPos.x - width / 2.0f, drawPos.y - height / 2.0f, scale, color.r, color.g, color.b);
 }
 
-AEVec2 Graphics::Text::Calculate_Offset(AEVec2 pos)
+AEVec2 Graphics::Text::Calculate_Offset(AEVec2 Pos)
 {
 	f32 HalfWinWidth = Utils::Get_HalfWindowWidth();
 	f32 HalfWinHeight = Utils::Get_HalfWindowHeight();
-	f32 WinHeight = static_cast<f32>(AEGetWindowHeight());
-	f32 WinWidth = static_cast<f32>(AEGetWindowWidth());
+	//f32 WinHeight = static_cast<f32>(AEGetWindowHeight());
+	//f32 WinWidth = static_cast<f32>(AEGetWindowWidth());
 
 	AEVec2 Offset{0, 0};
-	if (pos.x < HalfWinWidth) // I want negative
+	if (Pos.x < HalfWinWidth) // I want negative
 	{
-		Offset.x = (-HalfWinWidth + pos.x) / HalfWinWidth; 
+		Offset.x = (-HalfWinWidth + Pos.x) / HalfWinWidth; 
 	}
-	else if (pos.x > HalfWinWidth) // big postive number.
+	else if (Pos.x > HalfWinWidth) // big postive number.
 	{
-		Offset.x = (pos.x - HalfWinWidth) / HalfWinWidth;
-	}
-
-	if (pos.y > HalfWinHeight) // Big value, prints at bottom of screen.
-	{
-		Offset.y = (HalfWinHeight -pos.y) / HalfWinHeight; // Negative (
+		Offset.x = (Pos.x - HalfWinWidth) / HalfWinWidth;
 	}
 
-	else if (pos.y < HalfWinHeight)  // Small value, prints at top of screen
+	if (Pos.y > HalfWinHeight) // Big value, prints at bottom of screen.
 	{
-		Offset.y = (HalfWinHeight - pos.y) / HalfWinHeight;
+		Offset.y = (HalfWinHeight -Pos.y) / HalfWinHeight; // Negative (
+	}
+
+	else if (Pos.y < HalfWinHeight)  // Small value, prints at top of screen
+	{
+		Offset.y = (HalfWinHeight - Pos.y) / HalfWinHeight;
 	}
 	//printf("%.2f %.2f\n", Offset.x, Offset.y);
 	return Offset;
