@@ -10,7 +10,8 @@ struct Color
 	f32 r, g, b, alpha;
 	Color(float r, float g, float b, float a);
 	Color();
-	void SetColor(Color color);
+	void Set(Color color);
+	static Color CreateRandomColor();
 	void Decrement(float i = 0.1f);
 };
 
@@ -20,11 +21,9 @@ namespace Graphics
 	// Sets the mesh for a rectangle and returns a pointer to the AEGfxVertexList.
 	// Only call once at the start of application!!
 
-	void Load_Meshes(void);
-	AEGfxVertexList* Mesh_Rectangle(void);
 	AEGfxVertexList* Mesh_Circle(void);
-	void SetMatrix(AEVec2 Pos);
-	void Draw_toPos(AEVec2 Pos, Color color, const f32 alpha);
+	AEGfxVertexList* Mesh_Rectangle(void);
+	void Load_Meshes(void);
 
 	void Free();
 
@@ -46,6 +45,7 @@ namespace Graphics
 			AEMtx33 transformMtx;
 			f32 rotation;
 			void SetMatrix();
+			void SetMatrix(AEVec2 Pos);
 	};
 
 	class Circle : public Rect
@@ -64,7 +64,7 @@ namespace Graphics
 			inline s8* GetText() { return buffer; }
 			void SetText(s8* text);
 			inline void SetPos(AEVec2 Pos) { pos = Pos; }
-			inline void SetColor(Color c) { color.SetColor(c); }
+			inline void SetColor(Color c) { color.Set(c); }
 			inline void SetScale(f32 Scale) { scale = Scale; }
 			Color color;
 			f32 width, height, scale;

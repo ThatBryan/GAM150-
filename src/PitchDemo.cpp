@@ -24,7 +24,7 @@ extern AudioData soundData[static_cast<int>(AudioID::Max)];
 void Demo::Init(void)
 {
 	UI::Init();
-	background.SetColor(Color{ 51.0f, 215.0f, 255.0f, 255.0f });
+	background.Set(Color{ 51.0f, 215.0f, 255.0f, 255.0f });
 
 	const float TILE_HEIGHT{ 60.0f };
 	const float TILE_WIDTH{ 75.0f };

@@ -52,6 +52,14 @@ AEVec2 Utils::GetScreenMiddle() {
 	return AEVec2{ HalfWidth, HalfHeight };
 }
 
+AEVec2 Utils::GetRandomPos(void)
+{
+	static f32 Height = static_cast<f32>(AEGetWindowHeight());
+	static f32 Width = static_cast<f32>(AEGetWindowWidth());
+
+	return AEVec2{ Utils::RandomRangeFloat(0, Width), Utils::RandomRangeFloat(0, Height)};
+}
+
 AEVec2 Utils::GetMousePos(void)
 {
 	int mouseX = 0, mouseY = 0;

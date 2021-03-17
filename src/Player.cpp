@@ -14,8 +14,8 @@ Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprit
 active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{player_jumpvel},
 lives{3}, direction{MovementState::Right}
 {
-	playerBB.color.SetColor(Color{ 0, 0, 0, 255.0f });
-	feetBB.color.SetColor(Color{ 255.0f, 255.0f, 0, 255.0f });
+	playerBB.color.Set(Color{ 0, 0, 0, 255.0f });
+	feetBB.color.Set(Color{ 255.0f, 255.0f, 0, 255.0f });
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
 }

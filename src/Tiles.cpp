@@ -10,7 +10,7 @@ Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image
 active{ true }, collapsing{ false }, ID{ 0 }, collapseDelay{ TileCollapseDelay }, type{ TileType::Safe }, spawnPos{ 0, 0 },
 ColliderAABB{width, height}
 {
-	ColliderAABB.color.SetColor(Color{ 150, 0, 0, 150 });
+	ColliderAABB.color.Set(Color{ 150, 0, 0, 150 });
 }
 void Tiles::Collapse(void)
 {

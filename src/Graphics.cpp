@@ -12,14 +12,23 @@ Color::Color(float r, float g, float b, float a)
 	this->alpha = a / colorcodeMax;
 }
 
-Color::Color() : r{ 0 }, g{ 0 }, b{ 0 }, alpha{ 0 } {}
+Color::Color() : r{ 255.0f }, g{ 255.0f }, b{ 255.0f }, alpha{ 255.0f } {}
 
-void Color::SetColor(Color color)
+void Color::Set(Color color)
 {
 	this->r = color.r;
 	this->g = color.g;
 	this->b = color.b;
 	this->alpha = color.alpha;
+}
+
+Color Color::CreateRandomColor()
+{
+	float r = Utils::RandomRangeFloat(0.0f, 255.0f);
+	float g = Utils::RandomRangeFloat(0.0f, 255.0f);
+	float b = Utils::RandomRangeFloat(0.0f, 255.0f);
+	float a = Utils::RandomRangeFloat(0.0f, 255.0f);
+	return Color(r, g, b, a);
 }
 
 
@@ -74,9 +83,9 @@ AEGfxVertexList* Graphics::Mesh_Circle(void)
 	for (float i = 0; i < Parts; ++i)
 	{
 		AEGfxTriAdd(
-			0.0f, 0.0f, 0xFFFFFF00, 0.0f, 0.0f,
-			cosf(i * 2 * PI / Parts) * 0.5f, sinf(i * 2 * PI / Parts) * 0.5f, 0xFFFFFF00, 0.0f, 0.0f,
-			cosf((i + 1) * 2 * PI / Parts) * 0.5f, sinf((i + 1) * 2 * PI / Parts) * 0.5f, 0xFFFFFF00, 0.0f, 0.0f);
+			0.0f, 0.0f, 0xFFFFFFFF, 1.0f, 0.0f,
+			cosf(i * 2 * PI / Parts) * 0.5f, sinf(i * 2 * PI / Parts) * 0.5f, 0xFFFFFFFF, 0.0f, 0.0f,
+			cosf((i + 1) * 2 * PI / Parts) * 0.5f, sinf((i + 1) * 2 * PI / Parts) * 0.5f, 0xFFFFFFFF, 1.0f, 0.0f);
 	}
 	return AEGfxMeshEnd();
 }
@@ -84,7 +93,7 @@ AEGfxVertexList* Graphics::Mesh_Circle(void)
 Graphics::Rect::Rect(const f32 width, const f32 height, const f32 direction, AEGfxVertexList* Mesh) : rotation{ direction }, transformMtx{ NULL },
 width{ width }, height{ height }, pos{ 0, 0 }, pMesh{Mesh}
 {
-	color.SetColor(Color{ 255, 255, 255, 255 });
+	color.Set(Color{ 255, 255, 255, 255 });
 }
 
 void Graphics::Rect::SetMatrix(void)
@@ -118,7 +127,6 @@ void Graphics::Rect::Draw(const f32 alpha)
 {
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	AEGfxTextureSet(NULL, 0.0f, 0.0f);
 	AEGfxSetTintColor(color.r, color.g , color.b, color.alpha);
 	AEGfxSetTransparency(alpha / colorcodeMax);
 	AEGfxSetTransform(transformMtx.m);
@@ -130,7 +138,6 @@ void Graphics::Rect::Draw(Color C, const f32 alpha)
 {
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	AEGfxTextureSet(NULL, 0.0f, 0.0f);
 	AEGfxSetTintColor(C.r, C.g, C.b, C.alpha);
 	AEGfxSetTransparency(alpha / colorcodeMax);
 	AEGfxSetTransform(transformMtx.m);
@@ -150,20 +157,9 @@ void Graphics::Rect::DrawTexture(AEGfxTexture* pTex, Color C, const f32 alpha)
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-void Graphics::Draw_toPos(AEVec2 Pos, Color c, const f32 alpha)
-{
-	SetMatrix(Pos);
-	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	AEGfxSetTintColor(c.r, c.g, c.b, c.alpha);
-	AEGfxSetTransparency(alpha / colorcodeMax);
-	AEGfxSetTransform(transformMtx.m);
-	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
-}
-
 Graphics::Circle::Circle(const f32 radius, const f32 direction, AEGfxVertexList* Mesh) : Rect(radius, radius, direction, Mesh)
 {
-	color.SetColor(Color{ 255, 255, 255, 255 });
+	color.Set(Color{ 255, 255, 255, 255 });
 }
 
 Graphics::Circle::Circle() : Rect(0.0f, 0.0f, 0.0f, Mesh::Circle) {}
@@ -171,7 +167,7 @@ Graphics::Circle::Circle() : Rect(0.0f, 0.0f, 0.0f, Mesh::Circle) {}
 Graphics::Text::Text(s8* textBuffer, const f32 scale) : scale{ scale }, pos{ 0, 0 },
 height{ 0 }, width{ 0 }, buffer{ textBuffer }
 {
-	Text::color.SetColor(Color{ 255.0f, 255.0f, 255.0f, 255.0f });
+	Text::color.Set(Color{ 255.0f, 255.0f, 255.0f, 255.0f });
 }
 
 Graphics::Text::Text() : scale{ 0 }, pos{ 0, 0 },
