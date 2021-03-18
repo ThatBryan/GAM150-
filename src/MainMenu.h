@@ -18,6 +18,7 @@ namespace MainMenu
 	void StartGame();
 	void QuitGame();
 	inline void placeholder(void) { std::cout << "Feature comming soon!" << std::endl; };
+
 	void TestEnemyMovement(void);
 	void TestPlayerMovement(void);
 
@@ -26,4 +27,5 @@ namespace MainMenu
 
 	void TestLevelSelectionUpdate(void);
 	void TestLevelSelectionRender(void);
+
 }

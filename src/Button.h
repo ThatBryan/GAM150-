@@ -20,6 +20,8 @@ public:
 	inline void FreeTexture() {if (pTex) AEGfxTextureUnload(pTex);}
 	inline float GetHeight() { return button.height; }
 	inline float GetWidth() { return button.width; }
+	inline void SetID(int x) { ID = x; }
+	inline int GetID() { return ID; }
 	void Update();
 	void Render();
 
@@ -32,7 +34,8 @@ private:
 	fn_ptr callback;
 	Color buttonState[static_cast<int>(ButtonState::MaxColor)];
 	// Check cursor input to determine which color to tint.
-	ButtonState Check_Cursor();
+	ButtonState Check_State();
+	unsigned int ID;
 };
 void Test_Callback();
 inline void Mute_BGM() { AudioManager::SetMute(AudioID::BGM); }

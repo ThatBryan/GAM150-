@@ -9,7 +9,7 @@
 extern std::vector <Player> player;
 
 Button::Button(ButtonType Type, const f32 width, const f32 height, const f32 scale) : button(width, height), text(std::string(), scale)
-, pos{ 0,0 }, callback{ nullptr }, pTex{ nullptr }, type{Type}{
+, pos{ 0,0 }, callback{ nullptr }, pTex{ nullptr }, type{ Type }, ID{ 0 } {
 	buttonState[static_cast<int>(ButtonState::Idle)] = { 0, 255.0f, 0, 255.0f };
 	buttonState[static_cast<int>(ButtonState::Hovered)] = { 255.0f, 255.0f, 0, 255.0f };
 	buttonState[static_cast<int>(ButtonState::Clicked)] = { 0, 0, 255.0f, 255.0f };
@@ -49,16 +49,16 @@ void Button::Update(void) {
 void Button::Render(void) {
 	switch (type) {
 	case ButtonType::Color:
-		button.Draw(static_cast<Color>(buttonState[static_cast<int>(Check_Cursor())]), 255.0f);
+		button.Draw(static_cast<Color>(buttonState[static_cast<int>(Check_State())]), 255.0f);
 		break;
 	case ButtonType::Texture:
-		button.DrawTexture(pTex, static_cast<Color>(buttonState[static_cast<int>(Check_Cursor())]), 255.0f);
+		button.DrawTexture(pTex, static_cast<Color>(buttonState[static_cast<int>(Check_State())]), 255.0f);
 		break;
 	}
 	text.Draw_Wrapped(text.pos);
 }
 
-ButtonState Button::Check_Cursor() {
+ButtonState Button::Check_State() {
 	AEVec2 Mouse = Utils::GetMousePos();
 	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckCurr(AEVK_LBUTTON))
 		return ButtonState::Clicked;

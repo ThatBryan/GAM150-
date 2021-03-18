@@ -29,7 +29,7 @@ static Graphics::Text Title;
 static AEVec2 ScreenMid;
 static AEGfxTexture* test;
 
-LevelSystem LevelSys;
+static LevelSystem LevelSys;
 
 void MainMenu::Init(void)
 {
@@ -86,12 +86,19 @@ void MainMenu::Render() {
 	for (int i = 0; i < tiles.size(); ++i) {
 		tiles[i].image.Draw_Texture(255.0f);
 	}
+	
 	for (int i = 0; i < enemy.size(); ++i) {
 		enemy[i].sprite.Draw_Texture(255.0f);
 	}
+	
 	player[0].sprite.Draw_Texture(255.0f);
+
 	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - AEGetWindowHeight() / 4));
 	Particles::Render();
+
+	if (AEInputCheckTriggered(AEVK_B)) {
+		LevelSys.UpdateKey(LevelSys.GetKey() + 1);
+	}
 }
 
 void MainMenu::Load(void)
@@ -155,15 +162,20 @@ void MainMenu::Buttons_Init() {
 	for (int i = 0; i < 10; ++i) {
 		LevelButtons.push_back(Button(ButtonType::Color, 150.0, 75.0f, 0.5f));
 		LevelButtons[i].Set_Callback(placeholder);
+		LevelButtons[i].SetID(i + 1);
 		LevelButtons[i].Set_TextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 		std::string tmp{ "Level " + std::to_string(i + 1) };
 		LevelButtons[i].Set_Text(tmp.c_str());
 	}
 
 	for (size_t i = 0; i < 3; ++i) {
-		for (size_t j = 0; j < 3; ++j) 
+		for (size_t j = 0; j < 3; ++j) {
 			LevelButtons[(i *3) + j].Set_Position(AEVec2Set(175.0f + 225.0f * i, 162.5f + 150.0f * j));// Mid = 400. 400 - 75, 325. 325 - 150 175.0f // 600 / 3, 200 - 37.5 = 162.5f
+			if (LevelButtons[i * 3 + j].GetID() > LevelSys.GetKey()) {
+				LevelButtons[i * 3 + j].SetStateColor(ButtonState::Idle, Color(255.0f, 0.0f, 0.0f, 10.0f));
+			}
 		}
+	}
 
 	LevelButtons[9].Set_Position(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() - LevelButtons[9].GetHeight() / 2.0f)));
 	LevelButtons[9].Set_Text("Exit");
@@ -212,6 +224,11 @@ void MainMenu::TestPlayerMovement() {
 
 void MainMenu::SwitchToLevelSelection(void)
 {
+	std::cout << "Level Key: " << LevelSys.GetKey() << std::endl;
+
+	for (size_t i = 0; i < LevelSys.GetKey(); ++i) {
+			LevelButtons[i].SetStateColor(ButtonState::Idle, Color(0, 255.0f, 0.0f, 10.0f));
+	}
 	GameStateUpdate = MainMenu::TestLevelSelectionUpdate;
 	GameStateDraw = MainMenu::TestLevelSelectionRender;
 }
@@ -219,6 +236,7 @@ void MainMenu::SwitchToLevelSelection(void)
 
 void MainMenu::SwitchToMainMenu(void)
 {
+
 	GameStateUpdate = MainMenu::Update;
 	GameStateDraw = MainMenu::Render;
 }
