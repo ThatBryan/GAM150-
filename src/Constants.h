@@ -34,6 +34,7 @@ extern const float enemy_width;
 extern const float enemy_height;
 extern const float player_collider_offset_y;
 extern const float player_collider_offset_x;
+extern const short player_hp_max;
 
 // Tile constants
 extern const double TileCollapseDelay;

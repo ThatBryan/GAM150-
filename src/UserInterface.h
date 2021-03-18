@@ -1,11 +1,4 @@
 #pragma once
-#include "AEEngine.h"
-#include "Graphics.h"
-#include "Constants.h"
-#include "Utilities.h"
-#include <string>
-#include <vector>
-#include "Button.h"
 
 namespace UI {
 	void Init();
@@ -14,7 +7,5 @@ namespace UI {
 	void Buttons_Init();
 	void Buttons_Unload();
 
-	static int LivesCount;
-	void DecreaseLife();
-	void ResetLives();
+	void DisplayLife(short livesCount);
 }

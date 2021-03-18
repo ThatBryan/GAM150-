@@ -48,9 +48,10 @@ public:
 	void setKilled(bool status = true);
 
 	void GravityCheck(std::vector <std::vector<Tiles>*>& TileManager);
+
 	// Add new enemy into the vector.
-	static void LoadTex(void);
 	static void AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 pos, const f32 width, const f32 height);
 	static void Reset(std::vector <Enemies>& enemy);
+	static void LoadTex(void);
 	static void Unload(void);
 };

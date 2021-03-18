@@ -5,6 +5,7 @@
 #include "PitchDemo.h"
 #include "Graphics.h"
 #include "Particles.h"
+#include "UserInterface.h"
 
 AEGfxTexture* Player::playerTex{ nullptr };
 static f32 maxY;
@@ -13,12 +14,14 @@ float Player::gravityStrength = 150.0f;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},
 active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{player_jumpvel},
-lives{3}, direction{MovementState::Right}
+hp(), direction{MovementState::Right}
 {
 	playerBB.color.Set(Color{ 0, 0, 0, 255.0f });
 	feetBB.color.Set(Color{ 255.0f, 255.0f, 0, 255.0f });
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
+	hp.max = player_hp_max;
+	hp.current = player_hp_max;
 }
 
 void Player::Reset(void)
@@ -29,6 +32,7 @@ void Player::Reset(void)
 	active = true;
 	sprite.pos = startingPos;
 	jumpvel = player_jumpvel;
+	hp.current = hp.max;
 	sprite.rotation = 0;
 }
 
@@ -37,12 +41,13 @@ void Player::Update() {
 	//	sprite.rotation += 1;
 	CheckOutOfBound();
 	Update_Position();
-	if (lives <= 0)
+	if (hp.current <= 0)
 		SetLose();
 }
 void Player::Render(void)
 {
 	sprite.Draw_Texture(255.0f);
+	UI::DisplayLife(hp.current);
 	
 	if (DebugMode) {
 		playerBB.Draw();
@@ -169,10 +174,8 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 				}
 				else {
 					if (!DebugMode) {
-						DecreaseLife();
-						UI::DecreaseLife();
-						if(lives > 0)
-							Reset();
+						sprite.pos = startingPos;
+						--hp.current;
 					}
 					if (DebugMode)
 						printf("player dies\n");

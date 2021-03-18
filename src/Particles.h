@@ -1,12 +1,13 @@
 #pragma once
 #include "AEEngine.h"
 #include "Graphics.h"
-#include <vector>
 
 class Particles{
 	public:
 		Particles();
-		static void Create(AEVec2 Pos, AEVec2 Vel, Color color, int count, float speed, float rotation_rate, float radius, float lifespan, AEGfxTexture* Texture = nullptr);
+		static void Create(AEVec2 Pos, AEVec2 Vel, Color color, int count, float speed, 
+		float rotation_rate, float radius, float lifespan, AEGfxTexture* Texture = nullptr);
+
 		static void Update();
 		static void Render();
 		static void Unload();

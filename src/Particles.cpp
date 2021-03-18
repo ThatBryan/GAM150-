@@ -2,6 +2,7 @@
 #include "Utilities.h"
 #include "Constants.h"
 #include <iostream>
+#include <vector>
 
 static std::vector <Particles> p;
 const float maxAlpha = 255.0f;
@@ -37,7 +38,7 @@ void Particles::Create(AEVec2 Pos, AEVec2 Vel, Color color, int count, float spe
 			--count;
 		}
 	}
-	
+	// Push back to container if unable to find sufficient empty slots.
 	for (int i = 0; i < count; ++i) {
 		p.push_back(Particles());
 		Particles& particle = p.back();
