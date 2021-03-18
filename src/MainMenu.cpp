@@ -109,6 +109,7 @@ void MainMenu::Unload(void)
 	Images.clear();
 	enemy.clear();
 	buttons.clear();
+	LevelButtons.clear();
 	player.clear();
 	tiles.clear();
 	EnemyCount = 0;
@@ -147,7 +148,6 @@ void MainMenu::Buttons_Init() {
 		LevelButtons.push_back(Button(ButtonType::Color, 150.0, 75.0f, 0.5f));
 		LevelButtons[i].Set_Callback(placeholder);
 		LevelButtons[i].Set_TextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
-		LevelButtons[i].Set_Position(AEVec2Zero());
 		std::string tmp{ "Level " + std::to_string(i + 1) };
 		LevelButtons[i].Set_Text(tmp.c_str());
 	}
