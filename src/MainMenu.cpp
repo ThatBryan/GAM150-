@@ -1,18 +1,21 @@
 #include "MainMenu.h"
+
 #include "Image.h"
 #include "Constants.h"
-#include <array>
 #include "Graphics.h"
 #include "Utilities.h"
 #include "GameStateManager.h"
 #include "Button.h"
-#include <vector>
 #include "Utilities.h"
 #include "Enemy.h"
 #include "Tiles.h"
+#include "Player.h"
+#include "Particles.h"
+
+#include <array>
+#include <vector>
 #include <cmath>
 #include <string>
-#include "Particles.h"
 
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
 static std::vector <Image> Images;

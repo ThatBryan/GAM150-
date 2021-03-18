@@ -1,4 +1,10 @@
 #include "Button.h"
+#include <cstring>
+#include <vector>
+#include <iostream>
+#include "Constants.h"
+#include "Utilities.h"
+#include "Player.h"
 
 extern std::vector <Player> player;
 

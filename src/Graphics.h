@@ -12,8 +12,10 @@ struct Color
 	Color(float r, float g, float b, float a);
 	Color();
 	void Set(Color color);
-	static Color CreateRandomColor();
 	void Decrement(float i = 0.1f);
+
+	// Returns a random color
+	static Color CreateRandomColor();
 };
 
 
@@ -79,7 +81,6 @@ namespace Graphics
 			AEVec2 GetBufferSize();
 
 		private:
-			/*s8* buffer;*/
 			std::string buffer;
 			AEVec2 Calculate_Offset(AEVec2 pos);
 	};

@@ -8,5 +8,4 @@ namespace UI {
 	void Buttons_Unload();
 
 	void DisplayLife(short livesCount);
-	void ResetLives();
 }

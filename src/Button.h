@@ -1,12 +1,7 @@
 #pragma once
-#include <cstring>
-#include <iostream>
-#include <vector>
 #include "AEEngine.h"
 #include "Graphics.h"
-#include "Constants.h"
-#include "Utilities.h"
-#include "Player.h"
+#include "AudioManager.h"
 
 using fn_ptr = void(*)(void);
 enum class ButtonState{Idle = 0, Hovered, Clicked, MaxColor};

@@ -32,8 +32,8 @@ void Player::Reset(void)
 	active = true;
 	sprite.pos = startingPos;
 	jumpvel = player_jumpvel;
-	sprite.rotation = 0;
 	hp.current = player_hp_max;
+	sprite.rotation = 0;
 }
 
 void Player::Update() {
@@ -41,7 +41,6 @@ void Player::Update() {
 	//	sprite.rotation += 1;
 	CheckOutOfBound();
 	Update_Position();
-	std::cout << hp.current << std::endl;
 	if (hp.current <= 0)
 		SetLose();
 }

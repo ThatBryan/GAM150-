@@ -162,7 +162,6 @@ void Demo::Restart(void)
 
 	paused = false;
 	app_time = 0;
-	UI::ResetLives();
 	player[0].Reset();
 }
 

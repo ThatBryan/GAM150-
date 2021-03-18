@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include "Button.h"
+#include "Image.h"
 
 char strBuffer[100];
 char strBuffer1[100];
@@ -78,8 +79,6 @@ void UI::DisplayLife(short livesCount) {
 	}
 }
 
-void UI::ResetLives() {
-}
 
 void UI::Buttons_Unload()
 {

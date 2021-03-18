@@ -37,7 +37,7 @@ void Particles::Create(AEVec2 Pos, AEVec2 Vel, Color color, int count, float spe
 			--count;
 		}
 	}
-	
+	// Push back to container if unable to find sufficient empty slots.
 	for (int i = 0; i < count; ++i) {
 		p.push_back(Particles());
 		Particles& particle = p.back();
