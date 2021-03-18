@@ -37,7 +37,7 @@ void MainMenu::Init(void)
 	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2{710.0f, tiles[0].image.pos.y - height / 2.0f}, 60.0f, 60.0f);
 	
 	player.push_back(Player(Player::playerTex, player_width, player_height));
-	player[0].SetPos(AEVec2Set(player_width / 2.0f, tiles[0].image.pos.y - height - 10.0f));
+	player[0].SetPos(AEVec2Set(player_width / 2.0f, tiles[0].image.pos.y - height - 10.0f), { 0,0 });
 
 	Color background;
 	background.SetColor(Color{ 51.0f, 215.0f, 255.0f, 255.0f });

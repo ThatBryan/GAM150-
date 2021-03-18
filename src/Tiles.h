@@ -34,6 +34,11 @@ class Tiles
 		void Update(void);
 		void Render(void);
 
+		Graphics::Rect tile_bottomBB{ player_width / 2.0f, 5.0f }; // yellow
+		Graphics::Rect tile_topBB{ player_width, 5.0f }; // red
+		Graphics::Rect tile_leftBB{ 5.0f,  player_height }; // green
+		Graphics::Rect tile_rightBB{ 5.0f, player_height }; // blue
+
 		inline bool GetActive() { return active; }
 
 		// Static class Functions
@@ -43,6 +48,7 @@ class Tiles
 		static void Reset(std::vector <Tiles>& tiles);
 		static void CheckPlayerGravity(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& player);
 		static void TestingManager(std::vector<std::vector<Tiles>*>& TileManager);
+		static void CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& Player);
 
 		// Add whole new row of tile.
 		static void AddTileRow(std::vector < Tiles>& tile, TileType type, const int count, const f32 width, const f32 height, const AEVec2 pos);
