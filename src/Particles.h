@@ -1,7 +1,6 @@
 #pragma once
 #include "AEEngine.h"
 #include "Graphics.h"
-#include <vector>
 
 class Particles{
 	public:

@@ -1,7 +1,6 @@
 #include "Graphics.h"
 #include "Image.h"
 #include <iostream>
-#include <cstring>
 #include "Utilities.h"
 
 

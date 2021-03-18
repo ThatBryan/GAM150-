@@ -1,15 +1,22 @@
 #include "PitchDemo.h"
-#include <vector>
+
 #include "Utilities.h"
 #include "Graphics.h"
-#include <iostream>
 #include "Player.h"
 #include "Enemy.h"
 #include "Constants.h"
 #include "MainMenu.h"
-#include <array>
 #include "GameStateManager.h"
 #include "Particles.h"
+#include "Tiles.h"
+#include "Player.h"
+#include "AEEngine.h"
+#include "UserInterface.h"
+#include "Button.h"
+
+#include <iostream>
+#include <array>
+#include <vector>
 
 Color background;
 std::vector <Tiles> Demo_Tiles, Demo_Tiles2, Demo_Tiles3;

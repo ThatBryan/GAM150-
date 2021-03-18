@@ -2,6 +2,7 @@
 #include "Utilities.h"
 #include "Constants.h"
 #include <iostream>
+#include <vector>
 
 static std::vector <Particles> p;
 const float maxAlpha = 255.0f;
