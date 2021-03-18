@@ -11,6 +11,7 @@
 #include "Enemy.h"
 #include "Tiles.h"
 #include <cmath>
+#include "TestLevel.h"
 
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
 static std::vector <Image> Images;
@@ -103,7 +104,8 @@ void MainMenu::Unload(void)
 }
 
 void MainMenu::StartGame(void) {
-	gamestateNext = GS_GAMEPLAY;
+	Level = 1;
+	gamestateNext = GS_TEST;
 }
 void MainMenu::QuitGame(void) {
 	gamestateNext = GS_QUIT;

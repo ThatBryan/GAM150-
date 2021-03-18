@@ -179,6 +179,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 void Player::CreatePlayer(std::vector <Player>& player, const AEVec2 pos, const f32 width, const f32 height)
 {
 	player.push_back(Player(playerTex, width, height));
+	player[player.size() - 1].startingPos = pos;
 	player[player.size() - 1].sprite.pos = pos;
 	player[player.size() - 1].playerBB.width = width;
 	player[player.size() - 1].playerBB.height = height;

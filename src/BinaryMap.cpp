@@ -6,8 +6,7 @@
 \date   	February 28, 2021
 \brief		Source file for a reading a BinaryMap from a text
 			file. This program assumes that the map provided
-			is a normalized system. This file also functions
-			which will print, retrieve cell values and
+			is a normalized system.
 
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
@@ -29,6 +28,8 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "Constants.h"
 #include <array>
 #include "AEEngine.h"
+#include "Tiles.h"
+#include "Enemy.h"
 
 #define TILE_WIDTTH 80.0f
 #define TILE_HEIGHT 50.0f
@@ -299,6 +300,8 @@ int CheckInstanceBinaryMapCollision(float PosX, float PosY,
 	}
 	return Flag;
 }
+
+
 
 //Map GetMap()
 //{
