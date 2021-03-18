@@ -102,6 +102,9 @@
     <ClInclude Include="src\Particles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\PlayerHp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

@@ -160,7 +160,6 @@ void Demo::Restart(void)
 	Tiles::Reset(Demo_Tiles3);
 	Enemies::Reset(enemy);
 
-	player[0].SetLives(3);
 	paused = false;
 	app_time = 0;
 	UI::ResetLives();

@@ -42,6 +42,7 @@
     <ClInclude Include="src\Particles.h" />
     <ClInclude Include="src\PitchDemo.h" />
     <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\PlayerHp.h" />
     <ClInclude Include="src\Splash.h" />
     <ClInclude Include="src\Tiles.h" />
     <ClInclude Include="src\UserInterface.h" />

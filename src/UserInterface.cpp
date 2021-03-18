@@ -1,5 +1,13 @@
 #include "UserInterface.h"
 #include <fstream>
+#include "AEEngine.h"
+#include "Graphics.h"
+#include "Constants.h"
+#include "Utilities.h"
+#include <string>
+#include <vector>
+#include "Button.h"
+
 char strBuffer[100];
 char strBuffer1[100];
 char strBuffer2[100];
@@ -21,8 +29,6 @@ void UI::Init() {
 	memset(strBuffer, 0, 100 * sizeof(char));
 	memset(strBuffer1, 0, 100 * sizeof(char));
 	memset(strBuffer2, 0, 100 * sizeof(char));
-
-	UI::LivesCount = 3;
 
 	lives.Init(FP::HeartSprite, 35.0f, 35.0f, AEVec2Zero());
 }
@@ -49,9 +55,6 @@ void UI::Draw() {
 	if(!paused)
 		for (size_t i = 0; i < buttonTest.size(); ++i) {
 			buttonTest[i].Update();
-		}
-	for (int i = 0; i < UI::LivesCount; ++i) {
-		lives.Draw_Texture(AEVec2Set(lives.width / 2.0f + i * 50.0f , 50.0f), 255.0f);
 	}
 }
 
@@ -69,12 +72,13 @@ void UI::Buttons_Init() {
 	buttonTest[1].Set_Text("Mute BGM");
 }
 
-void UI::DecreaseLife() {
-	UI::LivesCount--;
+void UI::DisplayLife(short livesCount) {
+	for (short i = 0; i < livesCount; ++i) {
+		lives.Draw_Texture(AEVec2Set(lives.width / 2.0f + i * 50.0f, 50.0f), 255.0f);
+	}
 }
 
 void UI::ResetLives() {
-	UI::LivesCount = 3;
 }
 
 void UI::Buttons_Unload()

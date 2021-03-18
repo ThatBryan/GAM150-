@@ -4,18 +4,25 @@
 #include "AEEngine.h"
 #include "Constants.h"
 #include "AudioManager.h"
+#include "PlayerHp.h"
+#include "UserInterface.h"
 
 extern AudioManager Audio;
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
+
+// State to track when to flip image.
 enum class MovementState { Left = 0, Right};
+
+// Foward declarations.
 class Enemies;
 class Rect;
+
 class Player
 {
 private:
 	bool win, lose;
 	MovementState direction;
-	int lives;
+	Health hp;
 	float jumpvel;
 	static f32 gravityStrength;
 	void Update_Position(void);
@@ -36,14 +43,13 @@ public:
 	void CheckEnemyCollision(std::vector <Enemies>& enemy);
 	void GravityManager(void);
 	inline void SetPos(AEVec2 pos) { this->sprite.pos = pos; this->startingPos = pos; }
-	inline void SetLives(unsigned int Lives) { lives = Lives; }
-	inline int GetLives(void) { return lives; }
 	inline void SetWin(void) { win = true; }
 	inline bool GetWinStatus(void) { return win; }
 	inline void SetLose(void) { active = false; lose = true; }
 	inline bool GetLose(void) { return lose; }
-	inline void DecreaseLife(int count = 1) { lives -= count;}
 
 	static void LoadTex(void);
 	static void Unload(void);
+
+	friend void UI::DisplayLife(short liveCount);
 };
