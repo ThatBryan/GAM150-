@@ -69,6 +69,14 @@ void GameStateManagerUpdate()
 		GameStateFree = GameStatePlaceholder;
 		GameStateUnload = MapUnload;
 		break;
+	case GS_PROGRESS:
+		GameStateLoad = MapLoad;
+		GameStateInit = MapInit;
+		GameStateUpdate = MapUpdate;
+		GameStateDraw = MapRender;
+		GameStateFree = GameStatePlaceholder;
+		GameStateUnload = MapUnload;
+		break;
 	default:
 		printf("FATAL ERROR!\n");
 	}

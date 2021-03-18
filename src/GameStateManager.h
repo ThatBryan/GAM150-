@@ -10,6 +10,7 @@ enum
 	GS_GAMEPLAY,
 	GS_RESTART,
 	GS_TEST,
+	GS_PROGRESS,
 	GS_QUIT
 };
 

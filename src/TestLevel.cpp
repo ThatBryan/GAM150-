@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Button.h"
 
+#include "GameStateManager.h"
 
 std::vector<Tiles> tilemap;
 std::vector<Enemies> enemies;
@@ -81,6 +82,11 @@ void MapUpdate()
 	{
 		TestRestart();
 	}
+	//if (AEInputCheckTriggered(AEVK_N))
+	//{
+	//	Level = 2;
+	//	gamestateNext = GS_PROGRESS;
+	//}
 	UpdateManager();
 }
 
