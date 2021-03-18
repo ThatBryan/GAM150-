@@ -52,6 +52,7 @@
     <ClCompile Include="src\Particles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\LevelSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AudioManager.h">
@@ -105,6 +106,7 @@
     <ClInclude Include="src\PlayerHp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\LevelSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

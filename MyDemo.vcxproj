@@ -18,6 +18,7 @@
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\GameStateManager.cpp" />
     <ClCompile Include="src\Image.cpp" />
+    <ClCompile Include="src\LevelSystem.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Graphics.cpp" />
     <ClCompile Include="src\MainMenu.cpp" />
@@ -38,6 +39,7 @@
     <ClInclude Include="src\GameStateManager.h" />
     <ClInclude Include="src\Image.h" />
     <ClInclude Include="src\Graphics.h" />
+    <ClInclude Include="src\LevelSystem.h" />
     <ClInclude Include="src\MainMenu.h" />
     <ClInclude Include="src\Particles.h" />
     <ClInclude Include="src\PitchDemo.h" />

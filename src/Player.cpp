@@ -32,7 +32,7 @@ void Player::Reset(void)
 	active = true;
 	sprite.pos = startingPos;
 	jumpvel = player_jumpvel;
-	hp.current = player_hp_max;
+	hp.current = hp.max;
 	sprite.rotation = 0;
 }
 

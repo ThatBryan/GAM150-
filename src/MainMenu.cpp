@@ -11,6 +11,7 @@
 #include "Tiles.h"
 #include "Player.h"
 #include "Particles.h"
+#include "LevelSystem.h"
 
 #include <array>
 #include <vector>
@@ -27,8 +28,12 @@ static std::vector<Player> player;
 static Graphics::Text Title;
 static AEVec2 ScreenMid;
 static AEGfxTexture* test;
+
+LevelSystem LevelSys;
+
 void MainMenu::Init(void)
 {
+	LevelSys.Init();
 	ScreenMid = Utils::GetScreenMiddle();
 	MainMenu::Buttons_Init();
 	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
