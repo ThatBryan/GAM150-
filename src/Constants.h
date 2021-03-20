@@ -44,7 +44,8 @@ extern const short player_hp_max;
 // Tile constants
 extern const double TileCollapseDelay;
 extern const float TileCollapseSpeed;
-
+extern const float tile_aabb_rect_offset_x;
+extern const float tile_aabb_rect_offset_y;
 // Enemy stuff
 extern short EnemyCount;
 

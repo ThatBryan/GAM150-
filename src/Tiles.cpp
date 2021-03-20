@@ -9,8 +9,8 @@ static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
 Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
 active{ true }, isCollapsing{ false }, ID{ 0 }, collapseDelay{ TileCollapseDelay }, type{ TileType::Safe }, spawnPos{ 0, 0 },
-ColliderAABB{width, height}, tile_topBB{ width - 5 , 1 }, tile_bottomBB{ width - 5 , 1 },
-tile_rightBB{ 5 , height - 1 }, tile_leftBB{ 5 , height - 1 }
+ColliderAABB{width, height}, tile_topBB{ width - tile_aabb_rect_offset_x , 1 }, tile_bottomBB{ width - tile_aabb_rect_offset_x , 1 },
+tile_rightBB{ 10 , height - tile_aabb_rect_offset_x }, tile_leftBB{ 10 , height - tile_aabb_rect_offset_x }
 {
 	ColliderAABB.color.Set(Color{ 150, 0, 0, 150 });
 	tile_bottomBB.color.Set(Color{ 255.0f, 255.0f, 0, 255.0f }); // yellow
@@ -287,7 +287,7 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 			{
 				//if (Player[0].direction == MovementState::Left)
 				//{
-					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x + TileManager[i]->at(j).image.width / 2.0f + abs(Player[0].sprite.width) / 2.0f;
+					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x + TileManager[i]->at(j).image.width / 2.0f + abs(Player[0].sprite.width) / 2.0f + 3.0f;
 					printf("Left Collision");
 				//}
 			}
@@ -297,7 +297,7 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 			{
 				//if (Player[0].direction == MovementState::Right)
 				//{
-					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x - TileManager[i]->at(j).image.width / 2.0f - abs(Player[0].sprite.width) / 2.0f;
+					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x - TileManager[i]->at(j).image.width / 2.0f - abs(Player[0].sprite.width) / 2.0f - 3.0f;
 					printf("Right Collision");
 				//}
 			}

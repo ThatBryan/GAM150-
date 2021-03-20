@@ -20,9 +20,6 @@ namespace FilePaths {
 	const char* ButtonTest2 = "./Assets/Art/PlanetTexture.png";
 	const char* boi = "./Assets/Art/boi.png";
 	const char* HeartSprite = "./Assets/Art/Heart.png";
-
-
-	
 	const char* jumpSFX = "./Assets/Audio/SFX/powerup.wav";
 	const char* GameplayBGM = "/Assets/Audio/BGM/gg.wav";
 }
@@ -41,6 +38,8 @@ const short player_hp_max = 3U;
 // Tile constants
 const double TileCollapseDelay = 0.5f;
 const float TileCollapseSpeed = 250.0f;
+const float tile_aabb_rect_offset_x = 5.0f;
+const float tile_aabb_rect_offset_y = 1.0f;
 
 // Enemy stuff
 short EnemyCount = 1;
