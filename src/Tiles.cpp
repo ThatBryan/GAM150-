@@ -271,7 +271,6 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 					}*/
 
 					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x + TileManager[i]->at(j).image.width / 2.0f  + abs(Player[0].sprite.width / 2.0f);
-					printf("%2f", Player[0].sprite.width / 2.0f);
 					// printf("Left Collision");
 				}	
 			}
