@@ -1,5 +1,14 @@
 #include "UserInterface.h"
 #include <fstream>
+#include "AEEngine.h"
+#include "Graphics.h"
+#include "Constants.h"
+#include "Utilities.h"
+#include <string>
+#include <vector>
+#include "Button.h"
+#include "Image.h"
+
 char strBuffer[100];
 char strBuffer1[100];
 char strBuffer2[100];
@@ -14,23 +23,26 @@ void UI::Init() {
 
 	UI::Buttons_Init();
 
-	FPS_Display.color.SetColor(Color{ 0, 0, 0, 255 });
-	LevelDisplay.color.SetColor(Color{0, 0, 0, 255});
-	TimerDisplay.color.SetColor(Color{ 0, 0, 0, 255 });
+	FPS_Display.color.Set(Color{ 0, 0, 0, 255 });
+	LevelDisplay.color.Set(Color{0, 0, 0, 255});
+	TimerDisplay.color.Set(Color{ 0, 0, 0, 255 });
 
 	memset(strBuffer, 0, 100 * sizeof(char));
 	memset(strBuffer1, 0, 100 * sizeof(char));
 	memset(strBuffer2, 0, 100 * sizeof(char));
 
-	UI::LivesCount = 3;
-
 	lives.Init(FP::HeartSprite, 35.0f, 35.0f, AEVec2Zero());
 }
 
 void UI::Update() {
+
 	sprintf_s(strBuffer, "FPS: %.2f", AEFrameRateControllerGetFrameRate());
-	sprintf_s(strBuffer2, "Time Elapsed: %.2f", app_time);
 	sprintf_s(strBuffer1, "Current Level: Tutorial");
+	sprintf_s(strBuffer2, "Time Elapsed: %.2f", app_time);
+
+	FPS_Display.SetText(strBuffer);
+	LevelDisplay.SetText(strBuffer1);
+	TimerDisplay.SetText(strBuffer2);
 	UI::Draw();
 }
 
@@ -44,9 +56,6 @@ void UI::Draw() {
 	if(!paused)
 		for (size_t i = 0; i < buttonTest.size(); ++i) {
 			buttonTest[i].Update();
-		}
-	for (int i = 0; i < UI::LivesCount; ++i) {
-		lives.Draw_Texture(AEVec2Set(lives.width / 2.0f + i * 50.0f , 50.0f), 255.0f);
 	}
 }
 
@@ -64,13 +73,12 @@ void UI::Buttons_Init() {
 	buttonTest[1].Set_Text("Mute BGM");
 }
 
-void UI::DecreaseLife() {
-	UI::LivesCount--;
+void UI::DisplayLife(short livesCount) {
+	for (short i = 0; i < livesCount; ++i) {
+		lives.Draw_Texture(AEVec2Set(lives.width / 2.0f + i * 50.0f, 50.0f), 255.0f);
+	}
 }
 
-void UI::ResetLives() {
-	UI::LivesCount = 3;
-}
 
 void UI::Buttons_Unload()
 {

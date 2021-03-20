@@ -1,6 +1,10 @@
 #include "Utilities.h"
 #include "GameStateManager.h"
+#include "Constants.h"
+
 #include <iostream>
+#include <fstream>
+
 
 int Utils::RandomRangeInt(const s32 lowerBound, const s32 upperBound)
 {
@@ -50,6 +54,21 @@ AEVec2 Utils::GetScreenMiddle() {
 	static f32 HalfWidth = Utils::Get_HalfWindowWidth();
 	static f32 HalfHeight = Utils::Get_HalfWindowHeight();
 	return AEVec2{ HalfWidth, HalfHeight };
+}
+
+AEVec2 Utils::GetRandomPos(void)
+{
+	static f32 Height = static_cast<f32>(AEGetWindowHeight());
+	static f32 Width = static_cast<f32>(AEGetWindowWidth());
+
+	return AEVec2{ Utils::RandomRangeFloat(0, Width), Utils::RandomRangeFloat(0, Height)};
+}
+
+AEVec2 Utils::GetRandomVel(void)
+{
+	AEVec2 Vel{ Utils::RandomRangeFloat(-1.0f, 1.0f), Utils::RandomRangeFloat(-1.0f, 1.0f) };
+	AEVec2Normalize(&Vel, &Vel);
+	return Vel;
 }
 
 AEVec2 Utils::GetMousePos(void)

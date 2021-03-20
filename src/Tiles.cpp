@@ -5,12 +5,13 @@
 #include "Utilities.h"
 
 extern std::vector <Player> player;
+static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
 Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
 active{ true }, collapsing{ false }, ID{ 0 }, collapseDelay{ TileCollapseDelay }, type{ TileType::Safe }, spawnPos{ 0, 0 },
 ColliderAABB{width, height}
 {
-	ColliderAABB.color.SetColor(Color{ 150, 0, 0, 150 });
+	ColliderAABB.color.Set(Color{ 150, 0, 0, 150 });
 }
 void Tiles::Collapse(void)
 {
@@ -34,9 +35,10 @@ void Tiles::CheckPlayerGoal(std::vector <Player>& Player)
 {
 	if (type == TileType::Goal)
 	{
-		static AEVec2 GoalPoint = {image.pos.x, image.pos.y - image.height / 2  - 1.0f};
-		if (AETestPointToRect(&GoalPoint, &Player[0].sprite.pos, Player[0].sprite.width, Player[0].sprite.height))
+		AEVec2 GoalPoint = {image.pos.x, image.pos.y - image.height / 2.0f};
+		if (AETestPointToRect(&GoalPoint, &Player[0].player_bottomBB.pos, Player[0].player_bottomBB.width, Player[0].player_bottomBB.height))
 			Player[(player.size() - 1)].SetWin();
+		//if(Utils::ColliderAABB(player[0].feetBB.pos, player[0].feetBB.width, player[0].feetBB.height, image.pos, image.width, image.height))
 	}
 }
 
@@ -112,9 +114,10 @@ void Tiles::AddTileRow(std::vector <Tiles>& tile, TileType type, const int count
 void Tiles::AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, const f32 height, AEVec2 pos) {
 	AEGfxTexture* temp = tileTex[static_cast<int>(type)];
 	tile.push_back(Tiles(temp, width, height));
-	tile[tile.size() - 1].type = type;
-	tile[tile.size() - 1].image.pos = AEVec2Set(pos.x + width / 2.0f, pos.y + height / 2.0f);
-	tile[tile.size() - 1].spawnPos = tile[tile.size() - 1].image.pos;
+	Tiles& Tile = tile.back();
+	Tile.type = type;
+	Tile.image.pos = AEVec2Set(pos.x + width / 2.0f, pos.y + height / 2.0f);
+	Tile.spawnPos = tile[tile.size() - 1].image.pos;
 }
 
 void Tiles::CollapseNext(std::vector <Tiles>& tiles)
@@ -256,7 +259,7 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 			{
 				if (Player[0].direction == MovementState::Right && Player[0].jump == false)  
 				{
-					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x - TileManager[i]->at(j).image.width / 2.0f - Player[0].sprite.width / 2.0f + 3.0f;
+					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x - TileManager[i]->at(j).image.width / 2.0f - Player[0].sprite.width / 2.0f;
 					// printf("Right Collision");
 				}
 				else if (Player[0].direction == MovementState::Left && Player[0].jump == false) 
@@ -267,7 +270,8 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 						Player[0].jump = true;
 					}*/
 
-					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x + TileManager[i]->at(j).image.width;
+					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x + TileManager[i]->at(j).image.width / 2.0f  + abs(Player[0].sprite.width / 2.0f);
+					printf("%2f", Player[0].sprite.width / 2.0f);
 					// printf("Left Collision");
 				}	
 			}

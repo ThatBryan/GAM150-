@@ -4,6 +4,8 @@
 #include "Utilities.h"
 #include "PitchDemo.h"
 #include "Graphics.h"
+#include "Particles.h"
+#include "UserInterface.h"
 
 AEGfxTexture* Player::playerTex{ nullptr };
 static f32 maxY;
@@ -12,15 +14,17 @@ float Player::gravityStrength = 150.0f;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},
 active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{player_jumpvel},
-lives{3}, direction{MovementState::Right}
+hp(), direction{MovementState::Right}
 {
-	playerBB.color.SetColor(Color{ 0, 0, 0, 255.0f });
-	player_bottomBB.color.SetColor(Color{ 255.0f, 255.0f, 0, 255.0f }); // yellow
-	player_topBB.color.SetColor(Color{ 255.0f, 0, 0, 255.0f }); // red
-	player_leftBB.color.SetColor(Color{ 0, 255.0f, 0, 255.0f }); // green
-	player_rightBB.color.SetColor(Color{ 0, 0, 255.0f, 255.0f }); // blue
+	playerBB.color.Set(Color{ 0, 0, 0, 255.0f });
+	player_bottomBB.color.Set(Color{ 255.0f, 255.0f, 0, 255.0f }); // yellow
+	player_topBB.color.Set(Color{ 255.0f, 0, 0, 255.0f }); // red
+	player_leftBB.color.Set(Color{ 0, 255.0f, 0, 255.0f }); // green
+	player_rightBB.color.Set(Color{ 0, 0, 255.0f, 255.0f }); // blue
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
+	hp.max = player_hp_max;
+	hp.current = player_hp_max;
 }
 
 void Player::Reset(void)
@@ -29,10 +33,9 @@ void Player::Reset(void)
 	win = false;
 	lose = false;
 	active = true;
-	if(!DebugMode)
 	sprite.pos = startingPos;
-	sprite.right.x = startingPos.x + sprite.width / 2.0f;
 	jumpvel = player_jumpvel;
+	hp.current = hp.max;
 	sprite.rotation = 0;
 }
 
@@ -41,12 +44,13 @@ void Player::Update() {
 	//	sprite.rotation += 1;
 	CheckOutOfBound();
 	Update_Position();
-	if (lives <= 0)
+	if (hp.current <= 0)
 		SetLose();
 }
 void Player::Render(void)
 {
 	sprite.Draw_Texture(255.0f);
+	UI::DisplayLife(hp.current);
 	
 	if (DebugMode) {
 		playerBB.Draw();
@@ -98,7 +102,7 @@ void Player::Update_Position(void)
 	{
 		if (sprite.pos.x + sprite.width / 2 <= maxX)
 			sprite.pos.x += player_speed * g_dt;
-		
+
 		if (direction != MovementState::Right) {
 			sprite.ReflectAboutYAxis();
 			direction = MovementState::Right;
@@ -171,18 +175,16 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 			if (Utils::ColliderAABB(enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, playerBB.pos, playerBB.width, playerBB.height))
 			{
 				if (Utils::ColliderAABB(enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, player_bottomBB.pos, sprite.width, player_bottomBB.height)) {
-					//if (!DebugMode)
-					enemy[i].setKilled();
+					if (!DebugMode)
+						enemy[i].setKilled();
+
 					if (DebugMode)
 						printf("enemy dies\n");
 				}
 				else {
 					if (!DebugMode) {
-						DecreaseLife();
-						UI::DecreaseLife();
-						if(lives > 0)
-							Reset();
-						printf("%d\n", lives);
+						sprite.pos = startingPos;
+						--hp.current;
 					}
 					if (DebugMode)
 						printf("player dies\n");

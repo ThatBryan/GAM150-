@@ -1,7 +1,6 @@
 #pragma once
+
 #include "AEEngine.h"
-#include "Constants.h"
-#include <fstream>
 
 namespace Utils 
 {
@@ -21,6 +20,10 @@ namespace Utils
 	void CheckDebugMode(void);		// F1 to enter debug mode
 	void ReturnToMenu(void);
 	AEVec2 GetScreenMiddle(void);
+	AEVec2 GetRandomPos(void);
+	// Returns a random normalized vector.
+	AEVec2 GetRandomVel(void);
+
 	bool ColliderAABB(AEVec2 pos, f32 width, f32 height, AEVec2 pos2, f32 width2, f32 height2);
 }
 

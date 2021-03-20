@@ -18,9 +18,11 @@
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\GameStateManager.cpp" />
     <ClCompile Include="src\Image.cpp" />
+    <ClCompile Include="src\LevelSystem.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Graphics.cpp" />
     <ClCompile Include="src\MainMenu.cpp" />
+    <ClCompile Include="src\Particles.cpp" />
     <ClCompile Include="src\PitchDemo.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Splash.cpp" />
@@ -37,9 +39,12 @@
     <ClInclude Include="src\GameStateManager.h" />
     <ClInclude Include="src\Image.h" />
     <ClInclude Include="src\Graphics.h" />
+    <ClInclude Include="src\LevelSystem.h" />
     <ClInclude Include="src\MainMenu.h" />
+    <ClInclude Include="src\Particles.h" />
     <ClInclude Include="src\PitchDemo.h" />
     <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\PlayerHp.h" />
     <ClInclude Include="src\Splash.h" />
     <ClInclude Include="src\Tiles.h" />
     <ClInclude Include="src\UserInterface.h" />
@@ -104,6 +109,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>Alpha_EngineD.lib;fmodL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(SolutionDir)\Extern\lib" "$(OutDir)"
+xcopy /y /d /i /s "$(SolutionDir)\Assets" "$(OutDir)\Assets"</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copying dlls and resources into exe file directory</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
