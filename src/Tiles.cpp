@@ -9,7 +9,7 @@ static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
 Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
 active{ true }, isCollapsing{ false }, ID{ 0 }, collapseDelay{ TileCollapseDelay }, type{ TileType::Safe }, spawnPos{ 0, 0 },
-ColliderAABB{width, height}, tile_topBB{ width - tile_aabb_rect_offset_x , 1 }, tile_bottomBB{ width - tile_aabb_rect_offset_x , 1 },
+ColliderAABB{width, height}, tile_topBB{ width, 1 }, tile_bottomBB{ width - tile_aabb_rect_offset_x , 1 },
 tile_rightBB{ 10 , height - tile_aabb_rect_offset_x }, tile_leftBB{ 10 , height - tile_aabb_rect_offset_x }
 {
 	ColliderAABB.color.Set(Color{ 150, 0, 0, 150 });
@@ -89,7 +89,8 @@ void Tiles::CheckPlayerGravity(std::vector <std::vector<Tiles>*>& TileManager, s
 		{
 			if (TileManager[i]->at(j).active == false)
 				continue;
-			if(Utils::ColliderAABB(TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height,
+			Tiles& Tile = TileManager[i]->at(j);
+			if(Utils::ColliderAABB(Tile.tile_topBB.pos, Tile.tile_topBB.width, Tile.tile_topBB.height,
 				Player[0].player_bottomBB.pos, Player[0].player_bottomBB.width, Player[0].player_bottomBB.height)){
 				Player[0].gravity = false;
 				Player[0].jump = false;
@@ -264,7 +265,7 @@ void Tiles::CollapsingManager(TileMgr TileManager) {
 	}
 }
 
-void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& Player)
+void Tiles::CheckPlayerCollision(TileMgr TileManager, std::vector <Player>& Player)
 {
 	for (size_t i = 0; i < TileManager.size(); i++)
 	{
@@ -279,7 +280,7 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 			{
 				Player[0].gravity = true;
 				Player[0].jump = false;
-				printf("Collision Top");
+				printf("Collision Top\n");
 			}
 
 			if (Utils::ColliderAABB(TileManager[i]->at(j).tile_rightBB.pos, TileManager[i]->at(j).tile_rightBB.width, TileManager[i]->at(j).tile_rightBB.height,
@@ -287,8 +288,8 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 			{
 				//if (Player[0].direction == MovementState::Left)
 				//{
-					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x + TileManager[i]->at(j).image.width / 2.0f + abs(Player[0].sprite.width) / 2.0f + 3.0f;
-					printf("Left Collision");
+					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x + TileManager[i]->at(j).image.width / 2.0f + abs(Player[0].sprite.width) / 2.0f + 5.0f;
+					printf("Left Collision\n");
 				//}
 			}
 
@@ -297,8 +298,8 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 			{
 				//if (Player[0].direction == MovementState::Right)
 				//{
-					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x - TileManager[i]->at(j).image.width / 2.0f - abs(Player[0].sprite.width) / 2.0f - 3.0f;
-					printf("Right Collision");
+					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x - TileManager[i]->at(j).image.width / 2.0f - abs(Player[0].sprite.width) / 2.0f - 5.0f;
+					printf("Right Collision\n");
 				//}
 			}
 		}
