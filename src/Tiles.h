@@ -19,6 +19,10 @@ class Tiles
 		f64 collapseDelay;
 		bool active, collapsing;
 		Graphics::Rect ColliderAABB;
+		Graphics::Rect tile_bottomBB;
+		Graphics::Rect tile_topBB;
+		Graphics::Rect tile_leftBB;
+		Graphics::Rect tile_rightBB;
 		// Abstraction
 		void DecreaseLifespan(void);
 		void Collapse(void);
