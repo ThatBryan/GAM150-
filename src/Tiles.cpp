@@ -53,8 +53,8 @@ void Tiles::CheckPos(void) {
 		ColliderAABB.pos = image.pos;
 		tile_bottomBB.pos = AEVec2Set(image.pos.x, image.pos.y + abs(image.height) / 2.0f);
 		tile_topBB.pos = AEVec2Set(image.pos.x, image.pos.y - abs(image.height) / 2.0f);
-		tile_rightBB.pos = AEVec2Set(image.pos.x + abs(image.width) / 2.0f, image.pos.y);
-		tile_leftBB.pos = AEVec2Set(image.pos.x - abs(image.width) / 2.0f, image.pos.y);
+		tile_rightBB.pos = AEVec2Set(image.pos.x + abs(image.width) / 2.0f - tile_rightBB.width / 2.0f, image.pos.y);
+		tile_leftBB.pos = AEVec2Set(image.pos.x - abs(image.width) / 2.0f + tile_leftBB.width / 2.0f, image.pos.y);
 
 		if (image.pos.y >= static_cast <f32> (AEGetWindowHeight())) 
 			active = false;
@@ -67,12 +67,14 @@ void Tiles::DecreaseLifespan(void)
 		collapseDelay -= g_dt;
 	}
 }
+
 void Tiles::CheckEnemyStatus(std::vector<Enemies>& enemy)
 {
+	static const float tolerance{ 5.0f };
 	for (size_t i = 0; i < enemy.size(); i++){
 		if (enemy[i].getKilled() == true) {
 			if (type == TileType::Grass || type == TileType::Special){
-				if (Utils::ColliderAABB(image.pos, image.width, image.height, enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height * 2)) { // DEBUGGGGGGGGGGGGGGGGGGGGGGGG
+				if (Utils::ColliderAABB(image.pos, image.width, image.height, enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height + tolerance)) { // DEBUGGGGGGGGGGGGGGGGGGGGGGGG
 					//enemy[i].active = false;
 					isCollapsing = true;
 				}
@@ -81,7 +83,7 @@ void Tiles::CheckEnemyStatus(std::vector<Enemies>& enemy)
 	}
 }
 
-void Tiles::CheckPlayerGravity(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& Player)
+void Tiles::CheckPlayerGravity(const TileMgr TileManager, std::vector <Player>& Player)
 {
 	for (size_t i = 0; i < TileManager.size(); i++)
 	{
@@ -114,11 +116,6 @@ void Tiles::AddTileRow(std::vector <Tiles>& tile, TileType type, const int count
 		tile[i].type = type;
 		tile[i].spawnPos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2));
 		tile[i].image.pos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2));
-
-		//tile[i].tile_bottomBB.pos = AEVec2Set(sprite.pos.x + player_collider_offset_x, sprite.pos.y + player_collider_offset_y);
-		//tile[i]tile_topBB.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.width / 2.0f);
-		//tile[i]tile_rightBB.pos = AEVec2Set(sprite.pos.x + sprite.width / 2.0f, sprite.pos.y);
-		//tile[i]tile_leftBB.pos = AEVec2Set(sprite.pos.x - sprite.width / 2.0f, sprite.pos.y);
 	}
 
 }
@@ -236,8 +233,8 @@ void Tiles::TileShake(void) {
 	image.pos = AEVec2Add(image.pos, ShakeStrength);
 }
 
-const float allowance{ 3.0f };
 void Tiles::CollapsingManager(TileMgr TileManager) {
+static const float allowance{ 3.0f };
 	for (size_t i = 0; i < TileManager.size(); ++i) {
 		for (size_t j = 0; j < TileManager[i]->size(); ++j) {
 
@@ -246,6 +243,7 @@ void Tiles::CollapsingManager(TileMgr TileManager) {
 
 				if (tile.collapseDelay <= 0) {
 					if (j <= TileManager[i]->size()) { // eg j = 0. mgr size = 20, indexing up to 19
+
 						Tiles& NextTile = TileManager[i]->at(j + 1);
 						if (NextTile.type == TileType::Grass || NextTile.type == TileType::Special) {
 							if (Utils::ColliderAABB(tile.image.pos, tile.image.width + allowance, tile.image.height, NextTile.image.pos, NextTile.image.width, NextTile.image.height))
@@ -253,6 +251,7 @@ void Tiles::CollapsingManager(TileMgr TileManager) {
 						}
 					}
 					if (j > 0) {
+
 						Tiles& NextTile = TileManager[i]->at(j - 1);
 						if (NextTile.type == TileType::Grass || NextTile.type == TileType::Special) {
 							if (Utils::ColliderAABB(tile.image.pos, tile.image.width + allowance, tile.image.height, NextTile.image.pos, NextTile.image.width, NextTile.image.height))
@@ -265,7 +264,7 @@ void Tiles::CollapsingManager(TileMgr TileManager) {
 	}
 }
 
-void Tiles::CheckPlayerCollision(TileMgr TileManager, std::vector <Player>& Player)
+void Tiles::CheckPlayerCollision(const TileMgr TileManager, std::vector <Player>& Player)
 {
 	for (size_t i = 0; i < TileManager.size(); i++)
 	{
@@ -288,7 +287,7 @@ void Tiles::CheckPlayerCollision(TileMgr TileManager, std::vector <Player>& Play
 			{
 				//if (Player[0].direction == MovementState::Left)
 				//{
-					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x + TileManager[i]->at(j).image.width / 2.0f + abs(Player[0].sprite.width) / 2.0f + 5.0f;
+					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x + TileManager[i]->at(j).image.width / 2.0f + abs(Player[0].sprite.width) / 2.0f;
 					printf("Left Collision\n");
 				//}
 			}
@@ -298,7 +297,7 @@ void Tiles::CheckPlayerCollision(TileMgr TileManager, std::vector <Player>& Play
 			{
 				//if (Player[0].direction == MovementState::Right)
 				//{
-					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x - TileManager[i]->at(j).image.width / 2.0f - abs(Player[0].sprite.width) / 2.0f - 5.0f;
+					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x - TileManager[i]->at(j).image.width / 2.0f - abs(Player[0].sprite.width) / 2.0f;
 					printf("Right Collision\n");
 				//}
 			}

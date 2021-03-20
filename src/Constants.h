@@ -52,7 +52,6 @@ extern short EnemyCount;
 //Utility constants
 extern const float colorcodeMax;
 
-
 // Miscallenous
 extern bool paused;
 extern bool DebugMode;
@@ -65,6 +64,7 @@ namespace font {
 	extern char ID;
 }
 
+// Base meshes
 namespace Mesh {
 	extern AEGfxVertexList* Rect;
 	extern AEGfxVertexList* Circle;

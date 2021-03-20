@@ -43,8 +43,8 @@ public:
 	bool active;
 	void Update(void);
 	void Draw();
-	inline EnemyType GetType() { return type; }
-	inline bool getKilled() { return killed; }
+	inline EnemyType GetType() const { return type; }
+	inline bool getKilled() const { return killed; }
 	void setKilled(bool status = true);
 
 	void GravityCheck(std::vector <std::vector<Tiles>*>& TileManager);

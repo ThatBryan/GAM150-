@@ -12,11 +12,10 @@ public:
 	LevelSystem();
 	~LevelSystem();
 	void Init();
-	inline int GetKey() { return key; }
+	inline int GetKey() const { return key; }
 	inline void UpdateKey(int newKey) { key = newKey; }
 	void UnlockNext();
 
 	// Saves the key to a file before exiting the program.
 	void SaveKeyToFile(void);
-
 };

@@ -21,11 +21,13 @@ public:
 		TileType type;
 		f64 collapseDelay;
 		bool active, isCollapsing;
+
 		Graphics::Rect ColliderAABB;
 		Graphics::Rect tile_bottomBB;
 		Graphics::Rect tile_topBB;
 		Graphics::Rect tile_leftBB;
 		Graphics::Rect tile_rightBB;
+
 		// Abstraction
 		void DecreaseLifespan(void);
 		void Collapse(void);
@@ -40,16 +42,16 @@ public:
 		void Update(void);
 		void Render(void);
 
-		inline bool GetActive() { return active; }
+		inline bool GetActive() const { return active; }
 
 		// Static class Functions
 		static void Unload(void);
 		static void LoadTex(void);
 		// Resets the level.
 		static void Reset(std::vector <Tiles>& tiles);
-		static void CheckPlayerGravity(TileMgr TileManager, std::vector <Player>& player);
 		static void CollapsingManager(TileMgr TileManager);
-		static void CheckPlayerCollision(TileMgr TileManager, std::vector <Player>& Player);
+		static void CheckPlayerGravity(const TileMgr TileManager, std::vector <Player>& player);
+		static void CheckPlayerCollision(const TileMgr TileManager, std::vector <Player>& Player);
 
 		// Add whole new row of tile.
 		static void AddTileRow(std::vector < Tiles>& tile, TileType type, const int count, const f32 width, const f32 height, const AEVec2 pos);

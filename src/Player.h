@@ -37,6 +37,7 @@ public:
 	Graphics::Rect player_leftBB{ 20.0f,  player_height - 3 };
 	Graphics::Rect player_rightBB{ 20.0f, player_height - 3};
 	AEVec2 startingPos, vel;
+
 	void Update(void);
 	void Render(void);
 	void Reset(void);
@@ -44,9 +45,9 @@ public:
 	void GravityManager(void);
 	inline void SetPos(AEVec2 pos) { this->sprite.pos = pos; this->startingPos = pos; }
 	void SetWin(void);
-	inline bool GetWinStatus(void) { return win; }
-	inline void SetLose(void) { active = false; lose = true; }
-	inline bool GetLose(void) { return lose; }
+	inline bool GetWinStatus(void) const { return win; }
+	inline void SetLose(void){ active = false; lose = true; }
+	inline bool GetLose(void) const { return lose; }
 
 	static void LoadTex(void);
 	static void Unload(void);

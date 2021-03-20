@@ -74,7 +74,6 @@ namespace Graphics
 			f32 width, height, scale;
 			AEVec2 pos;
 
-			// Calculates the X and Y offset
 			void Draw();
 			void Draw_Wrapped(const AEVec2 pos);
 			inline void Set_Pos(AEVec2 Pos) {pos = Pos; }
@@ -82,6 +81,7 @@ namespace Graphics
 
 		private:
 			std::string buffer;
+			// Calculates the X and Y offset
 			AEVec2 Calculate_Offset(AEVec2 pos);
 	};
 }

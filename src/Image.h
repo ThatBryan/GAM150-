@@ -20,7 +20,6 @@ class Image
 	Color color;
 	f32 height, width, rotation;
 	AEVec2 pos;
-	AEVec2 left, right, bottom, top;
 
 	inline void ReflectAboutYAxis() { width *= -1.0f; }
 	inline void Free(void) {AEGfxTextureUnload(pTex);}

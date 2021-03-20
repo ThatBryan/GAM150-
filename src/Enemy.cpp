@@ -134,7 +134,6 @@ void Enemies::DecrementAlpha(void)
 		alphaTimer -= g_dt;
 		alpha = (alphaTimer / Timer) * Alpha;
 	}
-
 }
 
 void Enemies::Update()
@@ -240,8 +239,9 @@ EnemyType& operator++(EnemyType& rhs) {
 
 void Enemies::setKilled(bool status) {
 	killed = status;
+	const int particleCount{ 50 };
 	if (killed) {
-		for (int i = 0; i < 50; ++i) {
+		for (int i = 0; i < particleCount; ++i) {
 			Particles::Create(sprite.pos, Utils::GetRandomVel(), Color::CreateRandomColor(), 1, 75.0f, Utils::RandomRangeFloat(0, 50.0f), 25.0f, 3.0f, enemyTex[static_cast<int>(type)]);
 		}
 	}
