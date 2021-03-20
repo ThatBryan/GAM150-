@@ -20,6 +20,11 @@ namespace FilePaths {
 	const char* ButtonTest2 = "./Assets/Art/PlanetTexture.png";
 	const char* boi = "./Assets/Art/boi.png";
 	const char* HeartSprite = "./Assets/Art/Heart.png";
+
+
+	
+	const char* jumpSFX = "./Assets/Audio/SFX/powerup.wav";
+	const char* GameplayBGM = "/Assets/Audio/BGM/gg.wav";
 }
 
 // Player constants

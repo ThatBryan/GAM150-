@@ -44,8 +44,8 @@ void AudioManager::update() {
 }
 
 void AudioManager::loadAsset(void) {
-	Audio.createAudio(&soundTest[static_cast<int>(AudioID::Jump)], "../Assets/Audio/SFX/powerup.wav");
-	Audio.createAudio(&soundTest[static_cast<int>(AudioID::BGM)], "../Assets/Audio/BGM/gg.wav");
+	Audio.createAudio(&soundTest[static_cast<int>(AudioID::Jump)], FP::jumpSFX);
+	Audio.createAudio(&soundTest[static_cast<int>(AudioID::BGM)], FP::GameplayBGM);
 }
 void AudioManager::unloadAsset(void) {
 	for (int i = 0; i < soundTest.size(); i++) {

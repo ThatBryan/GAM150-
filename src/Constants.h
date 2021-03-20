@@ -3,6 +3,7 @@
 
 
 namespace FilePaths {
+	// Art
 	extern const char* DigipenLogoRed;
 	extern const char* DigipenLogoWhite;
 	extern const char* PauseOverlay;
@@ -21,6 +22,10 @@ namespace FilePaths {
 	extern const char* ButtonTest2;
 	extern const char* HeartSprite;
 	extern const char* boi;
+
+	// Sound
+	extern const char* jumpSFX;
+	extern const char* GameplayBGM;
 }
 
 namespace FP = FilePaths; // Short hand 

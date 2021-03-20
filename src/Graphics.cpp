@@ -174,13 +174,6 @@ height{ 0 }, width{ 0 }, buffer()
 Graphics::Text::Text() : scale{ 0 }, pos{ 0, 0 },
 height{ 0 }, width{ 0 }, buffer(), color() {}
 
-Graphics::Text::~Text()
-{
-
-}
-
-
-
 void Graphics::Text::SetText(std::string text) {
 	buffer = text;
 }
@@ -204,8 +197,6 @@ AEVec2 Graphics::Text::Calculate_Offset(AEVec2 Pos)
 {
 	f32 HalfWinWidth = Utils::Get_HalfWindowWidth();
 	f32 HalfWinHeight = Utils::Get_HalfWindowHeight();
-	//f32 WinHeight = static_cast<f32>(AEGetWindowHeight());
-	//f32 WinWidth = static_cast<f32>(AEGetWindowWidth());
 
 	AEVec2 Offset{0, 0};
 	if (Pos.x < HalfWinWidth) // I want negative

@@ -6,11 +6,15 @@
 #include "Graphics.h"
 #include "Particles.h"
 #include "UserInterface.h"
+#include "LevelSystem.h"
 
 AEGfxTexture* Player::playerTex{ nullptr };
 static f32 maxY;
 static f32 maxX;
 float Player::gravityStrength = 150.0f;
+
+extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
+extern LevelSystem LevelSys;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},
 active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{player_jumpvel},
@@ -164,6 +168,12 @@ void Player::GravityManager(void)
 		//if(DebugMode)
 			//printf("Apply gravity\n");
 	}
+}
+
+void Player::SetWin(void)
+{
+	 LevelSys.UnlockNext();
+	 win = true;
 }
 
 void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)

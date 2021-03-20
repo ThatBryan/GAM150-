@@ -18,14 +18,22 @@ void LevelSystem::Init()
 
 	if (!File.is_open()) {
 		File.open("./Assets/Level_System/Key.txt", std::fstream::in | std::fstream::out | std::fstream::trunc);
-		File << 0 << std::endl;
+		File << 1 << std::endl;
 		File.close();
-		std::cout << "\nFailed to open key file, A new file with '0' will be created\n";
+		std::cout << "\nFailed to open key file, A new file with '1' will be created\n";
 	}
 	else {
 		File >> key;
 		File.close();
 		std::cout << "\nKey file opened successfully, key is: " << key << std::endl;
+	}
+}
+
+void LevelSystem::UnlockNext()
+{	
+	if (key < maxLevel) {
+		++key;
+		std::cout << "Level: " << key << " unlocked!\n";
 	}
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-// Locking / unlocking system for the level selection.
+// Locking / unlocking system for the level selection. Currently called from GS_SPLASH
 class LevelSystem {
 
 private:
@@ -14,7 +14,7 @@ public:
 	void Init();
 	inline int GetKey() { return key; }
 	inline void UpdateKey(int newKey) { key = newKey; }
-	inline void UnlockNext() { if (key< maxLevel) ++key; }
+	void UnlockNext();
 
 	// Saves the key to a file before exiting the program.
 	void SaveKeyToFile(void);
