@@ -13,11 +13,14 @@ class Enemies;
 
 class Tiles
 {
+public:
+	using TileMgr = std::vector<std::vector<Tiles>*>&;
+
 	private:
 		short ID;
 		TileType type;
 		f64 collapseDelay;
-		bool active, collapsing;
+		bool active, isCollapsing;
 		Graphics::Rect ColliderAABB;
 		// Abstraction
 		void DecreaseLifespan(void);
@@ -40,8 +43,9 @@ class Tiles
 		static void LoadTex(void);
 		// Resets the level.
 		static void Reset(std::vector <Tiles>& tiles);
-		static void CheckPlayerGravity(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& player);
-		static void TestingManager(std::vector<std::vector<Tiles>*>& TileManager);
+		static void CheckPlayerGravity(TileMgr TileManager, std::vector <Player>& player);
+		static void CollapsingManager(TileMgr TileManager);
+
 
 		// Add whole new row of tile.
 		static void AddTileRow(std::vector < Tiles>& tile, TileType type, const int count, const f32 width, const f32 height, const AEVec2 pos);

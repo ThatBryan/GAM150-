@@ -8,7 +8,7 @@ extern std::vector <Player> player;
 static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
 Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
-active{ true }, collapsing{ false }, ID{ 0 }, collapseDelay{ TileCollapseDelay }, type{ TileType::Safe }, spawnPos{ 0, 0 },
+active{ true }, isCollapsing{ false }, ID{ 0 }, collapseDelay{ TileCollapseDelay }, type{ TileType::Safe }, spawnPos{ 0, 0 },
 ColliderAABB{width, height}
 {
 	ColliderAABB.color.Set(Color{ 150, 0, 0, 150 });
@@ -26,7 +26,7 @@ void Tiles::Collapse(void)
 		if (AETestRectToRect(&player[0].feetBB.pos, player[0].feetBB.width, player[0].feetBB.height, &ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
 			&& (AEInputCheckTriggered(AEVK_DOWN) || AEInputCheckTriggered(AEVK_S)))
 		{
-			collapsing = true;
+			isCollapsing = true;
 		}
 	}
 }
@@ -52,7 +52,7 @@ void Tiles::CheckPos(void) {
 }
 void Tiles::DecreaseLifespan(void)
 {
-	if (collapsing && active)
+	if (isCollapsing && active)
 	{
 		collapseDelay -= g_dt;
 	}
@@ -64,7 +64,7 @@ void Tiles::CheckEnemyStatus(std::vector<Enemies>& enemy)
 			if (type == TileType::Grass || type == TileType::Special){
 				if (Utils::ColliderAABB(image.pos, image.width, image.height, enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height * 2)) { // DEBUGGGGGGGGGGGGGGGGGGGGGGGG
 					//enemy[i].active = false;
-					collapsing = true;
+					isCollapsing = true;
 				}
 			}
 		}
@@ -125,12 +125,12 @@ void Tiles::CollapseNext(std::vector <Tiles>& tiles)
 				if (i < tiles.size() - 1)
 				{
 					if(tiles[i + 1].type == TileType::Grass || tiles[i + 1].type == TileType::Special)
-						tiles[i + 1].collapsing = true;
+						tiles[i + 1].isCollapsing = true;
 				}
 				if (i > 0)
 				{
 					if (tiles[i - 1].type == TileType::Grass || tiles[i - 1].type == TileType::Special)
-						tiles[i - 1].collapsing = true;
+						tiles[i - 1].isCollapsing = true;
 				}
 			}
 		}
@@ -141,7 +141,7 @@ void Tiles::Reset(std::vector <Tiles>& tiles)
 	for (size_t i = 0; i < tiles.size(); i++){
 		tiles[i].image.pos = tiles[i].spawnPos;
 		tiles[i].active = true;
-		tiles[i].collapsing = false;
+		tiles[i].isCollapsing = false;
 		tiles[i].collapseDelay = 0.5f;
 	}
 }
@@ -150,7 +150,7 @@ void Tiles::Update()
 	CheckPos();
 	Collapse();
 	DecreaseLifespan();
-	if(collapsing)
+	if(isCollapsing)
 		TileShake();
 
 }
@@ -212,20 +212,31 @@ void Tiles::TileShake(void) {
 	AEVec2 ShakeStrength{Utils::RandomRangeFloat(-0.5f, 0.5f), Utils::RandomRangeFloat(-0.5f, 0.5f) };
 	image.pos = AEVec2Add(image.pos, ShakeStrength);
 }
-void Tiles::TestingManager(std::vector<std::vector<Tiles>*>& TileManager) {
+
+const float allowance{ 3.0f };
+void Tiles::CollapsingManager(TileMgr TileManager) {
 	for (size_t i = 0; i < TileManager.size(); ++i) {
 		for (size_t j = 0; j < TileManager[i]->size(); ++j) {
-			if (TileManager[i]->at(j).type == TileType::Grass || TileManager[i]->at(j).type == TileType::Special) {
-				if (TileManager[i]->at(j).collapseDelay <= 0) {
-					if (i < TileManager.size() - 1){
-						if (TileManager[i]->at(j).type == TileType::Grass || TileManager[i]->at(j).type == TileType::Special)
-							TileManager[i]->at(j).collapsing = true;
+
+			Tiles& tile = TileManager[i]->at(j);
+			if (tile.type == TileType::Grass || tile.type == TileType::Special) {
+
+				if (tile.collapseDelay <= 0) {
+					if (j <= TileManager[i]->size()) { // eg j = 0. mgr size = 20, indexing up to 19
+						Tiles& NextTile = TileManager[i]->at(j + 1);
+						if (NextTile.type == TileType::Grass || NextTile.type == TileType::Special) {
+							if (Utils::ColliderAABB(tile.image.pos, tile.image.width + allowance, tile.image.height, NextTile.image.pos, NextTile.image.width, NextTile.image.height))
+								NextTile.isCollapsing = true;
+						}
 					}
-					if (i > 0){
-						if (TileManager[i]->at(j).type == TileType::Grass || TileManager[i]->at(j).type == TileType::Special)
-							TileManager[i]->at(j).collapsing = true;
+					if (j > 0) {
+						Tiles& NextTile = TileManager[i]->at(j - 1);
+						if (NextTile.type == TileType::Grass || NextTile.type == TileType::Special) {
+							if (Utils::ColliderAABB(tile.image.pos, tile.image.width + allowance, tile.image.height, NextTile.image.pos, NextTile.image.width, NextTile.image.height))
+								NextTile.isCollapsing = true;
+						}
 					}
-				}
+				} // end collapsedelay <= 0
 			}
 		}
 	}
