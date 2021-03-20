@@ -201,6 +201,7 @@ void Demo::UpdateManager(void)
 		Tiles::UpdateManager(Demo_Tiles, player, enemy);
 		Tiles::UpdateManager(Demo_Tiles2, player, enemy);
 		Tiles::CheckPlayerGravity(TileManager, player);
+		Tiles::CheckPlayerCollision(TileManager, player);
 		player[0].GravityManager();
 		for (size_t i = 0; i < enemy.size(); i++)
 		{

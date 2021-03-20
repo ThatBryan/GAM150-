@@ -18,7 +18,6 @@ class Player
 {
 private:
 	bool win, lose;
-	MovementState direction;
 	Health hp;
 	float jumpvel;
 	static f32 gravityStrength;
@@ -27,12 +26,16 @@ private:
 	void ChangeDirection(void);
 
 public:
+	MovementState direction;
 	static AEGfxTexture* playerTex;
 	Player(AEGfxTexture* ,const f32 width, const f32 height);
 	Image sprite;
 	bool active, jump, gravity;
 	Graphics::Rect playerBB {player_width, player_height};
-	Graphics::Rect feetBB {player_width / 2.0f, 5.0f};
+	Graphics::Rect player_bottomBB{player_width / 2.0f, 5.0f};
+	Graphics::Rect player_topBB{ player_width, 5.0f };
+	Graphics::Rect player_leftBB{ 5.0f,  player_height };
+	Graphics::Rect player_rightBB{ 5.0f, player_height };
 	AEVec2 startingPos, vel;
 	void Update(void);
 	void Render(void);

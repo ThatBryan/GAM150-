@@ -16,10 +16,13 @@ class Image
 	public:
 	Image(const AEGfxTexture* pTex, const f32 width, const f32 height, const f32 dir = 0); //ctor
 	Image();
-	void Init(const char* pFile, const f32 width, const f32 height, const AEVec2 pos, const f32 rotation = 0, AEGfxVertexList* = Mesh::Rect);
+	void Init(const char* pFile, const f32 width, const f32 height, const AEVec2 pos, 
+	const AEVec2 Left = { 0, 0 }, const AEVec2 Right = { 0, 0 }, const AEVec2 Bottom = { 0, 0 }, const AEVec2 Top = { 0,0 }, 
+	const f32 rotation = 0, AEGfxVertexList* = Mesh::Rect);
 	Color color;
 	f32 height, width, rotation;
 	AEVec2 pos;
+	AEVec2 left, right, bottom, top;
 
 	inline void ReflectAboutYAxis() { width *= -1.0f; }
 	inline void Free(void) {AEGfxTextureUnload(pTex);}

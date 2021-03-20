@@ -21,7 +21,10 @@ active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0
 hp(), direction{MovementState::Right}
 {
 	playerBB.color.Set(Color{ 0, 0, 0, 255.0f });
-	feetBB.color.Set(Color{ 255.0f, 255.0f, 0, 255.0f });
+	player_bottomBB.color.Set(Color{ 255.0f, 255.0f, 0, 255.0f }); // yellow
+	player_topBB.color.Set(Color{ 255.0f, 0, 0, 255.0f }); // red
+	player_leftBB.color.Set(Color{ 0, 255.0f, 0, 255.0f }); // green
+	player_rightBB.color.Set(Color{ 0, 0, 255.0f, 255.0f }); // blue
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
 	hp.max = player_hp_max;
@@ -55,7 +58,10 @@ void Player::Render(void)
 	
 	if (DebugMode) {
 		playerBB.Draw();
-		feetBB.Draw();
+		player_bottomBB.Draw();
+		player_topBB.Draw();
+		player_leftBB.Draw();
+		player_rightBB.Draw();
 	}
 }
 void Player::LoadTex(void) {
@@ -138,7 +144,10 @@ void Player::Update_Position(void)
 	}
 	}
 	playerBB.pos = sprite.pos;
-	feetBB.pos = AEVec2Set(sprite.pos.x + player_collider_offset_x, sprite.pos.y + player_collider_offset_y);
+	player_bottomBB.pos = AEVec2Set(sprite.pos.x + player_collider_offset_x, sprite.pos.y + player_collider_offset_y);
+	player_topBB.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0f);
+	player_rightBB.pos = AEVec2Set(sprite.pos.x + sprite.width / 2.0f, sprite.pos.y);
+	player_leftBB.pos = AEVec2Set(sprite.pos.x - sprite.width / 2.0f, sprite.pos.y);
 }
 
 void Player::ChangeDirection() {
@@ -175,7 +184,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 		{
 			if (Utils::ColliderAABB(enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, playerBB.pos, playerBB.width, playerBB.height))
 			{
-				if (Utils::ColliderAABB(enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, feetBB.pos, sprite.width, feetBB.height)) {
+				if (Utils::ColliderAABB(enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, player_bottomBB.pos, sprite.width, player_bottomBB.height)) {
 					if (!DebugMode)
 						enemy[i].setKilled();
 
