@@ -27,7 +27,9 @@ static std::vector<Button> buttons;
 
 enum {Pause = 0, Victory, Defeat, MAX_IMAGE};
 static std::array <Image, MAX_IMAGE> Images;
+
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
+extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
 
 void Demo::Init(void)
 {

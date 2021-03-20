@@ -29,6 +29,14 @@ void LevelSystem::Init()
 	}
 }
 
+void LevelSystem::UnlockNext()
+{	
+	if (key < maxLevel) {
+		++key;
+		std::cout << "Level: " << key << " unlocked!\n";
+	}
+}
+
 void LevelSystem::SaveKeyToFile(void)
 {
 	std::ofstream File;

@@ -19,6 +19,8 @@
 #include <string>
 
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
+extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
+
 static std::vector <Image> Images;
 static std::vector<Button> buttons;
 static std::vector<Button> LevelButtons;
@@ -29,11 +31,11 @@ static Graphics::Text Title;
 static AEVec2 ScreenMid;
 static AEGfxTexture* test;
 
-static LevelSystem LevelSys;
+extern LevelSystem LevelSys;
 
 void MainMenu::Init(void)
 {
-	LevelSys.Init();
+
 	ScreenMid = Utils::GetScreenMiddle();
 	MainMenu::Buttons_Init();
 	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
@@ -97,7 +99,7 @@ void MainMenu::Render() {
 	Particles::Render();
 
 	if (AEInputCheckTriggered(AEVK_B)) {
-		LevelSys.UpdateKey(LevelSys.GetKey() + 1);
+		LevelSys.UnlockNext();
 	}
 }
 

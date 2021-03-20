@@ -5,8 +5,11 @@
 #include "Constants.h"
 #include "GameStateManager.h"
 #include "AEEngine.h"
+#include "LevelSystem.h"
 
 Image splash;
+LevelSystem LevelSys;
+
 static float splashLife, alpha;
 const float splashDuration = 3.0f;
 
@@ -31,6 +34,7 @@ void Splash::Render() {
 	splash.Draw_Texture(alpha);
 }
 void Splash::Load() {
+	LevelSys.Init();
 }
 void Splash::Unload() {
 	splash.Free();

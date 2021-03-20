@@ -7,9 +7,6 @@
 #include "PlayerHp.h"
 #include "UserInterface.h"
 
-extern AudioManager Audio;
-extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
-
 // State to track when to flip image.
 enum class MovementState { Left = 0, Right};
 
@@ -43,7 +40,7 @@ public:
 	void CheckEnemyCollision(std::vector <Enemies>& enemy);
 	void GravityManager(void);
 	inline void SetPos(AEVec2 pos) { this->sprite.pos = pos; this->startingPos = pos; }
-	inline void SetWin(void) { win = true; }
+	void SetWin(void);
 	inline bool GetWinStatus(void) { return win; }
 	inline void SetLose(void) { active = false; lose = true; }
 	inline bool GetLose(void) { return lose; }
