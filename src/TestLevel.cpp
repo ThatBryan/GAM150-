@@ -69,15 +69,11 @@ void MapInit(void)
 
 void MapUpdate()
 {
+	Utils::CheckDebugMode();
 	for (size_t i = 0; i < tilemap.size(); ++i)
 	{
 		tilemap[i].Update(Jumperman[0]); // call overloaded update function which takes a reference to the player.
 	}
-	for (size_t j = 0; j < enemies.size(); j++)
-	{
-		enemies[j].Update();
-	}
-	Jumperman[0].Update();
 	if (AEInputCheckTriggered(AEVK_R))
 	{
 		TestRestart();
@@ -152,6 +148,7 @@ void UpdateManager()
 	if (!paused) {
 		Jumperman[0].Update();
 //		Tiles::UpdateManager(tilemap, Jumperman, enemies);
+		Tiles::CollapsingManager(tileManager);
 		Tiles::CheckPlayerGravity(tileManager, Jumperman);
 		Jumperman[0].GravityManager();
 		for (size_t i = 0; i < enemies.size(); i++)
@@ -160,6 +157,6 @@ void UpdateManager()
 			enemies[i].GravityCheck(tileManager);
 		}
 		Jumperman[0].CheckEnemyCollision(enemies);
-		Tiles::CollapseNext(tilemap);
+		/*Tiles::CollapseNext(tilemap);*/
 	}
 }
