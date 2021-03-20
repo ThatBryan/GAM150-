@@ -11,10 +11,6 @@ active{ true }, collapsing{ false }, ID{ 0 }, collapseDelay{ TileCollapseDelay }
 ColliderAABB{width, height}
 {
 	ColliderAABB.color.SetColor(Color{ 150, 0, 0, 150 });
-	tile_bottomBB.color.SetColor(Color{ 255.0f, 255.0f, 0, 255.0f }); // yellow
-	tile_topBB.color.SetColor(Color{ 255.0f, 0, 0, 255.0f }); // red
-	tile_leftBB.color.SetColor(Color{ 0, 255.0f, 0, 255.0f }); // green
-	tile_rightBB.color.SetColor(Color{ 0, 0, 255.0f, 255.0f }); // blue
 }
 void Tiles::Collapse(void)
 {
@@ -165,10 +161,6 @@ void Tiles::Render() {
 		image.Draw_Texture(255);
 		if (DebugMode)
 			ColliderAABB.Draw();
-			tile_bottomBB.Draw();
-			tile_topBB.Draw();
-			tile_leftBB.Draw();
-			tile_rightBB.Draw();
 	}
 }
 void Tiles::UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& Player, std::vector <Enemies>& enemy)
@@ -249,32 +241,35 @@ void Tiles::CheckPlayerCollision(std::vector <std::vector<Tiles>*>& TileManager,
 		{
 			if (TileManager[i]->at(j).GetActive() == false)
 				continue;
-			
+
+			if (Utils::ColliderAABB(TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height,
+				Player[0].player_topBB.pos, Player[0].player_topBB.width, Player[0].player_topBB.height))
+			{
+				Player[0].gravity = true;
+				Player[0].jump = false;
+				
+				//printf("Collision Top");
+			}
 
 			if (Utils::ColliderAABB(TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height,
 				Player[0].player_rightBB.pos, Player[0].player_rightBB.width, Player[0].player_rightBB.width))
 			{
-				if (Player[0].direction == MovementState::Right && Player[0].jump == false)
+				if (Player[0].direction == MovementState::Right && Player[0].jump == false)  
 				{
-					// lousy snap
-					//Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x; //- TileManager[i]->at(j).image.width / 2.0f;
-
-					// failed test using bb, stupid
-					//Player[0].player_rightBB.pos.x = TileManager[i]->at(j).image.pos.x - TileManager[i]->at(j).image.width / 2.0f;
-					
-					// not-so-sensitive collision check, successful snap 
-					printf("Right Collision\n");
-					//Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x - TileManager[i]->at(j).image.width / 2.0f - Player[0].sprite.width / 2.0f + 3.0f;
-					Player[0].sprite.right.x = TileManager[i]->at(j).image.pos.x - TileManager[i]->at(j).image.width / 2.0f - Player[0].sprite.width / 2.0f + 3.0f;
+					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x - TileManager[i]->at(j).image.width / 2.0f - Player[0].sprite.width / 2.0f + 3.0f;
+					// printf("Right Collision");
 				}
-				/*else if (Player[0].direction == MovementState::Left && Player[0].jump == false)
+				else if (Player[0].direction == MovementState::Left && Player[0].jump == false) 
 				{
-					printf("Left Collision\n");
-					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x - TileManager[i]->at(j).image.width / 2.0f - Player[0].sprite.width - 3.0f;
-				}
+					/*else if (AEInputCheckCurr(AEVK_UP))
+					{
+						Player[0].gravity = false;
+						Player[0].jump = true;
+					}*/
 
-				printf("%f", Player[0].sprite.right.x);*/
-				
+					Player[0].sprite.pos.x = TileManager[i]->at(j).image.pos.x + TileManager[i]->at(j).image.width;
+					// printf("Left Collision");
+				}	
 			}
 		}
 	}

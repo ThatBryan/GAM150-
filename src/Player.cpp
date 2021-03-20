@@ -98,9 +98,7 @@ void Player::Update_Position(void)
 	{
 		if (sprite.pos.x + sprite.width / 2 <= maxX)
 			sprite.pos.x += player_speed * g_dt;
-			sprite.pos.x += player_speed * g_dt;
-			//sprite.right.x += player_speed * g_dt;
-
+		
 		if (direction != MovementState::Right) {
 			sprite.ReflectAboutYAxis();
 			direction = MovementState::Right;
@@ -139,7 +137,7 @@ void Player::Update_Position(void)
 	}
 	playerBB.pos = sprite.pos;
 	player_bottomBB.pos = AEVec2Set(sprite.pos.x + player_collider_offset_x, sprite.pos.y + player_collider_offset_y);
-	player_topBB.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.width / 2.0f);
+	player_topBB.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0f);
 	player_rightBB.pos = AEVec2Set(sprite.pos.x + sprite.width / 2.0f, sprite.pos.y);
 	player_leftBB.pos = AEVec2Set(sprite.pos.x - sprite.width / 2.0f, sprite.pos.y);
 }

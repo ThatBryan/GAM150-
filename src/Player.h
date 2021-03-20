@@ -39,7 +39,7 @@ public:
 	void Reset(void);
 	void CheckEnemyCollision(std::vector <Enemies>& enemy);
 	void GravityManager(void);
-	inline void SetPos(AEVec2 pos, AEVec2 right) { this->sprite.pos = pos; this->startingPos = pos; this->sprite.right = right; }
+	inline void SetPos(AEVec2 pos) { this->sprite.pos = pos; this->startingPos = pos; }
 	inline void SetLives(unsigned int Lives) { lives = Lives; }
 	inline int GetLives(void) { return lives; }
 	inline void SetWin(void) { win = true; }

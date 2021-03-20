@@ -38,8 +38,8 @@ void Demo::Init(void)
 	Tiles::AddTileRow(Demo_Tiles, TileType::Grass, static_cast<int>((width - 2 - 4)), TILE_WIDTH, TILE_HEIGHT, AEVec2{X, Y / 2.0f });
 	Tiles::AddTileRow(Demo_Tiles2, TileType::Special, static_cast<int>(width - 2), TILE_WIDTH, TILE_HEIGHT, AEVec2{X, Y });
 	Tiles::AddTileRow(Demo_Tiles2, TileType::Goal, 2, TILE_WIDTH, TILE_HEIGHT, AEVec2{X, Y });
-	Tiles::AddTile(Demo_Tiles2, TileType::Grass, 25.0f, 25.0f, AEVec2{ 220.0f, 320.0f });
-	Tiles::AddTile(Demo_Tiles2, TileType::Grass, 25.0f, 25.0f, AEVec2{ 250.0f, 300.0f });
+	Tiles::AddTile(Demo_Tiles2, TileType::Grass, 40.0f, 50.0f, AEVec2{ 220.0f, 340.0f });
+	Tiles::AddTile(Demo_Tiles2, TileType::Grass, 40.0f, 50.0f, AEVec2{ 250.0f, 300.0f });
 	Tiles::AddTileRow(Demo_Tiles3, TileType::Grass, static_cast<int>(width), TILE_WIDTH, TILE_HEIGHT, AEVec2{ X, Y + Y / 2 });
 
 
@@ -63,7 +63,7 @@ void Demo::Init(void)
 	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2Add(DemoEnemyPos6, Offset), enemy_width, enemy_height);
 
 	player.push_back(Player(Player::playerTex, player_width, player_height));
-	player[0].SetPos(AEVec2Sub(Demo_Tiles3[0].spawnPos, AEVec2Set(0, TILE_HEIGHT)), AEVec2Sub(Demo_Tiles3[0].spawnPos, AEVec2Set(0, TILE_HEIGHT)));
+	player[0].SetPos(AEVec2Sub(Demo_Tiles3[0].spawnPos, AEVec2Set(0, TILE_HEIGHT)));
 
 	Images[Pause].Init(FP::PauseOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 	Images[Victory].Init(FP::VictoryOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
