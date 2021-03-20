@@ -64,7 +64,7 @@ namespace Graphics
 		// Constructor
 		Text(std::string, const f32 scale = 1.0f);
 		Text();
-		~Text();
+
 			inline s8* GetText() { return const_cast<s8*>(buffer.c_str()); }
 			void SetText(std::string text);
 			inline void SetPos(AEVec2 Pos) { pos = Pos; }
