@@ -41,7 +41,8 @@ void Button::Update(void) {
 	AEVec2 Mouse = Utils::GetMousePos();
 	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckReleased(AEVK_LBUTTON))
 	{
-		callback();
+		if(callback)
+			callback();
 	}
 	Render();
 }

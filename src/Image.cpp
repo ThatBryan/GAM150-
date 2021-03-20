@@ -3,19 +3,19 @@
 #include <iostream>
 
 Image::Image(const AEGfxTexture* pTex, const f32 width, const f32 height, const f32 dir) : rotation{dir}, 
-width{width}, height{height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color(), transformMtx{NULL}, 
-left{ 0 , 0 }, right{ 0, 0 }, bottom{ 0, 0 }, top{ 0, 0 }
+width{width}, height{height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color(), transformMtx{NULL}
+//left{ 0 , 0 }, right{ 0, 0 }, bottom{ 0, 0 }, top{ 0, 0 }
 {
 	this->pTex = const_cast<AEGfxTexture*>(pTex);
 	pMesh = Mesh::Rect;
 }
 
 Image::Image() : rotation{0}, width{0}, height{0}, pTex{ nullptr }, 
-pMesh{ nullptr }, pos{ 0, 0 }, transformMtx{ NULL }, left{ 0, 0 }, right{ 0, 0 }, bottom{ 0, 0 }, top{ 0, 0 } {
+pMesh{ nullptr }, pos{ 0, 0 }, transformMtx{ NULL }{//, left{ 0, 0 }, right{ 0, 0 }, bottom{ 0, 0 }, top{ 0, 0 } {
 }
 
 void Image::Init(const char* pFile, const f32 Width, const f32 Height, const AEVec2 Pos,
-	const AEVec2 Left, const AEVec2 Right, const AEVec2 Bottom, const AEVec2 Top,
+	//const AEVec2 Left, const AEVec2 Right, const AEVec2 Bottom, const AEVec2 Top,
 	const f32 Rotation, AEGfxVertexList* Mesh){
 	pTex = AEGfxTextureLoad(pFile);
 	AE_ASSERT_MESG(pTex, "Failed to create texture!");
@@ -24,14 +24,14 @@ void Image::Init(const char* pFile, const f32 Width, const f32 Height, const AEV
 	height = Height;
 	pos = Pos;
 	rotation = Rotation;
-	left.x = Pos.x - Width / 2.0f;
-	left.y = Pos.y;
-	right.x = Pos.x + Width / 2.0f;
-	right.y = Pos.y;
-	bottom.x = Pos.x;
-	bottom.y = Pos.x - Height / 2.0f;
-	top.x = Pos.x;
-	top.y = Pos.x + Height / 2.0f;
+	//left.x = Pos.x - Width / 2.0f;
+	//left.y = Pos.y;
+	//right.x = Pos.x + Width / 2.0f;
+	//right.y = Pos.y;
+	//bottom.x = Pos.x;
+	//bottom.y = Pos.x - Height / 2.0f;
+	//top.x = Pos.x;
+	//top.y = Pos.x + Height / 2.0f;
 }
 
 void Image::SetMatrix(void)

@@ -40,7 +40,7 @@ void Tiles::CheckPlayerGoal(std::vector <Player>& Player)
 {
 	if (type == TileType::Goal)
 	{
-		AEVec2 GoalPoint = {image.pos.x, image.pos.y - image.height / 2.0f};
+		AEVec2 GoalPoint = {tile_topBB.pos.x, tile_topBB.pos.y - tile_topBB.height / 2.0f};
 		if (AETestPointToRect(&GoalPoint, &Player[0].player_bottomBB.pos, Player[0].player_bottomBB.width, Player[0].player_bottomBB.height))
 			Player[(player.size() - 1)].SetWin();
 		//if(Utils::ColliderAABB(player[0].feetBB.pos, player[0].feetBB.width, player[0].feetBB.height, image.pos, image.width, image.height))
