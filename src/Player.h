@@ -34,8 +34,8 @@ public:
 	Graphics::Rect playerBB {player_width, player_height};
 	Graphics::Rect player_bottomBB{player_width / 2.0f, 5.0f};
 	Graphics::Rect player_topBB{ player_width, 5.0f };
-	Graphics::Rect player_leftBB{ 5.0f,  player_height - 3 };
-	Graphics::Rect player_rightBB{ 5.0f, player_height - 3};
+	Graphics::Rect player_leftBB{ 6.0f,  player_height - 3 };
+	Graphics::Rect player_rightBB{ 6.0f, player_height - 3};
 	AEVec2 startingPos, vel;
 	void Update(void);
 	void Render(void);
