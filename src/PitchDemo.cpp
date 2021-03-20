@@ -50,6 +50,10 @@ void Demo::Init(void)
 	Tiles::AddTileRow(Demo_Tiles2, TileType::Grass, static_cast<int>(width - 2 - 1), TILE_WIDTH, TILE_HEIGHT, AEVec2{X, Y });
 	Tiles::AddTileRow(Demo_Tiles2, TileType::Goal, 2, TILE_WIDTH, TILE_HEIGHT, AEVec2{X, Y });
 	Tiles::AddTile(Demo_Tiles2, TileType::Goal, TILE_WIDTH, TILE_HEIGHT, AEVec2{0, 540.0f });
+
+
+	Tiles::AddTile(Demo_Tiles2, TileType::Grass, TILE_WIDTH / 2, TILE_HEIGHT / 2, AEVec2{200, 250.0f });
+	Tiles::AddTile(Demo_Tiles2, TileType::Special, TILE_WIDTH / 2, TILE_HEIGHT / 2, AEVec2{400, 250.0f });
 	Tiles::AddTileRow(Demo_Tiles3, TileType::Special, 1, TILE_WIDTH, TILE_HEIGHT, AEVec2{ X, Y + Y / 2 });
 	Tiles::AddTileRow(Demo_Tiles3, TileType::Grass, static_cast<int>(width - 1), TILE_WIDTH, TILE_HEIGHT, AEVec2{ X, Y + Y / 2 });
 
@@ -60,9 +64,9 @@ void Demo::Init(void)
 
 	AEVec2 DemoEnemyPos = Demo_Tiles[3].spawnPos;
 	AEVec2 DemoEnemyPos2 = Demo_Tiles[6].spawnPos;
-	AEVec2 DemoEnemyPos4 = Demo_Tiles2[4].spawnPos;
+	AEVec2 DemoEnemyPos4 = Demo_Tiles2[7].spawnPos;
 	AEVec2 DemoEnemyPos5 = Demo_Tiles2[5].spawnPos;
-	AEVec2 DemoEnemyPos6 = Demo_Tiles3[4].spawnPos;
+	AEVec2 DemoEnemyPos6 = Demo_Tiles3[6].spawnPos;
 	AEVec2 Offset = {0, -TILE_HEIGHT + 10.0f};
 
 	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2Add(DemoEnemyPos, Offset), enemy_width, enemy_height);
