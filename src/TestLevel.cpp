@@ -84,7 +84,14 @@ void MapUpdate()
 	if (AEInputCheckTriggered(AEVK_N))
 	{
 		Level += 1;
-		gamestateNext = GS_PROGRESS;
+		if (gamestateCurr == GS_PROGRESS)
+		{
+			gamestateNext = GS_TEST;
+		}
+		else if (gamestateCurr == GS_TEST)
+		{
+			gamestateNext = GS_PROGRESS;
+		}
 	}
 }
 
