@@ -69,6 +69,8 @@ void MapInit(void)
 
 void MapUpdate()
 {
+	if (!paused)
+		app_time += g_dt;
 	Utils::CheckDebugMode();
 	for (size_t i = 0; i < tilemap.size(); ++i)
 	{
@@ -78,12 +80,12 @@ void MapUpdate()
 	{
 		TestRestart();
 	}
-	//if (AEInputCheckTriggered(AEVK_N))
-	//{
-	//	Level = 2;
-	//	gamestateNext = GS_PROGRESS;
-	//}
 	UpdateManager();
+	if (AEInputCheckTriggered(AEVK_N))
+	{
+		Level = 2;
+		gamestateNext = GS_PROGRESS;
+	}
 }
 
 void MapRender()
