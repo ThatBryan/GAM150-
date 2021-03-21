@@ -28,10 +28,10 @@ public:
 		Graphics::Rect ColliderAABB;
 		// Abstraction
 		void DecreaseLifespan(void);
+		void Collapse(const Player& player);
 		void Collapse(void);
-		void Collapse(Player& player);
 		void CheckPos(void);
-		void CheckPlayerGoal(std::vector <Player>& player);
+		void CheckPlayerGoal(Player& player);
 		void CheckEnemyStatus(std::vector <Enemies> enemy);
 		void TileShake(void);
 
@@ -40,7 +40,7 @@ public:
 		Image image;
 		AEVec2 spawnPos;
 		void Update(void);
-		void Update(Player& player);
+		void Update(const Player& player);
 		void Render(void);
 
 		inline bool GetActive() { return active; }
@@ -60,7 +60,7 @@ public:
 		// Collapse the tile on its left and right if it is collapsible.
 		static void CollapseNext(std::vector <Tiles>& tiles);
 		// Handles the collision between the enemy and tiles, and enemy with player.
-		static void UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& player, std::vector <Enemies>& enemy);
+		static void UpdateManager(std::vector <Tiles>& tiles, Player& player, std::vector <Enemies>& enemy);
 };
 // Archieve
 //static void CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager);

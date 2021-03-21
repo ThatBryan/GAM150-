@@ -30,7 +30,7 @@ void Tiles::Collapse(void)
 	}
 }
 
-void Tiles::Collapse(Player& player)
+void Tiles::Collapse(const Player& player)
 {
 	if (type == TileType::Grass || type == TileType::Special)
 	{
@@ -40,7 +40,7 @@ void Tiles::Collapse(Player& player)
 		}
 	}
 	if (type == TileType::Special) {
-		if (AETestRectToRect(&player.feetBB.pos, player.feetBB.width, player.feetBB.height, &ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
+		if (Utils::ColliderAABB(player.feetBB.pos, player.feetBB.width, player.feetBB.height, ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
 			&& (AEInputCheckTriggered(AEVK_DOWN) || AEInputCheckTriggered(AEVK_S)))
 		{
 			isCollapsing = true;
@@ -48,13 +48,13 @@ void Tiles::Collapse(Player& player)
 	}
 }
 
-void Tiles::CheckPlayerGoal(std::vector <Player>& player)
+void Tiles::CheckPlayerGoal(Player& player)
 {
 	if (type == TileType::Goal)
 	{
 		static AEVec2 GoalPoint = {image.pos.x, image.pos.y - image.height / 2  - 1.0f};
-		if (AETestPointToRect(&GoalPoint, &player[0].sprite.pos, player[0].sprite.width, player[0].sprite.height))
-			player[(player.size() - 1)].SetWin();
+		if (AETestPointToRect(&GoalPoint, &player.sprite.pos, player.sprite.width, player.sprite.height))
+			player.SetWin();
 	}
 }
 
@@ -173,7 +173,7 @@ void Tiles::Update()
 
 }
 
-void Tiles::Update(Player& player)
+void Tiles::Update(const Player& player)
 {
 	CheckPos();
 	Collapse(player);
@@ -189,7 +189,7 @@ void Tiles::Render() {
 			ColliderAABB.Draw();
 	}
 }
-void Tiles::UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& player, std::vector <Enemies>& enemy)
+void Tiles::UpdateManager(std::vector <Tiles>& tiles, Player& player, std::vector <Enemies>& enemy)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
@@ -198,7 +198,7 @@ void Tiles::UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& play
 
 		tiles[i].CheckEnemyStatus(enemy);
 		tiles[i].CheckPlayerGoal(player);
-		tiles[i].Update();
+		tiles[i].Update(player);
 	}
 }
 

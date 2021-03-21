@@ -81,9 +81,10 @@ void MapUpdate()
 		TestRestart();
 	}
 	UpdateManager();
-	if (AEInputCheckTriggered(AEVK_N))
+	if (AEInputCheckReleased(AEVK_N))
 	{
 		Level += 1;
+
 		if (gamestateCurr == GS_PROGRESS)
 		{
 			gamestateNext = GS_TEST;
@@ -92,6 +93,7 @@ void MapUpdate()
 		{
 			gamestateNext = GS_PROGRESS;
 		}
+		//gamestateNext = GS_PROGRESS;
 	}
 }
 
@@ -133,6 +135,7 @@ void MapLoad()
 	Tiles::LoadTex();
 	Enemies::LoadTex();
 	Player::LoadTex();
+	AudioManager::loadAsset();
 }
 
 void MapUnload()
@@ -140,6 +143,7 @@ void MapUnload()
 	Tiles::Unload();
 	Enemies::Unload();
 	Player::Unload();
+	AudioManager::unloadAsset();
 	FreeMapData();
 
 	tilemap.clear();
@@ -163,7 +167,8 @@ void UpdateManager()
 {
 	if (!paused) {
 		Jumperman[0].Update();
-//		Tiles::UpdateManager(tilemap, Jumperman, enemies);
+		Player& ThePlayer = Jumperman.back();
+		Tiles::UpdateManager(tilemap, ThePlayer, enemies);
 		Tiles::CollapsingManager(tileManager);
 		Tiles::CheckPlayerGravity(tileManager, Jumperman);
 		Jumperman[0].GravityManager();

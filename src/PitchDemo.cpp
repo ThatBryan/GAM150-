@@ -189,9 +189,10 @@ void Demo::UpdateManager(void)
 {
 	if (!paused) {
 		player[0].Update();
-		Tiles::UpdateManager(Demo_Tiles, player, enemy);
-		Tiles::UpdateManager(Demo_Tiles2, player, enemy);
-		Tiles::UpdateManager(Demo_Tiles3, player, enemy);
+		Player& ThePlayer = player.back();
+		Tiles::UpdateManager(Demo_Tiles, ThePlayer, enemy);
+		Tiles::UpdateManager(Demo_Tiles2, ThePlayer, enemy);
+		Tiles::UpdateManager(Demo_Tiles3, ThePlayer, enemy);
 		Tiles::CheckPlayerGravity(TileManager, player);
 		player[0].GravityManager();
 		for (size_t i = 0; i < enemy.size(); i++)
