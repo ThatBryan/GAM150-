@@ -83,7 +83,7 @@ void MapUpdate()
 	UpdateManager();
 	if (AEInputCheckTriggered(AEVK_N))
 	{
-		Level = 2;
+		Level += 1;
 		gamestateNext = GS_PROGRESS;
 	}
 }
@@ -120,6 +120,8 @@ void MapLoad()
 			ImportMapDataFromFile("../Levels/Level3.txt");
 			break;
 		}
+		default:
+			gamestateNext = GS_MAINMENU;
 	}
 	Tiles::LoadTex();
 	Enemies::LoadTex();
