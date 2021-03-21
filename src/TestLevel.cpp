@@ -132,6 +132,11 @@ void MapUnload()
 	Enemies::Unload();
 	Player::Unload();
 	FreeMapData();
+
+	tilemap.clear();
+	enemies.clear();
+	Jumperman.clear();
+	tileManager.clear();
 }
 
 void TestRestart()
