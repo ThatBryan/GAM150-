@@ -66,7 +66,6 @@ void MapInit(void)
 		}
 	}
 	tileManager.push_back(&tilemap);
-	Overlay::Init();
 	UI::Init();
 }
 
@@ -75,9 +74,9 @@ void MapUpdate()
 	if (!paused)
 		app_time += g_dt;
 
-	if (AEInputCheckTriggered(AEVK_R))
+	if (AEInputCheckReleased(AEVK_R))
 	{
-		TestRestart();
+		gamestateNext = GS_RESTART;
 	}
 	UpdateManager();
 }
@@ -126,6 +125,7 @@ void MapLoad()
 	AudioManager::loadAsset();
 	Player::LoadTex();
 	Overlay::Load();
+	Overlay::Init();
 }
 
 void MapUnload()
@@ -136,23 +136,21 @@ void MapUnload()
 	Particles::Unload();
 	AudioManager::unloadAsset();
 	FreeMapData();
-	Jumperman.sprite.Free();
-
-	tilemap.clear();
-	enemies.clear();
-	tileManager.clear();
 	Overlay::Unload();
-	UI::Unload();
 }
 
 void TestRestart()
 {
 	Tiles::Reset(tilemap);
 	Enemies::Reset(enemies);
-
+	tilemap.clear();
+	enemies.clear();
+	tileManager.clear();
 	Jumperman.Reset();
-	paused = false;
+	Jumperman.sprite.Free();
 	app_time = 0;
+	paused = false;
+	UI::Unload();
 }
 
 void UpdateManager()

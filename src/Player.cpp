@@ -57,6 +57,7 @@ void Player::Reset(void)
 	jumpvel = player_jumpvel;
 	hp.current = hp.max;
 	sprite.rotation = 0;
+	direction = MovementState::Right;
 }
 
 void Player::Update() {
@@ -117,26 +118,28 @@ void Player::Update_Position(void)
 		jumpvel = 5.0f;
 	}
 
+	if (AEInputCheckTriggered(AEVK_D) && direction != MovementState::Right) {
+		sprite.ReflectAboutYAxis();
+		direction = MovementState::Right;
+	}
+
+	if (AEInputCheckTriggered(AEVK_A) && direction != MovementState::Left) {
+		std::cout << "dafaq\n";
+		sprite.ReflectAboutYAxis();
+		direction = MovementState::Left;
+	}
+
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
 	{
 		if (sprite.pos.x + sprite.width / 2 <= maxX)
 			sprite.pos.x += player_speed * g_dt;
 
-		if (direction != MovementState::Right) {
-			sprite.ReflectAboutYAxis();
-			direction = MovementState::Right;
-		}
 	}
 
 	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
 	{
 		if (sprite.pos.x >= 0 - sprite.width / 2.0f)
 			sprite.pos.x -= player_speed * g_dt;
-
-		if (direction != MovementState::Left) {
-			sprite.ReflectAboutYAxis();
-			direction = MovementState::Left;
-		}
 
 	}
 
