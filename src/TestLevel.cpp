@@ -68,6 +68,7 @@ void MapInit(void)
 	UI::Init();
 }
 
+const int maxLevel{ 9 };
 void MapUpdate()
 {
 	if (!paused)
@@ -80,7 +81,8 @@ void MapUpdate()
 	UpdateManager();
 	if (AEInputCheckReleased(AEVK_N))
 	{
-		Level += 1;
+		if(Level <= maxLevel - 1)
+			Level += 1;
 
 		if (gamestateCurr == GS_PROGRESS)
 		{
