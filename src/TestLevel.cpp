@@ -14,8 +14,8 @@
 
 std::vector<Tiles> tilemap;
 std::vector<Enemies> enemies;
-Player Jumperman;
 std::vector <std::vector <Tiles>*> tileManager;
+Player Jumperman;
 
 
 void MapInit(void)

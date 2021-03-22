@@ -182,7 +182,6 @@ void Tiles::Update()
 	DecreaseLifespan();
 	if(isCollapsing)
 		TileShake();
-
 }
 
 void Tiles::Update(Player& ThePlayer)
