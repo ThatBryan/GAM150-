@@ -7,19 +7,19 @@
 #include "Utilities.h"
 #include "Player.h"
 #include "Button.h"
-
+#include "Overlay.h"
 #include "GameStateManager.h"
+#include "Particles.h"
 
 std::vector<Tiles> tilemap;
 std::vector<Enemies> enemies;
-std::vector<Player> Jumperman;
+Player Jumperman;
 std::vector <std::vector <Tiles>*> tileManager;
 
 int Level{ 0 };
 
 void MapInit(void)
 {
-	AEVec2 Pos;
 	f32 grid_height{ static_cast<f32>(AEGetWindowHeight() / Map_Height) }, grid_width{ static_cast<f32>(AEGetWindowWidth() / Map_Width) };
 	for (int i = 0; i < Map_Height; ++i)
 	{
@@ -65,18 +65,16 @@ void MapInit(void)
 		}
 	}
 	tileManager.push_back(&tilemap);
+	Overlay::Init();
 	UI::Init();
 }
 
+const int maxLevel{ 9 };
 void MapUpdate()
 {
 	if (!paused)
 		app_time += g_dt;
-	Utils::CheckDebugMode();
-	for (size_t i = 0; i < tilemap.size(); ++i)
-	{
-		tilemap[i].Update(Jumperman[0]); // call overloaded update function which takes a reference to the player.
-	}
+
 	if (AEInputCheckTriggered(AEVK_R))
 	{
 		TestRestart();
@@ -84,7 +82,8 @@ void MapUpdate()
 	UpdateManager();
 	if (AEInputCheckReleased(AEVK_N))
 	{
-		Level += 1;
+		if(Level <= maxLevel - 1)
+			Level += 1;
 
 		if (gamestateCurr == GS_PROGRESS)
 		{
@@ -107,7 +106,12 @@ void MapRender()
 	{
 		enemies[j].Draw();
 	}
-	Jumperman[0].Render();
+	//Jumperman[0].Render();
+	Jumperman.Render();
+	Overlay::Render(Jumperman);
+	UI::Draw();
+	UI::Update();
+	Particles::Render();
 }
 
 void MapLoad()
@@ -134,8 +138,9 @@ void MapLoad()
 	}
 	Tiles::LoadTex();
 	Enemies::LoadTex();
-	Player::LoadTex();
 	AudioManager::loadAsset();
+	Player::LoadTex();
+	Overlay::Load();
 }
 
 void MapUnload()
@@ -143,13 +148,15 @@ void MapUnload()
 	Tiles::Unload();
 	Enemies::Unload();
 	Player::Unload();
+	Particles::Unload();
+	Jumperman.sprite.Free();
 	AudioManager::unloadAsset();
 	FreeMapData();
 
 	tilemap.clear();
 	enemies.clear();
-	Jumperman.clear();
 	tileManager.clear();
+	Overlay::Unload();
 	UI::Unload();
 }
 
@@ -158,7 +165,7 @@ void TestRestart()
 	Tiles::Reset(tilemap);
 	Enemies::Reset(enemies);
 
-	Jumperman[0].Reset();
+	Jumperman.Reset();
 	paused = false;
 	app_time = 0;
 }
@@ -166,19 +173,18 @@ void TestRestart()
 void UpdateManager()
 {
 	if (!paused) {
-		Jumperman[0].Update();
-		Player& ThePlayer = Jumperman.back();
-		Tiles::UpdateManager(tilemap, ThePlayer, enemies);
+		Jumperman.Update();
+		Tiles::UpdateManager(tilemap, Jumperman, enemies);
 		Tiles::CollapsingManager(tileManager);
-		Tiles::CheckPlayerGravity(tileManager, ThePlayer);
-		Tiles::CheckPlayerCollision(tileManager, ThePlayer);
-		Jumperman[0].GravityManager();
+		Tiles::CheckPlayerGravity(tileManager, Jumperman);
+		Tiles::CheckPlayerCollision(tileManager, Jumperman);
+		Jumperman.GravityManager();
 		for (size_t i = 0; i < enemies.size(); i++)
 		{
 			enemies[i].Update();
 			enemies[i].GravityCheck(tileManager);
 		}
-		Jumperman[0].CheckEnemyCollision(enemies);
-		/*Tiles::CollapseNext(tilemap);*/
+		Jumperman.CheckEnemyCollision(enemies);
+		Particles::Update();
 	}
 }

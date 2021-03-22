@@ -6,8 +6,11 @@
 #include "Utilities.h"
 #include <string>
 #include <vector>
+#include <array>
 #include "Button.h"
 #include "Image.h"
+#include "MainMenu.h"
+#include "Player.h"
 
 char strBuffer[100];
 char strBuffer1[100];
@@ -16,7 +19,9 @@ Graphics::Text FPS_Display(strBuffer, 0.5f);
 Graphics::Text LevelDisplay(strBuffer1, 0.5f);
 Graphics::Text TimerDisplay(strBuffer2, 0.5f);
 
-std::vector <Button> buttonTest;
+static std::vector <Button> buttonTest;
+
+extern Player Jumperman;
 Image lives;
 
 void UI::Init() {
@@ -45,11 +50,14 @@ void UI::Update() {
 	LevelDisplay.SetText(strBuffer1);
 	TimerDisplay.SetText(strBuffer2);
 
+	Utils::CheckDebugMode();
+	Utils::CheckFullScreenInput();
+
 	if (!paused)
 		for (size_t i = 0; i < pauseButtonIdx; ++i) {
 			buttonTest[i].Update();
 		}
-	else if (paused) {
+	else if (paused && !Jumperman.GetLose() && !Jumperman.GetWinStatus()) {
 		for (size_t i = pauseButtonIdx; i < buttonTest.size(); ++i) {
 			buttonTest[i].Update();
 		}
@@ -77,8 +85,8 @@ void UI::Buttons_Init() {
 	}
 
 	buttonTest[0].Set_Position(AEVec2{ Midpt.x - buttonTest[0].GetWidth(), buttonTest[0].GetHeight() / 2.0f });
-	buttonTest[0].Set_Callback(Test_Callback);
 	buttonTest[0].Set_Text("Pause");
+	buttonTest[0].Set_Callback(Test_Callback);
 
 	buttonTest[1].Set_Position(AEVec2{ Midpt.x + buttonTest[0].GetWidth(), buttonTest[1].GetHeight() / 2.0f });
 	buttonTest[1].Set_Callback(Mute_BGM);

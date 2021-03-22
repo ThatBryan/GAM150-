@@ -18,6 +18,7 @@ tile_rightBB{ 10 , height - tile_aabb_rect_offset_x }, tile_leftBB{ 10 , height 
 	tile_leftBB.color.Set(Color{ 0, 255.0f, 0, 205.0f }); // green
 	tile_rightBB.color.Set(Color{ 0, 0, 255.0f, 255.0f }); // blue
 }
+
 void Tiles::Collapse(void)
 {
 	if (type == TileType::Grass || type == TileType::Special)
@@ -36,7 +37,7 @@ void Tiles::Collapse(void)
 	}
 }
 
-void Tiles::Collapse(const Player& player)
+void Tiles::Collapse(const Player& ThePlayer)
 {
 	if (type == TileType::Grass || type == TileType::Special)
 	{
@@ -46,7 +47,8 @@ void Tiles::Collapse(const Player& player)
 		}
 	}
 	if (type == TileType::Special) {
-		if (Utils::ColliderAABB(player.bottomBB.pos, player.bottomBB.width, player.bottomBB.height, ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
+		if (Utils::ColliderAABB(ThePlayer.bottomBB.pos, ThePlayer.bottomBB.width, ThePlayer.bottomBB.height,
+			ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
 			&& (AEInputCheckTriggered(AEVK_DOWN) || AEInputCheckTriggered(AEVK_S)))
 		{
 			isCollapsing = true;
@@ -54,13 +56,14 @@ void Tiles::Collapse(const Player& player)
 	}
 }
 
-void Tiles::CheckPlayerGoal(Player& player)
+void Tiles::CheckPlayerGoal(Player& ThePlayer)
 {
 	if (type == TileType::Goal)
 	{
 		static AEVec2 GoalPoint = {image.pos.x, image.pos.y - image.height / 2  - 1.0f};
-		if (AETestPointToRect(&GoalPoint, &player.sprite.pos, player.sprite.width, player.sprite.height))
-			player.SetWin();
+		if (AETestPointToRect(&GoalPoint, &ThePlayer.bottomBB.pos, ThePlayer.bottomBB.width, ThePlayer.bottomBB.height)) {
+			ThePlayer.SetWin();
+		}
 	}
 }
 
@@ -185,13 +188,14 @@ void Tiles::Update()
 
 }
 
-void Tiles::Update(const Player& player)
+void Tiles::Update(Player& ThePlayer)
 {
 	CheckPos();
-	Collapse(player);
+	Collapse(ThePlayer);
 	DecreaseLifespan();
 	if (isCollapsing)
 		TileShake();
+	CheckPlayerGoal(ThePlayer);
 }
 
 void Tiles::Render() {
@@ -208,7 +212,7 @@ void Tiles::Render() {
 			
 	}
 }
-void Tiles::UpdateManager(std::vector <Tiles>& tiles, Player& player, std::vector <Enemies>& enemy)
+void Tiles::UpdateManager(std::vector <Tiles>& tiles, Player& ThePlayer, std::vector <Enemies>& enemy)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
@@ -216,8 +220,8 @@ void Tiles::UpdateManager(std::vector <Tiles>& tiles, Player& player, std::vecto
 			continue;
 
 		tiles[i].CheckEnemyStatus(enemy);
-		tiles[i].CheckPlayerGoal(player);
-		tiles[i].Update(player);
+		tiles[i].CheckPlayerGoal(ThePlayer);
+		tiles[i].Update(ThePlayer);
 	}
 }
 
@@ -261,7 +265,7 @@ void Tiles::TileShake(void) {
 }
 
 void Tiles::CollapsingManager(TileMgr TileManager) {
-static const float allowance{ 3.0f };
+static const float allowance{ 4.0f };
 	for (size_t i = 0; i < TileManager.size(); ++i) {
 		for (size_t j = 0; j < TileManager[i]->size(); ++j) {
 

@@ -38,16 +38,15 @@ public:
 		void CheckPos(void);
 		void CheckPlayerGoal(Player& player);
 		void CheckEnemyStatus(std::vector <Enemies>& enemy);
+		void Update(Player& player);
 		
 		void TileShake(void);
-
 
 		public:
 		Tiles(AEGfxTexture*, const f32 width, const f32 height);
 		Image image;
 		AEVec2 spawnPos;
 		void Update(void);
-		void Update(const Player& player);
 		void Render(void);
 
 		inline bool GetActive() const { return active; }

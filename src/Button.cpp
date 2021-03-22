@@ -6,7 +6,7 @@
 #include "Utilities.h"
 #include "Player.h"
 
-extern std::vector <Player> player;
+extern Player Jumperman;
 
 Button::Button(ButtonType Type, const f32 width, const f32 height, const f32 scale) : button(width, height), text(std::string(), scale)
 , pos{ 0,0 }, callback{ nullptr }, pTex{ nullptr }, type{ Type }, ID{ 0 } {
@@ -69,6 +69,7 @@ ButtonState Button::Check_State() {
 }
 
 void Test_Callback() {
-	if (!player[0].GetLose() && !player[0].GetWinStatus())
-	paused = !paused; 
+	if (!Jumperman.GetLose() && !Jumperman.GetWinStatus()) {
+		paused = !paused; 
+	}
 }
