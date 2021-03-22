@@ -12,7 +12,8 @@
 
 std::vector<Tiles> tilemap;
 std::vector<Enemies> enemies;
-std::vector<Player> Jumperman;
+//std::vector<Player> Jumperman;
+Player Jumperman;
 std::vector <std::vector <Tiles>*> tileManager;
 
 int Level{ 0 };
@@ -75,7 +76,8 @@ void MapUpdate()
 	Utils::CheckDebugMode();
 	for (size_t i = 0; i < tilemap.size(); ++i)
 	{
-		tilemap[i].Update(Jumperman[0]); // call overloaded update function which takes a reference to the player.
+		// call overloaded update function which takes a reference to the player.
+		tilemap[i].Update(Jumperman);
 	}
 	if (AEInputCheckTriggered(AEVK_R))
 	{
@@ -94,7 +96,6 @@ void MapUpdate()
 		{
 			gamestateNext = GS_PROGRESS;
 		}
-		//gamestateNext = GS_PROGRESS;
 	}
 }
 
@@ -108,7 +109,8 @@ void MapRender()
 	{
 		enemies[j].Draw();
 	}
-	Jumperman[0].Render();
+	//Jumperman[0].Render();
+	Jumperman.Render();
 }
 
 void MapLoad()
@@ -135,8 +137,8 @@ void MapLoad()
 	}
 	Tiles::LoadTex();
 	Enemies::LoadTex();
-	Player::LoadTex();
 	AudioManager::loadAsset();
+	Player::LoadTex();
 }
 
 void MapUnload()
@@ -144,12 +146,12 @@ void MapUnload()
 	Tiles::Unload();
 	Enemies::Unload();
 	Player::Unload();
+	Jumperman.sprite.Free();
 	AudioManager::unloadAsset();
 	FreeMapData();
 
 	tilemap.clear();
 	enemies.clear();
-	Jumperman.clear();
 	tileManager.clear();
 	UI::Unload();
 }
@@ -159,7 +161,7 @@ void TestRestart()
 	Tiles::Reset(tilemap);
 	Enemies::Reset(enemies);
 
-	Jumperman[0].Reset();
+	Jumperman.Reset();
 	paused = false;
 	app_time = 0;
 }
@@ -167,19 +169,17 @@ void TestRestart()
 void UpdateManager()
 {
 	if (!paused) {
-		Jumperman[0].Update();
-		Player& ThePlayer = Jumperman.back();
-		Tiles::UpdateManager(tilemap, ThePlayer, enemies);
+		Jumperman.Update();
+		Tiles::UpdateManager(tilemap, Jumperman, enemies);
 		Tiles::CollapsingManager(tileManager);
-		Tiles::CheckPlayerGravity(tileManager, ThePlayer);
-		Tiles::CheckPlayerCollision(tileManager, ThePlayer);
-		Jumperman[0].GravityManager();
+		Tiles::CheckPlayerGravity(tileManager, Jumperman);
+		Tiles::CheckPlayerCollision(tileManager, Jumperman);
+		Jumperman.GravityManager();
 		for (size_t i = 0; i < enemies.size(); i++)
 		{
 			enemies[i].Update();
 			enemies[i].GravityCheck(tileManager);
 		}
-		Jumperman[0].CheckEnemyCollision(enemies);
-		/*Tiles::CollapseNext(tilemap);*/
+		Jumperman.CheckEnemyCollision(enemies);
 	}
 }

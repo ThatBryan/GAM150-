@@ -31,6 +31,21 @@ hp(), direction{MovementState::Right}
 	hp.current = player_hp_max;
 }
 
+Player::Player() : lose{ false }, active{ true }, gravity{ false }, jump{ false },
+win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel }, 
+hp(), direction{ MovementState::Right } {
+
+	playerBB.color.Set(Color{ 0, 0, 0, 255.0f });
+	bottomBB.color.Set(Color{ 255.0f, 255.0f, 0, 255.0f }); // yellow
+	player_topBB.color.Set(Color{ 255.0f, 0, 0, 255.0f }); // red
+	player_leftBB.color.Set(Color{ 0, 255.0f, 0, 255.0f }); // green
+	player_rightBB.color.Set(Color{ 0, 0, 255.0f, 255.0f }); // blue
+	maxY = static_cast<f32>(AEGetWindowHeight());
+	maxX = static_cast<f32>(AEGetWindowWidth());
+	hp.max = player_hp_max;
+	hp.current = player_hp_max;
+}
+
 void Player::Reset(void)
 {
 	jump = false;
@@ -70,8 +85,8 @@ void Player::LoadTex(void) {
 }
 
 void Player::Unload(void) {
-	if(playerTex)
-		AEGfxTextureUnload(playerTex);
+	AEGfxTextureUnload(playerTex);
+
 }
 void Player::Update_Position(void)
 {
@@ -215,4 +230,13 @@ void Player::CreatePlayer(std::vector <Player>& player, const AEVec2 pos, const 
 	player[player.size() - 1].sprite.pos = pos;
 	player[player.size() - 1].playerBB.width = width;
 	player[player.size() - 1].playerBB.height = height;
+}
+
+void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, const f32 height)
+{
+	player.sprite.Init(FP::PlayerSprite, width, height, pos);
+	player.startingPos = pos;
+	player.sprite.pos = pos;
+	player.playerBB.width = width;
+	player.playerBB.height = height;
 }

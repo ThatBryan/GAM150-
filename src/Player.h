@@ -29,6 +29,7 @@ public:
 	MovementState direction;
 	static AEGfxTexture* playerTex;
 	Player(AEGfxTexture* ,const f32 width, const f32 height);
+	Player();
 	Image sprite;
 	bool active, jump, gravity;
 	Graphics::Rect playerBB {player_width, player_height};
@@ -53,6 +54,7 @@ public:
 	static void Unload(void);
 
 	static void CreatePlayer(std::vector <Player>& player, const AEVec2 pos, const f32 width, const f32 height);
+	static void CreatePlayer(Player& player, const AEVec2 pos, const f32 width, const f32 height);
 
 	friend void UI::DisplayLife(short liveCount);
 };
