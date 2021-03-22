@@ -18,4 +18,5 @@ public:
 
 	// Saves the key to a file before exiting the program.
 	void SaveKeyToFile(void);
+	static void SetNextLevel();
 };

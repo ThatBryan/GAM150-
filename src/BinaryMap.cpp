@@ -167,17 +167,17 @@ void FreeMapData(void)
 	Add spaces and end lines at convenient places
  */
  /******************************************************************************/
-void PrintRetrievedInformation(void)
-{
-	// Use of double for loop an array index address syntax to print
-	// Both MapData and BinaryCollision 
-	for (int i = 0; i < Map_Height; ++i) {
-		for (int j = 0; j < Map_Width; ++j) {
-			printf("%d ", MapData[i][j]);
-		}
-		printf("\n");
-	}
-}
+//void PrintRetrievedInformation(void)
+//{
+//	// Use of double for loop an array index address syntax to print
+//	// Both MapData and BinaryCollision 
+//	for (int i = 0; i < Map_Height; ++i) {
+//		for (int j = 0; j < Map_Width; ++j) {
+//			printf("%d ", MapData[i][j]);
+//		}
+//		printf("\n");
+//	}
+//}
 
 /******************************************************************************/
 /*!
@@ -186,13 +186,13 @@ void PrintRetrievedInformation(void)
 	are not out of bounds (in that case return 0)
  */
  /******************************************************************************/
-int GetCellValue(int X, int Y)
-{
-	// Check if out of bound
-	if (X < 0 || Y < 0 || X >= Map_Width || Y >= Map_Height)
-		return 0;
-	return BinaryCollision[Y][X];
-}
+//int GetCellValue(int X, int Y)
+//{
+//	// Check if out of bound
+//	if (X < 0 || Y < 0 || X >= Map_Width || Y >= Map_Height)
+//		return 0;
+//	return BinaryCollision[Y][X];
+//}
 
 /******************************************************************************/
 /*!
@@ -204,11 +204,11 @@ int GetCellValue(int X, int Y)
 	or height)
  */
  /******************************************************************************/
-void SnapToCell(float* Coordinate)
-{
-	// Floor the integer and add 0.5f to displace to middle
-	*Coordinate = (int)(*Coordinate) + 0.5f;
-}
+//void SnapToCell(float* Coordinate)
+//{
+//	// Floor the integer and add 0.5f to displace to middle
+//	*Coordinate = (int)(*Coordinate) + 0.5f;
+//}
 
 /******************************************************************************/
 /*!
@@ -244,62 +244,62 @@ void SnapToCell(float* Coordinate)
 	y2 = PosY - scaleY/4	To go down 1/4 of the height
  */
  /******************************************************************************/
-int CheckInstanceBinaryMapCollision(float PosX, float PosY,
-	float scaleX, float scaleY)
-{	// Error checking for provided Pos
-	if ((int)PosX > Map_Width || (int)PosX < 0 || (int)PosY >= Map_Height || (int)PosY < 0)
-	{
-		printf("\nPosition %.2f %.2f provided is invalid! Flag '-1' will be returned\n\n", PosX, PosY);
-		return -1;
-	}
-	//	1 1 1 1 1 1 1
-	int Flag = 0;
-	// RHS Hotspot
-	float RHSx = PosX + scaleX / 2; // 1.
-	float RHSy1 = PosY + scaleY / 4; // Top // 1.95
-	float RHSy2 = PosY - scaleY / 4; // Bot // 1.7 - 2.5 = 1.45
-
-
-	// LHS Hotspot
-	float LHSx = PosX - scaleX / 2; // 3.4 - .5 (int) = 2..
-	float LHSy1 = PosY + scaleY / 4; // Top
-	float LHSy2 = PosY - scaleY / 4; // Bot
-
-
-	// Top Hotspot
-	float Topx1 = PosX - scaleX / 4; // L 3.75
-	float Topx2 = PosX + scaleX / 4; // R 4.24
-	float Topy = PosY + scaleY / 2;	 // 2.2
-
-
-	// Bottom Hotspot
-	float Botx1 = PosX - scaleX / 4; // L
-	float Botx2 = PosX + scaleX / 4; // R
-	float Boty = PosY - scaleY / 2;
-
-	if ((int)LHSy2 <= Map_Height && (int)LHSx < Map_Width &&
-		BinaryCollision[(int)LHSy1][(int)LHSx] == 1 ||
-		BinaryCollision[(int)LHSy2][(int)LHSx] == 1) {
-		Flag = Flag | COLLISION_LEFT;
-	}
-	if ((int)RHSy2 <= Map_Height && (int)RHSx < Map_Width &&
-		BinaryCollision[(int)RHSy1][(int)RHSx] == 1 ||
-		BinaryCollision[(int)RHSy2][(int)RHSx] == 1) {
-		Flag = Flag | COLLISION_RIGHT;
-	}
-
-	if ((int)Topy <= Map_Height && (int)Topx2 <= Map_Width &&
-		BinaryCollision[(int)Topy][(int)Topx1] == 1 ||
-		BinaryCollision[(int)Topy][(int)Topx2] == 1) {
-		Flag = Flag | COLLISION_TOP;
-	}
-	if ((int)Boty <= Map_Height && (int)Botx2 <= Map_Width &&
-		BinaryCollision[(int)Boty][(int)Botx1] == 1 ||
-		BinaryCollision[(int)Boty][(int)Botx2] == 1) {
-		Flag = Flag | COLLISION_BOTTOM;
-	}
-	return Flag;
-}
+//int CheckInstanceBinaryMapCollision(float PosX, float PosY,
+//	float scaleX, float scaleY)
+//{	// Error checking for provided Pos
+//	if ((int)PosX > Map_Width || (int)PosX < 0 || (int)PosY >= Map_Height || (int)PosY < 0)
+//	{
+//		printf("\nPosition %.2f %.2f provided is invalid! Flag '-1' will be returned\n\n", PosX, PosY);
+//		return -1;
+//	}
+//	//	1 1 1 1 1 1 1
+//	int Flag = 0;
+//	// RHS Hotspot
+//	float RHSx = PosX + scaleX / 2; // 1.
+//	float RHSy1 = PosY + scaleY / 4; // Top // 1.95
+//	float RHSy2 = PosY - scaleY / 4; // Bot // 1.7 - 2.5 = 1.45
+//
+//
+//	// LHS Hotspot
+//	float LHSx = PosX - scaleX / 2; // 3.4 - .5 (int) = 2..
+//	float LHSy1 = PosY + scaleY / 4; // Top
+//	float LHSy2 = PosY - scaleY / 4; // Bot
+//
+//
+//	// Top Hotspot
+//	float Topx1 = PosX - scaleX / 4; // L 3.75
+//	float Topx2 = PosX + scaleX / 4; // R 4.24
+//	float Topy = PosY + scaleY / 2;	 // 2.2
+//
+//
+//	// Bottom Hotspot
+//	float Botx1 = PosX - scaleX / 4; // L
+//	float Botx2 = PosX + scaleX / 4; // R
+//	float Boty = PosY - scaleY / 2;
+//
+//	if ((int)LHSy2 <= Map_Height && (int)LHSx < Map_Width &&
+//		BinaryCollision[(int)LHSy1][(int)LHSx] == 1 ||
+//		BinaryCollision[(int)LHSy2][(int)LHSx] == 1) {
+//		Flag = Flag | COLLISION_LEFT;
+//	}
+//	if ((int)RHSy2 <= Map_Height && (int)RHSx < Map_Width &&
+//		BinaryCollision[(int)RHSy1][(int)RHSx] == 1 ||
+//		BinaryCollision[(int)RHSy2][(int)RHSx] == 1) {
+//		Flag = Flag | COLLISION_RIGHT;
+//	}
+//
+//	if ((int)Topy <= Map_Height && (int)Topx2 <= Map_Width &&
+//		BinaryCollision[(int)Topy][(int)Topx1] == 1 ||
+//		BinaryCollision[(int)Topy][(int)Topx2] == 1) {
+//		Flag = Flag | COLLISION_TOP;
+//	}
+//	if ((int)Boty <= Map_Height && (int)Botx2 <= Map_Width &&
+//		BinaryCollision[(int)Boty][(int)Botx1] == 1 ||
+//		BinaryCollision[(int)Boty][(int)Botx2] == 1) {
+//		Flag = Flag | COLLISION_BOTTOM;
+//	}
+//	return Flag;
+//}
 
 
 

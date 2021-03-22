@@ -10,13 +10,13 @@
 #include "Overlay.h"
 #include "GameStateManager.h"
 #include "Particles.h"
+#include <iostream>
 
 std::vector<Tiles> tilemap;
 std::vector<Enemies> enemies;
-Player Jumperman;
 std::vector <std::vector <Tiles>*> tileManager;
+Player Jumperman;
 
-int Level{ 0 };
 
 void MapInit(void)
 {
@@ -65,35 +65,19 @@ void MapInit(void)
 		}
 	}
 	tileManager.push_back(&tilemap);
-	Overlay::Init();
 	UI::Init();
 }
 
-const int maxLevel{ 9 };
 void MapUpdate()
 {
 	if (!paused)
 		app_time += g_dt;
 
-	if (AEInputCheckTriggered(AEVK_R))
+	if (AEInputCheckReleased(AEVK_R))
 	{
-		TestRestart();
+		gamestateNext = GS_RESTART;
 	}
 	UpdateManager();
-	if (AEInputCheckReleased(AEVK_N))
-	{
-		if(Level <= maxLevel - 1)
-			Level += 1;
-
-		if (gamestateCurr == GS_PROGRESS)
-		{
-			gamestateNext = GS_TEST;
-		}
-		else if (gamestateCurr == GS_TEST)
-		{
-			gamestateNext = GS_PROGRESS;
-		}
-	}
 }
 
 void MapRender()
@@ -106,7 +90,6 @@ void MapRender()
 	{
 		enemies[j].Draw();
 	}
-	//Jumperman[0].Render();
 	Jumperman.Render();
 	Overlay::Render(Jumperman);
 	UI::Draw();
@@ -141,6 +124,7 @@ void MapLoad()
 	AudioManager::loadAsset();
 	Player::LoadTex();
 	Overlay::Load();
+	Overlay::Init();
 }
 
 void MapUnload()
@@ -149,30 +133,28 @@ void MapUnload()
 	Enemies::Unload();
 	Player::Unload();
 	Particles::Unload();
-	Jumperman.sprite.Free();
 	AudioManager::unloadAsset();
 	FreeMapData();
-
-	tilemap.clear();
-	enemies.clear();
-	tileManager.clear();
 	Overlay::Unload();
-	UI::Unload();
 }
 
 void TestRestart()
 {
 	Tiles::Reset(tilemap);
 	Enemies::Reset(enemies);
-
+	tilemap.clear();
+	enemies.clear();
+	tileManager.clear();
 	Jumperman.Reset();
-	paused = false;
+	Jumperman.sprite.Free();
 	app_time = 0;
+	paused = false;
+	UI::Unload();
 }
 
 void UpdateManager()
 {
-	if (!paused) {
+	if (!paused && !Jumperman.GetLoseStatus() && !Jumperman.GetWinStatus()) {
 		Jumperman.Update();
 		Tiles::UpdateManager(tilemap, Jumperman, enemies);
 		Tiles::CollapsingManager(tileManager);
@@ -185,6 +167,6 @@ void UpdateManager()
 			enemies[i].GravityCheck(tileManager);
 		}
 		Jumperman.CheckEnemyCollision(enemies);
-		Particles::Update();
 	}
+	Particles::Update();
 }

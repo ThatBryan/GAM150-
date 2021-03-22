@@ -1,7 +1,6 @@
 #include "Utilities.h"
 #include "GameStateManager.h"
 #include "Constants.h"
-
 #include <iostream>
 #include <fstream>
 
@@ -64,7 +63,7 @@ AEVec2 Utils::GetRandomPos(void)
 	return AEVec2{ Utils::RandomRangeFloat(0, Width), Utils::RandomRangeFloat(0, Height)};
 }
 
-AEVec2 Utils::GetRandomVel(void)
+AEVec2 Utils::GetRandomVecVel(void)
 {
 	AEVec2 Vel{ Utils::RandomRangeFloat(-1.0f, 1.0f), Utils::RandomRangeFloat(-1.0f, 1.0f) };
 	AEVec2Normalize(&Vel, &Vel);
@@ -97,6 +96,7 @@ void Utils::RestartLevel(void)
 {
 	gamestateNext = GS_RESTART;
 }
+
 
 bool Utils::ColliderAABB(AEVec2 A, f32 A_width, f32 A_height, AEVec2 B, f32 B_width, f32 B_height) {
 	A_width = fabsf(A_width);

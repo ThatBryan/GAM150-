@@ -69,7 +69,7 @@ ButtonState Button::Check_State() {
 }
 
 void Test_Callback() {
-	if (!Jumperman.GetLose() && !Jumperman.GetWinStatus()) {
+	if (!Jumperman.GetLoseStatus() && !Jumperman.GetWinStatus()) {
 		paused = !paused; 
 	}
 }

@@ -31,7 +31,6 @@ public:
 		Graphics::Rect tile_leftBB;
 		Graphics::Rect tile_rightBB;
 
-		// Abstraction
 		void DecreaseLifespan(void);
 		void Collapse(const Player& player);
 		void Collapse(void);

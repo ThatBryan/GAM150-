@@ -7,6 +7,8 @@
 #include <vector>
 #include "MainMenu.h"
 #include "AEEngine.h"
+#include "LevelSystem.h"
+#include "Particles.h"
 
 enum { Pause = 0, Victory, Defeat, MAX_IMAGE };
 
@@ -30,10 +32,14 @@ void Overlay::Init()
 
 	buttons[0].Set_Callback(Utils::ReturnToMenu);
 	buttons[0].Set_Text("Menu");
+
+
 	buttons[1].Set_Text("Next Level");
-	buttons[1].Set_Callback(MainMenu::placeholder);
+	buttons[1].Set_Callback(LevelSystem::SetNextLevel);
+	
 	buttons[2].Set_Callback(Utils::ReturnToMenu);
 	buttons[2].Set_Text("Menu");
+	
 	buttons[3].Set_Text("Retry");
 	buttons[3].Set_Callback(Utils::RestartLevel);
 
@@ -65,7 +71,7 @@ void Overlay::Render(Player& player)
 		text.SetText(const_cast<s8*>("PAUSED"));
 		text.Draw_Wrapped(text.pos);
 	}
-	if (player.GetLose())
+	if (player.GetLoseStatus())
 	{
 		paused = true;
 		Images[Defeat].Draw_Texture(150.0f);
@@ -83,6 +89,17 @@ void Overlay::Render(Player& player)
 		text.Draw_Wrapped(text.pos);
 		for (int i = 0; i < 2; ++i) {
 			buttons[i].Update();
+		}
+		const int particleCount{ 50 };
+		static float spawnTimer{0.0f};
+		spawnTimer -= g_dt;
+		if (spawnTimer <= 0) {
+			for (int i = 0; i < particleCount; ++i) {
+				AEVec2 Emitter = { Utils::RandomRangeFloat(0, static_cast<f32>(AEGetWindowWidth())), Utils::RandomRangeFloat(-20, 0) };
+				AEVec2 Vel{ 0, 1 };
+				Particles::Create(Emitter, Vel, Color::CreateRandomColor(), 1, Utils::RandomRangeFloat(100, 400), 0, 20.0f, 3.0f);
+				spawnTimer = 1.0f;
+			}
 		}
 	}
 }

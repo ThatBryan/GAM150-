@@ -57,7 +57,7 @@ void UI::Update() {
 		for (size_t i = 0; i < pauseButtonIdx; ++i) {
 			buttonTest[i].Update();
 		}
-	else if (paused && !Jumperman.GetLose() && !Jumperman.GetWinStatus()) {
+	else if (paused && !Jumperman.GetLoseStatus() && !Jumperman.GetWinStatus()) {
 		for (size_t i = pauseButtonIdx; i < buttonTest.size(); ++i) {
 			buttonTest[i].Update();
 		}
