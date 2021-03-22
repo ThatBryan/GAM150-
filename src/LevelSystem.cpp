@@ -40,7 +40,7 @@ void LevelSystem::UnlockNext()
 	}
 }
 
-void LevelSystem::SetLevel(unsigned int level)
+void LevelSystem::SetLevel(unsigned short level)
 {
 	Level = level;
 	switch (gamestateCurr) {

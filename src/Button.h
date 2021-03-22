@@ -10,7 +10,7 @@ enum class ButtonType{Color = 0, Texture};
 class Button {
 public: 
 	using fn_ptr = void(*)(void);
-	using Test_Ptr = void(*)(unsigned int);
+	using Test_Ptr = void(*)(unsigned short);
 
 	Button(ButtonType Type, const f32 width, const f32 height, const f32 textScale = 1.0f);
 	void Set_Position(const AEVec2 pos);
@@ -24,7 +24,7 @@ public:
 	inline void FreeTexture() {if (pTex) AEGfxTextureUnload(pTex);}
 	inline float GetHeight() const { return button.height; }
 	inline float GetWidth() const { return button.width; }
-	inline void SetID(int x) { ID = x; }
+	inline void SetID(unsigned short x) { ID = x; }
 	inline int GetID() const { return ID; }
 	void Update();
 	void Render();
@@ -40,7 +40,7 @@ private:
 	Color buttonState[static_cast<int>(ButtonState::MaxColor)];
 	// Check cursor input to determine which color to tint.
 	ButtonState Check_State();
-	unsigned int ID;
+	unsigned short ID;
 };
 void Test_Callback();
 inline void Mute_BGM() { AudioManager::SetMute(AudioID::BGM); }

@@ -164,7 +164,7 @@ void MainMenu::Buttons_Init() {
 	buttons[3].Set_Text("Leaderboards");
 	buttons[3].Set_Callback(placeholder);
 
-	for (int i = 0; i < 10; ++i) {
+	for (unsigned short i = 0; i < 10; ++i) {
 		LevelButtons.push_back(Button(ButtonType::Color, 150.0, 75.0f, 0.5f));
 		LevelButtons[i].SetID(i + 1);
 		LevelButtons[i].Set_TextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
