@@ -90,7 +90,7 @@ void Tiles::DecreaseLifespan(void)
 
 void Tiles::CheckEnemyStatus(std::vector<Enemies>& enemy)
 {
-	static const float tolerance{ 10.0f };
+	static const float tolerance{ 12.0f };
 	for (size_t i = 0; i < enemy.size(); i++){
 		if (enemy[i].getKilled() == true) {
 			if (type == TileType::Grass || type == TileType::Special){
