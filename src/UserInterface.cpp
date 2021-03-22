@@ -94,11 +94,11 @@ void UI::Buttons_Init() {
 
 	buttonTest[2].Set_Text("Resume");
 	buttonTest[2].Set_Callback(Utils::CheckPauseInput);
-	buttonTest[2].Set_Position(AEVec2{ Midpt.x - buttonTest[2].GetWidth(), buttonTest[2].GetHeight() / 2.0f });
+	buttonTest[2].Set_Position(AEVec2{ Midpt.x - buttonTest[2].GetWidth(), Midpt.y + buttonTest[2].GetHeight() * 2});
 
 	buttonTest[3].Set_Text("Menu");
 	buttonTest[3].Set_Callback(Utils::ReturnToMenu);
-	buttonTest[3].Set_Position(AEVec2{ Midpt.x + buttonTest[2].GetWidth(), buttonTest[3].GetHeight() / 2.0f });
+	buttonTest[3].Set_Position(AEVec2{ Midpt.x + buttonTest[2].GetWidth(), Midpt.y + buttonTest[3].GetHeight() * 2});
 }
 
 void UI::DisplayLife(short livesCount) {
