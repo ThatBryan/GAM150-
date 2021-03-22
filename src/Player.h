@@ -17,6 +17,7 @@ class Rect;
 class Player
 {
 private:
+	MovementState direction;
 	bool win, lose;
 	Health hp;
 	float jumpvel;
@@ -26,7 +27,6 @@ private:
 	void ChangeDirection(void);
 
 public:
-	MovementState direction;
 	static AEGfxTexture* playerTex;
 	Player(AEGfxTexture* ,const f32 width, const f32 height);
 	Player();

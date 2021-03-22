@@ -57,6 +57,7 @@ void Player::Reset(void)
 	jumpvel = player_jumpvel;
 	hp.current = hp.max;
 	sprite.rotation = 0;
+	direction = MovementState::Right;
 }
 
 void Player::Update() {
@@ -126,6 +127,7 @@ void Player::Update_Position(void)
 			sprite.ReflectAboutYAxis();
 			direction = MovementState::Right;
 		}
+
 	}
 
 	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
@@ -141,28 +143,29 @@ void Player::Update_Position(void)
 	}
 
 	if (DebugMode) {
-	AEVec2 Mouse = Utils::GetMousePos();
-	if (AETestPointToRect(&Mouse, &sprite.pos, sprite.width, sprite.height))
-	{
-		if (AEInputCheckCurr(AEVK_LBUTTON))
-			sprite.pos = Mouse;
+		AEVec2 Mouse = Utils::GetMousePos();
+		if (AETestPointToRect(&Mouse, &sprite.pos, sprite.width, sprite.height))
+		{
+			if (AEInputCheckCurr(AEVK_LBUTTON))
+				sprite.pos = Mouse;
+			}
+		if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN)) {
+			if (sprite.pos.y + sprite.height / 2 <= maxY) {
+				sprite.pos.y += player_speed * g_dt;
+			}
 		}
-	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN)) {
-		if (sprite.pos.y + sprite.height / 2 <= maxY) {
-			sprite.pos.y += player_speed * g_dt;
+		if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP)) {
+			if (sprite.pos.y - sprite.height / 2 >= 0) {
+				sprite.pos.y -= player_speed * g_dt;
+			}
 		}
-	}
-	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP)) {
-		if (sprite.pos.y - sprite.height / 2 >= 0) {
-			sprite.pos.y -= player_speed * g_dt;
-		}
-	}
 	}
 	playerBB.pos = sprite.pos;
 	if (direction == MovementState::Left)
 		bottomBB.pos = AEVec2Set(sprite.pos.x - player_collider_offset_x, sprite.pos.y + player_collider_offset_y);
 	else
 		bottomBB.pos = AEVec2Set(sprite.pos.x + player_collider_offset_x, sprite.pos.y + player_collider_offset_y);
+
 	player_topBB.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0f);
 	player_rightBB.pos = AEVec2Set(sprite.pos.x + abs(sprite.width) / 4.0f, sprite.pos.y);
 	player_leftBB.pos = AEVec2Set(sprite.pos.x - abs(sprite.width) / 4.0f, sprite.pos.y);

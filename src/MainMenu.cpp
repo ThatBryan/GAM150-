@@ -83,6 +83,7 @@ void MainMenu::Update(void)
 	}
 	player[0].sprite.rotation += 100.0f * g_dt;
 	Particles::Update();
+	Utils::CheckFullScreenInput();
 }
 
 void MainMenu::Render() {
