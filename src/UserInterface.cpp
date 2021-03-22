@@ -43,7 +43,7 @@ const size_t pauseButtonIdx{ 2 };
 void UI::Update() {
 
 	sprintf_s(strBuffer, "FPS: %.2f", AEFrameRateControllerGetFrameRate());
-	sprintf_s(strBuffer1, "Current Level: Tutorial");
+	sprintf_s(strBuffer1, "Current Level: %d", Level);
 	sprintf_s(strBuffer2, "Time Elapsed: %.2f", app_time);
 
 	FPS_Display.SetText(strBuffer);

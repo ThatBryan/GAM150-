@@ -74,7 +74,6 @@ void LevelSystem::SetNextLevel(void)
 
 	if (Level < TempLevelsCount) {
 		gamestateNext = ++Level;
-		std::cout << Level << std::endl;
 
 		if (gamestateCurr == GS_LEVEL1)
 		{
