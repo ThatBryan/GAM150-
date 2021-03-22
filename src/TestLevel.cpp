@@ -10,13 +10,27 @@
 #include "Overlay.h"
 #include "GameStateManager.h"
 #include "Particles.h"
+#include <array>
 #include <iostream>
+
+
+
+
+
+
+#include "MainMenu.h"
+
+
+#include <array>
+
 
 std::vector<Tiles> tilemap;
 std::vector<Enemies> enemies;
 std::vector <std::vector <Tiles>*> tileManager;
 Player Jumperman;
 
+extern AudioData soundData[static_cast<int>(AudioID::Max)];
+extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
 
 void MapInit(void)
 {
@@ -65,9 +79,11 @@ void MapInit(void)
 			}
 		}
 	}
+
 	tileManager.push_back(&tilemap);
 	Overlay::Init();
 	UI::Init();
+	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 }
 
 void MapUpdate()
@@ -80,6 +96,7 @@ void MapUpdate()
 		TestRestart();
 	}
 	UpdateManager();
+	Audio.update();
 }
 
 void MapRender()
@@ -126,6 +143,9 @@ void MapLoad()
 	AudioManager::loadAsset();
 	Player::LoadTex();
 	Overlay::Load();
+	AudioManager::loadAsset();
+	AudioManager::SetVolume(AudioID::BGM, 0.2f);
+	AudioManager::SetVolume(AudioID::Jump, 0.2f);
 }
 
 void MapUnload()

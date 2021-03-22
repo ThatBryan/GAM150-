@@ -58,13 +58,13 @@ void LevelSystem::SetNextLevel(void)
 		gamestateNext = ++Level;
 		std::cout << Level << std::endl;
 
-		if (gamestateCurr == GS_PROGRESS)
+		if (gamestateCurr == GS_LEVEL1)
 		{
 			gamestateNext = GS_TEST;
 		}
 		else if (gamestateCurr == GS_TEST)
 		{
-			gamestateNext = GS_PROGRESS;
+			gamestateNext = GS_LEVEL1;
 		}
 	}
 }
