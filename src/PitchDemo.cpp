@@ -9,10 +9,6 @@
 #include <array>
 #include "BinaryMap.h"
 
-
-
-
-
 #include "GameStateManager.h"
 #include "Particles.h"
 #include "Tiles.h"
@@ -30,15 +26,10 @@ std::vector <Tiles> Demo_Tiles, Demo_Tiles2, Demo_Tiles3;
 std::vector <Enemies> enemy;
 std::vector <Player> player;
 std::vector <std::vector <Tiles>*> TileManager;
-static std::vector<Button> buttons;
 
-enum {Pause = 0, Victory, Defeat, MAX_IMAGE};
-static std::array <Image, MAX_IMAGE> Images;
 
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
-
-
 
 void Demo::Init(void)
 {
@@ -87,34 +78,9 @@ void Demo::Init(void)
 	player.push_back(Player(Player::playerTex, player_width, player_height));
 	player[0].SetPos(AEVec2Sub(Demo_Tiles[0].spawnPos, AEVec2Set(0, TILE_HEIGHT + 10.0f)));
 
-	Images[Pause].Init(FP::PauseOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
-	Images[Victory].Init(FP::VictoryOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
-	Images[Defeat].Init(FP::GameoverOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
-
 	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 
-	AEVec2 Midpt{ Utils::GetScreenMiddle() };
-
 	// Regular colored button.
-	for (int i = 0; i < 4; ++i) {
-		buttons.push_back(Button(ButtonType::Color, 150.0f, 75.0f, 0.8f));
-	}
-
-	buttons[0].Set_Callback(Utils::ReturnToMenu);
-	buttons[0].Set_Text("Menu");
-	buttons[1].Set_Text("Next Level");
-	buttons[1].Set_Callback(MainMenu::placeholder);
-	buttons[2].Set_Callback(Utils::ReturnToMenu);
-	buttons[2].Set_Text("Menu");
-	buttons[3].Set_Text("Retry");
-	buttons[3].Set_Callback(Demo::Restart);
-
-	for (int i = 0; i < buttons.size(); ++i) {
-		if(i % 2 == 0)
-			buttons[i].Set_Position(AEVec2{ Midpt.x + buttons[i].GetWidth(), Midpt.y * 2 - buttons[i].GetHeight() / 2.0f });
-		else
-			buttons[i].Set_Position(AEVec2{ Midpt.x - buttons[i].GetWidth(), Midpt.y * 2 - buttons[i].GetHeight() / 2.0f });
-	}
 }
 
 void Demo::Update(void)
@@ -152,9 +118,6 @@ void Demo::Unload(void)
 	Player::Unload();
 	AudioManager::unloadAsset();
 
-	for (size_t i = 0; i < Images.size(); ++i) {
-		Images[i].Free();
-	}
 	FreeMapData();
 	TileManager.clear();
 	Demo_Tiles.clear();
@@ -164,10 +127,6 @@ void Demo::Unload(void)
 	player.clear();
 	Particles::Unload();
 
-	for (int i = 0; i < buttons.size(); ++i) {
-		buttons[i].FreeTexture();
-	}
-	buttons.clear();
 	UI::Unload();
 }
 
@@ -198,7 +157,6 @@ void Demo::Render(void)
 		Demo_Tiles3[i].Render();
 	}
 	player[0].Render();
-	UpdateOverlay();
 
 	Particles::Render();
 }
@@ -232,36 +190,3 @@ void Demo::CollapsingManager(void)
 	Tiles::CollapseNext(Demo_Tiles3);
 }
 
-void Demo::UpdateOverlay() {
-	Graphics::Text text;
-	text.SetPos(Utils::GetScreenMiddle());
-	text.SetColor(Color{ 0, 0, 0, 255.0f });
-	text.SetScale(2.0f);
-
-	if (paused && player[0].active && !player[0].GetWinStatus())
-	{
-		Images[Pause].Draw_Texture(100.0f);
-		text.SetText(const_cast<s8*>("PAUSED"));
-		text.Draw_Wrapped(text.pos);
-	}
-	if (player[0].GetLose())
-	{
-		paused = true;
-		Images[Defeat].Draw_Texture(150.0f);
-		text.SetText(const_cast<s8*>("YOU LOSE"));
-		text.Draw_Wrapped(text.pos);
-		for (int i = 2; i < buttons.size(); ++i) {
-			buttons[i].Update();
-		}
-	}
-	if (player[0].GetWinStatus())
-	{
-		paused = true;
-		Images[Victory].Draw_Texture(100.0f);
-		text.SetText(const_cast<s8*>("YOU WIN"));
-		text.Draw_Wrapped(text.pos);
-		for (int i = 0; i < 2; ++i) {
-			buttons[i].Update();
-		}
-	}
-}

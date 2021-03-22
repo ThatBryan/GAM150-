@@ -7,12 +7,11 @@
 #include "Utilities.h"
 #include "Player.h"
 #include "Button.h"
-
+#include "Overlay.h"
 #include "GameStateManager.h"
 
 std::vector<Tiles> tilemap;
 std::vector<Enemies> enemies;
-//std::vector<Player> Jumperman;
 Player Jumperman;
 std::vector <std::vector <Tiles>*> tileManager;
 
@@ -20,7 +19,6 @@ int Level{ 0 };
 
 void MapInit(void)
 {
-	AEVec2 Pos;
 	f32 grid_height{ static_cast<f32>(AEGetWindowHeight() / Map_Height) }, grid_width{ static_cast<f32>(AEGetWindowWidth() / Map_Width) };
 	for (int i = 0; i < Map_Height; ++i)
 	{
@@ -66,6 +64,7 @@ void MapInit(void)
 		}
 	}
 	tileManager.push_back(&tilemap);
+	Overlay::Init();
 	UI::Init();
 }
 
@@ -106,7 +105,9 @@ void MapRender()
 	}
 	//Jumperman[0].Render();
 	Jumperman.Render();
+	Overlay::Render(Jumperman);
 	UI::Draw();
+	UI::Update();
 }
 
 void MapLoad()
@@ -135,6 +136,7 @@ void MapLoad()
 	Enemies::LoadTex();
 	AudioManager::loadAsset();
 	Player::LoadTex();
+	Overlay::Load();
 }
 
 void MapUnload()
@@ -149,6 +151,7 @@ void MapUnload()
 	tilemap.clear();
 	enemies.clear();
 	tileManager.clear();
+	Overlay::Unload();
 	UI::Unload();
 }
 
@@ -178,5 +181,4 @@ void UpdateManager()
 		}
 		Jumperman.CheckEnemyCollision(enemies);
 	}
-	UI::Update();
 }

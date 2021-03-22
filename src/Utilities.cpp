@@ -93,6 +93,11 @@ void Utils::ReturnToMenu(void) {
 	gamestateNext = GS_MAINMENU;
 }
 
+void Utils::RestartLevel(void)
+{
+	gamestateNext = GS_RESTART;
+}
+
 bool Utils::ColliderAABB(AEVec2 A, f32 A_width, f32 A_height, AEVec2 B, f32 B_width, f32 B_height) {
 	A_width = fabsf(A_width);
 	B_width = fabsf(B_width);

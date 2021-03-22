@@ -7,6 +7,7 @@
 #include "Particles.h"
 #include "UserInterface.h"
 #include "LevelSystem.h"
+#include <iostream>
 
 AEGfxTexture* Player::playerTex{ nullptr };
 static f32 maxY;
@@ -182,8 +183,6 @@ void Player::GravityManager(void)
 	{
 		if(!DebugMode)
 			sprite.pos.y += gravityStrength * g_dt;
-		//if(DebugMode)
-			//printf("Apply gravity\n");
 	}
 }
 

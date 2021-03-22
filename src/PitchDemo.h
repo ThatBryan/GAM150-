@@ -19,7 +19,6 @@ namespace Demo
 
 	// Collection of collision related code.
 	void UpdateManager(void);
-	void UpdateOverlay(void);
 	// Collection of tile collapsing related code.
 	void CollapsingManager(void);
 }

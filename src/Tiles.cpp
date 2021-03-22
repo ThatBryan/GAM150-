@@ -60,8 +60,7 @@ void Tiles::CheckPlayerGoal(Player& ThePlayer)
 	if (type == TileType::Goal)
 	{
 		static AEVec2 GoalPoint = {image.pos.x, image.pos.y - image.height / 2  - 1.0f};
-		if (AETestPointToRect(&GoalPoint, &ThePlayer.sprite.pos, ThePlayer.sprite.width, ThePlayer.sprite.height)) {
-			std::cout << "Hello?\n";
+		if (AETestPointToRect(&GoalPoint, &ThePlayer.bottomBB.pos, ThePlayer.bottomBB.width, ThePlayer.bottomBB.height)) {
 			ThePlayer.SetWin();
 		}
 	}

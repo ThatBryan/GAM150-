@@ -6,8 +6,10 @@
 #include "Utilities.h"
 #include <string>
 #include <vector>
+#include <array>
 #include "Button.h"
 #include "Image.h"
+#include "MainMenu.h"
 
 char strBuffer[100];
 char strBuffer1[100];
@@ -16,7 +18,7 @@ Graphics::Text FPS_Display(strBuffer, 0.5f);
 Graphics::Text LevelDisplay(strBuffer1, 0.5f);
 Graphics::Text TimerDisplay(strBuffer2, 0.5f);
 
-std::vector <Button> buttonTest;
+static std::vector <Button> buttonTest;
 Image lives;
 
 void UI::Init() {
@@ -80,8 +82,8 @@ void UI::Buttons_Init() {
 	}
 
 	buttonTest[0].Set_Position(AEVec2{ Midpt.x - buttonTest[0].GetWidth(), buttonTest[0].GetHeight() / 2.0f });
-	buttonTest[0].Set_Callback(Test_Callback);
 	buttonTest[0].Set_Text("Pause");
+	buttonTest[0].Set_Callback(Test_Callback);
 
 	buttonTest[1].Set_Position(AEVec2{ Midpt.x + buttonTest[0].GetWidth(), buttonTest[1].GetHeight() / 2.0f });
 	buttonTest[1].Set_Callback(Mute_BGM);
