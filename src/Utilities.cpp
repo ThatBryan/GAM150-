@@ -1,6 +1,10 @@
 #include "Utilities.h"
 #include "GameStateManager.h"
+#include "Constants.h"
+
 #include <iostream>
+#include <fstream>
+
 
 int Utils::RandomRangeInt(const s32 lowerBound, const s32 upperBound)
 {
@@ -52,6 +56,21 @@ AEVec2 Utils::GetScreenMiddle() {
 	return AEVec2{ HalfWidth, HalfHeight };
 }
 
+AEVec2 Utils::GetRandomPos(void)
+{
+	static f32 Height = static_cast<f32>(AEGetWindowHeight());
+	static f32 Width = static_cast<f32>(AEGetWindowWidth());
+
+	return AEVec2{ Utils::RandomRangeFloat(0, Width), Utils::RandomRangeFloat(0, Height)};
+}
+
+AEVec2 Utils::GetRandomVel(void)
+{
+	AEVec2 Vel{ Utils::RandomRangeFloat(-1.0f, 1.0f), Utils::RandomRangeFloat(-1.0f, 1.0f) };
+	AEVec2Normalize(&Vel, &Vel);
+	return Vel;
+}
+
 AEVec2 Utils::GetMousePos(void)
 {
 	int mouseX = 0, mouseY = 0;
@@ -75,6 +94,9 @@ void Utils::ReturnToMenu(void) {
 }
 
 bool Utils::ColliderAABB(AEVec2 A, f32 A_width, f32 A_height, AEVec2 B, f32 B_width, f32 B_height) {
+	A_width = fabsf(A_width);
+	B_width = fabsf(B_width);
+
 	if (A.x + A_width / 2.0f < B.x - B_width / 2.0f ||
 		A.y - A_height / 2.0f > B.y + B_height / 2.0f ||
 		A.x - A_width / 2.0f > B.x + B_width / 2.0f ||
@@ -83,5 +105,6 @@ bool Utils::ColliderAABB(AEVec2 A, f32 A_width, f32 A_height, AEVec2 B, f32 B_wi
 		//printf("%.2f %.2f %.2f %.2f\n", B.x, B.y, B_width, B_height);
 		return false;
 	}
+
 	return true;
 }

@@ -65,6 +65,7 @@ void MapInit(void)
 		}
 	}
 	tileManager.push_back(&tilemap);
+	UI::Init();
 }
 
 void MapUpdate()
@@ -116,17 +117,17 @@ void MapLoad()
 	{
 		case 1:
 		{
-			ImportMapDataFromFile("../Levels/testrun.txt");
+			ImportMapDataFromFile("./Levels/testrun.txt");
 			break;
 		}
 		case 2:
 		{
-			ImportMapDataFromFile("../Levels/Level2.txt");
+			ImportMapDataFromFile("./Levels/Level2.txt");
 			break;
 		}
 		case 3:
 		{
-			ImportMapDataFromFile("../Levels/Level3.txt");
+			ImportMapDataFromFile("./Levels/Level3.txt");
 			break;
 		}
 		default:
@@ -158,7 +159,6 @@ void TestRestart()
 	Enemies::Reset(enemies);
 
 	Jumperman[0].Reset();
-	Jumperman[0].SetLives(3);
 	paused = false;
 	app_time = 0;
 }
@@ -170,7 +170,8 @@ void UpdateManager()
 		Player& ThePlayer = Jumperman.back();
 		Tiles::UpdateManager(tilemap, ThePlayer, enemies);
 		Tiles::CollapsingManager(tileManager);
-		Tiles::CheckPlayerGravity(tileManager, Jumperman);
+		Tiles::CheckPlayerGravity(tileManager, ThePlayer);
+		Tiles::CheckPlayerCollision(tileManager, ThePlayer);
 		Jumperman[0].GravityManager();
 		for (size_t i = 0; i < enemies.size(); i++)
 		{

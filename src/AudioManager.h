@@ -1,12 +1,15 @@
 #pragma once
+#pragma warning(push)
+#pragma warning(disable : 26812)
 #include "fmod.hpp"
-#include "fmod_errors.h"
+#pragma warning(pop)
 
 using AudioClass = FMOD::Sound*;
 
-enum class AudioID {BGM = 0, Jump, Max };
+enum class AudioID {BGM = 0, Jump, Max, None };
 
 struct AudioData {
+	AudioData();
 	AudioID ID;
 	FMOD::Channel* channel;
 	float volume;

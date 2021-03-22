@@ -18,9 +18,17 @@ namespace MainMenu
 	void StartGame();
 	void QuitGame();
 	inline void placeholder(void) { std::cout << "Feature comming soon!" << std::endl; };
+
+	inline void LockedLevel(void) { std::cout << "Level is locked!\n"; }
+	inline void UnlockedLevel(void) { std::cout << "Level is unlocked!\n"; }
+
 	void TestEnemyMovement(void);
 	void TestPlayerMovement(void);
 
-	// Min yi's
-	void DrawButtons(void);
+	void SwitchToLevelSelection(void);
+	void SwitchToMainMenu(void);
+
+	void TestLevelSelectionUpdate(void);
+	void TestLevelSelectionRender(void);
+
 }

@@ -9,13 +9,13 @@ AudioData soundData[static_cast<int>(AudioID::Max)];
 AudioManager::AudioManager() {
 	if (FMOD::System_Create(&m_pSystem) != FMOD_OK)
 	{
-		AE_ASSERT("Constructor failed on AudioManager.cpp line 6\n");
+		AE_ASSERT_MESG(&m_pSystem, "Constructor failed on AudioManager.cpp line 6\n");
 	}
 	int driverCount = 0;
 	m_pSystem->getNumDrivers(&driverCount);
 	if (driverCount == 0)
 	{
-		AE_ASSERT("Driver count = 0, AudioManager.cpp line 12\n");
+	AE_ASSERT_MESG(driverCount, "Driver count = 0, AudioManager.cpp line 12\n");
 	}
 	m_pSystem->init(36, FMOD_INIT_NORMAL, NULL);
 }
@@ -44,8 +44,8 @@ void AudioManager::update() {
 }
 
 void AudioManager::loadAsset(void) {
-	Audio.createAudio(&soundTest[static_cast<int>(AudioID::Jump)], "../Assets/Audio/SFX/powerup.wav");
-	Audio.createAudio(&soundTest[static_cast<int>(AudioID::BGM)], "../Assets/Audio/BGM/gg.wav");
+	Audio.createAudio(&soundTest[static_cast<int>(AudioID::Jump)], FP::jumpSFX);
+	Audio.createAudio(&soundTest[static_cast<int>(AudioID::BGM)], FP::GameplayBGM);
 }
 void AudioManager::unloadAsset(void) {
 	for (int i = 0; i < soundTest.size(); i++) {
@@ -60,3 +60,5 @@ void AudioManager::SetMute(AudioID ID) {
 	soundData[static_cast<int>(ID)].mute = !(soundData[static_cast<int>(ID)].mute);
 	soundData[static_cast<int>(ID)].channel->setMute(soundData[static_cast<int>(ID)].mute);
 }
+
+AudioData::AudioData() : ID{ AudioID::None }, channel{ nullptr }, volume{ 1.0f }, mute{ false } {}

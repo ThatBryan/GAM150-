@@ -35,9 +35,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	//int * pi = new int;
 	///////////////////////
-	// Variable declaration
-
-	int gGameRunning = 1;
 	// Variable declaration end
 	///////////////////////////
 
@@ -56,8 +53,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	font::ID = AEGfxCreateFont(FP::FontFile, 40);
 	Graphics::Load_Meshes();
 
-	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl << std::endl;
-
+	//std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl << std::endl;
+	//std::cout << "\nUse keys WASD to navigate around the game\n";
+	//std::cout << "\nKey F1 enables debug mode during gameplay\n";
+	//std::cout << "\nL ALT + Enter streches to full screen during gameplay\n";
 	// Initialises the GSM
 	GameStateManagerInit();
 	AEToogleFullScreen(fullscreen);
@@ -93,6 +92,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 			// Informing the system about the loop's end
 			AESysFrameEnd();
+
+			if (g_dt > 0.01667f) // 1 / 60fps;
+			{
+				g_dt = 0.01667f;
+			}
 
 			// check if forcing the application to quit
 			if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())

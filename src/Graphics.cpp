@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Utilities.h"
 
+
 Color::Color(float r, float g, float b, float a)
 {
 	this->r = r / colorcodeMax;
@@ -11,9 +12,9 @@ Color::Color(float r, float g, float b, float a)
 	this->alpha = a / colorcodeMax;
 }
 
-Color::Color() : r{ 0 }, g{ 0 }, b{ 0 }, alpha{ 0 } {}
+Color::Color() : r{ 255.0f }, g{ 255.0f }, b{ 255.0f }, alpha{ 255.0f } {}
 
-void Color::SetColor(Color color)
+void Color::Set(Color color)
 {
 	this->r = color.r;
 	this->g = color.g;
@@ -21,18 +22,26 @@ void Color::SetColor(Color color)
 	this->alpha = color.alpha;
 }
 
+Color Color::CreateRandomColor()
+{
+	float r = Utils::RandomRangeFloat(0.0f, 255.0f);
+	float g = Utils::RandomRangeFloat(0.0f, 255.0f);
+	float b = Utils::RandomRangeFloat(0.0f, 255.0f);
+	float a = Utils::RandomRangeFloat(0.0f, 255.0f);
+	return Color(r, g, b, a);
+}
+
 
 void Color::Decrement(float i) {
-	r -= i;
-	b -= i;
+	r -= i * g_dt;
+	b -= i * g_dt;
+	g -= i * g_dt;
 	if (r <= 0)
-		r = 1.0f;
+		r *= -1.0f;
 	if (g <= 0)
-		g = 1.0f;
+		g *= -1.0f;
 	if (b <= 0)
-		b = 1.0f;
-	if (alpha <= 0)
-		alpha = 1.0f;
+		b *= -1.0f;
 }
 
 
@@ -70,22 +79,21 @@ AEGfxVertexList* Graphics::Mesh_Circle(void)
 {
 	AEGfxMeshStart();
 	//Creating the circle shape
-	int Parts = 12;
+	int Parts = 30;
 	for (float i = 0; i < Parts; ++i)
 	{
 		AEGfxTriAdd(
-			0.0f, 0.0f, 0xFFFFFF00, 0.0f, 0.0f,
-			cosf(i * 2 * PI / Parts) * 0.5f, sinf(i * 2 * PI / Parts) * 0.5f, 0xFFFFFF00, 0.0f, 0.0f,
-			cosf((i + 1) * 2 * PI / Parts) * 0.5f, sinf((i + 1) * 2 * PI / Parts) * 0.5f, 0xFFFFFF00, 0.0f, 0.0f);
+			0.0f, 0.0f, 0xFFFFFFFF, 1.0f, 0.0f,
+			cosf(i * 2 * PI / Parts) * 0.5f, sinf(i * 2 * PI / Parts) * 0.5f, 0xFFFFFFFF, 0.0f, 0.0f,
+			cosf((i + 1) * 2 * PI / Parts) * 0.5f, sinf((i + 1) * 2 * PI / Parts) * 0.5f, 0xFFFFFFFF, 1.0f, 0.0f);
 	}
-
 	return AEGfxMeshEnd();
 }
 
-Graphics::Rect::Rect(const f32 width, const f32 height, const f32 direction, AEGfxVertexList* Mesh) : direction{ direction }, transformMtx{ NULL },
+Graphics::Rect::Rect(const f32 width, const f32 height, const f32 direction, AEGfxVertexList* Mesh) : rotation{ direction }, transformMtx{ NULL },
 width{ width }, height{ height }, pos{ 0, 0 }, pMesh{Mesh}
 {
-	color.SetColor(Color{ 255, 255, 255, 255 });
+	color.Set(Color{ 255, 255, 255, 255 });
 }
 
 void Graphics::Rect::SetMatrix(void)
@@ -94,8 +102,22 @@ void Graphics::Rect::SetMatrix(void)
 	static f32 HalfWinWindow{ Utils::Get_HalfWindowWidth() };
 	AEMtx33	trans, rot, scale;
 	AEMtx33Scale(&scale, width, height);
-	AEMtx33Rot(&rot, AEDegToRad(direction));
+	AEMtx33Rot(&rot, AEDegToRad(rotation));
 	AEMtx33Trans(&trans, -HalfWinWindow + pos.x, HalfWinHeight - pos.y);
+	AEMtx33 temp;
+	AEMtx33Concat(&temp, &rot, &scale);
+	AEMtx33Concat(&transformMtx, &trans, &temp);
+}
+
+void Graphics::Rect::SetMatrix(AEVec2 Pos)
+{
+	static f32 HalfWinHeight, HalfWinWindow;
+	HalfWinHeight = Utils::Get_HalfWindowHeight();
+	HalfWinWindow = Utils::Get_HalfWindowWidth();
+	AEMtx33	trans, rot, scale;
+	AEMtx33Scale(&scale, width, height);
+	AEMtx33Rot(&rot, AEDegToRad(rotation));
+	AEMtx33Trans(&trans, -HalfWinWindow + Pos.x, HalfWinHeight - Pos.y);
 	AEMtx33 temp;
 	AEMtx33Concat(&temp, &rot, &scale);
 	AEMtx33Concat(&transformMtx, &trans, &temp);
@@ -105,61 +127,54 @@ void Graphics::Rect::Draw(const f32 alpha)
 {
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	
-	AEGfxTextureSet(NULL, 0.0f, 0.0f);
 	AEGfxSetTintColor(color.r, color.g , color.b, color.alpha);
 	AEGfxSetTransparency(alpha / colorcodeMax);
-
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-void Graphics::Rect::Draw(Color color, const f32 alpha)
+void Graphics::Rect::Draw(Color C, const f32 alpha)
 {
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-		
-	AEGfxTextureSet(NULL, 0.0f, 0.0f);
-	AEGfxSetTintColor(color.r, color.g, color.b, color.alpha);
+	AEGfxSetTintColor(C.r, C.g, C.b, C.alpha);
 	AEGfxSetTransparency(alpha / colorcodeMax);
-
 	AEGfxSetTransform(transformMtx.m);
-	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	AEGfxSetBlendMode(AE_GFX_BM_NONE);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-void Graphics::Rect::DrawTexture(AEGfxTexture* pTex, Color color, const f32 alpha)
+void Graphics::Rect::DrawTexture(AEGfxTexture* pTex, Color C, const f32 alpha)
 {
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-
 	AEGfxTextureSet(pTex, 0.0f, 0.0f);
-	AEGfxSetTintColor(color.r, color.g, color.b, color.alpha);
+	AEGfxSetTintColor(C.r, C.g, C.b, C.alpha);
 	AEGfxSetTransparency(alpha / colorcodeMax);
-
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-Graphics::Circle::Circle(const f32 width, const f32 height, const f32 direction, AEGfxVertexList* Mesh) : Rect(width, height, direction, Mesh)
+Graphics::Circle::Circle(const f32 radius, const f32 direction, AEGfxVertexList* Mesh) : Rect(radius, radius, direction, Mesh)
 {
-	color.SetColor(Color{ 255, 255, 255, 255 });
+	color.Set(Color{ 255, 255, 255, 255 });
 }
 
-Graphics::Text::Text(s8* textBuffer, const f32 scale) : scale{ scale }, pos{ 0, 0 },
-height{ 0 }, width{ 0 }, buffer{ textBuffer }
+Graphics::Circle::Circle() : Rect(0.0f, 0.0f, 0.0f, Mesh::Circle) {}
+
+Graphics::Text::Text(std::string textBuffer, const f32 scale) : scale{ scale }, pos{ 0, 0 },
+height{ 0 }, width{ 0 }, buffer()
 {
-	Text::color.SetColor(Color{ 255.0f, 255.0f, 255.0f, 255.0f });
+	buffer = textBuffer;
+	Text::color.Set(Color{ 255.0f, 255.0f, 255.0f, 255.0f });
 }
 
 Graphics::Text::Text() : scale{ 0 }, pos{ 0, 0 },
-height{ 0 }, width{ 0 }, buffer{ nullptr }, color() {}
+height{ 0 }, width{ 0 }, buffer(), color() {}
 
-
-
-void Graphics::Text::SetText(s8* text) {
+void Graphics::Text::SetText(std::string text) {
 	buffer = text;
 }
 
@@ -167,42 +182,40 @@ void Graphics::Text::Draw()
 {
 	AEVec2 drawPos = Graphics::Text::Calculate_Offset(pos);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxPrint(font::ID, buffer, drawPos.x, drawPos.y, scale, color.r, color.g, color.b);
+	AEGfxPrint(font::ID, const_cast<s8*>(buffer.c_str()), drawPos.x, drawPos.y, scale, color.r, color.g, color.b);
 }
 
-void Graphics::Text::Draw_Wrapped(const AEVec2 pos)
+void Graphics::Text::Draw_Wrapped(const AEVec2 Pos)
 {
-	AEGfxGetPrintSize(font::ID, buffer, scale, width, height);
-	AEVec2 drawPos = Graphics::Text::Calculate_Offset(pos);
+	AEGfxGetPrintSize(font::ID, const_cast<s8*>(buffer.c_str()), scale, width, height);
+	AEVec2 drawPos = Graphics::Text::Calculate_Offset(Pos);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxPrint(font::ID, buffer, drawPos.x - width / 2.0f, drawPos.y - height / 2.0f, scale, color.r, color.g, color.b);
+	AEGfxPrint(font::ID, const_cast<s8*>(buffer.c_str()), drawPos.x - width / 2.0f, drawPos.y - height / 2.0f, scale, color.r, color.g, color.b);
 }
 
-AEVec2 Graphics::Text::Calculate_Offset(AEVec2 pos)
+AEVec2 Graphics::Text::Calculate_Offset(AEVec2 Pos)
 {
 	f32 HalfWinWidth = Utils::Get_HalfWindowWidth();
 	f32 HalfWinHeight = Utils::Get_HalfWindowHeight();
-	f32 WinHeight = static_cast<f32>(AEGetWindowHeight());
-	f32 WinWidth = static_cast<f32>(AEGetWindowWidth());
 
 	AEVec2 Offset{0, 0};
-	if (pos.x < HalfWinWidth) // I want negative
+	if (Pos.x < HalfWinWidth) // I want negative
 	{
-		Offset.x = (-HalfWinWidth + pos.x) / HalfWinWidth; 
+		Offset.x = (-HalfWinWidth + Pos.x) / HalfWinWidth; 
 	}
-	else if (pos.x > HalfWinWidth) // big postive number.
+	else if (Pos.x > HalfWinWidth) // big postive number.
 	{
-		Offset.x = (pos.x - HalfWinWidth) / HalfWinWidth;
-	}
-
-	if (pos.y > HalfWinHeight) // Big value, prints at bottom of screen.
-	{
-		Offset.y = (HalfWinHeight -pos.y) / HalfWinHeight; // Negative (
+		Offset.x = (Pos.x - HalfWinWidth) / HalfWinWidth;
 	}
 
-	else if (pos.y < HalfWinHeight)  // Small value, prints at top of screen
+	if (Pos.y > HalfWinHeight) // Big value, prints at bottom of screen.
 	{
-		Offset.y = (HalfWinHeight - pos.y) / HalfWinHeight;
+		Offset.y = (HalfWinHeight -Pos.y) / HalfWinHeight; // Negative (
+	}
+
+	else if (Pos.y < HalfWinHeight)  // Small value, prints at top of screen
+	{
+		Offset.y = (HalfWinHeight - Pos.y) / HalfWinHeight;
 	}
 	//printf("%.2f %.2f\n", Offset.x, Offset.y);
 	return Offset;
@@ -210,7 +223,7 @@ AEVec2 Graphics::Text::Calculate_Offset(AEVec2 pos)
 
 AEVec2 Graphics::Text::GetBufferSize()
 {
-	AEGfxGetPrintSize(font::ID, buffer, scale, width, height);
+	AEGfxGetPrintSize(font::ID, const_cast<s8*>(buffer.c_str()), scale, width, height);
 	
 	return AEVec2{ width / 2 * AEGetWindowWidth(), height / 2 * AEGetWindowHeight() };
 }

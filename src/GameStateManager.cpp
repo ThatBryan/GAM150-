@@ -3,6 +3,7 @@
 #include "MainMenu.h"
 #include "Splash.h"
 #include "TestLevel.h"
+#include "LevelSystem.h"
 
 unsigned int gamestateInit;
 unsigned int gamestateCurr;
@@ -15,6 +16,7 @@ void (*GameStateUpdate)() = 0;
 void (*GameStateDraw)() = 0;
 void (*GameStateFree)() = 0;
 void (*GameStateUnload)() = 0;
+LevelSystem LevelSys;
 
 void GameStateManagerInit(unsigned int gamestate)
 {
@@ -24,6 +26,7 @@ void GameStateManagerInit(unsigned int gamestate)
 	gamestateCurr = gamestateInit;
 	gamestateNext = gamestateInit;
 	gamestatePrev = gamestateInit;
+	LevelSys.Init();
 }
 
 void GameStateManagerUpdate()

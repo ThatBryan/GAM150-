@@ -7,6 +7,8 @@
 #include "AEEngine.h"
 
 Image splash;
+
+
 static float splashLife, alpha;
 const float splashDuration = 3.0f;
 
@@ -31,6 +33,7 @@ void Splash::Render() {
 	splash.Draw_Texture(alpha);
 }
 void Splash::Load() {
+
 }
 void Splash::Unload() {
 	splash.Free();

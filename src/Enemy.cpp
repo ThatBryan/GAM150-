@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "Tiles.h"
 #include "Utilities.h"
+#include "Particles.h"
 
 
 bool jump = FALSE;
@@ -12,31 +13,31 @@ float Enemies::bat_counter = 5.0f, Enemies::bat_speed = 100.0f, Enemies::batBBOf
 float Enemies::squirrel_counter = 4.0f, Enemies::squirrel_speed = 110.0f, Enemies::squirrelBBOffset = 10.0f,
 Enemies::jump_counter = 0.5f, Enemies::squirrel_jumpspeed = 25.0f;
 
+static AEGfxTexture* enemyTex[static_cast<int>(EnemyType::Max)]{ nullptr };
+
 Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
 spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, counter{ 0 }, jumpcounter{ 0 },
-velocity{ 0 }, jumpvelocity{ 0 }{
+velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }, alphaTimer{ 1.0f }{
 	ID = EnemyCount;
 	EnemyCount++;
-	headBB.color.SetColor(Color{ 255.0f, 255.0, 255.0f, 255.0f });
-	enemyBB.color.SetColor(Color{ 0, 0, 0, 100.0f });
+	headBB.color.Set(Color{ 255.0f, 255.0, 255.0f, 255.0f });
+	enemyBB.color.Set(Color{ 0, 0, 0, 100.0f });
 }
 
-static f32 maxX{ 0 }, maxY{ 0 };
 void Enemies::Update_Position(void)
 {
-	maxX = static_cast<f32>(AEGetWindowWidth());
-	maxY = static_cast<f32>(AEGetWindowHeight());
+	f32 maxX{ static_cast<f32>(AEGetWindowWidth()) };
 
-	if (active) {
+	if (active && !killed) {
 		switch (type) {
 		case EnemyType::Slime:
-			Slime_Movement(maxX, maxY);
+			Slime_Movement(maxX);
 			return;
 		case EnemyType::Bat:
-			Bat_Movement(maxX, maxY);
+			Bat_Movement(maxX);
 			return;
 		case EnemyType::Squirrel:
-			Squirrel_Movement(maxX, maxY);
+			Squirrel_Movement(maxX);
 			return;
 		}
 	}
@@ -61,14 +62,14 @@ void Enemies::GravityCheck(std::vector <std::vector<Tiles>*>& TileManager) {
 }
 
 void Enemies::ApplyGravity(void) {
-	if (isGravity)
+	if (isGravity && !killed)
 		sprite.pos.y += gravityStrength * g_dt;
 }
 
-void Enemies::Bat_Movement(f32 maxX, f32 maxY)
+void Enemies::Bat_Movement(f32 maxX)
 {
 	// Sine-Wave
-	sprite.pos.y = spawnPos.y + 10 * sin(static_cast<f32>(sprite.pos.x) * 2.0f * PI / 180.0f); // y = amplitude * sin(x * period * pi / 180)
+	sprite.pos.y = spawnPos.y + 10.0f * sinf(static_cast<f32>(sprite.pos.x) * 2.0f * PI / 180.0f); // y = amplitude * sin(x * period * pi / 180)
 	counter -= g_dt;
 
 	if (counter < 0.0f || sprite.pos.x + sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
@@ -84,7 +85,7 @@ void Enemies::Bat_Movement(f32 maxX, f32 maxY)
 	headBB.pos.y -= batBBOffset;
 }
 
-void Enemies::Squirrel_Movement(f32 maxX, f32 maxY)
+void Enemies::Squirrel_Movement(f32 maxX)
 {
 	sprite.pos.x += velocity * g_dt;
 	sprite.pos.y += static_cast<f32>(jumpvelocity) * g_dt;
@@ -109,7 +110,7 @@ void Enemies::Squirrel_Movement(f32 maxX, f32 maxY)
 	headBB.pos.y -= squirrelBBOffset;
 }
 
-void Enemies::Slime_Movement(f32 maxX, f32 maxY)
+void Enemies::Slime_Movement(f32 maxX)
 {
 	sprite.pos.x -= velocity * g_dt;
 	counter -= g_dt;
@@ -123,18 +124,31 @@ void Enemies::Slime_Movement(f32 maxX, f32 maxY)
 	enemyBB.pos = sprite.pos;
 	headBB.pos.y -= slimeBBOffset;
 }
+void Enemies::DecrementAlpha(void)
+{
+	static const float Timer{ alphaTimer };
+	static const float Alpha{ 255.0f };
+
+	if (alphaTimer <= 0)
+		active = false;
+	if (killed) {
+		alphaTimer -= g_dt;
+		alpha = (alphaTimer / Timer) * Alpha;
+	}
+}
 
 void Enemies::Update()
 {
 	Update_Position();
 	ApplyGravity();
+	DecrementAlpha();
 }
 
 void Enemies::Draw()
 {
 	if (active)
 	{
-		sprite.Draw_Texture(255.0f);
+		sprite.Draw_Texture(alpha);
 		if (DebugMode) {
 			headBB.Draw();
 			enemyBB.Draw();
@@ -145,15 +159,15 @@ void Enemies::Draw()
 void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 pos, const f32 width, const f32 height)
 {
 	float bbHeight{ height }, counter{ 0 }, vel{ 0 }, jumpcounter{ 0 }, jumpvel{ 0 };
-	fn_ptr typeMovement{ nullptr };
+	const float BatOffset{ 20.0f }, squirrelOffset{ 43.0f };
 	switch (type) {
 	case EnemyType::Bat:
-		bbHeight = 20.0f;
+		bbHeight = BatOffset;
 		counter = Enemies::bat_counter;
 		vel = Enemies::bat_speed;
 		break;
 	case EnemyType::Squirrel:
-		bbHeight = 43.0f;
+		bbHeight = squirrelOffset;
 		counter = Enemies::squirrel_counter;
 		vel = Enemies::squirrel_speed;
 		jumpcounter = Enemies::jump_counter;
@@ -167,14 +181,15 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 		break;
 	}
 	enemy.push_back(Enemies(enemyTex[static_cast<int>(type)], width, height));
-	enemy[enemy.size() - 1].sprite.pos = pos;
-	enemy[enemy.size() - 1].type = type;
-	enemy[enemy.size() - 1].spawnPos = pos;
-	enemy[enemy.size() - 1].enemyBB.height = bbHeight;
-	enemy[enemy.size() - 1].counter = counter;
-	enemy[enemy.size() - 1].velocity = vel;
-	enemy[enemy.size() - 1].jumpcounter = jumpcounter;
-	enemy[enemy.size() - 1].jumpvelocity = jumpvel;
+	Enemies& Enemy = enemy.back();
+	Enemy.sprite.pos = pos;
+	Enemy.type = type;
+	Enemy.spawnPos = pos;
+	Enemy.enemyBB.height = bbHeight;
+	Enemy.counter = counter;
+	Enemy.velocity = vel;
+	Enemy.jumpcounter = jumpcounter;
+	Enemy.jumpvelocity = jumpvel;
 }
 
 void Enemies::Reset(std::vector <Enemies>& enemy)
@@ -183,7 +198,10 @@ void Enemies::Reset(std::vector <Enemies>& enemy)
 	{
 		enemy[i].sprite.pos = enemy[i].spawnPos;
 		enemy[i].active = true;
+		enemy[i].killed = false;
 		enemy[i].sprite.rotation = 0;
+		enemy[i].alpha = 255.0f;
+		enemy[i].alphaTimer = 1.0f;
 	}
 }
 void Enemies::Unload(void)
@@ -218,4 +236,14 @@ void Enemies::LoadTex(void) {
 EnemyType& operator++(EnemyType& rhs) {
 	rhs = static_cast<EnemyType>((static_cast<int>(rhs) + 1));
 	return rhs;
+}
+
+void Enemies::setKilled(bool status) {
+	killed = status;
+	const int particleCount{ 50 };
+	if (killed) {
+		for (int i = 0; i < particleCount; ++i) {
+			Particles::Create(sprite.pos, Utils::GetRandomVel(), Color::CreateRandomColor(), 1, 75.0f, Utils::RandomRangeFloat(0, 50.0f), 25.0f, 3.0f, enemyTex[static_cast<int>(type)]);
+		}
+	}
 }
