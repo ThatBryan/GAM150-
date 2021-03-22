@@ -257,7 +257,7 @@ TileType& operator++(TileType& rhs) {
 
 void Tiles::TileShake(void) {
 	AEVec2 ShakeVec = Utils::GetRandomVecVel();
-	const float ShakeStrength{ 20.0f };
+	const float ShakeStrength{ 15.0f };
 	AEVec2ScaleAdd(&image.pos, &ShakeVec, &image.pos, g_dt * ShakeStrength);
 }
 

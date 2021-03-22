@@ -114,17 +114,17 @@ void MapLoad()
 	{
 		case 1:
 		{
-			ImportMapDataFromFile("./Levels/testrun.txt");
+			ImportMapDataFromFile("./Assets/Levels/testrun.txt");
 			break;
 		}
 		case 2:
 		{
-			ImportMapDataFromFile("./Levels/Level2.txt");
+			ImportMapDataFromFile("./Assets/Levels/Level2.txt");
 			break;
 		}
 		case 3:
 		{
-			ImportMapDataFromFile("./Levels/Level3.txt");
+			ImportMapDataFromFile("./Assets/Levels/Level3.txt");
 			break;
 		}
 		default:
