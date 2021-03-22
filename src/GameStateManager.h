@@ -30,7 +30,7 @@ extern void (*GameStateFree)();
 extern void (*GameStateUnload)();
 
 //Declaring GSM functions
-void GameStateManagerInit(unsigned int gamestateInit = GS_MAINMENU);
+void GameStateManagerInit(unsigned int gamestateInit = GS_SPLASH);
 void GameStateManagerUpdate();
 
 
