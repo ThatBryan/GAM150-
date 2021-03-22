@@ -23,7 +23,7 @@ namespace FilePaths {
 	const char* jumpSFX = "./Assets/Audio/SFX/powerup.wav";
 	const char* GameplayBGM = "./Assets/Audio/BGM/gg.wav";
 }
-
+unsigned short Level{ 0 };
 // Player constants
 const float player_speed = 150.0f;
 const float player_width = 50.0f;

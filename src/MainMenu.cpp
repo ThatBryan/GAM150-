@@ -61,7 +61,7 @@ void MainMenu::Init(void)
 
 	test = AEGfxTextureLoad(FP::boi);
 	for (int i = 0; i < 50; ++i) {
-		Particles::Create(ScreenMid, Utils::GetRandomVel(), Color::CreateRandomColor(), 1, 100.0f, Utils::RandomRangeFloat(0.0f, 500.0f), 50.0f, 10.0f, test);
+		Particles::Create(ScreenMid, Utils::GetRandomVecVel(), Color::CreateRandomColor(), 1, 100.0f, Utils::RandomRangeFloat(0.0f, 500.0f), 50.0f, 10.0f, test);
 	}
 }
 
@@ -69,7 +69,7 @@ void MainMenu::Update(void)
 {
 	if (AEInputCheckTriggered(AEVK_SPACE)) {
 		for (int i = 0; i < 100; ++i) {
-			Particles::Create(Utils::GetRandomPos(), Utils::GetRandomVel(), Color::CreateRandomColor(), 1, 50.0f, Utils::RandomRangeFloat(0.0f, 500.0f), 50.0f, 3.0f);
+			Particles::Create(Utils::GetRandomPos(), Utils::GetRandomVecVel(), Color::CreateRandomColor(), 1, 50.0f, Utils::RandomRangeFloat(0.0f, 500.0f), 50.0f, 3.0f);
 		}
 	}
 	Audio.update();

@@ -188,8 +188,10 @@ void Player::GravityManager(void)
 
 void Player::SetWin(void)
 {
-	 LevelSys.UnlockNext();
-	 win = true;
+	if (!win) {
+		LevelSys.UnlockNext();
+		win = true;
+	}
 }
 
 void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)

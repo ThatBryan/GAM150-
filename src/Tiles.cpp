@@ -94,8 +94,7 @@ void Tiles::CheckEnemyStatus(std::vector<Enemies>& enemy)
 	for (size_t i = 0; i < enemy.size(); i++){
 		if (enemy[i].getKilled() == true) {
 			if (type == TileType::Grass || type == TileType::Special){
-				if (Utils::ColliderAABB(image.pos, image.width, image.height, enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height + tolerance)) { // DEBUGGGGGGGGGGGGGGGGGGGGGGGG
-					//enemy[i].active = false;
+				if (Utils::ColliderAABB(image.pos, image.width, image.height, enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height + tolerance)) {
 					isCollapsing = true;
 				}
 			}
@@ -117,8 +116,6 @@ void Tiles::CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer)
 				ThePlayer.gravity = false;
 				ThePlayer.jump = false;
 					return;
-				//if (DebugMode)
-					//printf("Don't apply gravity\n");
 			}
 		}
 	}
@@ -195,7 +192,8 @@ void Tiles::Update(Player& ThePlayer)
 	DecreaseLifespan();
 	if (isCollapsing)
 		TileShake();
-	CheckPlayerGoal(ThePlayer);
+	if(type == TileType::Goal)
+		CheckPlayerGoal(ThePlayer);
 }
 
 void Tiles::Render() {
@@ -208,8 +206,7 @@ void Tiles::Render() {
 			tile_topBB.Draw();
 			tile_leftBB.Draw();
 			tile_rightBB.Draw();
-		}
-			
+		}	
 	}
 }
 void Tiles::UpdateManager(std::vector <Tiles>& tiles, Player& ThePlayer, std::vector <Enemies>& enemy)
@@ -260,12 +257,13 @@ TileType& operator++(TileType& rhs) {
 }
 
 void Tiles::TileShake(void) {
-	AEVec2 ShakeStrength{Utils::RandomRangeFloat(-0.5f, 0.5f), Utils::RandomRangeFloat(-0.5f, 0.5f) };
-	image.pos = AEVec2Add(image.pos, ShakeStrength);
+	AEVec2 ShakeVec = Utils::GetRandomVecVel();
+	const float ShakeStrength{ 20.0f };
+	AEVec2ScaleAdd(&image.pos, &ShakeVec, &image.pos, g_dt * ShakeStrength);
 }
 
 void Tiles::CollapsingManager(TileMgr TileManager) {
-static const float allowance{ 4.0f };
+static const float allowance{ 6.0f }; // Offset for shake
 	for (size_t i = 0; i < TileManager.size(); ++i) {
 		for (size_t j = 0; j < TileManager[i]->size(); ++j) {
 

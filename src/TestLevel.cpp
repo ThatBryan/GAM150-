@@ -16,7 +16,6 @@ std::vector<Enemies> enemies;
 Player Jumperman;
 std::vector <std::vector <Tiles>*> tileManager;
 
-int Level{ 0 };
 
 void MapInit(void)
 {
@@ -69,7 +68,6 @@ void MapInit(void)
 	UI::Init();
 }
 
-const int maxLevel{ 9 };
 void MapUpdate()
 {
 	if (!paused)
@@ -80,20 +78,6 @@ void MapUpdate()
 		TestRestart();
 	}
 	UpdateManager();
-	if (AEInputCheckReleased(AEVK_N))
-	{
-		if(Level <= maxLevel - 1)
-			Level += 1;
-
-		if (gamestateCurr == GS_PROGRESS)
-		{
-			gamestateNext = GS_TEST;
-		}
-		else if (gamestateCurr == GS_TEST)
-		{
-			gamestateNext = GS_PROGRESS;
-		}
-	}
 }
 
 void MapRender()
@@ -106,7 +90,6 @@ void MapRender()
 	{
 		enemies[j].Draw();
 	}
-	//Jumperman[0].Render();
 	Jumperman.Render();
 	Overlay::Render(Jumperman);
 	UI::Draw();
@@ -172,7 +155,7 @@ void TestRestart()
 
 void UpdateManager()
 {
-	if (!paused) {
+	if (!paused && !Jumperman.GetLose() && !Jumperman.GetWinStatus()) {
 		Jumperman.Update();
 		Tiles::UpdateManager(tilemap, Jumperman, enemies);
 		Tiles::CollapsingManager(tileManager);

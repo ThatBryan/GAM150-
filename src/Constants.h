@@ -30,6 +30,9 @@ namespace FilePaths {
 
 namespace FP = FilePaths; // Short hand 
 
+// Level trakcer
+extern unsigned short Level;
+
 // Player constants
 extern const float player_speed;
 extern const float player_width;

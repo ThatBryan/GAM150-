@@ -1,6 +1,8 @@
 #include "LevelSystem.h"
 #include <iostream>
+#include "Constants.h"
 #include <fstream>
+#include "GameStateManager.h"
 
 const int LevelMax{ 9 };
 LevelSystem::LevelSystem() : maxLevel{LevelMax}, key{ 0 }{
@@ -31,7 +33,7 @@ void LevelSystem::Init()
 
 void LevelSystem::UnlockNext()
 {	
-	if (key < maxLevel) {
+	if (key < maxLevel && Level == key) {
 		++key;
 		std::cout << "Level: " << key << " unlocked!\n";
 	}
@@ -48,4 +50,18 @@ void LevelSystem::SaveKeyToFile(void)
 	}
 }
 
+void LevelSystem::SetNextLevel(void)
+{
+	gamestateNext = ++Level;
+	std::cout << Level << std::endl;
+
+	if (gamestateCurr == GS_PROGRESS)
+	{
+		gamestateNext = GS_TEST;
+	}
+	else if (gamestateCurr == GS_TEST)
+	{
+		gamestateNext = GS_PROGRESS;
+	}
+}
 

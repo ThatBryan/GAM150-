@@ -7,6 +7,7 @@
 #include <vector>
 #include "MainMenu.h"
 #include "AEEngine.h"
+#include "LevelSystem.h"
 
 enum { Pause = 0, Victory, Defeat, MAX_IMAGE };
 
@@ -30,10 +31,14 @@ void Overlay::Init()
 
 	buttons[0].Set_Callback(Utils::ReturnToMenu);
 	buttons[0].Set_Text("Menu");
+
+
 	buttons[1].Set_Text("Next Level");
-	buttons[1].Set_Callback(MainMenu::placeholder);
+	buttons[1].Set_Callback(LevelSystem::SetNextLevel);
+	
 	buttons[2].Set_Callback(Utils::ReturnToMenu);
 	buttons[2].Set_Text("Menu");
+	
 	buttons[3].Set_Text("Retry");
 	buttons[3].Set_Callback(Utils::RestartLevel);
 
