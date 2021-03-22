@@ -94,7 +94,6 @@ void MapUpdate()
 		{
 			gamestateNext = GS_PROGRESS;
 		}
-		//gamestateNext = GS_PROGRESS;
 	}
 }
 
