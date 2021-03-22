@@ -168,7 +168,7 @@ void Demo::Unload(void)
 		buttons[i].FreeTexture();
 	}
 	buttons.clear();
-	UI::Buttons_Unload();
+	UI::Unload();
 }
 
 void Demo::Restart(void)

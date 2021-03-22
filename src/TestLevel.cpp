@@ -151,6 +151,7 @@ void MapUnload()
 	enemies.clear();
 	Jumperman.clear();
 	tileManager.clear();
+	UI::Unload();
 }
 
 void TestRestart()

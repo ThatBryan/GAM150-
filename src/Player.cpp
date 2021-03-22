@@ -70,7 +70,8 @@ void Player::LoadTex(void) {
 }
 
 void Player::Unload(void) {
-	AEGfxTextureUnload(playerTex);
+	if(playerTex)
+		AEGfxTextureUnload(playerTex);
 }
 void Player::Update_Position(void)
 {

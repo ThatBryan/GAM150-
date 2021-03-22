@@ -100,7 +100,7 @@ void UI::DisplayLife(short livesCount) {
 }
 
 
-void UI::Buttons_Unload()
+void UI::Unload()
 {
 	buttonTest.clear();
 	lives.Free();
