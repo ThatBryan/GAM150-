@@ -11,9 +11,14 @@ Particles::Particles() : pMesh{ Mesh::Circle }, rotation{0}, active{ true }, vel
 lifeSpan{ 0.0f }, currentLifespan{ 0.0f }, pTex{ nullptr }, pos{ AEVec2{0.0f, 0.0f} }, height{ 0 }, width{ 0 },
 transformMtx{ NULL }, rotation_rate{ 0 }{}
 
+static float WindHeight;
+static float WindWidth;
+
 void Particles::Create(AEVec2 Pos, AEVec2 Vel, Color color, int count, float speed, float Rotation_rate, float radius, float lifespan, AEGfxTexture* Texture)
 {
 	// Try to reuse container
+	WindHeight = static_cast<f32>(AEGetWindowHeight());
+	WindWidth = static_cast<f32>(AEGetWindowWidth());
 	for (size_t i = 0; i < p.size() ; ++i) {
 		if (count < 0)
 			return;
@@ -64,7 +69,6 @@ void Particles::Create(AEVec2 Pos, AEVec2 Vel, Color color, int count, float spe
 
 void Particles::Update()
 {
-	//std::cout << p.size() << std::endl;
 	for (size_t i = 0; i < p.size(); ++i) {
 		if (p[i].active == false)
 			continue;

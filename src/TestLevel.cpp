@@ -21,7 +21,6 @@ Player Jumperman;
 void MapInit(void)
 {
 	f32 grid_height{ static_cast<f32>(AEGetWindowHeight() / Map_Height) }, grid_width{ static_cast<f32>(AEGetWindowWidth() / Map_Width) };
-	std::cout << grid_height << std::endl;
 	for (int i = 0; i < Map_Height; ++i)
 	{
 		for (int j = 0; j < Map_Width; ++j)
@@ -168,6 +167,6 @@ void UpdateManager()
 			enemies[i].GravityCheck(tileManager);
 		}
 		Jumperman.CheckEnemyCollision(enemies);
-		Particles::Update();
 	}
+	Particles::Update();
 }

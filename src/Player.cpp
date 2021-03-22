@@ -118,21 +118,15 @@ void Player::Update_Position(void)
 		jumpvel = 5.0f;
 	}
 
-	if (AEInputCheckTriggered(AEVK_D) && direction != MovementState::Right) {
-		sprite.ReflectAboutYAxis();
-		direction = MovementState::Right;
-	}
-
-	if (AEInputCheckTriggered(AEVK_A) && direction != MovementState::Left) {
-		std::cout << "dafaq\n";
-		sprite.ReflectAboutYAxis();
-		direction = MovementState::Left;
-	}
-
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
 	{
 		if (sprite.pos.x + sprite.width / 2 <= maxX)
 			sprite.pos.x += player_speed * g_dt;
+
+		if (direction != MovementState::Right) {
+			sprite.ReflectAboutYAxis();
+			direction = MovementState::Right;
+		}
 
 	}
 
@@ -141,31 +135,37 @@ void Player::Update_Position(void)
 		if (sprite.pos.x >= 0 - sprite.width / 2.0f)
 			sprite.pos.x -= player_speed * g_dt;
 
+		if (direction != MovementState::Left) {
+			sprite.ReflectAboutYAxis();
+			direction = MovementState::Left;
+		}
+
 	}
 
 	if (DebugMode) {
-	AEVec2 Mouse = Utils::GetMousePos();
-	if (AETestPointToRect(&Mouse, &sprite.pos, sprite.width, sprite.height))
-	{
-		if (AEInputCheckCurr(AEVK_LBUTTON))
-			sprite.pos = Mouse;
+		AEVec2 Mouse = Utils::GetMousePos();
+		if (AETestPointToRect(&Mouse, &sprite.pos, sprite.width, sprite.height))
+		{
+			if (AEInputCheckCurr(AEVK_LBUTTON))
+				sprite.pos = Mouse;
+			}
+		if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN)) {
+			if (sprite.pos.y + sprite.height / 2 <= maxY) {
+				sprite.pos.y += player_speed * g_dt;
+			}
 		}
-	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN)) {
-		if (sprite.pos.y + sprite.height / 2 <= maxY) {
-			sprite.pos.y += player_speed * g_dt;
+		if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP)) {
+			if (sprite.pos.y - sprite.height / 2 >= 0) {
+				sprite.pos.y -= player_speed * g_dt;
+			}
 		}
-	}
-	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP)) {
-		if (sprite.pos.y - sprite.height / 2 >= 0) {
-			sprite.pos.y -= player_speed * g_dt;
-		}
-	}
 	}
 	playerBB.pos = sprite.pos;
 	if (direction == MovementState::Left)
 		bottomBB.pos = AEVec2Set(sprite.pos.x - player_collider_offset_x, sprite.pos.y + player_collider_offset_y);
 	else
 		bottomBB.pos = AEVec2Set(sprite.pos.x + player_collider_offset_x, sprite.pos.y + player_collider_offset_y);
+
 	player_topBB.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0f);
 	player_rightBB.pos = AEVec2Set(sprite.pos.x + abs(sprite.width) / 4.0f, sprite.pos.y);
 	player_leftBB.pos = AEVec2Set(sprite.pos.x - abs(sprite.width) / 4.0f, sprite.pos.y);
