@@ -11,15 +11,22 @@
 #include "GameStateManager.h"
 #include "Particles.h"
 #include <iostream>
+#include "MainMenu.h"
+#include <vector>
+#include <array>
 
 std::vector<Tiles> tilemap;
 std::vector<Enemies> enemies;
 std::vector <std::vector <Tiles>*> tileManager;
 Player Jumperman;
 
+extern AudioData soundData[static_cast<int>(AudioID::Max)];
+extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
+
 
 void MapInit(void)
 {
+
 	f32 grid_height{ static_cast<f32>(AEGetWindowHeight() / Map_Height) }, grid_width{ static_cast<f32>(AEGetWindowWidth() / Map_Width) };
 	for (int i = 0; i < Map_Height; ++i)
 	{
@@ -66,6 +73,8 @@ void MapInit(void)
 	}
 	tileManager.push_back(&tilemap);
 	UI::Init();
+	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
+
 }
 
 void MapUpdate()
@@ -78,6 +87,7 @@ void MapUpdate()
 		gamestateNext = GS_RESTART;
 	}
 	UpdateManager();
+	Audio.update();
 }
 
 void MapRender()
@@ -125,6 +135,8 @@ void MapLoad()
 	Player::LoadTex();
 	Overlay::Load();
 	Overlay::Init();
+	AudioManager::SetVolume(AudioID::BGM, 0.2f);
+	AudioManager::SetVolume(AudioID::Jump, 0.2f);
 }
 
 void MapUnload()

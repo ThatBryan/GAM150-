@@ -63,7 +63,11 @@ void Enemies::GravityCheck(std::vector <std::vector<Tiles>*>& TileManager) {
 
 void Enemies::ApplyGravity(void) {
 	if (isGravity && !killed)
+	{
 		sprite.pos.y += gravityStrength * g_dt;
+	}
+		
+	
 }
 
 void Enemies::Bat_Movement(f32 maxX)
