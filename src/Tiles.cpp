@@ -18,6 +18,7 @@ tile_rightBB{ 10 , height - tile_aabb_rect_offset_x }, tile_leftBB{ 10 , height 
 	tile_leftBB.color.Set(Color{ 0, 255.0f, 0, 205.0f }); // green
 	tile_rightBB.color.Set(Color{ 0, 0, 255.0f, 255.0f }); // blue
 }
+
 void Tiles::Collapse(void)
 {
 	if (type == TileType::Grass || type == TileType::Special)
@@ -264,7 +265,7 @@ void Tiles::TileShake(void) {
 }
 
 void Tiles::CollapsingManager(TileMgr TileManager) {
-static const float allowance{ 3.0f };
+static const float allowance{ 4.0f };
 	for (size_t i = 0; i < TileManager.size(); ++i) {
 		for (size_t j = 0; j < TileManager[i]->size(); ++j) {
 

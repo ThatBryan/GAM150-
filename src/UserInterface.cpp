@@ -10,6 +10,7 @@
 #include "Button.h"
 #include "Image.h"
 #include "MainMenu.h"
+#include "Player.h"
 
 char strBuffer[100];
 char strBuffer1[100];
@@ -19,6 +20,8 @@ Graphics::Text LevelDisplay(strBuffer1, 0.5f);
 Graphics::Text TimerDisplay(strBuffer2, 0.5f);
 
 static std::vector <Button> buttonTest;
+
+extern Player Jumperman;
 Image lives;
 
 void UI::Init() {
@@ -54,7 +57,7 @@ void UI::Update() {
 		for (size_t i = 0; i < pauseButtonIdx; ++i) {
 			buttonTest[i].Update();
 		}
-	else if (paused) {
+	else if (paused && !Jumperman.GetLose() && !Jumperman.GetWinStatus()) {
 		for (size_t i = pauseButtonIdx; i < buttonTest.size(); ++i) {
 			buttonTest[i].Update();
 		}

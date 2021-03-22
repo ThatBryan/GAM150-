@@ -256,13 +256,13 @@ void MainMenu::TestLevelSelectionUpdate(void)
 
 void MainMenu::TestLevelSelectionRender(void)
 {
-	static Graphics::Text Level;
-	Level.SetText("Level Selection");
-	Level.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
-	Level.SetScale(1.0f);
+	static Graphics::Text LevelSelection;
+	LevelSelection.SetText("Level Selection");
+	LevelSelection.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	LevelSelection.SetScale(1.0f);
 
 	for (int i = 0; i < LevelButtons.size(); ++i) {
 		LevelButtons[i].Render();
 	}
-	Level.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() / 10)));
+	LevelSelection.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() / 10)));
 }

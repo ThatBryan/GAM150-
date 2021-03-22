@@ -9,6 +9,7 @@
 #include "Button.h"
 #include "Overlay.h"
 #include "GameStateManager.h"
+#include "Particles.h"
 
 std::vector<Tiles> tilemap;
 std::vector<Enemies> enemies;
@@ -110,6 +111,7 @@ void MapRender()
 	Overlay::Render(Jumperman);
 	UI::Draw();
 	UI::Update();
+	Particles::Render();
 }
 
 void MapLoad()
@@ -146,6 +148,7 @@ void MapUnload()
 	Tiles::Unload();
 	Enemies::Unload();
 	Player::Unload();
+	Particles::Unload();
 	Jumperman.sprite.Free();
 	AudioManager::unloadAsset();
 	FreeMapData();
@@ -182,5 +185,6 @@ void UpdateManager()
 			enemies[i].GravityCheck(tileManager);
 		}
 		Jumperman.CheckEnemyCollision(enemies);
+		Particles::Update();
 	}
 }
