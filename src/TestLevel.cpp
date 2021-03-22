@@ -73,12 +73,7 @@ void MapUpdate()
 {
 	if (!paused)
 		app_time += g_dt;
-	Utils::CheckDebugMode();
-	for (size_t i = 0; i < tilemap.size(); ++i)
-	{
-		// call overloaded update function which takes a reference to the player.
-		tilemap[i].Update(Jumperman);
-	}
+
 	if (AEInputCheckTriggered(AEVK_R))
 	{
 		TestRestart();
@@ -111,6 +106,7 @@ void MapRender()
 	}
 	//Jumperman[0].Render();
 	Jumperman.Render();
+	UI::Draw();
 }
 
 void MapLoad()
@@ -182,4 +178,5 @@ void UpdateManager()
 		}
 		Jumperman.CheckEnemyCollision(enemies);
 	}
+	UI::Update();
 }

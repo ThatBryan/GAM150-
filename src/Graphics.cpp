@@ -157,6 +157,11 @@ void Graphics::Rect::DrawTexture(AEGfxTexture* pTex, Color C, const f32 alpha)
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
+void Graphics::Rect::SetMesh(AEGfxVertexList* Mesh)
+{
+	pMesh = Mesh;
+}
+
 Graphics::Circle::Circle(const f32 radius, const f32 direction, AEGfxVertexList* Mesh) : Rect(radius, radius, direction, Mesh)
 {
 	color.Set(Color{ 255, 255, 255, 255 });

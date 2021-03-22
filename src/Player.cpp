@@ -59,8 +59,6 @@ void Player::Reset(void)
 }
 
 void Player::Update() {
-	//if(DebugMode)
-	//	sprite.rotation += 1;
 	CheckOutOfBound();
 	Update_Position();
 	if (hp.current <= 0)
@@ -239,4 +237,10 @@ void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, con
 	player.sprite.pos = pos;
 	player.playerBB.width = width;
 	player.playerBB.height = height;
+
+	player.playerBB.SetMesh();
+	player.bottomBB.SetMesh();
+	player.player_topBB.SetMesh();
+	player.player_leftBB.SetMesh();
+	player.player_rightBB.SetMesh();
 }
