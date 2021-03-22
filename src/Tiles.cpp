@@ -115,6 +115,8 @@ void Tiles::CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer)
 				ThePlayer.bottomBB.pos, ThePlayer.bottomBB.width, ThePlayer.bottomBB.height)){
 				ThePlayer.gravity = false;
 				ThePlayer.jump = false;
+				ThePlayer.chargedjump = false;
+				
 					return;
 			}
 		}
@@ -306,6 +308,8 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 				ThePlayer.player_topBB.pos, ThePlayer.player_topBB.width, ThePlayer.player_topBB.height)){	
 					ThePlayer.gravity = true;
 					ThePlayer.jump = false;
+					ThePlayer.chargedjump = false;
+					
 					if(DebugMode)
 						printf("Collision Top\n");
 				}

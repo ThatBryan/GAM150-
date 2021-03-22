@@ -38,6 +38,7 @@ extern const float player_speed;
 extern const float player_width;
 extern const float player_height;
 extern const float player_jumpvel;
+extern const float player_chargedjumpvel;
 extern const float enemy_width;
 extern const float enemy_height;
 extern const float player_collider_offset_y;
