@@ -45,10 +45,10 @@ public:
 	void CheckEnemyCollision(std::vector <Enemies>& enemy);
 	void GravityManager(void);
 	inline void SetPos(AEVec2 pos) { this->sprite.pos = pos; this->startingPos = pos; }
-	void SetWin(void);
+	void SetPlayerWin(void);
 	inline bool GetWinStatus(void) const { return win; }
-	inline void SetLose(void){ active = false; lose = true; }
-	inline bool GetLose(void) const { return lose; }
+	inline void SetPlayerLose(void){ active = false; lose = true; }
+	inline bool GetLoseStatus(void) const { return lose; }
 
 	static void LoadTex(void);
 	static void Unload(void);

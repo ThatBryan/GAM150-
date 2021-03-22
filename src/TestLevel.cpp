@@ -10,6 +10,7 @@
 #include "Overlay.h"
 #include "GameStateManager.h"
 #include "Particles.h"
+#include <iostream>
 
 std::vector<Tiles> tilemap;
 std::vector<Enemies> enemies;
@@ -20,6 +21,7 @@ std::vector <std::vector <Tiles>*> tileManager;
 void MapInit(void)
 {
 	f32 grid_height{ static_cast<f32>(AEGetWindowHeight() / Map_Height) }, grid_width{ static_cast<f32>(AEGetWindowWidth() / Map_Width) };
+	std::cout << grid_height << std::endl;
 	for (int i = 0; i < Map_Height; ++i)
 	{
 		for (int j = 0; j < Map_Width; ++j)
@@ -132,9 +134,9 @@ void MapUnload()
 	Enemies::Unload();
 	Player::Unload();
 	Particles::Unload();
-	Jumperman.sprite.Free();
 	AudioManager::unloadAsset();
 	FreeMapData();
+	Jumperman.sprite.Free();
 
 	tilemap.clear();
 	enemies.clear();
@@ -155,7 +157,7 @@ void TestRestart()
 
 void UpdateManager()
 {
-	if (!paused && !Jumperman.GetLose() && !Jumperman.GetWinStatus()) {
+	if (!paused && !Jumperman.GetLoseStatus() && !Jumperman.GetWinStatus()) {
 		Jumperman.Update();
 		Tiles::UpdateManager(tilemap, Jumperman, enemies);
 		Tiles::CollapsingManager(tileManager);

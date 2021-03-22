@@ -63,7 +63,7 @@ void Player::Update() {
 	CheckOutOfBound();
 	Update_Position();
 	if (hp.current <= 0)
-		SetLose();
+		SetPlayerLose();
 }
 void Player::Render(void)
 {
@@ -174,7 +174,7 @@ void Player::ChangeDirection() {
 
 void Player::CheckOutOfBound() {
 	if ((sprite.pos.y - sprite.height / 2) > maxY)
-		SetLose();
+		SetPlayerLose();
 }
 
 void Player::GravityManager(void)
@@ -186,7 +186,7 @@ void Player::GravityManager(void)
 	}
 }
 
-void Player::SetWin(void)
+void Player::SetPlayerWin(void)
 {
 	if (!win) {
 		LevelSys.UnlockNext();

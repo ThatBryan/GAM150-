@@ -70,7 +70,7 @@ void Overlay::Render(Player& player)
 		text.SetText(const_cast<s8*>("PAUSED"));
 		text.Draw_Wrapped(text.pos);
 	}
-	if (player.GetLose())
+	if (player.GetLoseStatus())
 	{
 		paused = true;
 		Images[Defeat].Draw_Texture(150.0f);

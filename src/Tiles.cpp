@@ -60,9 +60,9 @@ void Tiles::CheckPlayerGoal(Player& ThePlayer)
 {
 	if (type == TileType::Goal)
 	{
-		static AEVec2 GoalPoint = {image.pos.x, image.pos.y - image.height / 2  - 1.0f};
+		AEVec2 GoalPoint = {image.pos.x, image.pos.y - image.height / 2  - 1.0f};
 		if (AETestPointToRect(&GoalPoint, &ThePlayer.bottomBB.pos, ThePlayer.bottomBB.width, ThePlayer.bottomBB.height)) {
-			ThePlayer.SetWin();
+			ThePlayer.SetPlayerWin();
 		}
 	}
 }
@@ -302,34 +302,28 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 			if (TileManager[i]->at(j).GetActive() == false)
 				continue;
 
+			Tiles& TheTile = TileManager[i]->at(j);
+			if (Utils::ColliderAABB(TheTile.tile_bottomBB.pos, TheTile.tile_bottomBB.width, TheTile.tile_bottomBB.height,
+				ThePlayer.player_topBB.pos, ThePlayer.player_topBB.width, ThePlayer.player_topBB.height)){	
+					ThePlayer.gravity = true;
+					ThePlayer.jump = false;
+					if(DebugMode)
+						printf("Collision Top\n");
+				}
 
-			if (Utils::ColliderAABB(TileManager[i]->at(j).tile_bottomBB.pos, TileManager[i]->at(j).tile_bottomBB.width, TileManager[i]->at(j).tile_bottomBB.height,
-				ThePlayer.player_topBB.pos, ThePlayer.player_topBB.width, ThePlayer.player_topBB.height))
-			{	
-				ThePlayer.gravity = true;
-				ThePlayer.jump = false;
-				printf("Collision Top\n");
-			}
+			if (Utils::ColliderAABB(TheTile.tile_rightBB.pos, TheTile.tile_rightBB.width, TheTile.tile_rightBB.height,
+				ThePlayer.player_leftBB.pos, ThePlayer.player_leftBB.width, ThePlayer.player_leftBB.height)){
+					ThePlayer.sprite.pos.x = TheTile.image.pos.x + TheTile.image.width / 2.0f + abs(ThePlayer.sprite.width) / 2.0f;
+					if (DebugMode)
+						printf("Left Collision\n");
+				}
 
-			if (Utils::ColliderAABB(TileManager[i]->at(j).tile_rightBB.pos, TileManager[i]->at(j).tile_rightBB.width, TileManager[i]->at(j).tile_rightBB.height,
-				ThePlayer.player_leftBB.pos, ThePlayer.player_leftBB.width, ThePlayer.player_leftBB.height))
-			{
-				//if (Player[0].direction == MovementState::Left)
-				//{
-				ThePlayer.sprite.pos.x = TileManager[i]->at(j).image.pos.x + TileManager[i]->at(j).image.width / 2.0f + abs(ThePlayer.sprite.width) / 2.0f;
-					printf("Left Collision\n");
-				//}
-			}
-
-			if (Utils::ColliderAABB(TileManager[i]->at(j).tile_leftBB.pos, TileManager[i]->at(j).tile_leftBB.width, TileManager[i]->at(j).tile_leftBB.height,
-				ThePlayer.player_rightBB.pos, ThePlayer.player_rightBB.width, ThePlayer.player_rightBB.height))
-			{
-				//if (Player[0].direction == MovementState::Right)
-				//{
-				ThePlayer.sprite.pos.x = TileManager[i]->at(j).image.pos.x - TileManager[i]->at(j).image.width / 2.0f - abs(ThePlayer.sprite.width) / 2.0f;
-					printf("Right Collision\n");
-				//}
-			}
+			if (Utils::ColliderAABB(TheTile.tile_leftBB.pos, TheTile.tile_leftBB.width, TheTile.tile_leftBB.height,
+				ThePlayer.player_rightBB.pos, ThePlayer.player_rightBB.width, ThePlayer.player_rightBB.height)){
+					ThePlayer.sprite.pos.x = TheTile.image.pos.x - TheTile.image.width / 2.0f - abs(ThePlayer.sprite.width) / 2.0f;
+					if (DebugMode)
+						printf("Right Collision\n");
+				}
 		}
 	}
 }
