@@ -10,10 +10,12 @@ enum class ButtonType{Color = 0, Texture};
 class Button {
 public: 
 	using fn_ptr = void(*)(void);
+	using Test_Ptr = void(*)(unsigned int);
 
 	Button(ButtonType Type, const f32 width, const f32 height, const f32 textScale = 1.0f);
 	void Set_Position(const AEVec2 pos);
 	void Set_Callback(fn_ptr function);
+	void Set_IntCallback(Test_Ptr function);
 	void Set_Text(std::string text);
 	void Set_TextColor(Color color);
 	void SetStateColor(ButtonState state, Color color);
@@ -34,6 +36,7 @@ private:
 	AEGfxTexture* pTex;
 	AEVec2 pos;
 	fn_ptr callback;
+	Test_Ptr TestCallback;
 	Color buttonState[static_cast<int>(ButtonState::MaxColor)];
 	// Check cursor input to determine which color to tint.
 	ButtonState Check_State();

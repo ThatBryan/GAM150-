@@ -9,7 +9,7 @@
 extern Player Jumperman;
 
 Button::Button(ButtonType Type, const f32 width, const f32 height, const f32 scale) : button(width, height), text(std::string(), scale)
-, pos{ 0,0 }, callback{ nullptr }, pTex{ nullptr }, type{ Type }, ID{ 0 } {
+, pos{ 0,0 }, callback{ nullptr }, pTex{ nullptr }, type{ Type }, ID{ 0 }, TestCallback{ nullptr } {
 	buttonState[static_cast<int>(ButtonState::Idle)] = { 0, 255.0f, 0, 255.0f };
 	buttonState[static_cast<int>(ButtonState::Hovered)] = { 255.0f, 255.0f, 0, 255.0f };
 	buttonState[static_cast<int>(ButtonState::Clicked)] = { 0, 0, 255.0f, 255.0f };
@@ -23,6 +23,11 @@ void Button::Set_Position(const AEVec2 Pos) {
 
 void Button::Set_Callback(fn_ptr fnc_ptr) {
 	this->callback = fnc_ptr;
+}
+
+void Button::Set_IntCallback(Test_Ptr function)
+{
+	TestCallback = function;
 }
 
 void Button::Set_Text(std::string Text) {
@@ -41,7 +46,10 @@ void Button::Update(void) {
 	AEVec2 Mouse = Utils::GetMousePos();
 	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckReleased(AEVK_LBUTTON))
 	{
-		if(callback)
+		if (TestCallback)
+			TestCallback(ID);
+
+		else if(callback)
 			callback();
 	}
 	Render();

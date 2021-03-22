@@ -189,6 +189,7 @@ void MainMenu::Buttons_Init() {
 
 const float baseSpeed = 50.0f;
 static float WindowWidth = 0;
+
 void MainMenu::TestEnemyMovement() {
 	WindowWidth = static_cast<f32>(AEGetWindowWidth());
 
@@ -233,7 +234,7 @@ void MainMenu::SwitchToLevelSelection(void)
 
 	for (size_t i = 0; i < LevelSys.GetKey(); ++i) {
 			LevelButtons[i].SetStateColor(ButtonState::Idle, Color(0, 255.0f, 0.0f, 10.0f));
-			LevelButtons[i].Set_Callback(MainMenu::UnlockedLevel);
+			LevelButtons[i].Set_IntCallback(LevelSystem::SetLevel);
 	}
 	GameStateUpdate = MainMenu::TestLevelSelectionUpdate;
 	GameStateDraw = MainMenu::TestLevelSelectionRender;
