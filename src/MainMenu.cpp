@@ -78,9 +78,6 @@ void MainMenu::Update(void)
 	for (int i = 0; i < buttons.size(); ++i) {
 		buttons[i].Update();
 	}
-	for (int i = 0; i < tiles.size(); ++i) {
-		tiles[i].Update();
-	}
 	player[0].sprite.rotation += 100.0f * g_dt;
 	Particles::Update();
 	Utils::CheckFullScreenInput();

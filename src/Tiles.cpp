@@ -73,7 +73,7 @@ void Tiles::CheckEnemyStatus(std::vector<Enemies>& enemy)
 {
 	static const float tolerance{ 12.0f };
 	for (size_t i = 0; i < enemy.size(); i++){
-		if (enemy[i].getKilled() == true) {
+		if (enemy[i].GetKilledStatus() == true) {
 			if (type == TileType::Grass || type == TileType::Special){
 				if (Utils::ColliderAABB(image.pos, image.width, image.height, enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height + tolerance)) {
 					isCollapsing = true;
@@ -155,13 +155,6 @@ void Tiles::Reset(std::vector <Tiles>& tiles)
 		tiles[i].isCollapsing = false;
 		tiles[i].collapseDelay = 0.5f;
 	}
-}
-void Tiles::Update()
-{
-	CheckPos();
-	DecreaseLifespan();
-	if(isCollapsing)
-		TileShake();
 }
 
 void Tiles::Update(Player& ThePlayer)

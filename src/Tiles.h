@@ -11,8 +11,6 @@ TileType& operator++(TileType& rhs);
 class Player;
 class Enemies;
 
-
-
 class Tiles
 {
 public:
@@ -44,7 +42,6 @@ public:
 		Tiles(AEGfxTexture*, const f32 width, const f32 height);
 		Image image;
 		AEVec2 spawnPos;
-		void Update(void);
 		void Render(void);
 
 		inline bool GetActive() const { return active; }

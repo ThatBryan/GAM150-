@@ -53,7 +53,6 @@ public:
 	static void LoadTex(void);
 	static void Unload(void);
 
-	static void CreatePlayer(std::vector <Player>& player, const AEVec2 pos, const f32 width, const f32 height);
 	static void CreatePlayer(Player& player, const AEVec2 pos, const f32 width, const f32 height);
 
 	friend void UI::DisplayLife(short liveCount);
