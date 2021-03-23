@@ -7,20 +7,19 @@ extern AudioManager Audio;
 namespace MainMenu
 {
 	void Init(void);
+	void Buttons_Init(void);
 	void Update(void);
 
 	void Load(void);
 	void Unload(void);
 	void Render(void);
 
-	void Buttons_Init(void);
 
 	void StartGame();
 	void QuitGame();
 	inline void placeholder(void) { std::cout << "Feature comming soon!" << std::endl; };
 
 	inline void LockedLevel(void) { std::cout << "Level is locked!\n"; }
-	void SetLevel(unsigned int);
 
 	void TestEnemyMovement(void);
 	void TestPlayerMovement(void);

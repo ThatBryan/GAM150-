@@ -55,8 +55,6 @@ public:
 		static void CheckPlayerGravity(const TileMgr TileManager, Player & ThePlayer);
 		static void CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer);
 
-		// Add whole new row of tile.
-		static void AddTileRow(std::vector < Tiles>& tile, TileType type, const int count, const f32 width, const f32 height, const AEVec2 pos);
 
 		// Add single tile to a given vector.
 		static void AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, const f32 height, AEVec2 pos);
@@ -66,4 +64,7 @@ public:
 
 		// Handles the collision between the enemy and tiles, and enemy with player.
 		static void UpdateManager(std::vector <Tiles>& tiles, Player& player, std::vector <Enemies>& enemy);
+
+		//// Add whole new row of tile. Only for main menu.
+		static void AddTileRow(std::vector < Tiles>& tile, TileType type, const int count, const f32 width, const f32 height, const AEVec2 pos);
 };
