@@ -28,6 +28,7 @@ const float player_speed = 150.0f;
 const float player_width = 50.0f;
 const float player_height = 50.0f;
 const float player_jumpvel = 5.0f;
+const float player_chargedjumpvel = 10.0f;
 const float enemy_width = 50.0f;
 const float enemy_height = 50.0f;
 const float player_collider_offset_y = 24.0f;

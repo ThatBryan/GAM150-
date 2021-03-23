@@ -20,7 +20,7 @@ private:
 	MovementState direction;
 	bool win, lose;
 	Health hp;
-	float jumpvel;
+	float jumpvel, chargedjumpvel;
 	static f32 gravityStrength;
 	void Update_Position(void);
 	void CheckOutOfBound(void);
@@ -31,7 +31,7 @@ public:
 	Player(AEGfxTexture* ,const f32 width, const f32 height);
 	Player();
 	Image sprite;
-	bool active, jump, gravity;
+	bool active, jump, gravity, chargedjump;
 	Graphics::Rect playerBB {player_width, player_height};
 	Graphics::Rect bottomBB{player_width / 2.0f, 5.0f};
 	Graphics::Rect player_topBB{ player_width, 5.0f };

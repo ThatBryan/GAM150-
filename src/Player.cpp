@@ -19,8 +19,8 @@ float Player::gravityStrength = 150.0f;
 
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},
-active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{player_jumpvel},
-hp(), direction{MovementState::Right}
+active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel },
+hp(), direction{MovementState::Right}, chargedjumpvel{ player_chargedjumpvel }
 {
 	playerBB.color.Set(Color{ 0, 0, 0, 255.0f });
 	bottomBB.color.Set(Color{ 255.0f, 255.0f, 0, 255.0f }); // yellow
@@ -33,8 +33,8 @@ hp(), direction{MovementState::Right}
 	hp.current = player_hp_max;
 }
 
-Player::Player() : lose{ false }, active{ true }, gravity{ false }, jump{ false },
-win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel }, 
+Player::Player() : lose{ false }, active{ true }, gravity{ false }, jump{ false }, chargedjump { false },
+win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel }, chargedjumpvel{ player_chargedjumpvel },
 hp(), direction{ MovementState::Right } {
 
 	playerBB.color.Set(Color{ 0, 0, 0, 255.0f });
@@ -51,11 +51,13 @@ hp(), direction{ MovementState::Right } {
 void Player::Reset(void)
 {
 	jump = false;
+	chargedjump = false;
 	win = false;
 	lose = false;
 	active = true;
 	sprite.pos = startingPos;
 	jumpvel = player_jumpvel;
+	chargedjumpvel = player_chargedjumpvel;
 	hp.current = hp.max;
 	sprite.rotation = 0;
 	direction = MovementState::Right;
@@ -95,12 +97,13 @@ void Player::Update_Position(void)
 	if (!jump && !gravity && (AEInputCheckTriggered(AEVK_W) || AEInputCheckTriggered(AEVK_UP)))
 	{
 		if (!DebugMode) {
-			jump = TRUE;
+			jump = true;
 			Audio.playAudio(soundTest[static_cast<int>(AudioID::Jump)], AudioID::Jump);
 		}
 	}
 	if (jump)
 	{
+		printf("jump\n");
 		if (sprite.pos.y + sprite.height / 2 <= maxY)
 		{
 			sprite.pos.y -= jumpvel;
@@ -114,9 +117,44 @@ void Player::Update_Position(void)
 		}
 	}
 
+	static float chargedjump_counter = 1.0f;
+	if (AEInputCheckCurr(AEVK_SPACE) && !chargedjump && !gravity)
+	{
+		chargedjump_counter -= g_dt;
+		if (chargedjump_counter < 0)
+		{
+			chargedjump = true;
+			jump = false;
+
+		}
+		
+		printf("%2f\n", chargedjump_counter);
+	}
+	if (AEInputCheckReleased(AEVK_SPACE))
+	{
+		chargedjump = false;
+		chargedjump_counter = 1.0f;
+	}
+	if (chargedjump)
+	{
+		printf("chargedjump\n");
+		if (sprite.pos.y + sprite.height / 2 <= maxY)
+		{
+			sprite.pos.y -= chargedjumpvel;
+
+			chargedjumpvel -= 0.2f; // velocity decrease as y increases
+			if (chargedjumpvel < -10.0f)
+			{
+				chargedjump = false;
+				chargedjumpvel = 10.0f;
+			}
+		}
+	}
+
 	if (!gravity) // reset counter if player's feet touches the ground
 	{
 		jumpvel = 5.0f;
+		chargedjumpvel = 10.0f;
 	}
 
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
@@ -183,7 +221,7 @@ void Player::CheckOutOfBound() {
 
 void Player::GravityManager(void)
 {
-	if (gravity && !jump)
+	if (gravity && !jump && !chargedjump)
 	{
 		if(!DebugMode)
 			sprite.pos.y += gravityStrength * g_dt;
