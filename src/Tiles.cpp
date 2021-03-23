@@ -4,7 +4,6 @@
 #include "Enemy.h"
 #include "Utilities.h"
 
-extern std::vector <Player> player;
 static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
 Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
@@ -17,24 +16,6 @@ tile_rightBB{ 10 , height - tile_aabb_rect_offset_x }, tile_leftBB{ 10 , height 
 	tile_topBB.color.Set(Color{ 255.0f, 0, 0, 255.0f }); // red
 	tile_leftBB.color.Set(Color{ 0, 255.0f, 0, 205.0f }); // green
 	tile_rightBB.color.Set(Color{ 0, 0, 255.0f, 255.0f }); // blue
-}
-
-void Tiles::Collapse(void)
-{
-	if (type == TileType::Grass || type == TileType::Special)
-	{
-		if (collapseDelay <= 0)
-		{
-			image.pos.y += TileCollapseSpeed * g_dt;
-		}
-	}
-	if (type == TileType::Special) {
-		if (AETestRectToRect(&player[0].bottomBB.pos, player[0].bottomBB.width, player[0].bottomBB.height, &ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
-			&& (AEInputCheckTriggered(AEVK_DOWN) || AEInputCheckTriggered(AEVK_S)))
-		{
-			isCollapsing = true;
-		}
-	}
 }
 
 void Tiles::Collapse(const Player& ThePlayer)
@@ -90,9 +71,9 @@ void Tiles::DecreaseLifespan(void)
 
 void Tiles::CheckEnemyStatus(std::vector<Enemies>& enemy)
 {
-	static const float tolerance{ 10.0f };
+	static const float tolerance{ 12.0f };
 	for (size_t i = 0; i < enemy.size(); i++){
-		if (enemy[i].getKilled() == true) {
+		if (enemy[i].GetKilledStatus() == true) {
 			if (type == TileType::Grass || type == TileType::Special){
 				if (Utils::ColliderAABB(image.pos, image.width, image.height, enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height + tolerance)) {
 					isCollapsing = true;
@@ -176,14 +157,6 @@ void Tiles::Reset(std::vector <Tiles>& tiles)
 		tiles[i].isCollapsing = false;
 		tiles[i].collapseDelay = 0.5f;
 	}
-}
-void Tiles::Update()
-{
-	CheckPos();
-	Collapse();
-	DecreaseLifespan();
-	if(isCollapsing)
-		TileShake();
 }
 
 void Tiles::Update(Player& ThePlayer)

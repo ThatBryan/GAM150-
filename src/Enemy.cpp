@@ -242,7 +242,7 @@ EnemyType& operator++(EnemyType& rhs) {
 	return rhs;
 }
 
-void Enemies::setKilled(bool status) {
+void Enemies::KillEnemy(bool status) {
 	killed = status;
 	const int particleCount{ 50 };
 	if (killed) {

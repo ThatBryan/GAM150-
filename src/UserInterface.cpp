@@ -51,7 +51,6 @@ void UI::Update() {
 	TimerDisplay.SetText(strBuffer2);
 
 	Utils::CheckDebugMode();
-	Utils::CheckFullScreenInput();
 
 	if (!paused)
 		for (size_t i = 0; i < pauseButtonIdx; ++i) {

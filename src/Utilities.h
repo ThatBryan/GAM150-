@@ -20,6 +20,7 @@ namespace Utils
 	void CheckDebugMode(void);		// F1 to enter debug mode
 	void ReturnToMenu(void);
 	void RestartLevel(void);
+
 	AEVec2 GetScreenMiddle(void);
 	AEVec2 GetRandomPos(void);
 	// Returns a random normalized vector.

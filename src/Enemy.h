@@ -22,7 +22,7 @@ private:
 	Graphics::Rect enemyBB {enemy_width, 10.0f};
 	bool isGravity, killed;
 	float counter, velocity, jumpcounter, jumpvelocity, alpha, alphaTimer;
-	unsigned short ID;
+	unsigned short ID; // Maybe unnecessary
 
 	static float slime_counter, slime_speed, slimeBBOffset;
 	static float bat_speed, bat_counter, batBBOffset;
@@ -44,8 +44,8 @@ public:
 	void Update(void);
 	void Draw();
 	inline EnemyType GetType() const { return type; }
-	inline bool getKilled() const { return killed; }
-	void setKilled(bool status = true);
+	inline bool GetKilledStatus() const { return killed; }
+	void KillEnemy(bool status = true);
 
 	void GravityCheck(std::vector <std::vector<Tiles>*>& TileManager);
 

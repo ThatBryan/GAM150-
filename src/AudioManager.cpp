@@ -6,6 +6,9 @@ AudioManager Audio;
 std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest{ NULL };
 AudioData soundData[static_cast<int>(AudioID::Max)];
 
+// Default ctor.
+AudioData::AudioData() : ID{ AudioID::None }, channel{ nullptr }, volume{ 1.0f }, mute{ false } {}
+
 AudioManager::AudioManager() {
 	if (FMOD::System_Create(&m_pSystem) != FMOD_OK)
 	{
@@ -61,4 +64,3 @@ void AudioManager::SetMute(AudioID ID) {
 	soundData[static_cast<int>(ID)].channel->setMute(soundData[static_cast<int>(ID)].mute);
 }
 
-AudioData::AudioData() : ID{ AudioID::None }, channel{ nullptr }, volume{ 1.0f }, mute{ false } {}

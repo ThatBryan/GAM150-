@@ -74,7 +74,6 @@ void MapInit(void)
 	}
 	tileManager.push_back(&tilemap);
 	UI::Init();
-	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 
 }
 
@@ -136,7 +135,9 @@ void MapLoad()
 	Player::LoadTex();
 	Overlay::Load();
 	Overlay::Init();
+
 	AudioManager::SetVolume(AudioID::BGM, 0.2f);
+	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 	AudioManager::SetVolume(AudioID::Jump, 0.2f);
 }
 

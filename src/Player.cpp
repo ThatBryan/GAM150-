@@ -2,20 +2,21 @@
 #include "Enemy.h"
 #include <array>
 #include "Utilities.h"
-#include "PitchDemo.h"
 #include "Graphics.h"
 #include "Particles.h"
 #include "UserInterface.h"
 #include "LevelSystem.h"
 #include <iostream>
 
+extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
+extern AudioManager Audio;
+extern LevelSystem LevelSys;
+
 AEGfxTexture* Player::playerTex{ nullptr };
 static f32 maxY;
 static f32 maxX;
 float Player::gravityStrength = 150.0f;
 
-extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
-extern LevelSystem LevelSys;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},
 active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel },
@@ -239,13 +240,13 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 {
 	for (size_t i = 0; i < enemy.size(); i++)
 	{
-		if (!enemy[i].getKilled())
+		if (!enemy[i].GetKilledStatus())
 		{
 			if (Utils::ColliderAABB(enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, playerBB.pos, playerBB.width, playerBB.height))
 			{
 				if (Utils::ColliderAABB(enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, bottomBB.pos, sprite.width, bottomBB.height)) {
 					if (!DebugMode)
-						enemy[i].setKilled();
+						enemy[i].KillEnemy();
 
 					if (DebugMode)
 						printf("enemy dies\n");
@@ -261,15 +262,6 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 			}
 		}
 	}
-}
-
-void Player::CreatePlayer(std::vector <Player>& player, const AEVec2 pos, const f32 width, const f32 height)
-{
-	player.push_back(Player(playerTex, width, height));
-	player[player.size() - 1].startingPos = pos;
-	player[player.size() - 1].sprite.pos = pos;
-	player[player.size() - 1].playerBB.width = width;
-	player[player.size() - 1].playerBB.height = height;
 }
 
 void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, const f32 height)

@@ -8,8 +8,6 @@
 #include "Utilities.h"
 #include "Graphics.h"
 #include "Tiles.h"
-#include <vector>
-#include "PitchDemo.h"
 #include "Constants.h"
 #include "GameStateManager.h"
 #include "MainMenu.h"
@@ -101,6 +99,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			// check if forcing the application to quit
 			if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
 				gamestateNext = GS_QUIT;
+
+
+			Utils::CheckFullScreenInput();
 		}
 		GameStateFree(); //Resets the game state
 
