@@ -14,7 +14,6 @@ namespace MainMenu
 	void Unload(void);
 	void Render(void);
 
-
 	void StartGame();
 	void QuitGame();
 	inline void placeholder(void) { std::cout << "Feature comming soon!" << std::endl; };
