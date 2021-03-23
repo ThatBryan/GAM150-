@@ -136,7 +136,7 @@ void MapLoad()
 	Overlay::Load();
 	Overlay::Init();
 
-	AudioManager::SetVolume(AudioID::BGM, 1.0f);
+	AudioManager::SetVolume(AudioID::BGM, 0.2f);
 	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 	AudioManager::SetVolume(AudioID::Jump, 0.2f);
 }

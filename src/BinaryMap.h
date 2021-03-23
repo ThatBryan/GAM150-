@@ -32,21 +32,11 @@ enum class TYPE_OBJECT
 //struct Map
 //{
 	extern int** MapData;
-	extern int** BinaryCollision;
 	extern int Map_Width;
 	extern int Map_Height;
 //};
 
 int		ImportMapDataFromFile(const char* FileName);
 void	FreeMapData(void);
-
-//Map GetMap(void);
-	//float scaleX, float scaleY);
-//int		GetCellValue(int X, int Y);
-//void	SnapToCell(float* Coordinate);
-//int		CheckInstanceBinaryMapCollision(float PosX, float PosY,
-//void	PrintRetrievedInformation(void); // for debugging
-//void	LoadMap(void);
-
 
 #endif // BINARY_MAP_H_
