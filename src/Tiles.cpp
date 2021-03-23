@@ -7,7 +7,7 @@
 extern std::vector <Player> player;
 static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
-Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
+Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, Mesh::Rect, width, height),
 active{ true }, isCollapsing{ false }, ID{ 0 }, collapseDelay{ TileCollapseDelay }, type{ TileType::Safe }, spawnPos{ 0, 0 },
 ColliderAABB{width, height}, tile_topBB{ width, 1 }, tile_bottomBB{ width - tile_aabb_rect_offset_x , 1 },
 tile_rightBB{ 10 , height - tile_aabb_rect_offset_x }, tile_leftBB{ 10 , height - tile_aabb_rect_offset_x }

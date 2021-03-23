@@ -10,6 +10,7 @@ namespace FilePaths {
 	const char* FlyingEnemySprite = "./Assets/Art/flying.png";
 	const char* SquirrelSprite = "./Assets/Art/Squirrel.png";
 	const char* PlayerSprite = "./Assets/Art/Jumperman.png";
+	const char* PlayerSpriteSheetIdle = "./Assets/Art/Jumperman_Idle_Spritesheet.png";
 	const char* GrassTile = "./Assets/Art/Grass_Tile.png";
 	const char* GoalTile = "./Assets/Art/Goal.png";
 	const char* SpecialTile = "./Assets/Art/Special_Tile.png";
@@ -35,6 +36,9 @@ const float player_collider_offset_y = 24.0f;
 const float player_collider_offset_x = 6.0f;
 const short player_hp_max = 3U;
 
+//Animation Constants
+const float player_idle_anim_offset_x = 0.2f;
+
 // Tile constants
 const double TileCollapseDelay = 0.5f;
 const float TileCollapseSpeed = 250.0f;
@@ -55,6 +59,7 @@ namespace font {
 namespace Mesh {
 	AEGfxVertexList* Rect = nullptr;
 	AEGfxVertexList* Circle = nullptr;
+	AEGfxVertexList* Anim = nullptr;
 }
 
 

@@ -17,7 +17,7 @@ float Player::gravityStrength = 150.0f;
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
 extern LevelSystem LevelSys;
 
-Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},
+Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::Anim, width, height), lose{false},
 active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel },
 hp(), direction{MovementState::Right}, chargedjumpvel{ player_chargedjumpvel }
 {
@@ -70,7 +70,7 @@ void Player::Update() {
 }
 void Player::Render(void)
 {
-	sprite.Draw_Texture(255.0f);
+	sprite.Draw_Texture(30, 255.0f);
 	UI::DisplayLife(hp.current);
 	
 	if (DebugMode) {
@@ -82,7 +82,7 @@ void Player::Render(void)
 	}
 }
 void Player::LoadTex(void) {
-	playerTex = AEGfxTextureLoad(FP::PlayerSprite);
+	playerTex = AEGfxTextureLoad(FP::PlayerSpriteSheetIdle);
 	AE_ASSERT_MESG(playerTex, "Failed to create texture!");
 }
 

@@ -2,11 +2,14 @@
 #include "Utilities.h"
 #include <iostream>
 
-Image::Image(const AEGfxTexture* pTex, const f32 width, const f32 height, const f32 dir) : rotation{dir}, 
-width{width}, height{height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color(), transformMtx{NULL}
+float objtexX = 0.0f;
+int count = 0;
+
+Image::Image(const AEGfxTexture* pTex, const AEGfxVertexList* Mesh, const f32 width, const f32 height, const f32 dir)
+	: rotation{dir}, width{width}, height{height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color(), transformMtx{NULL}
 {
 	this->pTex = const_cast<AEGfxTexture*>(pTex);
-	pMesh = Mesh::Rect;
+	this->pMesh = const_cast<AEGfxVertexList*>(Mesh);
 }
 
 Image::Image() : rotation{0}, width{0}, height{0}, pTex{ nullptr }, 
@@ -61,6 +64,28 @@ void Image::Draw_Texture(const f32 alpha, const f32 r, const f32 g, const f32 b,
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
+//
+void Image::Draw_Texture(int counter, const f32 alpha, const f32 r, const f32 g, const f32 b, const f32 a)
+{
+	SetMatrix();
+	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+	AEGfxTextureSet(pTex, 0, 0);
+	AEGfxSetTintColor(r / colorcodeMax, g / colorcodeMax, b / colorcodeMax, a / colorcodeMax);
+	AEGfxSetTransparency(alpha / colorcodeMax);
+	AEGfxSetTransform(transformMtx.m);
+	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	++count;
+	if (count < counter)
+		AEGfxTextureSet(pTex, objtexX, 0);		// Same object, different texture
+	else
+	{
+		objtexX += 0.2f;
+		AEGfxTextureSet(pTex, objtexX, 0);		// Same object, different texture
+		count = 0;
+	}
+	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
+}
+
 void Image::Draw_Texture(AEVec2 Pos, const f32 alpha, const f32 r, const f32 g, const f32 b, const f32 a)
 {
 	SetMatrix(Pos);

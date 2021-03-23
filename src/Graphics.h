@@ -26,6 +26,7 @@ namespace Graphics
 
 	AEGfxVertexList* Mesh_Circle(void);
 	AEGfxVertexList* Mesh_Rectangle(void);
+	AEGfxVertexList* Mesh_Animation(float offset_X);
 	void Load_Meshes(void);
 
 	void Free();
