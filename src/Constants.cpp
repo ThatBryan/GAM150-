@@ -32,7 +32,7 @@ const float player_chargedjumpvel = 10.0f;
 const float player_collider_offset_y = 24.0f;
 const float player_collider_offset_x = 6.0f;
 const short player_hp_max = 3U;
-const float player_base_gravityMultiplier = 1.0f;
+const float player_base_gravityMultiplier = 1.2f;
 
 // Enemy constants
 const float enemy_width = 50.0f;

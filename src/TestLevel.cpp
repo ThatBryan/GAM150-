@@ -92,13 +92,13 @@ void MapUpdate()
 
 void MapRender()
 {
-	for (size_t i = 0; i < tilemap.size(); ++i)
-	{
-		tilemap[i].Render();
-	}
 	for (size_t j = 0; j < enemies.size(); ++j)
 	{
 		enemies[j].Draw();
+	}
+	for (size_t i = 0; i < tilemap.size(); ++i)
+	{
+		tilemap[i].Render();
 	}
 	Jumperman.Render();
 	Overlay::Render(Jumperman);

@@ -122,7 +122,7 @@ void Tiles::AddTileRow(std::vector <Tiles>& tile, TileType type, const int count
 	{
 		tile.push_back(Tiles(temp, width, height));
 		tile[i].type = type;
-		tile[i].spawnPos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2));
+		tile[i].spawnPos = AEVec2Set(pos.x + width * i, (pos.y + height / 2));
 		tile[i].image.pos = tile[i].spawnPos;
 	}
 
@@ -136,7 +136,7 @@ void Tiles::AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, co
 	Tile.spawnPos = Tile.image.pos;
 
 	if (Tile.type == TileType::Grass) {
-		Tile.SetColliderHeight(height - 2 * tile_aabb_rect_offset_x);
+		Tile.SetColliderHeight(height - 3 * tile_aabb_rect_offset_x);
 		//Tile.image.height += 7.0f;
 	}
 }
