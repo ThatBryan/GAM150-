@@ -1,10 +1,6 @@
 #pragma once
-#include "Tiles.h"
-#include "Player.h"
-#include "AEEngine.h"
-#include "UserInterface.h"
+
 #include "AudioManager.h"
-#include "Button.h"
 extern AudioManager Audio;
 namespace Demo
 {
@@ -23,7 +19,6 @@ namespace Demo
 
 	// Collection of collision related code.
 	void UpdateManager(void);
-	void UpdateOverlay(void);
 	// Collection of tile collapsing related code.
 	void CollapsingManager(void);
 }

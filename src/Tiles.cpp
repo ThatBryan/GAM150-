@@ -5,13 +5,20 @@
 #include "Utilities.h"
 
 extern std::vector <Player> player;
+static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
-Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, Mesh::Rect, width, height),
-active{ true }, collapsing{ false }, ID{ 0 }, collapseDelay{ TileCollapseDelay }, type{ TileType::Safe }, spawnPos{ 0, 0 },
-ColliderAABB{width, height}
+Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
+active{ true }, isCollapsing{ false }, ID{ 0 }, collapseDelay{ TileCollapseDelay }, type{ TileType::Safe }, spawnPos{ 0, 0 },
+ColliderAABB{width, height}, tile_topBB{ width, 1 }, tile_bottomBB{ width - tile_aabb_rect_offset_x , 1 },
+tile_rightBB{ 10 , height - tile_aabb_rect_offset_x }, tile_leftBB{ 10 , height - tile_aabb_rect_offset_x }
 {
-	ColliderAABB.color.SetColor(Color{ 150, 0, 0, 150 });
+	ColliderAABB.color.Set(Color{ 150, 0, 0, 150 });
+	tile_bottomBB.color.Set(Color{ 255.0f, 255.0f, 0, 255.0f }); // yellow
+	tile_topBB.color.Set(Color{ 255.0f, 0, 0, 255.0f }); // red
+	tile_leftBB.color.Set(Color{ 0, 255.0f, 0, 205.0f }); // green
+	tile_rightBB.color.Set(Color{ 0, 0, 255.0f, 255.0f }); // blue
 }
+
 void Tiles::Collapse(void)
 {
 	if (type == TileType::Grass || type == TileType::Special)
@@ -22,21 +29,41 @@ void Tiles::Collapse(void)
 		}
 	}
 	if (type == TileType::Special) {
-		if (AETestRectToRect(&player[0].feetBB.pos, player[0].feetBB.width, player[0].feetBB.height, &ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
+		if (AETestRectToRect(&player[0].bottomBB.pos, player[0].bottomBB.width, player[0].bottomBB.height, &ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
 			&& (AEInputCheckTriggered(AEVK_DOWN) || AEInputCheckTriggered(AEVK_S)))
 		{
-			collapsing = true;
+			isCollapsing = true;
 		}
 	}
 }
 
-void Tiles::CheckPlayerGoal(std::vector <Player>& Player)
+void Tiles::Collapse(const Player& ThePlayer)
+{
+	if (type == TileType::Grass || type == TileType::Special)
+	{
+		if (collapseDelay <= 0)
+		{
+			image.pos.y += TileCollapseSpeed * g_dt;
+		}
+	}
+	if (type == TileType::Special) {
+		if (Utils::ColliderAABB(ThePlayer.bottomBB.pos, ThePlayer.bottomBB.width, ThePlayer.bottomBB.height,
+			ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
+			&& (AEInputCheckTriggered(AEVK_DOWN) || AEInputCheckTriggered(AEVK_S)))
+		{
+			isCollapsing = true;
+		}
+	}
+}
+
+void Tiles::CheckPlayerGoal(Player& ThePlayer)
 {
 	if (type == TileType::Goal)
 	{
-		static AEVec2 GoalPoint = {image.pos.x, image.pos.y - image.height / 2  - 1.0f};
-		if (AETestPointToRect(&GoalPoint, &Player[0].sprite.pos, Player[0].sprite.width, Player[0].sprite.height))
-			Player[(player.size() - 1)].SetWin();
+		AEVec2 GoalPoint = {image.pos.x, image.pos.y - image.height / 2  - 1.0f};
+		if (AETestPointToRect(&GoalPoint, &ThePlayer.bottomBB.pos, ThePlayer.bottomBB.width, ThePlayer.bottomBB.height)) {
+			ThePlayer.SetPlayerWin();
+		}
 	}
 }
 
@@ -44,32 +71,38 @@ void Tiles::CheckPos(void) {
 	if (active)
 	{
 		ColliderAABB.pos = image.pos;
+		tile_bottomBB.pos = AEVec2Set(image.pos.x, image.pos.y + abs(image.height) / 2.0f);
+		tile_topBB.pos = AEVec2Set(image.pos.x, image.pos.y - abs(image.height) / 2.0f);
+		tile_rightBB.pos = AEVec2Set(image.pos.x + abs(image.width) / 2.0f - tile_rightBB.width / 2.0f, image.pos.y);
+		tile_leftBB.pos = AEVec2Set(image.pos.x - abs(image.width) / 2.0f + tile_leftBB.width / 2.0f, image.pos.y);
+
 		if (image.pos.y >= static_cast <f32> (AEGetWindowHeight())) 
 			active = false;
 	}
 }
 void Tiles::DecreaseLifespan(void)
 {
-	if (collapsing && active)
+	if (isCollapsing && active)
 	{
 		collapseDelay -= g_dt;
 	}
 }
+
 void Tiles::CheckEnemyStatus(std::vector<Enemies>& enemy)
 {
+	static const float tolerance{ 10.0f };
 	for (size_t i = 0; i < enemy.size(); i++){
 		if (enemy[i].getKilled() == true) {
 			if (type == TileType::Grass || type == TileType::Special){
-				if (Utils::ColliderAABB(image.pos, image.width, image.height, enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height * 2)) { // DEBUGGGGGGGGGGGGGGGGGGGGGGGG
-					//enemy[i].active = false;
-					collapsing = true;
+				if (Utils::ColliderAABB(image.pos, image.width, image.height, enemy[i].sprite.pos, enemy[i].sprite.width, enemy[i].sprite.height + tolerance)) {
+					isCollapsing = true;
 				}
 			}
 		}
 	}
 }
 
-void Tiles::CheckPlayerGravity(std::vector <std::vector<Tiles>*>& TileManager, std::vector <Player>& Player)
+void Tiles::CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer)
 {
 	for (size_t i = 0; i < TileManager.size(); i++)
 	{
@@ -77,17 +110,18 @@ void Tiles::CheckPlayerGravity(std::vector <std::vector<Tiles>*>& TileManager, s
 		{
 			if (TileManager[i]->at(j).active == false)
 				continue;
-			if(Utils::ColliderAABB(TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height,
-				Player[0].feetBB.pos, Player[0].feetBB.width, Player[0].feetBB.height)){
-				Player[0].gravity = false;
-				Player[0].jump = false;
-				//if (DebugMode)
-					//printf("Don't apply gravity\n");
-				return;
+			Tiles& Tile = TileManager[i]->at(j);
+			if(Utils::ColliderAABB(Tile.tile_topBB.pos, Tile.tile_topBB.width, Tile.tile_topBB.height,
+				ThePlayer.bottomBB.pos, ThePlayer.bottomBB.width, ThePlayer.bottomBB.height)){
+				ThePlayer.gravity = false;
+				ThePlayer.jump = false;
+				ThePlayer.chargedjump = false;
+				
+					return;
 			}
 		}
 	}
-	player[0].gravity = true;
+	ThePlayer.gravity = true;
 }
 
 void Tiles::AddTileRow(std::vector <Tiles>& tile, TileType type, const int count, const f32 width, const f32 height, const AEVec2 pos)
@@ -107,9 +141,10 @@ void Tiles::AddTileRow(std::vector <Tiles>& tile, TileType type, const int count
 void Tiles::AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, const f32 height, AEVec2 pos) {
 	AEGfxTexture* temp = tileTex[static_cast<int>(type)];
 	tile.push_back(Tiles(temp, width, height));
-	tile[tile.size() - 1].type = type;
-	tile[tile.size() - 1].image.pos = AEVec2Set(pos.x + width / 2.0f, pos.y + height / 2.0f);
-	tile[tile.size() - 1].spawnPos = tile[tile.size() - 1].image.pos;
+	Tiles& Tile = tile.back();
+	Tile.type = type;
+	Tile.image.pos = AEVec2Set(pos.x + width / 2.0f, pos.y + height / 2.0f);
+	Tile.spawnPos = tile[tile.size() - 1].image.pos;
 }
 
 void Tiles::CollapseNext(std::vector <Tiles>& tiles)
@@ -122,12 +157,12 @@ void Tiles::CollapseNext(std::vector <Tiles>& tiles)
 				if (i < tiles.size() - 1)
 				{
 					if(tiles[i + 1].type == TileType::Grass || tiles[i + 1].type == TileType::Special)
-						tiles[i + 1].collapsing = true;
+						tiles[i + 1].isCollapsing = true;
 				}
 				if (i > 0)
 				{
 					if (tiles[i - 1].type == TileType::Grass || tiles[i - 1].type == TileType::Special)
-						tiles[i - 1].collapsing = true;
+						tiles[i - 1].isCollapsing = true;
 				}
 			}
 		}
@@ -138,7 +173,7 @@ void Tiles::Reset(std::vector <Tiles>& tiles)
 	for (size_t i = 0; i < tiles.size(); i++){
 		tiles[i].image.pos = tiles[i].spawnPos;
 		tiles[i].active = true;
-		tiles[i].collapsing = false;
+		tiles[i].isCollapsing = false;
 		tiles[i].collapseDelay = 0.5f;
 	}
 }
@@ -147,18 +182,35 @@ void Tiles::Update()
 	CheckPos();
 	Collapse();
 	DecreaseLifespan();
-	if(collapsing)
+	if(isCollapsing)
 		TileShake();
-
 }
+
+void Tiles::Update(Player& ThePlayer)
+{
+	CheckPos();
+	Collapse(ThePlayer);
+	DecreaseLifespan();
+	if (isCollapsing)
+		TileShake();
+	if(type == TileType::Goal)
+		CheckPlayerGoal(ThePlayer);
+}
+
 void Tiles::Render() {
 	if (active) {
 		image.Draw_Texture(255);
 		if (DebugMode)
+		{
 			ColliderAABB.Draw();
+			tile_bottomBB.Draw();
+			tile_topBB.Draw();
+			tile_leftBB.Draw();
+			tile_rightBB.Draw();
+		}	
 	}
 }
-void Tiles::UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& Player, std::vector <Enemies>& enemy)
+void Tiles::UpdateManager(std::vector <Tiles>& tiles, Player& ThePlayer, std::vector <Enemies>& enemy)
 {
 	for (size_t i = 0; i < tiles.size(); i++)
 	{
@@ -166,8 +218,8 @@ void Tiles::UpdateManager(std::vector <Tiles>& tiles, std::vector <Player>& Play
 			continue;
 
 		tiles[i].CheckEnemyStatus(enemy);
-		tiles[i].CheckPlayerGoal(Player);
-		tiles[i].Update();
+		tiles[i].CheckPlayerGoal(ThePlayer);
+		tiles[i].Update(ThePlayer);
 	}
 }
 
@@ -206,42 +258,75 @@ TileType& operator++(TileType& rhs) {
 }
 
 void Tiles::TileShake(void) {
-	AEVec2 ShakeStrength{Utils::RandomRangeFloat(-0.5f, 0.5f), Utils::RandomRangeFloat(-0.5f, 0.5f) };
-	image.pos = AEVec2Add(image.pos, ShakeStrength);
+	AEVec2 ShakeVec = Utils::GetRandomVecVel();
+	const float ShakeStrength{ 15.0f };
+	AEVec2ScaleAdd(&image.pos, &ShakeVec, &image.pos, g_dt * ShakeStrength);
 }
-void Tiles::TestingManager(std::vector<std::vector<Tiles>*>& TileManager) {
+
+void Tiles::CollapsingManager(TileMgr TileManager) {
+static const float allowance{ 6.0f }; // Offset for shake
 	for (size_t i = 0; i < TileManager.size(); ++i) {
 		for (size_t j = 0; j < TileManager[i]->size(); ++j) {
-			if (TileManager[i]->at(j).type == TileType::Grass || TileManager[i]->at(j).type == TileType::Special) {
-				if (TileManager[i]->at(j).collapseDelay <= 0) {
-					if (i < TileManager.size() - 1){
-						if (TileManager[i]->at(j).type == TileType::Grass || TileManager[i]->at(j).type == TileType::Special)
-							TileManager[i]->at(j).collapsing = true;
+
+			Tiles& tile = TileManager[i]->at(j);
+			if (tile.type == TileType::Grass || tile.type == TileType::Special) {
+
+				if (tile.collapseDelay <= 0) {
+					if (j <= TileManager[i]->size()) { // eg j = 0. mgr size = 20, indexing up to 19
+
+						Tiles& NextTile = TileManager[i]->at(j + 1);
+						if (NextTile.type == TileType::Grass || NextTile.type == TileType::Special) {
+							if (Utils::ColliderAABB(tile.image.pos, tile.image.width + allowance, tile.image.height, NextTile.image.pos, NextTile.image.width, NextTile.image.height))
+								NextTile.isCollapsing = true;
+						}
 					}
-					if (i > 0){
-						if (TileManager[i]->at(j).type == TileType::Grass || TileManager[i]->at(j).type == TileType::Special)
-							TileManager[i]->at(j).collapsing = true;
+					if (j > 0) {
+
+						Tiles& NextTile = TileManager[i]->at(j - 1);
+						if (NextTile.type == TileType::Grass || NextTile.type == TileType::Special) {
+							if (Utils::ColliderAABB(tile.image.pos, tile.image.width + allowance, tile.image.height, NextTile.image.pos, NextTile.image.width, NextTile.image.height))
+								NextTile.isCollapsing = true;
+						}
 					}
-				}
+				} // end collapsedelay <= 0
 			}
 		}
 	}
 }
 
-//void Tiles::CheckTilesPos(std::vector <std::vector<Tiles>*>& TileManager)
-//{
-//	for (size_t i = 0; i < TileManager.size(); i++)
-//	{
-//		for (size_t j = 0; j < TileManager[i]->size(); j++)
-//		{
-//			if (TileManager[i]->at(j).active == true)
-//			{
-//				TileManager[i]->at(j).ColliderAABB.pos = TileManager[i]->at(j).image.pos;
-//				if (TileManager[i]->at(j).image.pos.y  <= AEGfxGetWinMinY())
-//				{
-//					TileManager[i]->at(j).active = false;
-//				}
-//			}
-//		}
-//	}
-//}
+void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
+{
+	for (size_t i = 0; i < TileManager.size(); i++)
+	{
+		for (size_t j = 0; j < TileManager[i]->size(); j++)
+		{
+			if (TileManager[i]->at(j).GetActive() == false)
+				continue;
+
+			Tiles& TheTile = TileManager[i]->at(j);
+			if (Utils::ColliderAABB(TheTile.tile_bottomBB.pos, TheTile.tile_bottomBB.width, TheTile.tile_bottomBB.height,
+				ThePlayer.player_topBB.pos, ThePlayer.player_topBB.width, ThePlayer.player_topBB.height)){	
+					ThePlayer.gravity = true;
+					ThePlayer.jump = false;
+					ThePlayer.chargedjump = false;
+					
+					if(DebugMode)
+						printf("Collision Top\n");
+				}
+
+			if (Utils::ColliderAABB(TheTile.tile_rightBB.pos, TheTile.tile_rightBB.width, TheTile.tile_rightBB.height,
+				ThePlayer.player_leftBB.pos, ThePlayer.player_leftBB.width, ThePlayer.player_leftBB.height)){
+					ThePlayer.sprite.pos.x = TheTile.image.pos.x + TheTile.image.width / 2.0f + abs(ThePlayer.sprite.width) / 2.0f;
+					if (DebugMode)
+						printf("Left Collision\n");
+				}
+
+			if (Utils::ColliderAABB(TheTile.tile_leftBB.pos, TheTile.tile_leftBB.width, TheTile.tile_leftBB.height,
+				ThePlayer.player_rightBB.pos, ThePlayer.player_rightBB.width, ThePlayer.player_rightBB.height)){
+					ThePlayer.sprite.pos.x = TheTile.image.pos.x - TheTile.image.width / 2.0f - abs(ThePlayer.sprite.width) / 2.0f;
+					if (DebugMode)
+						printf("Right Collision\n");
+				}
+		}
+	}
+}

@@ -1,9 +1,15 @@
 #include "Button.h"
+#include <cstring>
+#include <vector>
+#include <iostream>
+#include "Constants.h"
+#include "Utilities.h"
+#include "Player.h"
 
-extern std::vector <Player> player;
+extern Player Jumperman;
 
-Button::Button(ButtonType Type, const f32 width, const f32 height, const f32 scale) : button(width, height), text(nullptr, scale)
-, pos{ 0,0 }, callback{ nullptr }, pTex{ nullptr }, type{Type}{
+Button::Button(ButtonType Type, const f32 width, const f32 height, const f32 scale) : button(width, height), text(std::string(), scale)
+, pos{ 0,0 }, callback{ nullptr }, pTex{ nullptr }, type{ Type }, ID{ 0 }, TestCallback{ nullptr } {
 	buttonState[static_cast<int>(ButtonState::Idle)] = { 0, 255.0f, 0, 255.0f };
 	buttonState[static_cast<int>(ButtonState::Hovered)] = { 255.0f, 255.0f, 0, 255.0f };
 	buttonState[static_cast<int>(ButtonState::Clicked)] = { 0, 0, 255.0f, 255.0f };
@@ -19,8 +25,13 @@ void Button::Set_Callback(fn_ptr fnc_ptr) {
 	this->callback = fnc_ptr;
 }
 
-void Button::Set_Text(const char* Text) {
-	text.SetText(const_cast<s8*>(Text));
+void Button::Set_IntCallback(Test_Ptr function)
+{
+	TestCallback = function;
+}
+
+void Button::Set_Text(std::string Text) {
+	text.SetText(Text);
 }
 
 void Button::Set_TextColor(Color color) {
@@ -35,7 +46,11 @@ void Button::Update(void) {
 	AEVec2 Mouse = Utils::GetMousePos();
 	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckReleased(AEVK_LBUTTON))
 	{
-		callback();
+		if (TestCallback)
+			TestCallback(ID);
+
+		else if(callback)
+			callback();
 	}
 	Render();
 }
@@ -43,16 +58,16 @@ void Button::Update(void) {
 void Button::Render(void) {
 	switch (type) {
 	case ButtonType::Color:
-		button.Draw(static_cast<Color>(buttonState[static_cast<int>(Check_Cursor())]), 255.0f);
+		button.Draw(static_cast<Color>(buttonState[static_cast<int>(Check_State())]), 255.0f);
 		break;
 	case ButtonType::Texture:
-		button.DrawTexture(pTex, static_cast<Color>(buttonState[static_cast<int>(Check_Cursor())]), 255.0f);
+		button.DrawTexture(pTex, static_cast<Color>(buttonState[static_cast<int>(Check_State())]), 255.0f);
 		break;
 	}
 	text.Draw_Wrapped(text.pos);
 }
 
-ButtonState Button::Check_Cursor() {
+ButtonState Button::Check_State() {
 	AEVec2 Mouse = Utils::GetMousePos();
 	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckCurr(AEVK_LBUTTON))
 		return ButtonState::Clicked;
@@ -62,6 +77,7 @@ ButtonState Button::Check_Cursor() {
 }
 
 void Test_Callback() {
-	if (!player[0].GetLose() && !player[0].GetWinStatus())
-	paused = !paused; 
+	if (!Jumperman.GetLoseStatus() && !Jumperman.GetWinStatus()) {
+		paused = !paused; 
+	}
 }

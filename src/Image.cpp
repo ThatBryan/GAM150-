@@ -10,10 +10,10 @@ rotation{dir}, width{width}, height{height}, pTex{nullptr}, pMesh{nullptr}, pos{
 }
 
 Image::Image() : rotation{0}, width{0}, height{0}, pTex{ nullptr }, 
-pMesh{ nullptr }, pos{ 0, 0 }, transformMtx{ NULL } {	
-}
+pMesh{ nullptr }, pos{ 0, 0 }, transformMtx{ NULL }{}
 
-void Image::Init(const char* pFile, const f32 Width, const f32 Height, const AEVec2 Pos, const f32 Rotation, AEGfxVertexList* Mesh){
+void Image::Init(const char* pFile, const f32 Width, const f32 Height, const AEVec2 Pos,
+	const f32 Rotation, AEGfxVertexList* Mesh){
 	pTex = AEGfxTextureLoad(pFile);
 	AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	pMesh = const_cast<AEGfxVertexList*>(Mesh);
@@ -77,7 +77,6 @@ void Image::Draw_Color(const f32 r, const f32 g, const f32 b, const f32 alpha)
 {
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	AEGfxTextureSet(NULL, 0.0f, 0.0f);
 	AEGfxSetTintColor(r / colorcodeMax, g / colorcodeMax, b / colorcodeMax, alpha / colorcodeMax);
 	AEGfxSetTransparency(alpha / colorcodeMax);
 	AEGfxSetTransform(transformMtx.m);

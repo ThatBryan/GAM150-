@@ -2,6 +2,8 @@
 #include "PitchDemo.h"
 #include "MainMenu.h"
 #include "Splash.h"
+#include "TestLevel.h"
+#include "LevelSystem.h"
 
 unsigned int gamestateInit;
 unsigned int gamestateCurr;
@@ -14,6 +16,7 @@ void (*GameStateUpdate)() = 0;
 void (*GameStateDraw)() = 0;
 void (*GameStateFree)() = 0;
 void (*GameStateUnload)() = 0;
+LevelSystem LevelSys;
 
 void GameStateManagerInit(unsigned int gamestate)
 {
@@ -23,6 +26,7 @@ void GameStateManagerInit(unsigned int gamestate)
 	gamestateCurr = gamestateInit;
 	gamestateNext = gamestateInit;
 	gamestatePrev = gamestateInit;
+	LevelSys.Init();
 }
 
 void GameStateManagerUpdate()
@@ -59,6 +63,22 @@ void GameStateManagerUpdate()
 		GameStateDraw = Demo::Render;
 		GameStateFree = Demo::Restart;
 		GameStateUnload = Demo::Exit;
+		break;
+	case GS_TEST:
+		GameStateLoad = MapLoad;
+		GameStateInit = MapInit;
+		GameStateUpdate = MapUpdate;
+		GameStateDraw = MapRender;
+		GameStateFree = TestRestart;
+		GameStateUnload = MapUnload;
+		break;
+	case GS_LEVEL1:
+		GameStateLoad = MapLoad;
+		GameStateInit = MapInit;
+		GameStateUpdate = MapUpdate;
+		GameStateDraw = MapRender;
+		GameStateFree = TestRestart;
+		GameStateUnload = MapUnload;
 		break;
 	default:
 		printf("FATAL ERROR!\n");

@@ -8,12 +8,10 @@
 enum class EnemyType {Slime = 0, Bat, Squirrel, Max};
 EnemyType& operator++(EnemyType& rhs);
 
-static AEGfxTexture* enemyTex[static_cast<int>(EnemyType::Max)]{ nullptr };
 // Foward declarations
 class Player;
 class Tiles;
 
-using fn_ptr = void(*)(void);
 class Enemies
 {
 private:
@@ -45,14 +43,15 @@ public:
 	bool active;
 	void Update(void);
 	void Draw();
-	inline EnemyType GetType() { return type; }
-	inline bool getKilled() { return killed; }
-	inline void setKilled(bool status = true) { killed = status; }
+	inline EnemyType GetType() const { return type; }
+	inline bool getKilled() const { return killed; }
+	void setKilled(bool status = true);
 
 	void GravityCheck(std::vector <std::vector<Tiles>*>& TileManager);
+
 	// Add new enemy into the vector.
-	static void LoadTex(void);
 	static void AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 pos, const f32 width, const f32 height);
 	static void Reset(std::vector <Enemies>& enemy);
+	static void LoadTex(void);
 	static void Unload(void);
 };

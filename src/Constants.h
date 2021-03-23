@@ -3,6 +3,7 @@
 
 
 namespace FilePaths {
+	// Art
 	extern const char* DigipenLogoRed;
 	extern const char* DigipenLogoWhite;
 	extern const char* PauseOverlay;
@@ -22,19 +23,28 @@ namespace FilePaths {
 	extern const char* ButtonTest2;
 	extern const char* HeartSprite;
 	extern const char* boi;
+
+	// Sound
+	extern const char* jumpSFX;
+	extern const char* GameplayBGM;
 }
 
 namespace FP = FilePaths; // Short hand 
+
+// Level trakcer
+extern unsigned short Level;
 
 // Player constants
 extern const float player_speed;
 extern const float player_width;
 extern const float player_height;
 extern const float player_jumpvel;
+extern const float player_chargedjumpvel;
 extern const float enemy_width;
 extern const float enemy_height;
 extern const float player_collider_offset_y;
 extern const float player_collider_offset_x;
+extern const short player_hp_max;
 
 // Anim constants
 extern const float player_ObjTex_x;
@@ -43,13 +53,13 @@ extern const float player_Idle_offset_x;
 // Tile constants
 extern const double TileCollapseDelay;
 extern const float TileCollapseSpeed;
-
+extern const float tile_aabb_rect_offset_x;
+extern const float tile_aabb_rect_offset_y;
 // Enemy stuff
 extern short EnemyCount;
 
 //Utility constants
 extern const float colorcodeMax;
-
 
 // Miscallenous
 extern bool paused;
@@ -63,6 +73,7 @@ namespace font {
 	extern char ID;
 }
 
+// Base meshes
 namespace Mesh {
 	extern AEGfxVertexList* Rect;
 	extern AEGfxVertexList* Anim;
