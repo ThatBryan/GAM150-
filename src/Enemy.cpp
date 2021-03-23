@@ -43,31 +43,12 @@ void Enemies::Update_Position(void)
 	}
 }
 
-void Enemies::GravityCheck(std::vector <std::vector<Tiles>*>& TileManager) {
-	for (size_t i = 0; i < TileManager.size(); i++)
-	{
-		for (size_t j = 0; j < TileManager[i]->size(); j++)
-		{
-			if (TileManager[i]->at(j).GetActive() == false)
-				continue;
-			if (Utils::ColliderAABB(TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height,
-				enemyBB.pos, enemyBB.width, enemyBB.height))
-			{
-				isGravity = false;
-				return;
-			}
-		}
-	}
-	isGravity = true;
-}
 
 void Enemies::ApplyGravity(void) {
 	if (isGravity && !killed)
 	{
 		sprite.pos.y += gravityStrength * g_dt;
 	}
-		
-	
 }
 
 void Enemies::Bat_Movement(f32 maxX)

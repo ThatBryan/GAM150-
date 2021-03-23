@@ -29,14 +29,17 @@ const float player_width = 50.0f;
 const float player_height = 50.0f;
 const float player_jumpvel = 5.0f;
 const float player_chargedjumpvel = 10.0f;
-const float enemy_width = 50.0f;
-const float enemy_height = 50.0f;
 const float player_collider_offset_y = 24.0f;
 const float player_collider_offset_x = 6.0f;
 const short player_hp_max = 3U;
+const float player_base_gravityMultiplier = 1.0f;
+
+// Enemy constants
+const float enemy_width = 50.0f;
+const float enemy_height = 50.0f;
 
 // Tile constants
-const double TileCollapseDelay = 0.5f;
+const float TileCollapseDelay = 0.5f;
 const float TileCollapseSpeed = 250.0f;
 const float tile_aabb_rect_offset_x = 5.0f;
 const float tile_aabb_rect_offset_y = 1.0f;
