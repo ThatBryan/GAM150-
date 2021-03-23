@@ -33,7 +33,6 @@ public:
 
 		void DecreaseLifespan(void);
 		void Collapse(const Player& player);
-		void Collapse(void);
 		void CheckPos(void);
 		void CheckPlayerGoal(Player& player);
 		void CheckEnemyStatus(std::vector <Enemies>& enemy);

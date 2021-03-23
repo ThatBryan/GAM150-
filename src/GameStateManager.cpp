@@ -1,5 +1,4 @@
 #include "GameStateManager.h"
-#include "PitchDemo.h"
 #include "MainMenu.h"
 #include "Splash.h"
 #include "TestLevel.h"
@@ -56,14 +55,6 @@ void GameStateManagerUpdate()
 		GameStateUnload = MainMenu::Unload;
 		break;
 
-	case GS_GAMEPLAY:
-		GameStateLoad = Demo::Load;
-		GameStateInit = Demo::Init;
-		GameStateUpdate = Demo::Update;
-		GameStateDraw = Demo::Render;
-		GameStateFree = Demo::Restart;
-		GameStateUnload = Demo::Exit;
-		break;
 	case GS_TEST:
 		GameStateLoad = MapLoad;
 		GameStateInit = MapInit;

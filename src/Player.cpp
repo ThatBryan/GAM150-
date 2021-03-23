@@ -2,7 +2,6 @@
 #include "Enemy.h"
 #include <array>
 #include "Utilities.h"
-#include "PitchDemo.h"
 #include "Graphics.h"
 #include "Particles.h"
 #include "UserInterface.h"
@@ -15,6 +14,7 @@ static f32 maxX;
 float Player::gravityStrength = 150.0f;
 
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
+extern AudioManager Audio;
 extern LevelSystem LevelSys;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},

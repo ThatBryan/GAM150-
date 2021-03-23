@@ -13,21 +13,21 @@ Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
-
-
 #include "BinaryMap.h"
+
+
+
 #include <iostream>
 #include <cstdio>
 #include <fstream>
-#include <string>
 #include <vector>
+#include <array>
+#include <stdlib.h>
 #include "Utilities.h"
 #include "Graphics.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Constants.h"
-#include <array>
-#include "AEEngine.h"
 #include "Tiles.h"
 #include "Enemy.h"
 

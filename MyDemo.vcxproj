@@ -24,7 +24,6 @@
     <ClCompile Include="src\MainMenu.cpp" />
     <ClCompile Include="src\Overlay.cpp" />
     <ClCompile Include="src\Particles.cpp" />
-    <ClCompile Include="src\PitchDemo.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Splash.cpp" />
     <ClCompile Include="src\TestLevel.cpp" />
@@ -45,7 +44,6 @@
     <ClInclude Include="src\MainMenu.h" />
     <ClInclude Include="src\Overlay.h" />
     <ClInclude Include="src\Particles.h" />
-    <ClInclude Include="src\PitchDemo.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\PlayerHp.h" />
     <ClInclude Include="src\Splash.h" />

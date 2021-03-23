@@ -8,8 +8,6 @@
 #include "Utilities.h"
 #include "Graphics.h"
 #include "Tiles.h"
-#include <vector>
-#include "PitchDemo.h"
 #include "Constants.h"
 #include "GameStateManager.h"
 #include "MainMenu.h"

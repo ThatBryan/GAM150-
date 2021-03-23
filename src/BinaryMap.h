@@ -2,18 +2,6 @@
 #ifndef BINARY_MAP_H_
 #define BINARY_MAP_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "AEEngine.h"
-#include <vector>
-
-
-const int	COLLISION_LEFT = 0x00000001;	//0001
-const int	COLLISION_RIGHT = 0x00000002;	//0010
-const int	COLLISION_TOP = 0x00000004;		//0100
-const int	COLLISION_BOTTOM = 0x00000008;	//1000
-
 
 enum class TYPE_OBJECT
 {
@@ -28,13 +16,9 @@ enum class TYPE_OBJECT
 	SQUIRREL					//8
 };
 
-
-//struct Map
-//{
 	extern int** MapData;
 	extern int Map_Width;
 	extern int Map_Height;
-//};
 
 int		ImportMapDataFromFile(const char* FileName);
 void	FreeMapData(void);

@@ -4,7 +4,6 @@
 #include "Enemy.h"
 #include "Utilities.h"
 
-extern std::vector <Player> player;
 static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
 Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
@@ -17,24 +16,6 @@ tile_rightBB{ 10 , height - tile_aabb_rect_offset_x }, tile_leftBB{ 10 , height 
 	tile_topBB.color.Set(Color{ 255.0f, 0, 0, 255.0f }); // red
 	tile_leftBB.color.Set(Color{ 0, 255.0f, 0, 205.0f }); // green
 	tile_rightBB.color.Set(Color{ 0, 0, 255.0f, 255.0f }); // blue
-}
-
-void Tiles::Collapse(void)
-{
-	if (type == TileType::Grass || type == TileType::Special)
-	{
-		if (collapseDelay <= 0)
-		{
-			image.pos.y += TileCollapseSpeed * g_dt;
-		}
-	}
-	if (type == TileType::Special) {
-		if (AETestRectToRect(&player[0].bottomBB.pos, player[0].bottomBB.width, player[0].bottomBB.height, &ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
-			&& (AEInputCheckTriggered(AEVK_DOWN) || AEInputCheckTriggered(AEVK_S)))
-		{
-			isCollapsing = true;
-		}
-	}
 }
 
 void Tiles::Collapse(const Player& ThePlayer)
@@ -178,7 +159,6 @@ void Tiles::Reset(std::vector <Tiles>& tiles)
 void Tiles::Update()
 {
 	CheckPos();
-	Collapse();
 	DecreaseLifespan();
 	if(isCollapsing)
 		TileShake();
