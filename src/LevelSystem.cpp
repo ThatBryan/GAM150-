@@ -33,11 +33,29 @@ void LevelSystem::Init()
 
 void LevelSystem::UnlockNext()
 {	
-	if (key < maxLevel && Level == key) {
+	const int TempLevelsCount{ 3 };
+	if (key < TempLevelsCount && Level == key) {
 		++key;
 		std::cout << "Level: " << key << " unlocked!\n";
 	}
 }
+
+void LevelSystem::SetLevel(unsigned short level)
+{
+	Level = level;
+	switch (gamestateCurr) {
+	case GS_LEVEL1:
+		gamestateNext = GS_TEST;
+		return;
+	case GS_TEST:
+		gamestateNext = GS_LEVEL1;
+		return;
+	default:
+		gamestateNext = GS_TEST;
+		return;
+	}
+}
+
 
 void LevelSystem::SaveKeyToFile(void)
 {
@@ -56,15 +74,14 @@ void LevelSystem::SetNextLevel(void)
 
 	if (Level < TempLevelsCount) {
 		gamestateNext = ++Level;
-		std::cout << Level << std::endl;
 
-		if (gamestateCurr == GS_PROGRESS)
+		if (gamestateCurr == GS_LEVEL1)
 		{
 			gamestateNext = GS_TEST;
 		}
 		else if (gamestateCurr == GS_TEST)
 		{
-			gamestateNext = GS_PROGRESS;
+			gamestateNext = GS_LEVEL1;
 		}
 	}
 }

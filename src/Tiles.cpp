@@ -90,7 +90,7 @@ void Tiles::DecreaseLifespan(void)
 
 void Tiles::CheckEnemyStatus(std::vector<Enemies>& enemy)
 {
-	static const float tolerance{ 5.0f };
+	static const float tolerance{ 10.0f };
 	for (size_t i = 0; i < enemy.size(); i++){
 		if (enemy[i].getKilled() == true) {
 			if (type == TileType::Grass || type == TileType::Special){
@@ -115,6 +115,8 @@ void Tiles::CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer)
 				ThePlayer.bottomBB.pos, ThePlayer.bottomBB.width, ThePlayer.bottomBB.height)){
 				ThePlayer.gravity = false;
 				ThePlayer.jump = false;
+				ThePlayer.chargedjump = false;
+				
 					return;
 			}
 		}
@@ -257,7 +259,7 @@ TileType& operator++(TileType& rhs) {
 
 void Tiles::TileShake(void) {
 	AEVec2 ShakeVec = Utils::GetRandomVecVel();
-	const float ShakeStrength{ 20.0f };
+	const float ShakeStrength{ 15.0f };
 	AEVec2ScaleAdd(&image.pos, &ShakeVec, &image.pos, g_dt * ShakeStrength);
 }
 
@@ -306,6 +308,8 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 				ThePlayer.player_topBB.pos, ThePlayer.player_topBB.width, ThePlayer.player_topBB.height)){	
 					ThePlayer.gravity = true;
 					ThePlayer.jump = false;
+					ThePlayer.chargedjump = false;
+					
 					if(DebugMode)
 						printf("Collision Top\n");
 				}

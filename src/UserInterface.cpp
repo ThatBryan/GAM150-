@@ -43,7 +43,7 @@ const size_t pauseButtonIdx{ 2 };
 void UI::Update() {
 
 	sprintf_s(strBuffer, "FPS: %.2f", AEFrameRateControllerGetFrameRate());
-	sprintf_s(strBuffer1, "Current Level: Tutorial");
+	sprintf_s(strBuffer1, "Current Level: %d", Level);
 	sprintf_s(strBuffer2, "Time Elapsed: %.2f", app_time);
 
 	FPS_Display.SetText(strBuffer);
@@ -94,11 +94,11 @@ void UI::Buttons_Init() {
 
 	buttonTest[2].Set_Text("Resume");
 	buttonTest[2].Set_Callback(Utils::CheckPauseInput);
-	buttonTest[2].Set_Position(AEVec2{ Midpt.x - buttonTest[2].GetWidth(), buttonTest[2].GetHeight() / 2.0f });
+	buttonTest[2].Set_Position(AEVec2{ Midpt.x - buttonTest[2].GetWidth(), Midpt.y + buttonTest[2].GetHeight() * 2});
 
 	buttonTest[3].Set_Text("Menu");
 	buttonTest[3].Set_Callback(Utils::ReturnToMenu);
-	buttonTest[3].Set_Position(AEVec2{ Midpt.x + buttonTest[2].GetWidth(), buttonTest[3].GetHeight() / 2.0f });
+	buttonTest[3].Set_Position(AEVec2{ Midpt.x + buttonTest[2].GetWidth(), Midpt.y + buttonTest[3].GetHeight() * 2});
 }
 
 void UI::DisplayLife(short livesCount) {

@@ -30,7 +30,7 @@ static std::vector<Tiles> tiles;
 static std::vector<Player> player;
 static Graphics::Text Title;
 static AEVec2 ScreenMid;
-static AEGfxTexture* test;
+//static AEGfxTexture* test;
 
 extern LevelSystem LevelSys;
 
@@ -59,10 +59,10 @@ void MainMenu::Init(void)
 	Title.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	Title.SetScale(1.0f);
 
-	test = AEGfxTextureLoad(FP::boi);
-	for (int i = 0; i < 50; ++i) {
-		Particles::Create(ScreenMid, Utils::GetRandomVecVel(), Color::CreateRandomColor(), 1, 100.0f, Utils::RandomRangeFloat(0.0f, 500.0f), 50.0f, 10.0f, test);
-	}
+	//test = AEGfxTextureLoad(FP::boi);
+	//for (int i = 0; i < 50; ++i) {
+	//	Particles::Create(ScreenMid, Utils::GetRandomVecVel(), Color::CreateRandomColor(), 1, 100.0f, Utils::RandomRangeFloat(0.0f, 500.0f), 50.0f, 10.0f, test);
+	//}
 }
 
 void MainMenu::Update(void)
@@ -132,7 +132,7 @@ void MainMenu::Unload(void)
 	player.clear();
 	tiles.clear();
 	EnemyCount = 0;
-	AEGfxTextureUnload(test);
+	//AEGfxTextureUnload(test);
 }
 
 void MainMenu::StartGame(void) {
@@ -164,7 +164,7 @@ void MainMenu::Buttons_Init() {
 	buttons[3].Set_Text("Leaderboards");
 	buttons[3].Set_Callback(placeholder);
 
-	for (int i = 0; i < 10; ++i) {
+	for (unsigned short i = 0; i < 10; ++i) {
 		LevelButtons.push_back(Button(ButtonType::Color, 150.0, 75.0f, 0.5f));
 		LevelButtons[i].SetID(i + 1);
 		LevelButtons[i].Set_TextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
@@ -189,6 +189,7 @@ void MainMenu::Buttons_Init() {
 
 const float baseSpeed = 50.0f;
 static float WindowWidth = 0;
+
 void MainMenu::TestEnemyMovement() {
 	WindowWidth = static_cast<f32>(AEGetWindowWidth());
 
@@ -233,7 +234,7 @@ void MainMenu::SwitchToLevelSelection(void)
 
 	for (size_t i = 0; i < LevelSys.GetKey(); ++i) {
 			LevelButtons[i].SetStateColor(ButtonState::Idle, Color(0, 255.0f, 0.0f, 10.0f));
-			LevelButtons[i].Set_Callback(MainMenu::UnlockedLevel);
+			LevelButtons[i].Set_IntCallback(LevelSystem::SetLevel);
 	}
 	GameStateUpdate = MainMenu::TestLevelSelectionUpdate;
 	GameStateDraw = MainMenu::TestLevelSelectionRender;

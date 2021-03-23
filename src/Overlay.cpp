@@ -84,7 +84,7 @@ void Overlay::Render(Player& player)
 	if (player.GetWinStatus())
 	{
 		paused = true;
-		Images[Victory].Draw_Texture(100.0f);
+		Images[Victory].Draw_Texture(50.0f);
 		text.SetText(const_cast<s8*>("YOU WIN"));
 		text.Draw_Wrapped(text.pos);
 		for (int i = 0; i < 2; ++i) {
@@ -97,7 +97,7 @@ void Overlay::Render(Player& player)
 			for (int i = 0; i < particleCount; ++i) {
 				AEVec2 Emitter = { Utils::RandomRangeFloat(0, static_cast<f32>(AEGetWindowWidth())), Utils::RandomRangeFloat(-20, 0) };
 				AEVec2 Vel{ 0, 1 };
-				Particles::Create(Emitter, Vel, Color::CreateRandomColor(), 1, Utils::RandomRangeFloat(100, 400), 0, 20.0f, 3.0f);
+				Particles::Create(Emitter, Vel, Color::CreateRandomColor(), 1, Utils::RandomRangeFloat(100, 400), 0, Utils::RandomRangeFloat(10, 30), 2.0f);
 				spawnTimer = 1.0f;
 			}
 		}

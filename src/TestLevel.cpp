@@ -11,15 +11,23 @@
 #include "GameStateManager.h"
 #include "Particles.h"
 #include <iostream>
+#include "MainMenu.h"
+#include <vector>
+#include <array>
 
 std::vector<Tiles> tilemap;
 std::vector<Enemies> enemies;
 std::vector <std::vector <Tiles>*> tileManager;
 Player Jumperman;
 
+extern AudioData soundData[static_cast<int>(AudioID::Max)];
+extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
+
 
 void MapInit(void)
 {
+	float Offset = 35.0f;
+
 	f32 grid_height{ static_cast<f32>(AEGetWindowHeight() / Map_Height) }, grid_width{ static_cast<f32>(AEGetWindowWidth() / Map_Width) };
 	for (int i = 0; i < Map_Height; ++i)
 	{
@@ -56,7 +64,7 @@ void MapInit(void)
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::BAT))
 			{
-				Enemies::AddNew(enemies, EnemyType::Bat, AEVec2Set(j * grid_width,i * grid_height), enemy_width, enemy_height);
+				Enemies::AddNew(enemies, EnemyType::Bat, AEVec2Set(j * grid_width + Offset, i * grid_height + Offset), enemy_width, enemy_height);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SQUIRREL))
 			{
@@ -66,6 +74,8 @@ void MapInit(void)
 	}
 	tileManager.push_back(&tilemap);
 	UI::Init();
+	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
+
 }
 
 void MapUpdate()
@@ -78,6 +88,7 @@ void MapUpdate()
 		gamestateNext = GS_RESTART;
 	}
 	UpdateManager();
+	Audio.update();
 }
 
 void MapRender()
@@ -103,17 +114,17 @@ void MapLoad()
 	{
 		case 1:
 		{
-			ImportMapDataFromFile("./Levels/testrun.txt");
+			ImportMapDataFromFile("./Assets/Levels/testrun.txt");
 			break;
 		}
 		case 2:
 		{
-			ImportMapDataFromFile("./Levels/Level2.txt");
+			ImportMapDataFromFile("./Assets/Levels/Level2.txt");
 			break;
 		}
 		case 3:
 		{
-			ImportMapDataFromFile("./Levels/Level3.txt");
+			ImportMapDataFromFile("./Assets/Levels/Level3.txt");
 			break;
 		}
 		default:
@@ -125,6 +136,8 @@ void MapLoad()
 	Player::LoadTex();
 	Overlay::Load();
 	Overlay::Init();
+	AudioManager::SetVolume(AudioID::BGM, 0.2f);
+	AudioManager::SetVolume(AudioID::Jump, 0.2f);
 }
 
 void MapUnload()

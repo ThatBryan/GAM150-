@@ -1,4 +1,3 @@
-
 #include "Constants.h"
 
 namespace FilePaths {
@@ -29,6 +28,7 @@ const float player_speed = 150.0f;
 const float player_width = 50.0f;
 const float player_height = 50.0f;
 const float player_jumpvel = 5.0f;
+const float player_chargedjumpvel = 10.0f;
 const float enemy_width = 50.0f;
 const float enemy_height = 50.0f;
 const float player_collider_offset_y = 24.0f;
@@ -61,6 +61,6 @@ namespace Mesh {
 // Miscallenous
 bool paused = false;
 bool DebugMode = false;
-bool fullscreen = false;
+bool fullscreen = true;
 float g_dt = 0;
 float app_time = 0;
