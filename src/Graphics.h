@@ -4,6 +4,13 @@
 
 //https://htmlcolorcodes.com/
 
+//extern enum class MESH_TYPE
+//{
+//	TILE_MESH = 0,
+//	PLAYER_MESH,
+//	ENEMY_MESH
+//};
+
 struct Color
 {
 	public:
@@ -22,6 +29,7 @@ namespace Graphics
 
 	void Load_Meshes(void);
 	AEGfxVertexList* Mesh_Rectangle(void);
+	AEGfxVertexList* Mesh_Rect_anim(float offset_x);
 	AEGfxVertexList* Mesh_Circle(void);
 	void Free();
 

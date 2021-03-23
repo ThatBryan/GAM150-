@@ -38,7 +38,10 @@ void Color::Decrement(float i) {
 
 void Graphics::Load_Meshes(void)
 {
+
 	Mesh::Rect = Graphics::Mesh_Rectangle();
+	Mesh::Anim = Graphics::Mesh_Rect_anim(player_Idle_offset_x);
+
 	AE_ASSERT_MESG(Mesh::Rect, "fail to create object!!");
 
 	Mesh::Circle = Graphics::Mesh_Circle();
@@ -62,6 +65,21 @@ AEGfxVertexList* Graphics::Mesh_Rectangle(void)
 	AEGfxTriAdd(
 		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f, //	Bottom R
 		0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 0.0f,	 //	Top Righ
+		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);//	Top Left
+	return AEGfxMeshEnd();
+}
+
+AEGfxVertexList* Graphics::Mesh_Rect_anim(float offset_x)
+{
+	AEGfxMeshStart();
+	AEGfxTriAdd(
+		-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 1.0f,// Bottom Left
+		0.5f, -0.5f, 0xFFFFFFFF, offset_x, 1.0f, // Bottom Right
+		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f); // Top vertex
+
+	AEGfxTriAdd(
+		0.5f, -0.5f, 0xFFFFFFFF, offset_x, 1.0f, //	Bottom R
+		0.5f, 0.5f, 0xFFFFFFFF, offset_x, 0.0f,	 //	Top Righ
 		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);//	Top Left
 	return AEGfxMeshEnd();
 }

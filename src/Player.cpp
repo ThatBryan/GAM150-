@@ -10,7 +10,7 @@ static f32 maxY;
 static f32 maxX;
 float Player::gravityStrength = 150.0f;
 
-Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},
+Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::Anim, width, height), lose{false},
 active{ true }, gravity{ false }, jump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{player_jumpvel},
 lives{3}, direction{MovementState::Right}
 {

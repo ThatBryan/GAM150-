@@ -51,10 +51,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	/// Test init functions
 	font::ID = AEGfxCreateFont(FP::FontFile, 40);
-	Graphics::Load_Meshes();
 
 	std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl << std::endl;
-
+	Graphics::Load_Meshes();
 	// Initialises the GSM
 	GameStateManagerInit();
 	AEToogleFullScreen(fullscreen);

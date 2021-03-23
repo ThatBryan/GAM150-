@@ -2,11 +2,11 @@
 #include "Utilities.h"
 #include <iostream>
 
-Image::Image(const AEGfxTexture* pTex, const f32 width, const f32 height, const f32 dir) : rotation{dir}, 
-width{width}, height{height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color(), transformMtx{NULL}
+Image::Image(const AEGfxTexture* pTex, const AEGfxVertexList* mesh, const f32 width, const f32 height, const f32 dir) : 
+rotation{dir}, width{width}, height{height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color(), transformMtx{NULL}
 {
 	this->pTex = const_cast<AEGfxTexture*>(pTex);
-	pMesh = Mesh::Rect;
+	pMesh = const_cast<AEGfxVertexList*>(mesh);
 }
 
 Image::Image() : rotation{0}, width{0}, height{0}, pTex{ nullptr }, 
