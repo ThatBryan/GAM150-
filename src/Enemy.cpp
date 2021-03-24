@@ -2,9 +2,7 @@
 #include "Tiles.h"
 #include "Utilities.h"
 #include "Particles.h"
-
-
-bool jump = FALSE;
+#include <iostream>
 
 float Enemies::gravityStrength = 100.0f;
 
@@ -101,6 +99,7 @@ void Enemies::Slime_Movement(f32 maxX)
 {
 	sprite.pos.x -= velocity * g_dt;
 	counter -= g_dt;
+
 	if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
 	{
 		sprite.ReflectAboutYAxis();

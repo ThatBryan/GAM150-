@@ -163,8 +163,8 @@ void MainMenu::Buttons_Init() {
 		LevelButtons[i].SetID(i + 1);
 		LevelButtons[i].Set_TextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 		LevelButtons[i].Set_Callback(MainMenu::LockedLevel);
-		std::string tmp{ "Level " + std::to_string(i + 1) };
-		LevelButtons[i].Set_Text(tmp.c_str());
+		LevelButtons[i].Set_Text("Locked");
+
 	}
 
 	for (size_t i = 0; i < 3; ++i) {
@@ -229,6 +229,8 @@ void MainMenu::SwitchToLevelSelection(void)
 	for (size_t i = 0; i < LevelSys.GetKey(); ++i) {
 			LevelButtons[i].SetStateColor(ButtonState::Idle, Color(0, 255.0f, 0.0f, 10.0f));
 			LevelButtons[i].Set_Callback(LevelSystem::SetLevel);
+			std::string tmp{ "Level " + std::to_string(i + 1) };
+			LevelButtons[i].Set_Text(tmp.c_str());
 	}
 	GameStateUpdate = MainMenu::TestLevelSelectionUpdate;
 	GameStateDraw = MainMenu::TestLevelSelectionRender;
