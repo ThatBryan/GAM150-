@@ -126,6 +126,36 @@ void MapLoad()
 			ImportMapDataFromFile("./Assets/Levels/Level3.txt");
 			break;
 		}
+		case 4:
+		{
+			ImportMapDataFromFile("./Assets/Levels/Level4.txt");
+			break;
+		}
+		case 5:
+		{
+			ImportMapDataFromFile("./Assets/Levels/Level5.txt");
+			break;
+		}
+		case 6:
+		{
+			ImportMapDataFromFile("./Assets/Levels/Level6.txt");
+			break;
+		}
+		case 7:
+		{
+			ImportMapDataFromFile("./Assets/Levels/Level7.txt");
+			break;
+		}
+		case 8:
+		{
+			ImportMapDataFromFile("./Assets/Levels/Level8.txt");
+			break;
+		}
+		case 9:
+		{
+			ImportMapDataFromFile("./Assets/Levels/Level9.txt");
+			break;
+		}
 		default:
 			gamestateNext = GS_MAINMENU;
 	}
