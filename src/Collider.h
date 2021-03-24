@@ -2,10 +2,10 @@
 #include "Graphics.h"
 
 struct Collider {
-	Graphics::Rect topBB;
-	Graphics::Rect bottomBB;
-	Graphics::Rect leftBB;
-	Graphics::Rect rightBB;
+	Graphics::Rect top;
+	Graphics::Rect bottom;
+	Graphics::Rect left;
+	Graphics::Rect right;
 
 	Collider();
 	void SetMeshes();
