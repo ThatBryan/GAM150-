@@ -64,11 +64,11 @@ void MapInit(void)
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::BAT))
 			{
-				Enemies::AddNew(enemies, EnemyType::Bat, AEVec2Set(j * grid_width + Offset, i * grid_height + Offset), enemy_width, enemy_height);
+				Enemies::AddNew(enemies, EnemyType::Bat, AEVec2Set(j * grid_width + Offset, i * grid_height + Offset), enemy_width,  bat_height);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SQUIRREL))
 			{
-				Enemies::AddNew(enemies, EnemyType::Squirrel, AEVec2Set(j * grid_width, i * grid_height), enemy_width, enemy_height);
+				Enemies::AddNew(enemies, EnemyType::Squirrel, AEVec2Set(j * grid_width, i * grid_height), enemy_width, squirrel_height);
 			}
 		}
 	}
@@ -94,15 +94,15 @@ void MapUpdate()
 
 void MapRender()
 {
-	for (size_t j = 0; j < enemies.size(); ++j)
-	{
-		enemies[j].Draw();
-	}
 	for (size_t i = 0; i < tilemap.size(); ++i)
 	{
 		tilemap[i].Render();
 	}
 	Jumperman.Render();
+	for (size_t j = 0; j < enemies.size(); ++j)
+	{
+		enemies[j].Draw();
+	}
 	Overlay::Render(Jumperman);
 	UI::Draw();
 	UI::Update();

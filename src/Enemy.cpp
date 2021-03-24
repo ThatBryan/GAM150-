@@ -66,7 +66,7 @@ void Enemies::Bat_Movement(f32 maxX)
 	sprite.pos.x += velocity * g_dt;
 	headBB.pos = sprite.pos;
 	enemyBB.pos = sprite.pos;
-	enemyBB.pos.y += 5.0f;
+	//enemyBB.pos.y += 5.0f;
 	headBB.pos.y -= batBBOffset;
 }
 
