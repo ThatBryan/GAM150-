@@ -186,6 +186,7 @@ void UpdateManager()
 		{
 			enemies[i].Update();
 			Tiles::CheckEnemyGravity(tileManager, enemies[i]);
+			Tiles::CheckEnemyCollision(tileManager, enemies[i]);
 		}
 		Jumperman.CheckEnemyCollision(enemies);
 	}

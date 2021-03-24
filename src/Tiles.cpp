@@ -336,3 +336,20 @@ void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy)
 	}
 	enemy.SetGravity(true);
 }
+
+void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
+{
+
+	for (size_t i = 0; i < TileManager.size(); ++i) {
+		for (size_t j = 0; j < TileManager[i]->size(); ++j) {
+			Tiles& Tile{ TileManager[i]->at(j) };
+
+			if (Utils::ColliderAABB(enemy.bottomBB.pos, enemy.bottomBB.width, enemy.bottomBB.height,
+				Tile.collider.top.pos, Tile.collider.top.width, Tile.collider.top.height)) {
+				enemy.sprite.pos.y = Tile.collider.top.pos.y - enemy.sprite.height / 2.0f;
+				
+			}
+		}
+	}
+
+}
