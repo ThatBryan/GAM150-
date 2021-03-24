@@ -7,7 +7,7 @@ namespace FilePaths {
 	const char* VictoryOverlay = "./Assets/Art/throwaway.png";
 	const char* GameoverOverlay = "./Assets/Art/throwaway2.png";
 	const char* WaterSlimeSprite = "./Assets/Art/WaterSlime.png";
-	const char* FlyingEnemySprite = "./Assets/Art/flying_old(2).png";
+	const char* FlyingEnemySprite = "./Assets/Art/bat.png";
 	const char* SquirrelSprite = "./Assets/Art/Squirrel.png";
 	const char* PlayerSprite = "./Assets/Art/Jumperman.png";
 	const char* GrassTile = "./Assets/Art/Grass_Tile.png";
