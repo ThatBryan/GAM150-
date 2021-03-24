@@ -43,15 +43,14 @@ public:
 	void Reset(void);
 	void CheckEnemyCollision(std::vector <Enemies>& enemy);
 	void GravityManager(void);
-	inline void SetPos(AEVec2 pos) { this->sprite.pos = pos; this->startingPos = pos; }
 	void SetPlayerWin(void);
+	inline void SetPos(AEVec2 pos) { this->sprite.pos = pos; this->startingPos = pos; }
 	inline bool GetWinStatus(void) const { return win; }
 	inline void SetPlayerLose(void){ active = false; lose = true; }
 	inline bool GetLoseStatus(void) const { return lose; }
 
 	static void LoadTex(void);
 	static void Unload(void);
-
 	static void CreatePlayer(Player& player, const AEVec2 pos, const f32 width, const f32 height);
 
 	friend void UI::DisplayLife(short liveCount);

@@ -3,6 +3,14 @@
 
 Collider::Collider() : topBB{ 0.0f, 0.0f }, bottomBB{ 0.0f, 0.0f }, leftBB{ 0.0f, 0.0f }, rightBB{ 0.0f, 0.0f } {}
 
+void Collider::SetMeshes()
+{
+	topBB.SetMesh();
+	leftBB.SetMesh();
+	bottomBB.SetMesh();
+	rightBB.SetMesh();
+}
+
 
 void Collider::SetWidthHeight(Graphics::Rect& arg, float width, float height) {
 	arg.width = width;

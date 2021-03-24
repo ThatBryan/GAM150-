@@ -3,6 +3,7 @@
 #include <vector>
 #include "Image.h"
 #include "Constants.h"
+#include "Collider.h"
 
 enum class TileType{ Grass = 0, Goal, Safe, Special, Max };
 TileType& operator++(TileType& rhs);
@@ -18,16 +19,13 @@ public:
 	using TileMgr = std::vector<std::vector<Tiles>*>&;
 
 	private:
-		short ID;
+		Graphics::Rect ColliderAABB;
+		Collider collider;
 		TileType type;
+		short ID;
 		f64 collapseDelay;
 		bool active, isCollapsing;
 
-		Graphics::Rect ColliderAABB;
-		Graphics::Rect tile_bottomBB;
-		Graphics::Rect tile_topBB;
-		Graphics::Rect tile_leftBB;
-		Graphics::Rect tile_rightBB;
 
 		void DecreaseLifespan(void);
 		void Collapse(const Player& player);
@@ -36,8 +34,6 @@ public:
 		void CheckEnemyStatus(std::vector <Enemies>& enemy);
 		void Update(Player& player);
 		void TileShake(void);
-		inline void SetColliderHeight(float Height) { tile_leftBB.height = Height; tile_rightBB.height = Height; }
-		inline void SetTopCollidierPosY(float Pos) { tile_topBB.pos.y = Pos; }
 
 		public:
 		Tiles(AEGfxTexture*, const f32 width, const f32 height);

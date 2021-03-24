@@ -74,7 +74,6 @@ void MapInit(void)
 	}
 	tileManager.push_back(&tilemap);
 	UI::Init();
-
 }
 
 void MapUpdate()
