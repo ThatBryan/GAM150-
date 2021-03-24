@@ -1,5 +1,5 @@
 #include "AEEngine.h"
-#include "TestLevel.h"
+#include "Gameplay.h"
 #include "BinaryMap.h"
 #include "Tiles.h"
 #include "Enemy.h"
@@ -182,7 +182,7 @@ void MapUnload()
 	Overlay::Unload();
 }
 
-void TestRestart()
+void MapRestart()
 {
 	Tiles::Reset(tilemap);
 	Enemies::Reset(enemies);
