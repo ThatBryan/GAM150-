@@ -88,6 +88,8 @@ void MapUpdate()
 	}
 	UpdateManager();
 	Audio.update();
+	if (AEInputCheckReleased(AEVK_ESCAPE))
+		Utils::ReturnToMenu();
 }
 
 void MapRender()

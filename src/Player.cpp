@@ -201,9 +201,9 @@ void Player::Update_Position(void)
 	}
 	playerBB.pos = sprite.pos;
 	if (direction == MovementState::Left)
-		bottomBB.pos = AEVec2Set(sprite.pos.x - player_collider_offset_x, sprite.pos.y + player_collider_offset_y);
+		bottomBB.pos = AEVec2Set(sprite.pos.x - player_collider_offset_x, sprite.pos.y + +sprite.height / 2.0f - bottomBB.height / 2.0f);
 	else
-		bottomBB.pos = AEVec2Set(sprite.pos.x + player_collider_offset_x, sprite.pos.y + player_collider_offset_y);
+		bottomBB.pos = AEVec2Set(sprite.pos.x + player_collider_offset_x, sprite.pos.y + sprite.height / 2.0f - bottomBB.height / 2.0f);
 
 	player_topBB.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0f);
 	player_rightBB.pos = AEVec2Set(sprite.pos.x + abs(sprite.width) / 4.0f, sprite.pos.y);

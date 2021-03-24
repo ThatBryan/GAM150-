@@ -25,7 +25,7 @@ namespace FilePaths {
 unsigned short Level{ 0 };
 // Player constants
 const float player_speed = 150.0f;
-const float player_width = 50.0f;
+const float player_width = 40.0f;
 const float player_height = 50.0f;
 const float player_jumpvel = 5.0f;
 const float player_chargedjumpvel = 10.0f;

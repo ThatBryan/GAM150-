@@ -37,6 +37,7 @@ public:
 		void Update(Player& player);
 		void TileShake(void);
 		inline void SetColliderHeight(float Height) { tile_leftBB.height = Height; tile_rightBB.height = Height; }
+		inline void SetTopCollidierPosY(float Pos) { tile_topBB.pos.y = Pos; }
 
 		public:
 		Tiles(AEGfxTexture*, const f32 width, const f32 height);
