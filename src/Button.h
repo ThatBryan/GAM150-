@@ -14,11 +14,14 @@ public:
 
 	Button(ButtonType Type, const f32 width, const f32 height, const f32 textScale = 1.0f);
 	void Set_Position(const AEVec2 pos);
-	inline void Set_Callback(Test_Ptr ThePtr) { TestCallback = ThePtr; }
-	inline void Set_Callback(fn_ptr ThePtr) { callback = ThePtr; }
 	void Set_Text(std::string text);
 	void Set_TextColor(Color color);
 	void SetStateColor(ButtonState state, Color color);
+	void Update();
+	void Render();
+
+	inline void Set_Callback(Test_Ptr ThePtr) { TestCallback = ThePtr; }
+	inline void Set_Callback(fn_ptr ThePtr) { callback = ThePtr; }
 	inline void SetType(ButtonType Type) {type = Type; }
 	inline void Set_Texture(const char* pFile) { pTex = AEGfxTextureLoad(pFile); }
 	inline void FreeTexture() {if (pTex) AEGfxTextureUnload(pTex);}
@@ -26,9 +29,6 @@ public:
 	inline float GetWidth() const { return button.width; }
 	inline void SetID(unsigned short x) { ID = x; }
 	inline int GetID() const { return ID; }
-	void Update();
-	void Render();
-
 private:
 	Graphics::Rect button;
 	Graphics::Text text;
