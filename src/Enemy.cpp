@@ -97,9 +97,12 @@ void Enemies::Squirrel_Movement(f32 maxX)
 
 void Enemies::Slime_Movement(f32 maxX)
 {
-	sprite.pos.x -= velocity * g_dt;
-	counter -= g_dt;
-
+	if (!isGravity)
+	{
+		sprite.pos.x -= velocity * g_dt;
+		counter -= g_dt;
+	}
+	
 	if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
 	{
 		sprite.ReflectAboutYAxis();

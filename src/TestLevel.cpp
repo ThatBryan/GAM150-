@@ -124,7 +124,7 @@ void MapLoad()
 		}
 		case 3:
 		{
-			ImportMapDataFromFile("./Assets/Levels/Level3.txt");
+			ImportMapDataFromFile("./Assets/Levels/Level4.txt");
 			break;
 		}
 		case 4:

@@ -11,6 +11,7 @@ enum
 	GS_RESTART,
 	GS_TEST,
 	GS_LEVEL1,
+	GS_LEVEL4,		
 	GS_QUIT
 };
 
