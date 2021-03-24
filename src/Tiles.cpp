@@ -12,10 +12,10 @@ ColliderAABB{width, height}, collider()
 {
 	ColliderAABB.color.Set(Color{ 150, 0, 0, 150 });
 
-	collider.SetWidthHeight(collider.topBB, width, 1.0f);
+	collider.SetWidthHeight(collider.topBB, width, 10);
 	collider.SetWidthHeight(collider.leftBB, 10, height);
 	collider.SetWidthHeight(collider.rightBB, 10, height);
-	collider.SetWidthHeight(collider.bottomBB, width, 1.0f);
+	collider.SetWidthHeight(collider.bottomBB, width, 10);
 }
 
 void Tiles::Collapse(const Player& ThePlayer)
@@ -61,7 +61,7 @@ void Tiles::CheckPos(void) {
 			collider.topBB.pos = AEVec2Set(image.pos.x, image.pos.y - image.height / 2.0f + 10.0f); // Counted pixel counts for leaves..
 		
 		else 
-			collider.topBB.pos = AEVec2Set(image.pos.x, image.pos.y - image.height / 2.0f);
+			collider.topBB.pos = AEVec2Set(image.pos.x, image.pos.y - image.height / 2.0f + collider.topBB.height / 2.0f);
 
 
 		if (image.pos.y >= static_cast <f32> (AEGetWindowHeight())) 
@@ -325,6 +325,9 @@ void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy)
 	for (size_t i = 0; i < TileManager.size(); ++i) {
 		for (size_t j = 0; j < TileManager[i]->size(); ++j) {
 
+			if (TileManager[i]->at(j).GetActive() == false)
+				continue;
+
 			Tiles& Tile{ TileManager[i]->at(j) };
 			if (Utils::ColliderAABB(enemy.enemyBB.pos, enemy.enemyBB.width, enemy.enemyBB.height,
 				Tile.collider.topBB.pos, Tile.collider.topBB.width, Tile.collider.topBB.height)) {
@@ -335,4 +338,24 @@ void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy)
 		}
 	}
 	enemy.SetGravity(true);
+}
+
+void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
+{
+
+	for (size_t i = 0; i < TileManager.size(); ++i) {
+		for (size_t j = 0; j < TileManager[i]->size(); ++j) {
+			Tiles& Tile{ TileManager[i]->at(j) };
+
+			if (Utils::ColliderAABB(enemy.bottomBB.pos, enemy.bottomBB.width, enemy.bottomBB.height,
+				Tile.collider.topBB.pos, Tile.collider.topBB.width, Tile.collider.topBB.height)) {
+
+				enemy.sprite.pos.y = Tile.collider.topBB.pos.y + enemy.sprite.height / 2.0f; // Tile.collider.topBB.height / 2.0f + enemy.sprite.height / 2.0f;
+				printf("colliion");
+				//enemy.sprite.pos.x = Tile.image.pos.x;
+				return;
+			}
+		}
+	}
+
 }
