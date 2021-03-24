@@ -14,6 +14,7 @@
 #include "MainMenu.h"
 #include <vector>
 #include <array>
+#include <cassert>
 
 std::vector<Tiles> tilemap;
 std::vector<Enemies> enemies;
@@ -27,7 +28,6 @@ extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
 void MapInit(void)
 {
 	float Offset = 35.0f;
-
 	f32 grid_height{ static_cast<f32>(AEGetWindowHeight() / Map_Height) }, grid_width{ static_cast<f32>(AEGetWindowWidth() / Map_Width) };
 	for (int i = 0; i < Map_Height; ++i)
 	{
@@ -127,19 +127,25 @@ void MapLoad()
 			ImportMapDataFromFile("./Assets/Levels/Level3.txt");
 			break;
 		}
+		case 4:
+		{
+			ImportMapDataFromFile("./Assets/Levels/Level4.txt");
+			break;
+		}
 		default:
 			gamestateNext = GS_MAINMENU;
 	}
+	assert(Map_Height > 0 && Map_Width > 0);
+
 	Tiles::LoadTex();
+	Player::LoadTex();
 	Enemies::LoadTex();
 	AudioManager::loadAsset();
-	Player::LoadTex();
-	Overlay::Load();
-	Overlay::Init();
-
+	AudioManager::SetVolume(AudioID::Jump, 0.0f);
 	AudioManager::SetVolume(AudioID::BGM, 0.2f);
 	//Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
-	AudioManager::SetVolume(AudioID::Jump, 0.0f);
+	Overlay::Load();
+	Overlay::Init();
 }
 
 void MapUnload()

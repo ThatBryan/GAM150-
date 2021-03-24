@@ -12,9 +12,9 @@ extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
 extern AudioManager Audio;
 extern LevelSystem LevelSys;
 
-AEGfxTexture* Player::playerTex{ nullptr };
 static f32 maxY;
 static f32 maxX;
+AEGfxTexture* Player::playerTex{ nullptr };
 float Player::gravityStrength = 150.0f;
 
 
@@ -190,16 +190,14 @@ void Player::Update_Position(void)
 	}
 	playerBB.pos = sprite.pos;
 	if (direction == MovementState::Left) {
-		//bottomBB.pos = AEVec2Set(sprite.pos.x - player_collider_offset_x, sprite.pos.y + +sprite.height / 2.0f - bottomBB.height / 2.0f);
-		collider.bottomBB.pos = AEVec2Set(sprite.pos.x - player_collider_offset_x, sprite.pos.y + +sprite.height / 2.0f - collider.bottomBB.height / 2.0f);
+		collider.bottom.pos = AEVec2Set(sprite.pos.x - player_collider_offset_x, sprite.pos.y + +sprite.height / 2.0f - collider.bottom.height / 2.0f);
 	}
 	else {
-		//bottomBB.pos = AEVec2Set(sprite.pos.x + player_collider_offset_x, sprite.pos.y + sprite.height / 2.0f - bottomBB.height / 2.0f);
-		collider.bottomBB.pos = AEVec2Set(sprite.pos.x + player_collider_offset_x, sprite.pos.y + sprite.height / 2.0f - collider.bottomBB.height / 2.0f);
+		collider.bottom.pos = AEVec2Set(sprite.pos.x + player_collider_offset_x, sprite.pos.y + sprite.height / 2.0f - collider.bottom.height / 2.0f);
 	}
-	collider.topBB.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0f);
-	collider.rightBB.pos = AEVec2Set(sprite.pos.x + abs(sprite.width) / 4.0f, sprite.pos.y);
-	collider.leftBB.pos = AEVec2Set(sprite.pos.x - abs(sprite.width) / 4.0f, sprite.pos.y);
+	collider.top.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0f + collider.top.height / 2.0f);
+	collider.right.pos = AEVec2Set(sprite.pos.x + abs(sprite.width) / 4.0f, sprite.pos.y);
+	collider.left.pos = AEVec2Set(sprite.pos.x - abs(sprite.width) / 4.0f, sprite.pos.y);
 }
 
 void Player::ChangeDirection() {
@@ -243,7 +241,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 		{
 			if (Utils::ColliderAABB(enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, playerBB.pos, playerBB.width, playerBB.height))
 			{
-				if (Utils::ColliderAABB(enemy[i].topBB.pos, enemy[i].topBB.width, enemy[i].topBB.height, collider.bottomBB.pos, collider.bottomBB.width, collider.bottomBB.height)) {
+				if (Utils::ColliderAABB(enemy[i].topBB.pos, enemy[i].topBB.width, enemy[i].topBB.height, collider.bottom.pos, collider.bottom.width, collider.bottom.height)) {
 					if (!DebugMode)
 						enemy[i].KillEnemy();
 
@@ -271,9 +269,9 @@ void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, con
 	player.playerBB.width = width;
 	player.playerBB.height = height;
 
-	player.collider.SetWidthHeight(player.collider.topBB, player_width, 5.0f);
-	player.collider.SetWidthHeight(player.collider.leftBB, 20.0f, player_height - 10.0f);
-	player.collider.SetWidthHeight(player.collider.rightBB, 20.0f, player_height - 10.0f);
-	player.collider.SetWidthHeight(player.collider.bottomBB, player_width / 2.0f, 5.0f);
+	player.collider.SetWidthHeight(player.collider.top, player_width, 5.0f);
+	player.collider.SetWidthHeight(player.collider.left, 20.0f, player_height - 10.0f);
+	player.collider.SetWidthHeight(player.collider.right, 20.0f, player_height - 10.0f);
+	player.collider.SetWidthHeight(player.collider.bottom, player_width / 2.0f, 5.0f);
 	player.collider.SetMeshes();
 }
