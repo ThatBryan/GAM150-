@@ -228,7 +228,7 @@ void MainMenu::SwitchToLevelSelection(void)
 
 	for (size_t i = 0; i < LevelSys.GetKey(); ++i) {
 			LevelButtons[i].SetStateColor(ButtonState::Idle, Color(0, 255.0f, 0.0f, 10.0f));
-			LevelButtons[i].Set_IntCallback(LevelSystem::SetLevel);
+			LevelButtons[i].Set_Callback(LevelSystem::SetLevel);
 	}
 	GameStateUpdate = MainMenu::TestLevelSelectionUpdate;
 	GameStateDraw = MainMenu::TestLevelSelectionRender;

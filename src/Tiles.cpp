@@ -90,8 +90,6 @@ void Tiles::CheckEnemyStatus(std::vector<Enemies>& enemy)
 	}
 }
 
-
-
 void Tiles::CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer)
 {
 	for (size_t i = 0; i < TileManager.size(); i++)

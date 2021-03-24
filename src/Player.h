@@ -19,8 +19,8 @@ class Player
 {
 private:
 	MovementState direction;
-	bool win, lose;
 	Health hp;
+	bool win, lose;
 	float jumpvel, chargedjumpvel;
 	static f32 gravityStrength;
 	void Update_Position(void);
@@ -32,10 +32,10 @@ public:
 	Player(AEGfxTexture* ,const f32 width, const f32 height);
 	Player();
 	Image sprite;
-	bool active, jump, gravity, chargedjump;
-	Graphics::Rect playerBB {player_width, player_height};
 	Collider collider;
 	AEVec2 startingPos, vel;
+	Graphics::Rect playerBB {player_width, player_height};
+	bool active, jump, gravity, chargedjump;
 	float gravityMultiplier;
 
 	void Update(void);
