@@ -15,7 +15,7 @@ extern LevelSystem LevelSys;
 static f32 maxY;
 static f32 maxX;
 AEGfxTexture* Player::playerTex{ nullptr };
-float Player::gravityStrength = 150.0f;
+float Player::gravityStrength = 20.0f;
 
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{false},
@@ -96,12 +96,11 @@ void Player::Update_Position(void)
 		if (sprite.pos.y + sprite.height / 2 <= maxY)
 		{
 			sprite.pos.y -= jumpvel;
-
-			jumpvel -= 0.2f; // velocity decrease as y increases
-			if (jumpvel < -5.0f)
+			jumpvel -= 0.1f; // velocity decrease as y increases
+			if (jumpvel <= 0)
 			{
 				jump = false;
-				jumpvel = 5.0f;
+				jumpvel = player_jumpvel;
 			}
 		}
 	}
@@ -142,7 +141,7 @@ void Player::Update_Position(void)
 
 	if (!gravity) // reset counter if player's feet touches the ground
 	{
-		jumpvel = 5.0f;
+		jumpvel = player_jumpvel;
 		chargedjumpvel = 10.0f;
 	}
 
@@ -219,7 +218,7 @@ void Player::GravityManager(void)
 	if (gravity && !jump && !chargedjump)
 	{
 		if (!DebugMode) {
-			gravityMultiplier += g_dt;
+			gravityMultiplier += g_dt * 20;
 			sprite.pos.y += (gravityStrength * (g_dt * gravityMultiplier));
 		}
 	}

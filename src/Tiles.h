@@ -16,6 +16,7 @@ class Tiles
 {
 public:
 	// Reference to a vector, containing a vector of Tiles*
+
 	using TileMgr = std::vector<std::vector<Tiles>*>&;
 	private:
 		Graphics::Rect ColliderAABB;

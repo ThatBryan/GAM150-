@@ -12,10 +12,10 @@ ColliderAABB{width, height}, collider()
 {
 	ColliderAABB.color.Set(Color{ 150, 0, 0, 150 });
 
-	collider.SetWidthHeight(collider.top, width, 1.0f);
+	collider.SetWidthHeight(collider.top, width - 2.0f, 5.0f);
 	collider.SetWidthHeight(collider.left, 10, height);
 	collider.SetWidthHeight(collider.right, 10, height);
-	collider.SetWidthHeight(collider.bottom, width, 1.0f);
+	collider.SetWidthHeight(collider.bottom, width - 2.0f, 5.0f);
 }
 
 void Tiles::Collapse(const Player& ThePlayer)
@@ -58,10 +58,10 @@ void Tiles::CheckPos(void) {
 		collider.left.pos = AEVec2Set(image.pos.x - abs(image.width) / 2.0f + collider.left.width / 2.0f, image.pos.y);
 		
 		if (type == TileType::Grass) 
-			collider.top.pos = AEVec2Set(image.pos.x, image.pos.y - image.height / 2.0f + 10.0f); // Counted pixel counts for leaves..
+			collider.top.pos = AEVec2Set(image.pos.x, image.pos.y - image.height / 2.0f + collider.top.height / 2.0f + 9.0f); // Counted pixel counts for leaves..
 		
 		else 
-			collider.top.pos = AEVec2Set(image.pos.x, image.pos.y - image.height / 2.0f);
+			collider.top.pos = AEVec2Set(image.pos.x, image.pos.y - image.height / 2.0f + collider.top.height / 2.0f);
 
 
 		if (image.pos.y >= static_cast <f32> (AEGetWindowHeight())) 
@@ -139,7 +139,7 @@ void Tiles::AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, co
 	Tile.type = type;
 
 	if (Tile.type == TileType::Grass) {
-		const float GrassOffset{ 25.0f };
+		const float GrassOffset{ Height / 2.0f };
 		Tile.collider.SetHeight(Tile.collider.left, GrassOffset);
 		Tile.collider.SetHeight(Tile.collider.right, GrassOffset);
 	}
