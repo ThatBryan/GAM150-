@@ -327,7 +327,6 @@ void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy)
 				Tile.tile_topBB.pos, Tile.tile_topBB.width, Tile.tile_topBB.height)) {
 
 				enemy.SetGravity(false);
-				std::cout << "wtf\n";
 				return;
 			}
 		}

@@ -73,12 +73,12 @@ void MainMenu::Update(void)
 		}
 	}
 	Audio.update();
-	MainMenu::TestPlayerMovement();
+	//MainMenu::TestPlayerMovement();
 	MainMenu::TestEnemyMovement();
 	for (int i = 0; i < buttons.size(); ++i) {
 		buttons[i].Update();
 	}
-	player[0].sprite.rotation += 100.0f * g_dt;
+	//player[0].sprite.rotation += 100.0f * g_dt;
 	Particles::Update();
 }
 
@@ -91,7 +91,7 @@ void MainMenu::Render() {
 		enemy[i].sprite.Draw_Texture(255.0f);
 	}
 	
-	player[0].sprite.Draw_Texture(255.0f);
+	player[0].sprite.Draw_Texture(30,255.0f);
 
 	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - AEGetWindowHeight() / 4));
 	Particles::Render();
@@ -103,6 +103,7 @@ void MainMenu::Render() {
 
 void MainMenu::Load(void)
 {
+	Mesh::Anim = Graphics::Mesh_Animation(player_idle_anim_offset_x);
 	AudioManager::loadAsset();
 	AudioManager::SetVolume(AudioID::BGM, 0.0f);
 	AudioManager::SetVolume(AudioID::Jump, 0.2f);
@@ -113,6 +114,7 @@ void MainMenu::Load(void)
 
 void MainMenu::Unload(void)
 {
+	AEGfxMeshFree(Mesh::Anim);
 	Enemies::Unload();
 	Tiles::Unload();
 	Player::Unload();

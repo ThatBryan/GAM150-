@@ -5,11 +5,11 @@
 float objtexX = 0.0f;
 int count = 0;
 
-Image::Image(const AEGfxTexture* pTex, const AEGfxVertexList* Mesh, const f32 width, const f32 height, const f32 dir)
+Image::Image(const AEGfxTexture* pTex, AEGfxVertexList* Mesh, const f32 width, const f32 height, const f32 dir)
 	: rotation{dir}, width{width}, height{height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color(), transformMtx{NULL}
 {
 	this->pTex = const_cast<AEGfxTexture*>(pTex);
-	this->pMesh = const_cast<AEGfxVertexList*>(Mesh);
+	this->pMesh = Mesh;
 }
 
 Image::Image() : rotation{0}, width{0}, height{0}, pTex{ nullptr }, 
@@ -69,19 +69,26 @@ void Image::Draw_Texture(int counter, const f32 alpha, const f32 r, const f32 g,
 {
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-	AEGfxTextureSet(pTex, 0, 0);
 	AEGfxSetTintColor(r / colorcodeMax, g / colorcodeMax, b / colorcodeMax, a / colorcodeMax);
 	AEGfxSetTransparency(alpha / colorcodeMax);
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	++count;
 	if (count < counter)
-		AEGfxTextureSet(pTex, objtexX, 0);		// Same object, different texture
+	{
+		AEGfxTextureSet(pTex, objtexX, 0);
+		//printf("%.2f \n", objtexX);
+	}		// Same object, different texture
 	else
 	{
 		objtexX += 0.2f;
 		AEGfxTextureSet(pTex, objtexX, 0);		// Same object, different texture
+		printf("%.2f \n", objtexX);
 		count = 0;
+	}
+	if (objtexX == 1.0f)
+	{
+		objtexX = 0.0f;
 	}
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }

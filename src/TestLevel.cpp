@@ -129,6 +129,7 @@ void MapLoad()
 		default:
 			gamestateNext = GS_MAINMENU;
 	}
+	Mesh::Anim = Graphics::Mesh_Animation(player_idle_anim_offset_x);
 	Tiles::LoadTex();
 	Enemies::LoadTex();
 	AudioManager::loadAsset();
@@ -143,6 +144,7 @@ void MapLoad()
 
 void MapUnload()
 {
+	AEGfxMeshFree(Mesh::Anim);
 	Tiles::Unload();
 	Enemies::Unload();
 	Player::Unload();
