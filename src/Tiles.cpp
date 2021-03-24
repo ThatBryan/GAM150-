@@ -9,7 +9,7 @@ static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
 active{ true }, isCollapsing{ false }, ID{ 0 }, collapseDelay{ TileCollapseDelay }, type{ TileType::Safe }, spawnPos{ 0, 0 },
 ColliderAABB{width, height}, tile_topBB{ width, 1 }, tile_bottomBB{ width - tile_aabb_rect_offset_x , 1 },
-tile_rightBB{ 10 , height - tile_aabb_rect_offset_x }, tile_leftBB{ 10 , height - tile_aabb_rect_offset_x }
+tile_rightBB{ 10 , height / 2.0f }, tile_leftBB{ 10 , height / 2.0f }
 {
 	ColliderAABB.color.Set(Color{ 150, 0, 0, 150 });
 	tile_bottomBB.color.Set(Color{ 255.0f, 255.0f, 0, 255.0f }); // yellow
@@ -53,15 +53,14 @@ void Tiles::CheckPos(void) {
 	{
 		ColliderAABB.pos = image.pos;
 		// //7
-		tile_bottomBB.pos = AEVec2Set(image.pos.x, image.pos.y + abs(image.height) / 2.0f);
-		tile_rightBB.pos = AEVec2Set(image.pos.x + abs(image.width) / 2.0f - tile_rightBB.width / 2.0f, image.pos.y);
+		tile_bottomBB.pos = AEVec2Set(image.pos.x, image.pos.y + image.height / 2.0f);
+		tile_rightBB.pos = AEVec2Set(image.pos.x + abs(image.width) / 2.0f - tile_rightBB.width, image.pos.y);
 		tile_leftBB.pos = AEVec2Set(image.pos.x - abs(image.width) / 2.0f + tile_leftBB.width / 2.0f, image.pos.y);
 
 		if (type == TileType::Grass)
-			tile_topBB.pos = AEVec2Set(image.pos.x, image.pos.y - abs(image.height) / 2.0f + 7.0f); // Counted pixel counts for leaves..
+			tile_topBB.pos = AEVec2Set(image.pos.x, image.pos.y - image.height / 2.0f + 10.0f); // Counted pixel counts for leaves..
 		else
-			tile_topBB.pos = AEVec2Set(image.pos.x, image.pos.y - abs(image.height) / 2.0f);
-
+			tile_topBB.pos = AEVec2Set(image.pos.x, image.pos.y - image.height / 2.0f);
 
 		if (image.pos.y >= static_cast <f32> (AEGetWindowHeight())) 
 			active = false;
@@ -129,16 +128,22 @@ void Tiles::AddTileRow(std::vector <Tiles>& tile, TileType type, const int count
 }
 void Tiles::AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, const f32 height, AEVec2 pos) {
 	AEGfxTexture* temp = tileTex[static_cast<int>(type)];
-	tile.push_back(Tiles(temp, width, height));
+	float Height = height;
+
+	if (type == TileType::Grass) {
+		Height += 7.0f;
+	}
+	tile.push_back(Tiles(temp, width, Height));
 	Tiles& Tile = tile.back();
 	Tile.type = type;
-	Tile.image.pos = AEVec2Set(pos.x + width / 2.0f, pos.y + height / 2.0f);
-	Tile.spawnPos = Tile.image.pos;
 
 	if (Tile.type == TileType::Grass) {
-		Tile.SetColliderHeight(height - 3 * tile_aabb_rect_offset_x);
-		//Tile.image.height += 7.0f;
+		const float GrassOffset{ 20.0f };
+		Tile.SetColliderHeight(height - GrassOffset);
 	}
+
+	Tile.image.pos = AEVec2Set(pos.x + Tile.image.width / 2.0f, pos.y + height / 2.0f - Height / 2.0f);
+	Tile.spawnPos = Tile.image.pos;
 }
 
 void Tiles::CollapseNext(std::vector <Tiles>& tiles)
@@ -327,7 +332,6 @@ void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy)
 				Tile.tile_topBB.pos, Tile.tile_topBB.width, Tile.tile_topBB.height)) {
 
 				enemy.SetGravity(false);
-				std::cout << "wtf\n";
 				return;
 			}
 		}
