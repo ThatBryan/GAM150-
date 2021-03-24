@@ -179,9 +179,7 @@ void UpdateManager()
 		for (size_t i = 0; i < enemies.size(); i++)
 		{
 			enemies[i].Update();
-			Tiles::CheckEnemyCollision(tileManager, enemies[i]);
 			Tiles::CheckEnemyGravity(tileManager, enemies[i]);
-			
 		}
 		Jumperman.CheckEnemyCollision(enemies);
 	}
