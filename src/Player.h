@@ -34,11 +34,6 @@ public:
 	Image sprite;
 	bool active, jump, gravity, chargedjump;
 	Graphics::Rect playerBB {player_width, player_height};
-	Graphics::Rect bottomBB{player_width / 2.0f, 5.0f};
-	Graphics::Rect player_topBB{ player_width, 5.0f };
-	Graphics::Rect player_leftBB{ 20.0f,  player_height - 10.0f };
-	Graphics::Rect player_rightBB{ 20.0f, player_height - 10.0f};
-
 	Collider collider;
 	AEVec2 startingPos, vel;
 	float gravityMultiplier;
