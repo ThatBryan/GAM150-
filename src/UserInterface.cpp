@@ -65,8 +65,9 @@ void UI::Update() {
 }
 
 void UI::Draw() {
-	if (DebugMode)
-		FPS_Display.Draw();
+	AEVec2 Pos0{ FPS_Display.GetBufferSize() };
+	FPS_Display.Draw_Wrapped(AEVec2Set(Pos0.x / 2.0f, 80.0f + Pos0.y / 2.0f) );
+	//if (DebugMode)
 	AEVec2 Pos{ LevelDisplay.GetBufferSize() };
 	AEVec2 Pos2{ TimerDisplay.GetBufferSize() };
 	TimerDisplay.Draw_Wrapped(AEVec2Set(AEGetWindowWidth() - Pos2.x / 2.0f, Pos2.y / 2.0f));
