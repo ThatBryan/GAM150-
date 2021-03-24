@@ -60,4 +60,5 @@ public:
 	static void Unload(void);
 
 	friend void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy);
+	friend void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy);
 };

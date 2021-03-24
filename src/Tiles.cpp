@@ -8,7 +8,7 @@ static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
 Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
 active{ true }, isCollapsing{ false }, ID{ 0 }, collapseDelay{ TileCollapseDelay }, type{ TileType::Safe }, spawnPos{ 0, 0 },
-ColliderAABB{width, height}, tile_topBB{ width, 1.0f }, tile_bottomBB{ width - tile_aabb_rect_offset_x , 1 },
+ColliderAABB{width, height}, tile_topBB{ width, 5 }, tile_bottomBB{ width - tile_aabb_rect_offset_x , 1 },
 tile_rightBB{ 10 , height}, tile_leftBB{ 10 , height}
 {
 	ColliderAABB.color.Set(Color{ 150, 0, 0, 150 });
@@ -338,4 +338,24 @@ void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy)
 		}
 	}
 	enemy.SetGravity(true);
+}
+
+void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
+{
+
+	for (size_t i = 0; i < TileManager.size(); ++i) {
+		for (size_t j = 0; j < TileManager[i]->size(); ++j) {
+			Tiles& Tile{ TileManager[i]->at(j) };
+
+			if (Utils::ColliderAABB(enemy.bottomBB.pos, enemy.bottomBB.width, enemy.bottomBB.height,
+				Tile.tile_topBB.pos, Tile.tile_topBB.width, Tile.tile_topBB.height)) {
+
+				enemy.sprite.pos.y = Tile.image.pos.y + Tile.image.height / 2.0f + enemy.sprite.height / 2.0f;
+				printf("colliion");
+				//enemy.sprite.pos.x = Tile.image.pos.x;
+				return;
+			}
+		}
+	}
+
 }

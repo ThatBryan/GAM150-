@@ -57,6 +57,7 @@ public:
 		static void CheckPlayerGravity(const TileMgr TileManager, Player & ThePlayer);
 		static void CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer);
 		static void CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy);
+		static void CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy);
 
 		// Add single tile to a given vector.
 		static void AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, const f32 height, AEVec2 pos);
