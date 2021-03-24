@@ -6,6 +6,7 @@
 #include "AudioManager.h"
 #include "PlayerHp.h"
 #include "UserInterface.h"
+#include "Collider.h"
 
 // State to track when to flip image.
 enum class MovementState { Left = 0, Right};
@@ -37,6 +38,8 @@ public:
 	Graphics::Rect player_topBB{ player_width, 5.0f };
 	Graphics::Rect player_leftBB{ 20.0f,  player_height - 10.0f };
 	Graphics::Rect player_rightBB{ 20.0f, player_height - 10.0f};
+
+	Collider collider;
 	AEVec2 startingPos, vel;
 	float gravityMultiplier;
 

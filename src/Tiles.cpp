@@ -101,7 +101,7 @@ void Tiles::CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer)
 				continue;
 			Tiles& Tile = TileManager[i]->at(j);
 			if(Utils::ColliderAABB(Tile.tile_topBB.pos, Tile.tile_topBB.width, Tile.tile_topBB.height,
-				ThePlayer.bottomBB.pos, ThePlayer.bottomBB.width, ThePlayer.bottomBB.height)){
+				ThePlayer.collider.bottomBB.pos, ThePlayer.collider.bottomBB.width, ThePlayer.collider.bottomBB.height)){
 				ThePlayer.gravity = false;
 				ThePlayer.jump = false;
 				ThePlayer.chargedjump = false;

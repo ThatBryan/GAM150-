@@ -20,7 +20,10 @@ spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, 
 velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }, alphaTimer{ 1.0f }{
 	ID = EnemyCount;
 	EnemyCount++;
-	headBB.color.Set(Color{ 255.0f, 255.0, 255.0f, 255.0f });
+	topBB.color.Set(Color{ 255.0f, 255.0, 255.0f, 255.0f }); // white
+	bottomBB.color.Set(Color{ 255.0f, 255.0f, 0, 255.0f }); // yellow
+	leftBB.color.Set(Color{ 0, 255.0f, 0, 255.0f }); // green
+	rightBB.color.Set(Color{ 0, 0, 255.0f, 255.0f }); // blue
 	enemyBB.color.Set(Color{ 0, 0, 0, 100.0f });
 }
 
@@ -64,9 +67,9 @@ void Enemies::Bat_Movement(f32 maxX)
 		counter = Enemies::bat_counter;
 	}
 	sprite.pos.x += velocity * g_dt;
-	headBB.pos = sprite.pos;
+	topBB.pos = sprite.pos;
 	enemyBB.pos = sprite.pos;
-	headBB.pos.y -= batBBOffset;
+	topBB.pos.y -= batBBOffset;
 }
 
 void Enemies::Squirrel_Movement(f32 maxX)
@@ -88,9 +91,9 @@ void Enemies::Squirrel_Movement(f32 maxX)
 		jumpcounter = Enemies::jump_counter;
 	}
 
-	headBB.pos = sprite.pos;
+	topBB.pos = sprite.pos;
 	enemyBB.pos = sprite.pos;
-	headBB.pos.y -= squirrelBBOffset;
+	topBB.pos.y -= squirrelBBOffset;
 }
 
 void Enemies::Slime_Movement(f32 maxX)
@@ -103,9 +106,9 @@ void Enemies::Slime_Movement(f32 maxX)
 		velocity *= -1.0f;
 		counter = Enemies::slime_counter;
 	}
-	headBB.pos = sprite.pos;
+	topBB.pos = sprite.pos;
 	enemyBB.pos = sprite.pos;
-	headBB.pos.y -= slimeBBOffset;
+	topBB.pos.y -= slimeBBOffset;
 }
 void Enemies::DecrementAlpha(void)
 {
@@ -133,7 +136,7 @@ void Enemies::Draw()
 	{
 		sprite.Draw_Texture(alpha);
 		if (DebugMode) {
-			headBB.Draw();
+			topBB.Draw();
 			enemyBB.Draw();
 		}
 	}
