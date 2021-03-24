@@ -31,7 +31,7 @@ namespace FilePaths {
 
 namespace FP = FilePaths; // Short hand 
 
-// Level trakcer
+// Level tracker
 extern unsigned short Level;
 
 // Player constants
@@ -40,17 +40,20 @@ extern const float player_width;
 extern const float player_height;
 extern const float player_jumpvel;
 extern const float player_chargedjumpvel;
-extern const float enemy_width;
-extern const float enemy_height;
 extern const float player_collider_offset_y;
 extern const float player_collider_offset_x;
 extern const short player_hp_max;
+extern const float player_base_gravityMultiplier;
+
+// Enemy constants
+extern const float enemy_width;
+extern const float enemy_height;
 
 // Animation Constants
 extern const float player_idle_anim_offset_x;
 
 // Tile constants
-extern const double TileCollapseDelay;
+extern const float TileCollapseDelay;
 extern const float TileCollapseSpeed;
 extern const float tile_aabb_rect_offset_x;
 extern const float tile_aabb_rect_offset_y;

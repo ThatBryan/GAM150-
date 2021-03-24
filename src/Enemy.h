@@ -4,13 +4,14 @@
 #include "Graphics.h"
 #include "Constants.h"
 #include "Image.h"
+#include "Tiles.h"
 
 enum class EnemyType {Slime = 0, Bat, Squirrel, Max};
 EnemyType& operator++(EnemyType& rhs);
 
 // Foward declarations
 class Player;
-class Tiles;
+//class Tiles;
 
 class Enemies
 {
@@ -22,7 +23,7 @@ private:
 	Graphics::Rect enemyBB {enemy_width, 10.0f};
 	bool isGravity, killed;
 	float counter, velocity, jumpcounter, jumpvelocity, alpha, alphaTimer;
-	unsigned short ID;
+	unsigned short ID; // Maybe unnecessary
 
 	static float slime_counter, slime_speed, slimeBBOffset;
 	static float bat_speed, bat_counter, batBBOffset;
@@ -43,15 +44,17 @@ public:
 	bool active;
 	void Update(void);
 	void Draw();
+	void KillEnemy(bool status = true);
+	
 	inline EnemyType GetType() const { return type; }
-	inline bool getKilled() const { return killed; }
-	void setKilled(bool status = true);
-
-	void GravityCheck(std::vector <std::vector<Tiles>*>& TileManager);
+	inline bool GetKilledStatus() const { return killed; }
+	inline void SetGravity(bool X) { isGravity = X; }
 
 	// Add new enemy into the vector.
 	static void AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 pos, const f32 width, const f32 height);
 	static void Reset(std::vector <Enemies>& enemy);
 	static void LoadTex(void);
 	static void Unload(void);
+
+	friend void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy);
 };

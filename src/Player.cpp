@@ -2,24 +2,25 @@
 #include "Enemy.h"
 #include <array>
 #include "Utilities.h"
-#include "PitchDemo.h"
 #include "Graphics.h"
 #include "Particles.h"
 #include "UserInterface.h"
 #include "LevelSystem.h"
 #include <iostream>
 
+extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
+extern AudioManager Audio;
+extern LevelSystem LevelSys;
+
 AEGfxTexture* Player::playerTex{ nullptr };
 static f32 maxY;
 static f32 maxX;
 float Player::gravityStrength = 150.0f;
 
-extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
-extern LevelSystem LevelSys;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::Anim, width, height), lose{false},
 active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel },
-hp(), direction{MovementState::Right}, chargedjumpvel{ player_chargedjumpvel }
+hp(), direction{MovementState::Right}, chargedjumpvel{ player_chargedjumpvel }, gravityMultiplier{ player_base_gravityMultiplier }
 {
 	playerBB.color.Set(Color{ 0, 0, 0, 255.0f });
 	bottomBB.color.Set(Color{ 255.0f, 255.0f, 0, 255.0f }); // yellow
@@ -34,7 +35,7 @@ hp(), direction{MovementState::Right}, chargedjumpvel{ player_chargedjumpvel }
 
 Player::Player() : lose{ false }, active{ true }, gravity{ false }, jump{ false }, chargedjump { false },
 win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel }, chargedjumpvel{ player_chargedjumpvel },
-hp(), direction{ MovementState::Right } {
+hp(), direction{ MovementState::Right }, gravityMultiplier{ player_base_gravityMultiplier } {
 
 	playerBB.color.Set(Color{ 0, 0, 0, 255.0f });
 	bottomBB.color.Set(Color{ 255.0f, 255.0f, 0, 255.0f }); // yellow
@@ -59,6 +60,7 @@ void Player::Reset(void)
 	chargedjumpvel = player_chargedjumpvel;
 	hp.current = hp.max;
 	sprite.rotation = 0;
+	gravityMultiplier = player_base_gravityMultiplier;
 	direction = MovementState::Right;
 }
 
@@ -102,7 +104,6 @@ void Player::Update_Position(void)
 	}
 	if (jump)
 	{
-		printf("jump\n");
 		if (sprite.pos.y + sprite.height / 2 <= maxY)
 		{
 			sprite.pos.y -= jumpvel;
@@ -127,7 +128,7 @@ void Player::Update_Position(void)
 
 		}
 		
-		printf("%2f\n", chargedjump_counter);
+		printf("%.2f\n", chargedjump_counter);
 	}
 	if (AEInputCheckReleased(AEVK_SPACE))
 	{
@@ -216,14 +217,21 @@ void Player::ChangeDirection() {
 void Player::CheckOutOfBound() {
 	if ((sprite.pos.y - sprite.height / 2) > maxY)
 		SetPlayerLose();
-}
 
+	// Resolve collision conflict on spawn
+	if (sprite.pos.x - (sprite.width / 2.0f) < 0) {
+		sprite.pos.x = sprite.width / 2.0f;
+	}
+	//std::cout << sprite.pos.x << std::endl;
+}
 void Player::GravityManager(void)
 {
 	if (gravity && !jump && !chargedjump)
 	{
-		if(!DebugMode)
-			sprite.pos.y += gravityStrength * g_dt;
+		if (!DebugMode) {
+			gravityMultiplier += g_dt;
+			sprite.pos.y += (gravityStrength * (g_dt * gravityMultiplier));
+		}
 	}
 }
 
@@ -239,13 +247,13 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 {
 	for (size_t i = 0; i < enemy.size(); i++)
 	{
-		if (!enemy[i].getKilled())
+		if (!enemy[i].GetKilledStatus())
 		{
 			if (Utils::ColliderAABB(enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, playerBB.pos, playerBB.width, playerBB.height))
 			{
 				if (Utils::ColliderAABB(enemy[i].headBB.pos, enemy[i].headBB.width, enemy[i].headBB.height, bottomBB.pos, sprite.width, bottomBB.height)) {
 					if (!DebugMode)
-						enemy[i].setKilled();
+						enemy[i].KillEnemy();
 
 					if (DebugMode)
 						printf("enemy dies\n");
@@ -261,15 +269,6 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 			}
 		}
 	}
-}
-
-void Player::CreatePlayer(std::vector <Player>& player, const AEVec2 pos, const f32 width, const f32 height)
-{
-	player.push_back(Player(playerTex, width, height));
-	player[player.size() - 1].startingPos = pos;
-	player[player.size() - 1].sprite.pos = pos;
-	player[player.size() - 1].playerBB.width = width;
-	player[player.size() - 1].playerBB.height = height;
 }
 
 void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, const f32 height)

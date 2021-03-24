@@ -43,31 +43,12 @@ void Enemies::Update_Position(void)
 	}
 }
 
-void Enemies::GravityCheck(std::vector <std::vector<Tiles>*>& TileManager) {
-	for (size_t i = 0; i < TileManager.size(); i++)
-	{
-		for (size_t j = 0; j < TileManager[i]->size(); j++)
-		{
-			if (TileManager[i]->at(j).GetActive() == false)
-				continue;
-			if (Utils::ColliderAABB(TileManager[i]->at(j).image.pos, TileManager[i]->at(j).image.width, TileManager[i]->at(j).image.height,
-				enemyBB.pos, enemyBB.width, enemyBB.height))
-			{
-				isGravity = false;
-				return;
-			}
-		}
-	}
-	isGravity = true;
-}
 
 void Enemies::ApplyGravity(void) {
 	if (isGravity && !killed)
 	{
 		sprite.pos.y += gravityStrength * g_dt;
 	}
-		
-	
 }
 
 void Enemies::Bat_Movement(f32 maxX)
@@ -242,12 +223,12 @@ EnemyType& operator++(EnemyType& rhs) {
 	return rhs;
 }
 
-void Enemies::setKilled(bool status) {
+void Enemies::KillEnemy(bool status) {
 	killed = status;
 	const int particleCount{ 50 };
 	if (killed) {
 		for (int i = 0; i < particleCount; ++i) {
-			Particles::Create(sprite.pos, Utils::GetRandomVecVel(), Color::CreateRandomColor(), 1, 75.0f, Utils::RandomRangeFloat(0, 50.0f), 25.0f, 3.0f, enemyTex[static_cast<int>(type)]);
+			Particles::Create(sprite.pos, Utils::GetRandomVecVel(), Color::CreateRandomColor(), 1, 75.0f, Utils::RandomRangeFloat(100.0f, 250.0f), 25.0f, 3.0f, enemyTex[static_cast<int>(type)]);
 		}
 	}
 }
