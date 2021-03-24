@@ -113,7 +113,7 @@ void MapLoad()
 	{
 		case 1:
 		{
-			ImportMapDataFromFile("./Assets/Levels/testrun.txt");
+			ImportMapDataFromFile("./Assets/Levels/Tutorial.txt");
 			break;
 		}
 		case 2:
