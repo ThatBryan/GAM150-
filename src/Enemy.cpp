@@ -67,9 +67,8 @@ void Enemies::Bat_Movement(f32 maxX)
 		sprite.ReflectAboutYAxis();
 		counter = Enemies::bat_counter;
 	}
-	sprite.pos.x += velocity * g_dt; 
+	sprite.pos.x += velocity * g_dt;
 	topBB.pos = sprite.pos;
-
 	enemyBB.pos = sprite.pos;
 	topBB.pos.y -= batBBOffset;
 }
