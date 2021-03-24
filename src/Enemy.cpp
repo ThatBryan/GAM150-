@@ -71,7 +71,7 @@ void Enemies::Bat_Movement(f32 maxX)
 	topBB.pos = sprite.pos;
 
 	enemyBB.pos = sprite.pos;
-	headBB.pos.y -= batBBOffset;
+	topBB.pos.y -= batBBOffset;
 }
 
 void Enemies::Squirrel_Movement(f32 maxX)
@@ -95,7 +95,7 @@ void Enemies::Squirrel_Movement(f32 maxX)
 
 	topBB.pos = sprite.pos;
 	enemyBB.pos = sprite.pos;
-	headBB.pos.y -= squirrelBBOffset;
+	topBB.pos.y -= squirrelBBOffset;
 }
 
 void Enemies::Slime_Movement(f32 maxX)
