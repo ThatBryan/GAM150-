@@ -35,8 +35,8 @@ public:
 		void CheckPlayerGoal(Player& player);
 		void CheckEnemyStatus(std::vector <Enemies>& enemy);
 		void Update(Player& player);
-		
 		void TileShake(void);
+		inline void SetColliderHeight(float Height) { tile_leftBB.height = Height; tile_rightBB.height = Height; }
 
 		public:
 		Tiles(AEGfxTexture*, const f32 width, const f32 height);
@@ -49,12 +49,13 @@ public:
 		// Static class Functions
 		static void Unload(void);
 		static void LoadTex(void);
+
 		// Resets the level.
 		static void Reset(std::vector <Tiles>& tiles);
 		static void CollapsingManager(TileMgr TileManager);
 		static void CheckPlayerGravity(const TileMgr TileManager, Player & ThePlayer);
 		static void CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer);
-
+		static void CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy);
 
 		// Add single tile to a given vector.
 		static void AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, const f32 height, AEVec2 pos);

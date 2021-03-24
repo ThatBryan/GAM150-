@@ -92,13 +92,13 @@ void MapUpdate()
 
 void MapRender()
 {
-	for (size_t i = 0; i < tilemap.size(); ++i)
-	{
-		tilemap[i].Render();
-	}
 	for (size_t j = 0; j < enemies.size(); ++j)
 	{
 		enemies[j].Draw();
+	}
+	for (size_t i = 0; i < tilemap.size(); ++i)
+	{
+		tilemap[i].Render();
 	}
 	Jumperman.Render();
 	Overlay::Render(Jumperman);
@@ -167,8 +167,8 @@ void MapLoad()
 	Overlay::Init();
 
 	AudioManager::SetVolume(AudioID::BGM, 0.2f);
-	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
-	AudioManager::SetVolume(AudioID::Jump, 0.2f);
+	//Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
+	AudioManager::SetVolume(AudioID::Jump, 0.0f);
 }
 
 void MapUnload()
@@ -208,7 +208,7 @@ void UpdateManager()
 		for (size_t i = 0; i < enemies.size(); i++)
 		{
 			enemies[i].Update();
-			enemies[i].GravityCheck(tileManager);
+			Tiles::CheckEnemyGravity(tileManager, enemies[i]);
 		}
 		Jumperman.CheckEnemyCollision(enemies);
 	}

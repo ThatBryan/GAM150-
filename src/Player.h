@@ -38,6 +38,7 @@ public:
 	Graphics::Rect player_leftBB{ 20.0f,  player_height - 3 };
 	Graphics::Rect player_rightBB{ 20.0f, player_height - 3};
 	AEVec2 startingPos, vel;
+	float gravityMultiplier;
 
 	void Update(void);
 	void Render(void);

@@ -104,7 +104,7 @@ void MainMenu::Render() {
 void MainMenu::Load(void)
 {
 	AudioManager::loadAsset();
-	AudioManager::SetVolume(AudioID::BGM, 0.5f);
+	AudioManager::SetVolume(AudioID::BGM, 0.0f);
 	AudioManager::SetVolume(AudioID::Jump, 0.2f);
 	Tiles::LoadTex();
 	Enemies::LoadTex();

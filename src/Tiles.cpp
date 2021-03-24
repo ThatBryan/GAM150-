@@ -52,10 +52,16 @@ void Tiles::CheckPos(void) {
 	if (active)
 	{
 		ColliderAABB.pos = image.pos;
+		// //7
 		tile_bottomBB.pos = AEVec2Set(image.pos.x, image.pos.y + abs(image.height) / 2.0f);
-		tile_topBB.pos = AEVec2Set(image.pos.x, image.pos.y - abs(image.height) / 2.0f);
 		tile_rightBB.pos = AEVec2Set(image.pos.x + abs(image.width) / 2.0f - tile_rightBB.width / 2.0f, image.pos.y);
 		tile_leftBB.pos = AEVec2Set(image.pos.x - abs(image.width) / 2.0f + tile_leftBB.width / 2.0f, image.pos.y);
+
+		if (type == TileType::Grass)
+			tile_topBB.pos = AEVec2Set(image.pos.x, image.pos.y - abs(image.height) / 2.0f + 7.0f); // Counted pixel counts for leaves..
+		else
+			tile_topBB.pos = AEVec2Set(image.pos.x, image.pos.y - abs(image.height) / 2.0f);
+
 
 		if (image.pos.y >= static_cast <f32> (AEGetWindowHeight())) 
 			active = false;
@@ -83,6 +89,8 @@ void Tiles::CheckEnemyStatus(std::vector<Enemies>& enemy)
 	}
 }
 
+
+
 void Tiles::CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer)
 {
 	for (size_t i = 0; i < TileManager.size(); i++)
@@ -97,8 +105,8 @@ void Tiles::CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer)
 				ThePlayer.gravity = false;
 				ThePlayer.jump = false;
 				ThePlayer.chargedjump = false;
-				
-					return;
+				ThePlayer.gravityMultiplier = player_base_gravityMultiplier;
+				return;
 			}
 		}
 	}
@@ -114,8 +122,8 @@ void Tiles::AddTileRow(std::vector <Tiles>& tile, TileType type, const int count
 	{
 		tile.push_back(Tiles(temp, width, height));
 		tile[i].type = type;
-		tile[i].spawnPos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2));
-		tile[i].image.pos = AEVec2Set(pos.x + tile[i].image.width * i, (pos.y + tile[0].image.height / 2));
+		tile[i].spawnPos = AEVec2Set(pos.x + width * i, (pos.y + height / 2));
+		tile[i].image.pos = tile[i].spawnPos;
 	}
 
 }
@@ -125,7 +133,12 @@ void Tiles::AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, co
 	Tiles& Tile = tile.back();
 	Tile.type = type;
 	Tile.image.pos = AEVec2Set(pos.x + width / 2.0f, pos.y + height / 2.0f);
-	Tile.spawnPos = tile[tile.size() - 1].image.pos;
+	Tile.spawnPos = Tile.image.pos;
+
+	if (Tile.type == TileType::Grass) {
+		Tile.SetColliderHeight(height - 3 * tile_aabb_rect_offset_x);
+		//Tile.image.height += 7.0f;
+	}
 }
 
 void Tiles::CollapseNext(std::vector <Tiles>& tiles)
@@ -155,7 +168,7 @@ void Tiles::Reset(std::vector <Tiles>& tiles)
 		tiles[i].image.pos = tiles[i].spawnPos;
 		tiles[i].active = true;
 		tiles[i].isCollapsing = false;
-		tiles[i].collapseDelay = 0.5f;
+		tiles[i].collapseDelay = TileCollapseDelay;
 	}
 }
 
@@ -302,4 +315,22 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 				}
 		}
 	}
+}
+
+void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy)
+{
+	for (size_t i = 0; i < TileManager.size(); ++i) {
+		for (size_t j = 0; j < TileManager[i]->size(); ++j) {
+			Tiles& Tile{ TileManager[i]->at(j) };
+
+			if (Utils::ColliderAABB(enemy.enemyBB.pos, enemy.enemyBB.width, enemy.enemyBB.height,
+				Tile.tile_topBB.pos, Tile.tile_topBB.width, Tile.tile_topBB.height)) {
+
+				enemy.SetGravity(false);
+				std::cout << "wtf\n";
+				return;
+			}
+		}
+	}
+	enemy.SetGravity(true);
 }
