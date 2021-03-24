@@ -12,7 +12,7 @@ enum class TYPE_OBJECT
 	GOAL,						//4
 	JUMPERMAN,					//5
 	SLIME,						//6
-	BAT,						//7
+	BAT,						//7	
 	SQUIRREL					//8
 };
 

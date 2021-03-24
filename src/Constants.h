@@ -47,6 +47,8 @@ extern const float player_base_gravityMultiplier;
 // Enemy constants
 extern const float enemy_width;
 extern const float enemy_height;
+extern const float squirrel_height;
+extern const float bat_height;
 
 // Tile constants
 extern const float TileCollapseDelay;

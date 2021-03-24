@@ -23,10 +23,6 @@ active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ fals
 hp(), direction{MovementState::Right}, chargedjumpvel{ player_chargedjumpvel }, gravityMultiplier{ player_base_gravityMultiplier }
 {
 	playerBB.color.Set(Color{ 0, 0, 0, 255.0f });
-	bottomBB.color.Set(Color{ 255.0f, 255.0f, 0, 255.0f }); // yellow
-	player_topBB.color.Set(Color{ 255.0f, 0, 0, 255.0f }); // red
-	player_leftBB.color.Set(Color{ 0, 255.0f, 0, 255.0f }); // green
-	player_rightBB.color.Set(Color{ 0, 0, 255.0f, 255.0f }); // blue
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
 	hp.max = player_hp_max;
@@ -38,10 +34,7 @@ win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel }, charg
 hp(), direction{ MovementState::Right }, gravityMultiplier{ player_base_gravityMultiplier } {
 
 	playerBB.color.Set(Color{ 0, 0, 0, 255.0f });
-	bottomBB.color.Set(Color{ 255.0f, 255.0f, 0, 255.0f }); // yellow
-	player_topBB.color.Set(Color{ 255.0f, 0, 0, 255.0f }); // red
-	player_leftBB.color.Set(Color{ 0, 255.0f, 0, 255.0f }); // green
-	player_rightBB.color.Set(Color{ 0, 0, 255.0f, 255.0f }); // blue
+
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
 	hp.max = player_hp_max;
@@ -76,11 +69,7 @@ void Player::Render(void)
 	UI::DisplayLife(hp.current);
 	
 	if (DebugMode) {
-		playerBB.Draw();
-		bottomBB.Draw();
-		player_topBB.Draw();
-		player_leftBB.Draw();
-		player_rightBB.Draw();
+		collider.Draw();
 	}
 }
 void Player::LoadTex(void) {
@@ -128,7 +117,7 @@ void Player::Update_Position(void)
 
 		}
 		
-		printf("%.2f\n", chargedjump_counter);
+		//printf("%.2f\n", chargedjump_counter);
 	}
 	if (AEInputCheckReleased(AEVK_SPACE))
 	{
@@ -137,7 +126,7 @@ void Player::Update_Position(void)
 	}
 	if (chargedjump)
 	{
-		printf("chargedjump\n");
+		//printf("chargedjump\n");
 		if (sprite.pos.y + sprite.height / 2 <= maxY)
 		{
 			sprite.pos.y -= chargedjumpvel;
@@ -200,14 +189,17 @@ void Player::Update_Position(void)
 		}
 	}
 	playerBB.pos = sprite.pos;
-	if (direction == MovementState::Left)
-		bottomBB.pos = AEVec2Set(sprite.pos.x - player_collider_offset_x, sprite.pos.y + +sprite.height / 2.0f - bottomBB.height / 2.0f);
-	else
-		bottomBB.pos = AEVec2Set(sprite.pos.x + player_collider_offset_x, sprite.pos.y + sprite.height / 2.0f - bottomBB.height / 2.0f);
-
-	player_topBB.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0f);
-	player_rightBB.pos = AEVec2Set(sprite.pos.x + abs(sprite.width) / 4.0f, sprite.pos.y);
-	player_leftBB.pos = AEVec2Set(sprite.pos.x - abs(sprite.width) / 4.0f, sprite.pos.y);
+	if (direction == MovementState::Left) {
+		//bottomBB.pos = AEVec2Set(sprite.pos.x - player_collider_offset_x, sprite.pos.y + +sprite.height / 2.0f - bottomBB.height / 2.0f);
+		collider.bottomBB.pos = AEVec2Set(sprite.pos.x - player_collider_offset_x, sprite.pos.y + +sprite.height / 2.0f - collider.bottomBB.height / 2.0f);
+	}
+	else {
+		//bottomBB.pos = AEVec2Set(sprite.pos.x + player_collider_offset_x, sprite.pos.y + sprite.height / 2.0f - bottomBB.height / 2.0f);
+		collider.bottomBB.pos = AEVec2Set(sprite.pos.x + player_collider_offset_x, sprite.pos.y + sprite.height / 2.0f - collider.bottomBB.height / 2.0f);
+	}
+	collider.topBB.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0f);
+	collider.rightBB.pos = AEVec2Set(sprite.pos.x + abs(sprite.width) / 4.0f, sprite.pos.y);
+	collider.leftBB.pos = AEVec2Set(sprite.pos.x - abs(sprite.width) / 4.0f, sprite.pos.y);
 }
 
 void Player::ChangeDirection() {
@@ -251,7 +243,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 		{
 			if (Utils::ColliderAABB(enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, playerBB.pos, playerBB.width, playerBB.height))
 			{
-				if (Utils::ColliderAABB(enemy[i].topBB.pos, enemy[i].topBB.width, enemy[i].topBB.height, bottomBB.pos, sprite.width, bottomBB.height)) {
+				if (Utils::ColliderAABB(enemy[i].topBB.pos, enemy[i].topBB.width, enemy[i].topBB.height, collider.bottomBB.pos, collider.bottomBB.width, collider.bottomBB.height)) {
 					if (!DebugMode)
 						enemy[i].KillEnemy();
 
@@ -279,9 +271,9 @@ void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, con
 	player.playerBB.width = width;
 	player.playerBB.height = height;
 
-	player.playerBB.SetMesh();
-	player.bottomBB.SetMesh();
-	player.player_topBB.SetMesh();
-	player.player_leftBB.SetMesh();
-	player.player_rightBB.SetMesh();
+	player.collider.SetWidthHeight(player.collider.topBB, player_width, 5.0f);
+	player.collider.SetWidthHeight(player.collider.leftBB, 20.0f, player_height - 10.0f);
+	player.collider.SetWidthHeight(player.collider.rightBB, 20.0f, player_height - 10.0f);
+	player.collider.SetWidthHeight(player.collider.bottomBB, player_width / 2.0f, 5.0f);
+	player.collider.SetMeshes();
 }

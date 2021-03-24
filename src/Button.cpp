@@ -21,15 +21,6 @@ void Button::Set_Position(const AEVec2 Pos) {
 	text.pos = Pos;
 }
 
-void Button::Set_Callback(fn_ptr fnc_ptr) {
-	this->callback = fnc_ptr;
-}
-
-void Button::Set_IntCallback(Test_Ptr function)
-{
-	TestCallback = function;
-}
-
 void Button::Set_Text(std::string Text) {
 	text.SetText(Text);
 }
@@ -49,8 +40,9 @@ void Button::Update(void) {
 		if (TestCallback)
 			TestCallback(ID);
 
-		else if(callback)
+		else if (callback) {
 			callback();
+		}
 	}
 	Render();
 }
