@@ -342,8 +342,6 @@ void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy)
 
 void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 {
-
-	std::cout << enemy.sprite.pos.x << std::endl;
 	for (size_t i = 0; i < TileManager.size(); ++i) {
 		for (size_t j = 0; j < TileManager[i]->size(); ++j) {
 
