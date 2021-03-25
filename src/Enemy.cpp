@@ -73,10 +73,13 @@ void Enemies::Bat_Movement(f32 maxX)
 
 void Enemies::Squirrel_Movement(f32 maxX)
 {
-	sprite.pos.x += velocity * g_dt;
-	sprite.pos.y += static_cast<f32>(jumpvelocity) * g_dt;
-	counter -= g_dt;
-	jumpcounter -= g_dt;
+	if (!isGravity)
+	{
+		sprite.pos.x += velocity * g_dt;
+		sprite.pos.y += static_cast<f32>(jumpvelocity) * g_dt;
+		counter -= g_dt;
+		jumpcounter -= g_dt;
+	}
 
 	if (counter < 0.0f || sprite.pos.x + sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
 	{
