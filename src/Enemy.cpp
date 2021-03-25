@@ -249,7 +249,7 @@ void Enemies::KillEnemy(bool status) {
 	const int particleCount{ 50 };
 	if (killed) {
 		for (int i = 0; i < particleCount; ++i) {
-			Particles::Create(sprite.pos, Utils::GetRandomVecVel(), Color::CreateRandomColor(), 1, 75.0f, Utils::RandomRangeFloat(100.0f, 250.0f), 25.0f, 3.0f, enemyTex[static_cast<int>(type)]);
+			Particles::Create(sprite.pos, Utils::GetRandomVecVel(), Color::CreateRandomColor(), 1, 75.0f, Utils::RandomRangeFloat(100.0f, 250.0f), sprite.width / 3.0f, 3.0f, enemyTex[static_cast<int>(type)]);
 		}
 	}
 }
