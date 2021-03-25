@@ -345,8 +345,6 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 	for (size_t i = 0; i < TileManager.size(); ++i) {
 		for (size_t j = 0; j < TileManager[i]->size(); ++j) {
 
-			Tiles& Tile{ TileManager[i]->at(j) };
-
 			if (TileManager[i]->at(j).GetActive() == false)
 				continue;
 
