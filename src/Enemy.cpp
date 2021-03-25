@@ -18,11 +18,6 @@ spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, 
 velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }, alphaTimer{ 1.0f }, stepGravityMultiplier{ base_gravityMultiplier }{
 	ID = EnemyCount;
 	EnemyCount++;
-	//topBB.color.Set(Color{ 255.0f, 255.0, 255.0f, 255.0f }); // white
-	//bottomBB.color.Set(Color{ 255.0f, 255.0f, 0, 255.0f }); // yellow
-	//leftBB.color.Set(Color{ 0, 255.0f, 0, 255.0f }); // green
-	//rightBB.color.Set(Color{ 0, 0, 255.0f, 255.0f }); // blue
-
 	enemyBB.color.Set(Color{ 0, 0, 0, 100.0f });
 }
 
@@ -30,7 +25,15 @@ void Enemies::Update_Position(void)
 {
 	f32 maxX{ static_cast<f32>(AEGetWindowWidth()) };
 
+
 	if (active && !killed) {
+
+	enemyBB.pos = sprite.pos;
+	collider.top.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0);
+	collider.bottom.pos = AEVec2Set(sprite.pos.x, sprite.pos.y + sprite.height / 2.0f);
+	collider.right.pos = AEVec2Set(sprite.pos.x + abs(sprite.width) / 2.0f - collider.right.width / 2.0f, sprite.pos.y);
+	collider.left.pos = AEVec2Set(sprite.pos.x - abs(sprite.width) / 2.0f + collider.left.width / 2.0f, sprite.pos.y);
+
 		switch (type) {
 		case EnemyType::Slime:
 			Slime_Movement(maxX);
@@ -63,9 +66,9 @@ void Enemies::Bat_Movement(f32 maxX)
 	sprite.pos.x += velocity * g_dt;
 	sprite.pos.y = spawnPos.y + 10.0f * sinf(static_cast<f32>(sprite.pos.x) * 2.0f * PI / 180.0f); // y = amplitude * sin(x * period * pi / 180)
 
-	enemyBB.pos = sprite.pos;
-	collider.top.pos = sprite.pos;
-	collider.top.pos.y = sprite.pos.y - (sprite.height / 2.0f) + (collider.top.height / 2.0f);
+	//enemyBB.pos = sprite.pos;
+	//collider.top.pos = sprite.pos;
+	//collider.top.pos.y = sprite.pos.y - (sprite.height / 2.0f) + (collider.top.height / 2.0f);
 	counter -= g_dt;
 
 	if (counter < 0.0f || sprite.pos.x + sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
@@ -94,10 +97,9 @@ void Enemies::Squirrel_Movement(f32 maxX)
 		jumpvelocity *= -1.0f;
 		jumpcounter = Enemies::jump_counter;
 	}
-
-	collider.top.pos = sprite.pos;
-	enemyBB.pos = sprite.pos;
-	collider.top.pos.y -= squirrelBBOffset;
+	//enemyBB.pos = sprite.pos;
+	//collider.top.pos = sprite.pos;
+	//collider.top.pos.y = sprite.pos.y - (sprite.height / 2.0f) + (collider.top.height / 2.0f);
 }
 
 void Enemies::Slime_Movement(f32 maxX)
@@ -118,11 +120,11 @@ void Enemies::Slime_Movement(f32 maxX)
 		counter = Enemies::slime_counter;
 	}
 
-	enemyBB.pos = sprite.pos;
-	collider.top.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0);
-	collider.bottom.pos = AEVec2Set(sprite.pos.x, sprite.pos.y + sprite.height / 2.0f);
-	collider.right.pos = AEVec2Set(sprite.pos.x + abs(sprite.width) / 2.0f - collider.right.width / 2.0f, sprite.pos.y);
-	collider.left.pos = AEVec2Set(sprite.pos.x - abs(sprite.width) / 2.0f + collider.left.width / 2.0f, sprite.pos.y);
+	//enemyBB.pos = sprite.pos;
+	//collider.top.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0);
+	//collider.bottom.pos = AEVec2Set(sprite.pos.x, sprite.pos.y + sprite.height / 2.0f);
+	//collider.right.pos = AEVec2Set(sprite.pos.x + abs(sprite.width) / 2.0f - collider.right.width / 2.0f, sprite.pos.y);
+	//collider.left.pos = AEVec2Set(sprite.pos.x - abs(sprite.width) / 2.0f + collider.left.width / 2.0f, sprite.pos.y);
 }
 void Enemies::DecrementAlpha(void)
 {
@@ -197,6 +199,13 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 	Enemy.collider.SetWidthHeight(Enemy.collider.left, 20.0f, Enemy.sprite.height * 0.8f);
 	Enemy.collider.SetWidthHeight(Enemy.collider.right, 20.0f, Enemy.sprite.height * 0.8f);
 	Enemy.collider.SetWidthHeight(Enemy.collider.bottom, Enemy.sprite.width, 5.0f);
+
+	// Temp fixes
+	if (type == EnemyType::Bat)
+	{
+		Enemy.collider.SetWidthHeight(Enemy.collider.left, 20.0f, 40.0f);
+		Enemy.collider.SetWidthHeight(Enemy.collider.right, 20.0f, 40.0f);
+	}
 }
 
 void Enemies::Reset(std::vector <Enemies>& enemy)

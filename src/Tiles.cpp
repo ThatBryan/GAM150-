@@ -301,22 +301,22 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 					ThePlayer.jump = false;
 					ThePlayer.chargedjump = false;
 					
-					if(DebugMode)
-						printf("Collision Top\n");
+					//if(DebugMode)
+					//	printf("Collision Top\n");
 				}
 
 			if (Utils::ColliderAABB(TheTile.collider.right.pos, TheTile.collider.right.width, TheTile.collider.right.height,
 				ThePlayer.collider.left.pos, ThePlayer.collider.left.width, ThePlayer.collider.left.height)){
 					ThePlayer.sprite.pos.x = TheTile.image.pos.x + TheTile.image.width / 2.0f + abs(ThePlayer.sprite.width) / 2.0f;
-					if (DebugMode)
-						printf("Left Collision\n");
+					//if (DebugMode)
+					//	printf("Left Collision\n");
 				}
 
 			if (Utils::ColliderAABB(TheTile.collider.left.pos, TheTile.collider.left.width, TheTile.collider.left.height,
 				ThePlayer.collider.right.pos, ThePlayer.collider.right.width, ThePlayer.collider.right.height)){
 					ThePlayer.sprite.pos.x = TheTile.image.pos.x - TheTile.image.width / 2.0f - abs(ThePlayer.sprite.width) / 2.0f;
-					if (DebugMode)
-						printf("Right Collision\n");
+					//if (DebugMode)
+					//	printf("Right Collision\n");
 				}
 		}
 	}
@@ -343,8 +343,10 @@ void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy)
 void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 {
 
+	std::cout << enemy.sprite.pos.x << std::endl;
 	for (size_t i = 0; i < TileManager.size(); ++i) {
 		for (size_t j = 0; j < TileManager[i]->size(); ++j) {
+
 			Tiles& Tile{ TileManager[i]->at(j) };
 
 			if (TileManager[i]->at(j).GetActive() == false)
@@ -352,31 +354,38 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 
 			Tiles& TheTile = TileManager[i]->at(j);
 
-			if (Utils::ColliderAABB(enemy.collider.bottom.pos, enemy.collider.bottom.width, enemy.collider.bottom.height,
-				TheTile.collider.top.pos, TheTile.collider.top.width, TheTile.collider.top.height)){
-				enemy.sprite.pos.y = TheTile.collider.top.pos.y - enemy.sprite.height / 2.0f;
-				if (DebugMode)
-					printf("top");
-			}
-
 			if (Utils::ColliderAABB(enemy.collider.right.pos, enemy.collider.right.width, enemy.collider.right.height,
-				TheTile.collider.left.pos, TheTile.collider.left.width, TheTile.collider.left.height && enemy.isGravity)){
-				enemy.velocity = abs(enemy.velocity);
-				enemy.counter = Enemies::slime_counter;
+				TheTile.collider.left.pos, TheTile.collider.left.width, TheTile.collider.left.height)){ // && enemy.isGravity
+
+				//enemy.counter = 1.0f;
+				//enemy.velocity = abs(enemy.velocity);
+				enemy.velocity *= -1.0f;
+				enemy.sprite.pos.x = TheTile.image.pos.x - TheTile.image.width / 2.0f - abs(enemy.sprite.width) / 2.0f - 2.0f;
 				enemy.sprite.width *= -1.0f;
 				if (DebugMode)
-					printf("right");
+					printf("right\n");
 			}
 
 			if (Utils::ColliderAABB(enemy.collider.left.pos, enemy.collider.left.width, enemy.collider.left.height,
-				TheTile.collider.right.pos, TheTile.collider.right.width, TheTile.collider.right.height && !enemy.isGravity)){
-				if (enemy.velocity >= 0)
-					enemy.velocity *= -1.0f;
-				enemy.counter = Enemies::slime_counter;
+				TheTile.collider.right.pos, TheTile.collider.right.width, TheTile.collider.right.height)){ // && !enemy.isGravity)
+				//if (enemy.velocity >= 0)
+				//enemy.counter = 0;
+				enemy.velocity *= -1.0f;
+				enemy.sprite.pos.x = TheTile.image.pos.x + TheTile.image.width / 2.0f + abs(enemy.sprite.width) / 2.0f + 2.0f;
 				enemy.sprite.width *= -1.0f;
 				if (DebugMode)
-					printf("left");
+					printf("left\n");
 			}		
+
+			if (enemy.type == EnemyType::Bat)
+				continue;
+
+			if (Utils::ColliderAABB(enemy.collider.bottom.pos, enemy.collider.bottom.width, enemy.collider.bottom.height,
+				TheTile.collider.top.pos, TheTile.collider.top.width, TheTile.collider.top.height)) {
+				enemy.sprite.pos.y = TheTile.collider.top.pos.y - enemy.sprite.height / 2.0f;
+				//if (DebugMode)
+				//	printf("top");
+			}
 		}
 	}
 }

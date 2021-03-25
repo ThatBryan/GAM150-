@@ -58,8 +58,8 @@ void MapInit(void)
 				Player::CreatePlayer(Jumperman, AEVec2Set(j * grid_width, i * grid_height), player_width, player_height);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SLIME))
-			{
-				if (Level == 5 ||Level == 6 || Level == 9)
+			{	// Testing reading enemy size from file.
+				if (Level == 2 || Level == 5 ||Level == 6 || Level == 9)
 					Enemies::AddNew(enemies, EnemyType::Slime, AEVec2Set(j * grid_width, i * grid_height), 
 						EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].x, EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].y);
 				else
@@ -67,7 +67,7 @@ void MapInit(void)
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::BAT))
 			{
-				if (Level == 5 || Level == 6 || Level == 9)
+				if (Level == 2 || Level == 5 || Level == 6 || Level == 9)
 					Enemies::AddNew(enemies, EnemyType::Bat, AEVec2Set(j * grid_width, i * grid_height),
 						EnemySizeArray[static_cast<int>(EnemySizes::BAT)].x, EnemySizeArray[static_cast<int>(EnemySizes::BAT)].y);
 				else
@@ -75,7 +75,7 @@ void MapInit(void)
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SQUIRREL))
 			{
-				if (Level == 5 || Level == 6 || Level == 9)
+				if (Level == 2 || Level == 5 || Level == 6 || Level == 9)
 					Enemies::AddNew(enemies, EnemyType::Squirrel, AEVec2Set(j * grid_width, i * grid_height),
 						EnemySizeArray[static_cast<int>(EnemySizes::SQUIRREL)].x, EnemySizeArray[static_cast<int>(EnemySizes::SQUIRREL)].y);
 				else
