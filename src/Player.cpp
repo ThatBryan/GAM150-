@@ -242,8 +242,12 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 			if (Utils::ColliderAABB(enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, playerBB.pos, playerBB.width, playerBB.height))
 			{
 				if (Utils::ColliderAABB(enemy[i].topBB.pos, enemy[i].topBB.width, enemy[i].topBB.height, collider.bottom.pos, collider.bottom.width, collider.bottom.height)) {
-					if (!DebugMode)
+					if (!DebugMode) {
+						jump = true;
+						jumpvel += player_jumpvel / 2.0f;
+						gravityMultiplier = player_base_gravityMultiplier;
 						enemy[i].KillEnemy();
+					}
 
 					if (DebugMode)
 						printf("enemy dies\n");

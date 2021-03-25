@@ -29,6 +29,7 @@ void MapInit(void)
 {
 	float Offset = 35.0f;
 	f32 grid_height{ static_cast<f32>(AEGetWindowHeight() / Map_Height) }, grid_width{ static_cast<f32>(AEGetWindowWidth() / Map_Width) };
+	std::cout << "Grid_height:" << grid_height << std::endl;
 	for (int i = 0; i < Map_Height; ++i)
 	{
 		for (int j = 0; j < Map_Width; ++j)
@@ -132,6 +133,12 @@ void MapLoad()
 			ImportMapDataFromFile("./Assets/Levels/Level4.txt");
 			break;
 		}
+		case 5:
+		{
+			ImportMapDataFromFile("./Assets/Levels/Level5.txt");
+			break;
+		}
+
 		default:
 			gamestateNext = GS_MAINMENU;
 	}
