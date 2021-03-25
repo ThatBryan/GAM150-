@@ -16,7 +16,7 @@ Image::Image() : rotation{0}, width{0}, height{0}, pTex{ nullptr },
 pMesh{ nullptr }, pos{ 0, 0 }, transformMtx{ NULL }{}
 
 void Image::Init(const char* pFile, const f32 Width, const f32 Height, const AEVec2 Pos,
-	const f32 Rotation, AEGfxVertexList* Mesh){
+	AEGfxVertexList* Mesh, const f32 Rotation){
 	pTex = AEGfxTextureLoad(pFile);
 	AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	pMesh = const_cast<AEGfxVertexList*>(Mesh);

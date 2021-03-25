@@ -263,7 +263,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 
 void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, const f32 height)
 {
-	player.sprite.Init(FP::PlayerSprite, width, height, pos);
+	player.sprite.Init(FP::PlayerSpriteSheetIdle, width, height, pos, Mesh::Anim);
 	player.startingPos = pos;
 	player.sprite.pos = pos;
 	player.playerBB.width = width;
