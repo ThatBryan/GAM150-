@@ -37,6 +37,7 @@ void Enemies::Update_Position(void)
 			return;
 		case EnemyType::Bat:
 			Bat_Movement(maxX);
+			break;
 			return;
 		case EnemyType::Squirrel:
 			Squirrel_Movement(maxX);
@@ -59,7 +60,12 @@ void Enemies::ApplyGravity(void) {
 void Enemies::Bat_Movement(f32 maxX)
 {
 	// Sine-Wave
+	sprite.pos.x += velocity * g_dt;
 	sprite.pos.y = spawnPos.y + 10.0f * sinf(static_cast<f32>(sprite.pos.x) * 2.0f * PI / 180.0f); // y = amplitude * sin(x * period * pi / 180)
+
+	enemyBB.pos = sprite.pos;
+	topBB.pos = sprite.pos;
+	topBB.pos.y -= (sprite.height / 2.0f) +(topBB.height / 2.0f);
 	counter -= g_dt;
 
 	if (counter < 0.0f || sprite.pos.x + sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
@@ -68,10 +74,6 @@ void Enemies::Bat_Movement(f32 maxX)
 		sprite.ReflectAboutYAxis();
 		counter = Enemies::bat_counter;
 	}
-	sprite.pos.x += velocity * g_dt;
-	topBB.pos = sprite.pos;
-	enemyBB.pos = sprite.pos;
-	topBB.pos.y -= sprite.height / 2.0f + topBB.height / 2.0f;
 }
 
 void Enemies::Squirrel_Movement(f32 maxX)
@@ -139,7 +141,8 @@ void Enemies::DecrementAlpha(void)
 void Enemies::Update()
 {
 	Update_Position();
-	ApplyGravity();
+	if(type != EnemyType::Bat)
+		ApplyGravity();
 	DecrementAlpha();
 }
 
