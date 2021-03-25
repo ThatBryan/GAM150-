@@ -247,7 +247,6 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 						gravityMultiplier = base_gravityMultiplier;
 						enemy[i].KillEnemy();
 					}
-
 					if (DebugMode)
 						printf("enemy dies\n");
 				}

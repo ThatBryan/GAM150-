@@ -65,7 +65,7 @@ void Enemies::Bat_Movement(f32 maxX)
 
 	enemyBB.pos = sprite.pos;
 	topBB.pos = sprite.pos;
-	topBB.pos.y -= (sprite.height / 2.0f) +(topBB.height / 2.0f);
+	topBB.pos.y = sprite.pos.y - (sprite.height / 2.0f) + (topBB.height / 2.0f);
 	counter -= g_dt;
 
 	if (counter < 0.0f || sprite.pos.x + sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
@@ -191,6 +191,7 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 	Enemy.type = type;
 	Enemy.spawnPos = pos;
 	Enemy.enemyBB.height = bbHeight;
+	Enemy.enemyBB.width = width;
 	Enemy.counter = counter;
 	Enemy.velocity = vel;
 	Enemy.jumpcounter = jumpcounter;
