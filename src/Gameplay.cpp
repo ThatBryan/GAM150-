@@ -1,5 +1,5 @@
 #include "AEEngine.h"
-#include "TestLevel.h"
+#include "Gameplay.h"
 #include "BinaryMap.h"
 #include "Tiles.h"
 #include "Enemy.h"
@@ -115,7 +115,7 @@ void MapLoad()
 	{
 		case 1:
 		{
-			ImportMapDataFromFile("./Assets/Levels/testrun.txt");
+			ImportMapDataFromFile("./Assets/Levels/Tutorial.txt");
 			break;
 		}
 		case 2:
@@ -138,7 +138,26 @@ void MapLoad()
 			ImportMapDataFromFile("./Assets/Levels/Level5.txt");
 			break;
 		}
-
+		case 6:
+		{
+			ImportMapDataFromFile("./Assets/Levels/Level6.txt");
+			break;
+		}
+		case 7:
+		{
+			ImportMapDataFromFile("./Assets/Levels/Level7.txt");
+			break;
+		}
+		case 8:
+		{
+			ImportMapDataFromFile("./Assets/Levels/Level8.txt");
+			break;
+		}
+		case 9:
+		{
+			ImportMapDataFromFile("./Assets/Levels/Level9.txt");
+			break;
+		}
 		default:
 			gamestateNext = GS_MAINMENU;
 	}
@@ -167,7 +186,7 @@ void MapUnload()
 	Overlay::Unload();
 }
 
-void TestRestart()
+void MapRestart()
 {
 	Tiles::Reset(tilemap);
 	Enemies::Reset(enemies);

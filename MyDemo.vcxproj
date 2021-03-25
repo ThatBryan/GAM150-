@@ -27,7 +27,7 @@
     <ClCompile Include="src\Particles.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Splash.cpp" />
-    <ClCompile Include="src\TestLevel.cpp" />
+    <ClCompile Include="src\Gameplay.cpp" />
     <ClCompile Include="src\Tiles.cpp" />
     <ClCompile Include="src\UserInterface.cpp" />
     <ClCompile Include="src\Utilities.cpp" />
@@ -49,7 +49,7 @@
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\PlayerHp.h" />
     <ClInclude Include="src\Splash.h" />
-    <ClInclude Include="src\TestLevel.h" />
+    <ClInclude Include="src\Gameplay.h" />
     <ClInclude Include="src\Tiles.h" />
     <ClInclude Include="src\UserInterface.h" />
     <ClInclude Include="src\Utilities.h" />
