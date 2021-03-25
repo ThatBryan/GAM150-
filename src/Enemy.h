@@ -19,11 +19,12 @@ private:
 	friend class Player; // Enemy can modify player
 	EnemyType type;
 	AEVec2 spawnPos;
+	Collider collider;
 
-	Graphics::Rect topBB {enemy_width, 5.0f};
+	/*Graphics::Rect topBB {enemy_width, 5.0f};
 	Graphics::Rect bottomBB{ enemy_width, 5.0f };
 	Graphics::Rect leftBB{ 20.0f,  enemy_height };
-	Graphics::Rect rightBB{ 20.0f, enemy_height };
+	Graphics::Rect rightBB{ 20.0f, enemy_height };*/
 
 	Graphics::Rect enemyBB {enemy_width, enemy_height};
 
