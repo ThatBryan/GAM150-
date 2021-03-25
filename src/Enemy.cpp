@@ -102,16 +102,19 @@ void Enemies::Slime_Movement(f32 maxX)
 		sprite.pos.x -= velocity * g_dt;
 		counter -= g_dt;
 	}
-	
-	if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
+	const float halfWidth {fabsf(sprite.width / 2.0f)};
+	if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + halfWidth >= maxX)
 	{
+		if(sprite.pos.x + halfWidth >= maxX)
+			sprite.pos.x = maxX - halfWidth;
+
 		sprite.ReflectAboutYAxis();
 		velocity *= -1.0f;
 		counter = Enemies::slime_counter;
 	}
 	topBB.pos = sprite.pos;
 	enemyBB.pos = sprite.pos;
-	topBB.pos.y -= slimeBBOffset;
+	topBB.pos.y -= sprite.height / 2.0f;
 	rightBB.pos = AEVec2Set(sprite.pos.x + abs(sprite.width) / 4.0f, sprite.pos.y);
 	leftBB.pos = AEVec2Set(sprite.pos.x - abs(sprite.width) / 4.0f, sprite.pos.y);
 	bottomBB.pos = AEVec2Set(sprite.pos.x, sprite.pos.y + sprite.height / 2.0f - bottomBB.height / 2);
