@@ -1,7 +1,7 @@
 #include "GameStateManager.h"
 #include "MainMenu.h"
 #include "Splash.h"
-#include "TestLevel.h"
+#include "Gameplay.h"
 #include "LevelSystem.h"
 
 unsigned int gamestateInit;
@@ -60,7 +60,7 @@ void GameStateManagerUpdate()
 		GameStateInit = MapInit;
 		GameStateUpdate = MapUpdate;
 		GameStateDraw = MapRender;
-		GameStateFree = TestRestart;
+		GameStateFree = MapRestart;
 		GameStateUnload = MapUnload;
 		break;
 
@@ -69,7 +69,7 @@ void GameStateManagerUpdate()
 		GameStateInit = MapInit;
 		GameStateUpdate = MapUpdate;
 		GameStateDraw = MapRender;
-		GameStateFree = TestRestart;
+		GameStateFree = MapRestart;
 		GameStateUnload = MapUnload;
 		break;
 	default:

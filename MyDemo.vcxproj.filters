@@ -85,9 +85,6 @@
     <ClCompile Include="src\Splash.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestLevel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Tiles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -100,6 +97,7 @@
     <ClCompile Include="src\Overlay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Gameplay.cpp">
     <ClCompile Include="src\Collider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -153,15 +151,13 @@
     <ClInclude Include="src\LevelSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\TestLevel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\BinaryMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Overlay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Gameplay.h">
     <ClInclude Include="src\Collider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
