@@ -1,4 +1,5 @@
 #pragma once
+#include "AEEngine.h"
 
 enum class TYPE_OBJECT
 {
@@ -16,6 +17,7 @@ enum class TYPE_OBJECT
 extern int** MapData;
 extern int Map_Width;
 extern int Map_Height;
+extern AEVec2 EnemySize[3];
 
 int		ImportMapDataFromFile(const char* FileName);
 void	FreeMapData(void);
