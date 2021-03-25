@@ -375,12 +375,12 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 					printf("left\n");
 			}		
 
-			if (enemy.type == EnemyType::Bat)
+			if (enemy.type == EnemyType::Bat || enemy.type == EnemyType::Slime)
 				continue;
 
 			if (Utils::ColliderAABB(enemy.collider.bottom.pos, enemy.collider.bottom.width, enemy.collider.bottom.height,
 				TheTile.collider.top.pos, TheTile.collider.top.width, TheTile.collider.top.height)) {
-				enemy.sprite.pos.y = TheTile.collider.top.pos.y - enemy.sprite.height / 2.0f;
+				enemy.sprite.pos.y = TheTile.collider.top.pos.y - enemy.sprite.height / 2.0f - 10.0f;
 				//if (DebugMode)
 				//	printf("top");
 			}

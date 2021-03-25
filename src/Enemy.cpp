@@ -97,9 +97,6 @@ void Enemies::Squirrel_Movement(f32 maxX)
 		jumpvelocity *= -1.0f;
 		jumpcounter = Enemies::jump_counter;
 	}
-	//enemyBB.pos = sprite.pos;
-	//collider.top.pos = sprite.pos;
-	//collider.top.pos.y = sprite.pos.y - (sprite.height / 2.0f) + (collider.top.height / 2.0f);
 }
 
 void Enemies::Slime_Movement(f32 maxX)
@@ -119,12 +116,6 @@ void Enemies::Slime_Movement(f32 maxX)
 		velocity *= -1.0f;
 		counter = Enemies::slime_counter;
 	}
-
-	//enemyBB.pos = sprite.pos;
-	//collider.top.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0);
-	//collider.bottom.pos = AEVec2Set(sprite.pos.x, sprite.pos.y + sprite.height / 2.0f);
-	//collider.right.pos = AEVec2Set(sprite.pos.x + abs(sprite.width) / 2.0f - collider.right.width / 2.0f, sprite.pos.y);
-	//collider.left.pos = AEVec2Set(sprite.pos.x - abs(sprite.width) / 2.0f + collider.left.width / 2.0f, sprite.pos.y);
 }
 void Enemies::DecrementAlpha(void)
 {
@@ -142,7 +133,7 @@ void Enemies::DecrementAlpha(void)
 void Enemies::Update()
 {
 	Update_Position();
-	if(type != EnemyType::Bat)
+	if(type == EnemyType::Slime)
 		ApplyGravity();
 	DecrementAlpha();
 }
@@ -196,8 +187,8 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 	Enemy.jumpvelocity = jumpvel;
 
 	Enemy.collider.SetWidthHeight(Enemy.collider.top, Enemy.sprite.width, 5.0f);
-	Enemy.collider.SetWidthHeight(Enemy.collider.left, 20.0f, Enemy.sprite.height * 0.8f);
-	Enemy.collider.SetWidthHeight(Enemy.collider.right, 20.0f, Enemy.sprite.height * 0.8f);
+	Enemy.collider.SetWidthHeight(Enemy.collider.left, 20.0f, Enemy.sprite.height * 0.7f);
+	Enemy.collider.SetWidthHeight(Enemy.collider.right, 20.0f, Enemy.sprite.height * 0.7f);
 	Enemy.collider.SetWidthHeight(Enemy.collider.bottom, Enemy.sprite.width, 5.0f);
 
 	// Temp fixes
@@ -205,6 +196,10 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 	{
 		Enemy.collider.SetWidthHeight(Enemy.collider.left, 20.0f, 40.0f);
 		Enemy.collider.SetWidthHeight(Enemy.collider.right, 20.0f, 40.0f);
+	}
+	if (type == EnemyType::Squirrel) {
+		Enemy.collider.SetWidthHeight(Enemy.collider.left, 20.0f, 20.0f);
+		Enemy.collider.SetWidthHeight(Enemy.collider.right, 20.0f, 20.0f);
 	}
 }
 
