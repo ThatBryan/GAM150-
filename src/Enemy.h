@@ -29,12 +29,13 @@ private:
 
 	bool isGravity, killed;
 	float counter, velocity, jumpcounter, jumpvelocity, alpha, alphaTimer;
+	float stepGravityMultiplier;
 	unsigned short ID; // Maybe unnecessary
 
 	static float slime_counter, slime_speed, slimeBBOffset;
 	static float bat_speed, bat_counter, batBBOffset;
 	static float squirrel_speed, squirrel_counter, squirrel_jumpspeed, jump_counter, squirrelBBOffset;
-	static float gravityStrength;
+	static float baseGravityStrength;
 
 	// Private functions
 	void Update_Position(void);

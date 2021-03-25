@@ -4,7 +4,7 @@
 #include "Particles.h"
 #include <iostream>
 
-float Enemies::gravityStrength = 100.0f;
+float Enemies::baseGravityStrength = 20.0f;
 
 float Enemies::slime_counter = 2.0f, Enemies::slime_speed = 50.0f, Enemies::slimeBBOffset = 22.0f;
 float Enemies::bat_counter = 5.0f, Enemies::bat_speed = 100.0f, Enemies::batBBOffset = 9.0f;
@@ -15,7 +15,7 @@ static AEGfxTexture* enemyTex[static_cast<int>(EnemyType::Max)]{ nullptr };
 
 Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
 spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, counter{ 0 }, jumpcounter{ 0 },
-velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }, alphaTimer{ 1.0f }{
+velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }, alphaTimer{ 1.0f }, stepGravityMultiplier{ base_gravityMultiplier }{
 	ID = EnemyCount;
 	EnemyCount++;
 	topBB.color.Set(Color{ 255.0f, 255.0, 255.0f, 255.0f }); // white
@@ -47,9 +47,12 @@ void Enemies::Update_Position(void)
 
 
 void Enemies::ApplyGravity(void) {
+
+	const float GravityStep{ 10.0f };
 	if (isGravity && !killed)
 	{
-		sprite.pos.y += gravityStrength * g_dt;
+		stepGravityMultiplier += g_dt * GravityStep;
+		sprite.pos.y += (baseGravityStrength * (g_dt * stepGravityMultiplier));
 	}
 }
 
