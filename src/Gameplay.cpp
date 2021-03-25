@@ -1,5 +1,5 @@
 #include "AEEngine.h"
-#include "TestLevel.h"
+#include "Gameplay.h"
 #include "BinaryMap.h"
 #include "Tiles.h"
 #include "Enemy.h"
@@ -23,8 +23,7 @@ Player Jumperman;
 
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
-
-
+extern AEVec2 EnemySizeArray[static_cast<int>(EnemySizes::MAX)];
 void MapInit(void)
 {
 	float Offset = 35.0f;
@@ -60,14 +59,26 @@ void MapInit(void)
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SLIME))
 			{
-				Enemies::AddNew(enemies, EnemyType::Slime, AEVec2Set(j * grid_width, i * grid_height), enemy_width, enemy_height);
+				if (Level == 5 ||Level == 6 || Level == 9)
+					Enemies::AddNew(enemies, EnemyType::Slime, AEVec2Set(j * grid_width, i * grid_height), 
+						EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].x, EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].y);
+				else
+					Enemies::AddNew(enemies, EnemyType::Slime, AEVec2Set(j * grid_width, i * grid_height), enemy_width, enemy_height);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::BAT))
 			{
-				Enemies::AddNew(enemies, EnemyType::Bat, AEVec2Set(j * grid_width + Offset, i * grid_height + Offset), enemy_width,  bat_height);
+				if (Level == 5 || Level == 6 || Level == 9)
+					Enemies::AddNew(enemies, EnemyType::Bat, AEVec2Set(j * grid_width, i * grid_height),
+						EnemySizeArray[static_cast<int>(EnemySizes::BAT)].x, EnemySizeArray[static_cast<int>(EnemySizes::BAT)].y);
+				else
+					Enemies::AddNew(enemies, EnemyType::Bat, AEVec2Set(j * grid_width + Offset, i * grid_height + Offset), enemy_width,  bat_height);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SQUIRREL))
 			{
+				if (Level == 5 || Level == 6 || Level == 9)
+					Enemies::AddNew(enemies, EnemyType::Squirrel, AEVec2Set(j * grid_width, i * grid_height),
+						EnemySizeArray[static_cast<int>(EnemySizes::SQUIRREL)].x, EnemySizeArray[static_cast<int>(EnemySizes::SQUIRREL)].y);
+				else
 				Enemies::AddNew(enemies, EnemyType::Squirrel, AEVec2Set(j * grid_width, i * grid_height), enemy_width, squirrel_height);
 			}
 		}
@@ -114,7 +125,7 @@ void MapLoad()
 	{
 		case 1:
 		{
-			ImportMapDataFromFile("./Assets/Levels/testrun.txt");
+			ImportMapDataFromFile("./Assets/Levels/Tutorial.txt");
 			break;
 		}
 		case 2:
@@ -124,7 +135,7 @@ void MapLoad()
 		}
 		case 3:
 		{
-			ImportMapDataFromFile("./Assets/Levels/Level4.txt");
+			ImportMapDataFromFile("./Assets/Levels/Level3.txt");
 			break;
 		}
 		case 4:
@@ -132,9 +143,35 @@ void MapLoad()
 			ImportMapDataFromFile("./Assets/Levels/Level4.txt");
 			break;
 		}
+		case 5:
+		{
+			ImportMapDataFromFile("./Assets/Levels/Level5.txt");
+			break;
+		}
+		case 6:
+		{
+			ImportMapDataFromFile("./Assets/Levels/Level6.txt");
+			break;
+		}
+		case 7:
+		{
+			ImportMapDataFromFile("./Assets/Levels/Level7.txt");
+			break;
+		}
+		case 8:
+		{
+			ImportMapDataFromFile("./Assets/Levels/Level8.txt");
+			break;
+		}
+		case 9:
+		{
+			ImportMapDataFromFile("./Assets/Levels/Level9.txt");
+			break;
+		}
 		default:
 			gamestateNext = GS_MAINMENU;
 	}
+
 	assert(Map_Height > 0 && Map_Width > 0);
 
 	Tiles::LoadTex();
@@ -159,7 +196,7 @@ void MapUnload()
 	Overlay::Unload();
 }
 
-void TestRestart()
+void MapRestart()
 {
 	Tiles::Reset(tilemap);
 	Enemies::Reset(enemies);

@@ -58,7 +58,7 @@ void Tiles::CheckPos(void) {
 		collider.left.pos = AEVec2Set(image.pos.x - abs(image.width) / 2.0f + collider.left.width / 2.0f, image.pos.y);
 		
 		if (type == TileType::Grass) 
-			collider.top.pos = AEVec2Set(image.pos.x, image.pos.y - image.height / 2.0f + collider.top.height / 2.0f + (6.5f / 32.0f * image.height)); // Counted pixel counts for leaves..
+			collider.top.pos = AEVec2Set(image.pos.x, image.pos.y - image.height / 2.0f + collider.top.height / 2.0f + (5.5f / 32.0f * image.height)); // Counted pixel counts for leaves..
 		
 		else 
 			collider.top.pos = AEVec2Set(image.pos.x, image.pos.y - image.height / 2.0f + collider.top.height / 2.0f);
@@ -105,7 +105,7 @@ void Tiles::CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer)
 				ThePlayer.gravity = false;
 				ThePlayer.jump = false;
 				ThePlayer.chargedjump = false;
-				ThePlayer.gravityMultiplier = player_base_gravityMultiplier;
+				ThePlayer.gravityMultiplier = base_gravityMultiplier;
 				//std::cout << "conflict resolve?\n";
 				ThePlayer.sprite.pos.y = Tile.collider.top.pos.y - Tile.collider.top.height / 2.0f - ThePlayer.sprite.height / 2.0f;
 				return;
@@ -332,6 +332,7 @@ void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy)
 				Tile.collider.top.pos, Tile.collider.top.width, Tile.collider.top.height)) {
 
 				enemy.SetGravity(false);
+				enemy.stepGravityMultiplier = base_gravityMultiplier;
 				return;
 			}
 		}

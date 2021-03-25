@@ -21,7 +21,7 @@ float Player::gravityStrength = 20.0f;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{ false },
 active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel },
-hp(), direction{ MovementState::Right }, chargedjumpvel{ player_chargedjumpvel }, gravityMultiplier{ player_base_gravityMultiplier }
+hp(), direction{ MovementState::Right }, chargedjumpvel{ player_chargedjumpvel }, gravityMultiplier{ base_gravityMultiplier }
 {
 	playerBB.color.Set(Color{ 0, 0, 0, 255.0f });
 	maxY = static_cast<f32>(AEGetWindowHeight());
@@ -32,7 +32,7 @@ hp(), direction{ MovementState::Right }, chargedjumpvel{ player_chargedjumpvel }
 
 Player::Player() : lose{ false }, active{ true }, gravity{ false }, jump{ false }, chargedjump{ false },
 win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel }, chargedjumpvel{ player_chargedjumpvel },
-hp(), direction{ MovementState::Right }, gravityMultiplier{ player_base_gravityMultiplier } {
+hp(), direction{ MovementState::Right }, gravityMultiplier{ base_gravityMultiplier } {
 
 	playerBB.color.Set(Color{ 0, 0, 0, 255.0f });
 
@@ -54,7 +54,7 @@ void Player::Reset(void)
 	chargedjumpvel = player_chargedjumpvel;
 	hp.current = hp.max;
 	sprite.rotation = 0;
-	gravityMultiplier = player_base_gravityMultiplier;
+	gravityMultiplier = base_gravityMultiplier;
 	direction = MovementState::Right;
 }
 
@@ -212,7 +212,6 @@ void Player::CheckOutOfBound() {
 	if (sprite.pos.x - (sprite.width / 2.0f) < 0) {
 		sprite.pos.x = sprite.width / 2.0f;
 	}
-	//std::cout << sprite.pos.x << std::endl;
 }
 void Player::GravityManager(void)
 {
@@ -242,16 +241,21 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 			if (Utils::ColliderAABB(enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, playerBB.pos, playerBB.width, playerBB.height))
 			{
 				if (Utils::ColliderAABB(enemy[i].topBB.pos, enemy[i].topBB.width, enemy[i].topBB.height, collider.bottom.pos, collider.bottom.width, collider.bottom.height)) {
-					if (!DebugMode)
+					if (!DebugMode) {
+						jump = true;
+						jumpvel += player_jumpvel / 2.0f;
+						gravityMultiplier = base_gravityMultiplier;
 						enemy[i].KillEnemy();
-
+					}
 					if (DebugMode)
 						printf("enemy dies\n");
 				}
 				else {
 					if (!DebugMode) {
-						sprite.pos = startingPos;
 						--hp.current;
+						Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerTex);
+						std::cout << "bam\n";
+						sprite.pos = startingPos;
 					}
 					if (DebugMode)
 						printf("player dies\n");

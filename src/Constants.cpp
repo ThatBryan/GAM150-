@@ -25,14 +25,14 @@ namespace FilePaths {
 unsigned short Level{ 0 };
 // Player constants
 const float player_speed = 150.0f;
-const float player_width = 40.0f;
+const float player_width = 45.0f;
 const float player_height = 50.0f;
-const float player_jumpvel = 3.0f;
+const float player_jumpvel = 3.5f;
 const float player_chargedjumpvel = 10.0f;
 const float player_collider_offset_y = 24.0f;
 const float player_collider_offset_x = 6.0f;
 const short player_hp_max = 3U;
-const float player_base_gravityMultiplier = 2.0f;
+const float base_gravityMultiplier = 2.0f;
 
 // Enemy constants
 const float enemy_width = 50.0f;

@@ -4,6 +4,6 @@ void MapInit();
 void MapUpdate();
 void MapLoad();
 void MapRender();
-void TestRestart();
+void MapRestart();
 void MapUnload();
 void UpdateManager(void);
