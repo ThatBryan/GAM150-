@@ -48,6 +48,8 @@ extern const float player_base_gravityMultiplier;
 // Enemy constants
 extern const float enemy_width;
 extern const float enemy_height;
+extern const float squirrel_height;
+extern const float bat_height;
 
 // Animation Constants
 extern const float player_idle_anim_offset_x;

@@ -19,8 +19,13 @@ private:
 	friend class Player; // Enemy can modify player
 	EnemyType type;
 	AEVec2 spawnPos;
-	Graphics::Rect headBB {enemy_width, 5.0f};
+
+	Graphics::Rect topBB {enemy_width, 5.0f};
+	Graphics::Rect bottomBB{ enemy_width, 5.0f };
+	Graphics::Rect leftBB{ 20.0f,  enemy_height };
+	Graphics::Rect rightBB{ 20.0f, enemy_height };
 	Graphics::Rect enemyBB {enemy_width, 10.0f};
+
 	bool isGravity, killed;
 	float counter, velocity, jumpcounter, jumpvelocity, alpha, alphaTimer;
 	unsigned short ID; // Maybe unnecessary
@@ -57,4 +62,5 @@ public:
 	static void Unload(void);
 
 	friend void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy);
+	friend void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy);
 };

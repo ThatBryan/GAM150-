@@ -35,7 +35,7 @@ namespace Graphics
 	{
 		public:
 			Rect(const f32 width = 50.0f, const f32 height = 10.0f, const f32 rotation = 0, AEGfxVertexList* = Mesh::Rect);
-
+	
 		Color color;
 		AEVec2 pos;
 		f32 height, width;

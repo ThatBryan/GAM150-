@@ -80,6 +80,9 @@ void MainMenu::Update(void)
 	}
 	//player[0].sprite.rotation += 100.0f * g_dt;
 	Particles::Update();
+
+	if (AEInputCheckTriggered(AEVK_ESCAPE))
+		gamestateNext = GS_QUIT;
 }
 
 void MainMenu::Render() {
@@ -95,10 +98,6 @@ void MainMenu::Render() {
 
 	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - AEGetWindowHeight() / 4));
 	Particles::Render();
-
-	if (AEInputCheckTriggered(AEVK_B)) {
-		LevelSys.UnlockNext();
-	}
 }
 
 void MainMenu::Load(void)
@@ -130,7 +129,6 @@ void MainMenu::Unload(void)
 	player.clear();
 	tiles.clear();
 	EnemyCount = 0;
-	//AEGfxTextureUnload(test);
 }
 
 void MainMenu::StartGame(void) {
@@ -167,8 +165,8 @@ void MainMenu::Buttons_Init() {
 		LevelButtons[i].SetID(i + 1);
 		LevelButtons[i].Set_TextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 		LevelButtons[i].Set_Callback(MainMenu::LockedLevel);
-		std::string tmp{ "Level " + std::to_string(i + 1) };
-		LevelButtons[i].Set_Text(tmp.c_str());
+		LevelButtons[i].Set_Text("Locked");
+
 	}
 
 	for (size_t i = 0; i < 3; ++i) {
@@ -232,7 +230,9 @@ void MainMenu::SwitchToLevelSelection(void)
 
 	for (size_t i = 0; i < LevelSys.GetKey(); ++i) {
 			LevelButtons[i].SetStateColor(ButtonState::Idle, Color(0, 255.0f, 0.0f, 10.0f));
-			LevelButtons[i].Set_IntCallback(LevelSystem::SetLevel);
+			LevelButtons[i].Set_Callback(LevelSystem::SetLevel);
+			std::string tmp{ "Level " + std::to_string(i + 1) };
+			LevelButtons[i].Set_Text(tmp.c_str());
 	}
 	GameStateUpdate = MainMenu::TestLevelSelectionUpdate;
 	GameStateDraw = MainMenu::TestLevelSelectionRender;
@@ -241,7 +241,6 @@ void MainMenu::SwitchToLevelSelection(void)
 
 void MainMenu::SwitchToMainMenu(void)
 {
-
 	GameStateUpdate = MainMenu::Update;
 	GameStateDraw = MainMenu::Render;
 }
@@ -251,6 +250,9 @@ void MainMenu::TestLevelSelectionUpdate(void)
 	for (int i = 0; i < LevelButtons.size(); ++i) {
 		LevelButtons[i].Update();
 	}
+
+	if (AEInputCheckReleased(AEVK_ESCAPE))
+		SwitchToMainMenu();
 }
 
 

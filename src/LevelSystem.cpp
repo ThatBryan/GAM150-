@@ -33,7 +33,7 @@ void LevelSystem::Init()
 
 void LevelSystem::UnlockNext()
 {	
-	const int TempLevelsCount{ 3 };
+	const int TempLevelsCount{ 4 };
 	if (key < TempLevelsCount && Level == key) {
 		++key;
 		std::cout << "Level: " << key << " unlocked!\n";
@@ -70,7 +70,7 @@ void LevelSystem::SaveKeyToFile(void)
 
 void LevelSystem::SetNextLevel(void)
 {
-	const int TempLevelsCount{ 3 };
+	const int TempLevelsCount{ 4 };
 
 	if (Level < TempLevelsCount) {
 		gamestateNext = ++Level;

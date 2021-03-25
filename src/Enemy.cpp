@@ -2,15 +2,13 @@
 #include "Tiles.h"
 #include "Utilities.h"
 #include "Particles.h"
-
-
-bool jump = FALSE;
+#include <iostream>
 
 float Enemies::gravityStrength = 100.0f;
 
 float Enemies::slime_counter = 2.0f, Enemies::slime_speed = 50.0f, Enemies::slimeBBOffset = 22.0f;
-float Enemies::bat_counter = 5.0f, Enemies::bat_speed = 100.0f, Enemies::batBBOffset = 2.0;
-float Enemies::squirrel_counter = 4.0f, Enemies::squirrel_speed = 110.0f, Enemies::squirrelBBOffset = 10.0f,
+float Enemies::bat_counter = 5.0f, Enemies::bat_speed = 100.0f, Enemies::batBBOffset = 9.0f;
+float Enemies::squirrel_counter = 4.0f, Enemies::squirrel_speed = 110.0f, Enemies::squirrelBBOffset = 20.0f,
 Enemies::jump_counter = 0.5f, Enemies::squirrel_jumpspeed = 25.0f;
 
 static AEGfxTexture* enemyTex[static_cast<int>(EnemyType::Max)]{ nullptr };
@@ -20,7 +18,11 @@ spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, 
 velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }, alphaTimer{ 1.0f }{
 	ID = EnemyCount;
 	EnemyCount++;
-	headBB.color.Set(Color{ 255.0f, 255.0, 255.0f, 255.0f });
+	topBB.color.Set(Color{ 255.0f, 255.0, 255.0f, 255.0f }); // white
+	bottomBB.color.Set(Color{ 255.0f, 255.0f, 0, 255.0f }); // yellow
+	leftBB.color.Set(Color{ 0, 255.0f, 0, 255.0f }); // green
+	rightBB.color.Set(Color{ 0, 0, 255.0f, 255.0f }); // blue
+
 	enemyBB.color.Set(Color{ 0, 0, 0, 100.0f });
 }
 
@@ -64,10 +66,9 @@ void Enemies::Bat_Movement(f32 maxX)
 		counter = Enemies::bat_counter;
 	}
 	sprite.pos.x += velocity * g_dt;
-	headBB.pos = sprite.pos;
+	topBB.pos = sprite.pos;
 	enemyBB.pos = sprite.pos;
-	enemyBB.pos.y += 5.0f;
-	headBB.pos.y -= batBBOffset;
+	topBB.pos.y -= batBBOffset;
 }
 
 void Enemies::Squirrel_Movement(f32 maxX)
@@ -89,25 +90,32 @@ void Enemies::Squirrel_Movement(f32 maxX)
 		jumpcounter = Enemies::jump_counter;
 	}
 
-	headBB.pos = sprite.pos;
+	topBB.pos = sprite.pos;
 	enemyBB.pos = sprite.pos;
-	enemyBB.pos.y += 10.0f;
-	headBB.pos.y -= squirrelBBOffset;
+	topBB.pos.y -= squirrelBBOffset;
 }
 
 void Enemies::Slime_Movement(f32 maxX)
 {
-	sprite.pos.x -= velocity * g_dt;
-	counter -= g_dt;
+	if (!isGravity)
+	{
+		sprite.pos.x -= velocity * g_dt;
+		counter -= g_dt;
+	}
+	
 	if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
 	{
 		sprite.ReflectAboutYAxis();
 		velocity *= -1.0f;
 		counter = Enemies::slime_counter;
 	}
-	headBB.pos = sprite.pos;
+	topBB.pos = sprite.pos;
 	enemyBB.pos = sprite.pos;
-	headBB.pos.y -= slimeBBOffset;
+	topBB.pos.y -= slimeBBOffset;
+	rightBB.pos = AEVec2Set(sprite.pos.x + abs(sprite.width) / 4.0f, sprite.pos.y);
+	leftBB.pos = AEVec2Set(sprite.pos.x - abs(sprite.width) / 4.0f, sprite.pos.y);
+	bottomBB.pos = AEVec2Set(sprite.pos.x, sprite.pos.y + sprite.height / 2.0f - bottomBB.height / 2);
+
 }
 void Enemies::DecrementAlpha(void)
 {
@@ -135,7 +143,10 @@ void Enemies::Draw()
 	{
 		sprite.Draw_Texture(alpha);
 		if (DebugMode) {
-			headBB.Draw();
+			topBB.Draw();
+			rightBB.Draw();
+			leftBB.Draw();
+			bottomBB.Draw();
 			enemyBB.Draw();
 		}
 	}
