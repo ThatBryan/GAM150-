@@ -9,7 +9,7 @@ float Enemies::baseGravityStrength = 20.0f;
 float Enemies::slime_counter = 2.0f, Enemies::slime_speed = 50.0f, Enemies::slimeBBOffset = 22.0f;
 float Enemies::bat_counter = 5.0f, Enemies::bat_speed = 100.0f, Enemies::batBBOffset = 9.0f;
 float Enemies::squirrel_counter = 4.0f, Enemies::squirrel_speed = 110.0f, Enemies::squirrelBBOffset = 20.0f,
-Enemies::jump_counter = 0.5f, Enemies::squirrel_jumpspeed = 25.0f;
+Enemies::jump_counter = 5.0f, Enemies::squirrel_jumpspeed = 50.0f;
 
 static AEGfxTexture* enemyTex[static_cast<int>(EnemyType::Max)]{ nullptr };
 
@@ -94,7 +94,7 @@ void Enemies::Squirrel_Movement(f32 maxX)
 	}
 	if (jumpcounter < 0.0f)
 	{
-		jumpvelocity *= -1.0f;
+		jumpvelocity *= -0.1f;
 		jumpcounter = Enemies::jump_counter;
 	}
 }
@@ -133,7 +133,7 @@ void Enemies::DecrementAlpha(void)
 void Enemies::Update()
 {
 	Update_Position();
-	if(type == EnemyType::Slime)
+	if(type != EnemyType::Bat)
 		ApplyGravity();
 	DecrementAlpha();
 }
