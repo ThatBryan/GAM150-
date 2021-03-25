@@ -124,7 +124,7 @@ void MapLoad()
 		}
 		case 3:
 		{
-			ImportMapDataFromFile("./Assets/Levels/Level4.txt");
+			ImportMapDataFromFile("./Assets/Levels/Level3.txt");
 			break;
 		}
 		case 4:
@@ -135,6 +135,7 @@ void MapLoad()
 		default:
 			gamestateNext = GS_MAINMENU;
 	}
+
 	assert(Map_Height > 0 && Map_Width > 0);
 
 	Tiles::LoadTex();

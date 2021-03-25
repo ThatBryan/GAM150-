@@ -63,6 +63,7 @@ void GameStateManagerUpdate()
 		GameStateFree = TestRestart;
 		GameStateUnload = MapUnload;
 		break;
+
 	case GS_LEVEL1:
 		GameStateLoad = MapLoad;
 		GameStateInit = MapInit;

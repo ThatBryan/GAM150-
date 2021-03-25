@@ -1,7 +1,4 @@
 #pragma once
-#ifndef BINARY_MAP_H_
-#define BINARY_MAP_H_
-
 
 enum class TYPE_OBJECT
 {
@@ -16,11 +13,9 @@ enum class TYPE_OBJECT
 	SQUIRREL					//8
 };
 
-	extern int** MapData;
-	extern int Map_Width;
-	extern int Map_Height;
+extern int** MapData;
+extern int Map_Width;
+extern int Map_Height;
 
 int		ImportMapDataFromFile(const char* FileName);
 void	FreeMapData(void);
-
-#endif // BINARY_MAP_H_
