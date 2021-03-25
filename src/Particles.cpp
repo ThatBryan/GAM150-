@@ -35,6 +35,7 @@ void Particles::Create(AEVec2 Pos, AEVec2 Vel, Color color, int count, float spe
 			p[i].color = color;
 			AEVec2Scale(&p[i].vel, &Vel, speed);
 			p[i].rotation_rate = Rotation_rate;
+			p[i].rotation = 0.0f;
 
 			if (Texture)
 				p[i].pMesh = Mesh::Rect;
@@ -59,6 +60,7 @@ void Particles::Create(AEVec2 Pos, AEVec2 Vel, Color color, int count, float spe
 		particle.vel = Vel;
 		AEVec2Scale(&particle.vel, &Vel, speed);
 		particle.rotation_rate = Rotation_rate;
+		particle.rotation = 0.0f;
 
 		if (Texture)
 			particle.pMesh = Mesh::Rect;

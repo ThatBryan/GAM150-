@@ -13,8 +13,8 @@ ColliderAABB{width, height}, collider()
 	ColliderAABB.color.Set(Color{ 150, 0, 0, 150 });
 
 	collider.SetWidthHeight(collider.top, width - 2.0f, 5.0f);
-	collider.SetWidthHeight(collider.left, 10, height);
-	collider.SetWidthHeight(collider.right, 10, height);
+	collider.SetWidthHeight(collider.left, 30, height);
+	collider.SetWidthHeight(collider.right, 30, height);
 	collider.SetWidthHeight(collider.bottom, width - 2.0f, 5.0f);
 }
 
@@ -105,7 +105,7 @@ void Tiles::CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer)
 				ThePlayer.gravity = false;
 				ThePlayer.jump = false;
 				ThePlayer.chargedjump = false;
-				ThePlayer.gravityMultiplier = player_base_gravityMultiplier;
+				ThePlayer.gravityMultiplier = base_gravityMultiplier;
 				//std::cout << "conflict resolve?\n";
 				ThePlayer.sprite.pos.y = Tile.collider.top.pos.y - Tile.collider.top.height / 2.0f - ThePlayer.sprite.height / 2.0f;
 				return;
@@ -332,6 +332,7 @@ void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy)
 				Tile.collider.top.pos, Tile.collider.top.width, Tile.collider.top.height)) {
 
 				enemy.SetGravity(false);
+				enemy.stepGravityMultiplier = base_gravityMultiplier;
 				return;
 			}
 		}
@@ -346,11 +347,30 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 		for (size_t j = 0; j < TileManager[i]->size(); ++j) {
 			Tiles& Tile{ TileManager[i]->at(j) };
 
+			if (TileManager[i]->at(j).GetActive() == false)
+				continue;
+
+			Tiles& TheTile = TileManager[i]->at(j);
+
 			if (Utils::ColliderAABB(enemy.bottomBB.pos, enemy.bottomBB.width, enemy.bottomBB.height,
-				Tile.collider.top.pos, Tile.collider.top.width, Tile.collider.top.height)) {
-				enemy.sprite.pos.y = Tile.collider.top.pos.y - enemy.sprite.height / 2.0f;
+				TheTile.collider.top.pos, TheTile.collider.top.width, TheTile.collider.top.height)){
+				enemy.sprite.pos.y = TheTile.collider.top.pos.y - enemy.sprite.height / 2.0f;
 			}
+
+			if (Utils::ColliderAABB(enemy.rightBB.pos, enemy.rightBB.width, enemy.rightBB.height,
+				TheTile.collider.left.pos, TheTile.collider.left.width, TheTile.collider.left.height)){
+				enemy.velocity = abs(enemy.velocity);
+				enemy.counter = Enemies::slime_counter;
+				enemy.sprite.width *= -1.0f;
+			}
+
+			if (Utils::ColliderAABB(enemy.leftBB.pos, enemy.leftBB.width, enemy.leftBB.height,
+				TheTile.collider.right.pos, TheTile.collider.right.width, TheTile.collider.right.height)){
+				if (enemy.velocity >= 0)
+					enemy.velocity *= -1.0f;
+				enemy.counter = Enemies::slime_counter;
+				enemy.sprite.width *= -1.0f;
+			}	
 		}
 	}
-
 }

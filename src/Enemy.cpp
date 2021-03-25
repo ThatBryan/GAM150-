@@ -4,7 +4,7 @@
 #include "Particles.h"
 #include <iostream>
 
-float Enemies::gravityStrength = 100.0f;
+float Enemies::baseGravityStrength = 20.0f;
 
 float Enemies::slime_counter = 2.0f, Enemies::slime_speed = 50.0f, Enemies::slimeBBOffset = 22.0f;
 float Enemies::bat_counter = 5.0f, Enemies::bat_speed = 100.0f, Enemies::batBBOffset = 9.0f;
@@ -15,7 +15,7 @@ static AEGfxTexture* enemyTex[static_cast<int>(EnemyType::Max)]{ nullptr };
 
 Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
 spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, counter{ 0 }, jumpcounter{ 0 },
-velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }, alphaTimer{ 1.0f }{
+velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }, alphaTimer{ 1.0f }, stepGravityMultiplier{ base_gravityMultiplier }{
 	ID = EnemyCount;
 	EnemyCount++;
 	topBB.color.Set(Color{ 255.0f, 255.0, 255.0f, 255.0f }); // white
@@ -37,6 +37,7 @@ void Enemies::Update_Position(void)
 			return;
 		case EnemyType::Bat:
 			Bat_Movement(maxX);
+			break;
 			return;
 		case EnemyType::Squirrel:
 			Squirrel_Movement(maxX);
@@ -47,16 +48,24 @@ void Enemies::Update_Position(void)
 
 
 void Enemies::ApplyGravity(void) {
+
+	const float GravityStep{ 10.0f };
 	if (isGravity && !killed)
 	{
-		sprite.pos.y += gravityStrength * g_dt;
+		stepGravityMultiplier += g_dt * GravityStep;
+		sprite.pos.y += (baseGravityStrength * (g_dt * stepGravityMultiplier));
 	}
 }
 
 void Enemies::Bat_Movement(f32 maxX)
 {
 	// Sine-Wave
+	sprite.pos.x += velocity * g_dt;
 	sprite.pos.y = spawnPos.y + 10.0f * sinf(static_cast<f32>(sprite.pos.x) * 2.0f * PI / 180.0f); // y = amplitude * sin(x * period * pi / 180)
+
+	enemyBB.pos = sprite.pos;
+	topBB.pos = sprite.pos;
+	topBB.pos.y = sprite.pos.y - (sprite.height / 2.0f) + (topBB.height / 2.0f);
 	counter -= g_dt;
 
 	if (counter < 0.0f || sprite.pos.x + sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
@@ -65,10 +74,6 @@ void Enemies::Bat_Movement(f32 maxX)
 		sprite.ReflectAboutYAxis();
 		counter = Enemies::bat_counter;
 	}
-	sprite.pos.x += velocity * g_dt;
-	topBB.pos = sprite.pos;
-	enemyBB.pos = sprite.pos;
-	topBB.pos.y -= batBBOffset;
 }
 
 void Enemies::Squirrel_Movement(f32 maxX)
@@ -102,16 +107,19 @@ void Enemies::Slime_Movement(f32 maxX)
 		sprite.pos.x -= velocity * g_dt;
 		counter -= g_dt;
 	}
-	
-	if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
+	const float halfWidth {fabsf(sprite.width / 2.0f)};
+	if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + halfWidth >= maxX)
 	{
+		if(sprite.pos.x + halfWidth >= maxX)
+			sprite.pos.x = maxX - halfWidth;
+
 		sprite.ReflectAboutYAxis();
 		velocity *= -1.0f;
 		counter = Enemies::slime_counter;
 	}
 	topBB.pos = sprite.pos;
 	enemyBB.pos = sprite.pos;
-	topBB.pos.y -= slimeBBOffset;
+	topBB.pos.y -= sprite.height / 2.0f;
 	rightBB.pos = AEVec2Set(sprite.pos.x + abs(sprite.width) / 4.0f, sprite.pos.y);
 	leftBB.pos = AEVec2Set(sprite.pos.x - abs(sprite.width) / 4.0f, sprite.pos.y);
 	bottomBB.pos = AEVec2Set(sprite.pos.x, sprite.pos.y + sprite.height / 2.0f - bottomBB.height / 2);
@@ -133,7 +141,8 @@ void Enemies::DecrementAlpha(void)
 void Enemies::Update()
 {
 	Update_Position();
-	ApplyGravity();
+	if(type != EnemyType::Bat)
+		ApplyGravity();
 	DecrementAlpha();
 }
 
@@ -182,6 +191,7 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 	Enemy.type = type;
 	Enemy.spawnPos = pos;
 	Enemy.enemyBB.height = bbHeight;
+	Enemy.enemyBB.width = width;
 	Enemy.counter = counter;
 	Enemy.velocity = vel;
 	Enemy.jumpcounter = jumpcounter;
@@ -239,7 +249,7 @@ void Enemies::KillEnemy(bool status) {
 	const int particleCount{ 50 };
 	if (killed) {
 		for (int i = 0; i < particleCount; ++i) {
-			Particles::Create(sprite.pos, Utils::GetRandomVecVel(), Color::CreateRandomColor(), 1, 75.0f, Utils::RandomRangeFloat(100.0f, 250.0f), 25.0f, 3.0f, enemyTex[static_cast<int>(type)]);
+			Particles::Create(sprite.pos, Utils::GetRandomVecVel(), Color::CreateRandomColor(), 1, 75.0f, Utils::RandomRangeFloat(100.0f, 250.0f), sprite.width / 3.0f, 3.0f, enemyTex[static_cast<int>(type)]);
 		}
 	}
 }

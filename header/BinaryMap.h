@@ -1,4 +1,5 @@
 #pragma once
+#include "AEEngine.h"
 
 enum class TYPE_OBJECT
 {
@@ -11,6 +12,13 @@ enum class TYPE_OBJECT
 	SLIME,						//6
 	BAT,						//7	
 	SQUIRREL					//8
+};
+
+enum class EnemySizes {
+	SLIME = 0,
+	BAT,
+	SQUIRREL,
+	MAX
 };
 
 extern int** MapData;
