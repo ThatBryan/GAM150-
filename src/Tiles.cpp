@@ -362,7 +362,8 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 			if (Utils::ColliderAABB(enemy.collider.right.pos, enemy.collider.right.width, enemy.collider.right.height,
 				TheTile.collider.left.pos, TheTile.collider.left.width, TheTile.collider.left.height && enemy.isGravity)){
 				enemy.velocity = abs(enemy.velocity);
-				enemy.counter = Enemies::slime_counter;
+				if (enemy.type == EnemyType::Slime)
+					enemy.counter = Enemies::slime_counter;
 				enemy.sprite.width *= -1.0f;
 				if (DebugMode)
 					printf("right");
@@ -372,7 +373,8 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 				TheTile.collider.right.pos, TheTile.collider.right.width, TheTile.collider.right.height && !enemy.isGravity)){
 				if (enemy.velocity >= 0)
 					enemy.velocity *= -1.0f;
-				enemy.counter = Enemies::slime_counter;
+				if (enemy.type == EnemyType::Slime)
+					enemy.counter = Enemies::slime_counter;
 				enemy.sprite.width *= -1.0f;
 				if (DebugMode)
 					printf("left");
