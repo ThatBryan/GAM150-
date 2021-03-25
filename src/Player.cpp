@@ -110,32 +110,24 @@ void Player::Update_Position(void)
 	if (AEInputCheckCurr(AEVK_SPACE) && !chargedjump && !gravity)
 	{
 		chargedjump_counter -= g_dt;
-		if (chargedjump_counter < 0)
-		{
-			chargedjump = true;
-			jump = false;
-
-		}
-
-		//printf("%.2f\n", chargedjump_counter);
 	}
-	if (AEInputCheckReleased(AEVK_SPACE))
+
+	if (AEInputCheckReleased(AEVK_SPACE) && chargedjump_counter < 0)
 	{
-		chargedjump = false;
+		chargedjump = true;
 		chargedjump_counter = 1.0f;
 	}
 	if (chargedjump)
 	{
-		//printf("chargedjump\n");
 		if (sprite.pos.y + sprite.height / 2 <= maxY)
 		{
 			sprite.pos.y -= chargedjumpvel;
 
 			chargedjumpvel -= 0.2f; // velocity decrease as y increases
-			if (chargedjumpvel < -10.0f)
+			if (chargedjumpvel < -player_chargedjumpvel)
 			{
 				chargedjump = false;
-				chargedjumpvel = 10.0f;
+				chargedjumpvel = player_chargedjumpvel;
 			}
 		}
 	}
@@ -143,7 +135,7 @@ void Player::Update_Position(void)
 	if (!gravity) // reset counter if player's feet touches the ground
 	{
 		jumpvel = player_jumpvel;
-		chargedjumpvel = 10.0f;
+		chargedjumpvel = player_chargedjumpvel;
 	}
 
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
