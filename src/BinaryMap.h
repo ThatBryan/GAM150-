@@ -14,10 +14,16 @@ enum class TYPE_OBJECT
 	SQUIRREL					//8
 };
 
+enum class EnemySizes {
+	SLIME = 0,
+	BAT,
+	SQUIRREL,
+	MAX
+};
+
 extern int** MapData;
 extern int Map_Width;
 extern int Map_Height;
-extern AEVec2 EnemySize[3];
 
 int		ImportMapDataFromFile(const char* FileName);
 void	FreeMapData(void);

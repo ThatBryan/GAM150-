@@ -212,7 +212,6 @@ void Player::CheckOutOfBound() {
 	if (sprite.pos.x - (sprite.width / 2.0f) < 0) {
 		sprite.pos.x = sprite.width / 2.0f;
 	}
-	//std::cout << sprite.pos.x << std::endl;
 }
 void Player::GravityManager(void)
 {
