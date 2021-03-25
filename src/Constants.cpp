@@ -7,7 +7,7 @@ namespace FilePaths {
 	const char* VictoryOverlay = "./Assets/Art/throwaway.png";
 	const char* GameoverOverlay = "./Assets/Art/throwaway2.png";
 	const char* WaterSlimeSprite = "./Assets/Art/WaterSlime.png";
-	const char* FlyingEnemySprite = "./Assets/Art/flying.png";
+	const char* FlyingEnemySprite = "./Assets/Art/bat.png";
 	const char* SquirrelSprite = "./Assets/Art/Squirrel.png";
 	const char* PlayerSprite = "./Assets/Art/Jumperman.png";
 	const char* GrassTile = "./Assets/Art/Grass_Tile.png";
@@ -25,18 +25,20 @@ namespace FilePaths {
 unsigned short Level{ 0 };
 // Player constants
 const float player_speed = 150.0f;
-const float player_width = 50.0f;
+const float player_width = 45.0f;
 const float player_height = 50.0f;
-const float player_jumpvel = 5.0f;
+const float player_jumpvel = 3.5f;
 const float player_chargedjumpvel = 10.0f;
 const float player_collider_offset_y = 24.0f;
 const float player_collider_offset_x = 6.0f;
 const short player_hp_max = 3U;
-const float player_base_gravityMultiplier = 1.2f;
+const float player_base_gravityMultiplier = 2.0f;
 
 // Enemy constants
 const float enemy_width = 50.0f;
 const float enemy_height = 50.0f;
+const float squirrel_height = 43.0f;
+const float bat_height = 24.0f;
 
 // Tile constants
 const float TileCollapseDelay = 0.5f;

@@ -93,6 +93,9 @@ cell*/
  /******************************************************************************/
 int ImportMapDataFromFile(const char* FileName)
 {
+	// Initialize var to 0
+	Map_Height = 0;
+	Map_Width = 0;
 	std::ifstream ifs;
 	ifs.open(FileName);
 	if (ifs.fail()) // Unable to open file

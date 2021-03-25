@@ -14,6 +14,7 @@
 #include "MainMenu.h"
 #include <vector>
 #include <array>
+#include <cassert>
 
 std::vector<Tiles> tilemap;
 std::vector<Enemies> enemies;
@@ -27,8 +28,8 @@ extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
 void MapInit(void)
 {
 	float Offset = 35.0f;
-
 	f32 grid_height{ static_cast<f32>(AEGetWindowHeight() / Map_Height) }, grid_width{ static_cast<f32>(AEGetWindowWidth() / Map_Width) };
+	std::cout << "Grid_height:" << grid_height << std::endl;
 	for (int i = 0; i < Map_Height; ++i)
 	{
 		for (int j = 0; j < Map_Width; ++j)
@@ -64,17 +65,16 @@ void MapInit(void)
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::BAT))
 			{
-				Enemies::AddNew(enemies, EnemyType::Bat, AEVec2Set(j * grid_width + Offset, i * grid_height + Offset), enemy_width, enemy_height);
+				Enemies::AddNew(enemies, EnemyType::Bat, AEVec2Set(j * grid_width + Offset, i * grid_height + Offset), enemy_width,  bat_height);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SQUIRREL))
 			{
-				Enemies::AddNew(enemies, EnemyType::Squirrel, AEVec2Set(j * grid_width, i * grid_height), enemy_width, enemy_height);
+				Enemies::AddNew(enemies, EnemyType::Squirrel, AEVec2Set(j * grid_width, i * grid_height), enemy_width, squirrel_height);
 			}
 		}
 	}
 	tileManager.push_back(&tilemap);
 	UI::Init();
-
 }
 
 void MapUpdate()
@@ -88,19 +88,21 @@ void MapUpdate()
 	}
 	UpdateManager();
 	Audio.update();
+	if (AEInputCheckReleased(AEVK_ESCAPE))
+		Utils::ReturnToMenu();
 }
 
 void MapRender()
 {
-	for (size_t j = 0; j < enemies.size(); ++j)
-	{
-		enemies[j].Draw();
-	}
 	for (size_t i = 0; i < tilemap.size(); ++i)
 	{
 		tilemap[i].Render();
 	}
 	Jumperman.Render();
+	for (size_t j = 0; j < enemies.size(); ++j)
+	{
+		enemies[j].Draw();
+	}
 	Overlay::Render(Jumperman);
 	UI::Draw();
 	UI::Update();
@@ -159,16 +161,18 @@ void MapLoad()
 		default:
 			gamestateNext = GS_MAINMENU;
 	}
+
+	assert(Map_Height > 0 && Map_Width > 0);
+
 	Tiles::LoadTex();
+	Player::LoadTex();
 	Enemies::LoadTex();
 	AudioManager::loadAsset();
-	Player::LoadTex();
-	Overlay::Load();
-	Overlay::Init();
-
+	AudioManager::SetVolume(AudioID::Jump, 0.0f);
 	AudioManager::SetVolume(AudioID::BGM, 0.2f);
 	//Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
-	AudioManager::SetVolume(AudioID::Jump, 0.0f);
+	Overlay::Load();
+	Overlay::Init();
 }
 
 void MapUnload()
@@ -209,6 +213,7 @@ void UpdateManager()
 		{
 			enemies[i].Update();
 			Tiles::CheckEnemyGravity(tileManager, enemies[i]);
+			Tiles::CheckEnemyCollision(tileManager, enemies[i]);
 		}
 		Jumperman.CheckEnemyCollision(enemies);
 	}

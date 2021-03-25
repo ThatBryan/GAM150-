@@ -98,6 +98,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Gameplay.cpp">
+    <ClCompile Include="src\Collider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -157,6 +158,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Gameplay.h">
+    <ClInclude Include="src\Collider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
