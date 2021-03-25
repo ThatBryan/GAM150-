@@ -25,7 +25,7 @@ private:
 	Graphics::Rect leftBB{ 20.0f,  enemy_height };
 	Graphics::Rect rightBB{ 20.0f, enemy_height };
 
-	Graphics::Rect enemyBB {enemy_width, 10.0f};
+	Graphics::Rect enemyBB {enemy_width, enemy_height};
 
 	bool isGravity, killed;
 	float counter, velocity, jumpcounter, jumpvelocity, alpha, alphaTimer;

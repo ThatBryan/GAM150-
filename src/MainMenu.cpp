@@ -58,11 +58,6 @@ void MainMenu::Init(void)
 	Title.SetText("JUMPERMAN");
 	Title.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	Title.SetScale(1.0f);
-
-	//test = AEGfxTextureLoad(FP::boi);
-	//for (int i = 0; i < 50; ++i) {
-	//	Particles::Create(ScreenMid, Utils::GetRandomVecVel(), Color::CreateRandomColor(), 1, 100.0f, Utils::RandomRangeFloat(0.0f, 500.0f), 50.0f, 10.0f, test);
-	//}
 }
 
 void MainMenu::Update(void)
