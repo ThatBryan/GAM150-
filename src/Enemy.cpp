@@ -15,7 +15,7 @@ static AEGfxTexture* enemyTex[static_cast<int>(EnemyType::Max)]{ nullptr };
 
 Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
 spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, counter{ 0 }, jumpcounter{ 0 },
-velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }, alphaTimer{ 1.0f }{
+velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }, alphaTimer{ 1.0f } {
 	ID = EnemyCount;
 	EnemyCount++;
 	topBB.color.Set(Color{ 255.0f, 255.0, 255.0f, 255.0f }); // white
@@ -112,6 +112,8 @@ void Enemies::Slime_Movement(f32 maxX)
 		velocity *= -1.0f;
 		counter = Enemies::slime_counter;
 	}
+
+	
 	topBB.pos = sprite.pos;
 	enemyBB.pos = sprite.pos;
 	topBB.pos.y -= slimeBBOffset;
