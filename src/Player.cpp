@@ -16,10 +16,11 @@ extern LevelSystem LevelSys;
 static f32 maxY;
 static f32 maxX;
 AEGfxTexture* Player::playerTex{ nullptr };
+AEGfxTexture* Player::playerMovTex{ nullptr };
 float Player::gravityStrength = 20.0f;
 
 
-Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::Anim, width, height), lose{false},
+Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::PlayerCurr, width, height), lose{false},
 active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel },
 hp(), direction{ MovementState::Right }, chargedjumpvel{ player_chargedjumpvel }, gravityMultiplier{ player_base_gravityMultiplier }
 {
@@ -66,7 +67,10 @@ void Player::Update() {
 }
 void Player::Render(void)
 {
-	sprite.Draw_Texture(30, 255.0f);
+	if(Mesh::PlayerCurr = Mesh::Anim)
+		sprite.Draw_Texture(30, playerTex, Mesh::PlayerCurr, 255.0f);
+	if (Mesh::PlayerCurr = Mesh::Rect)
+		sprite.Draw_Texture(30, playerMovTex, Mesh::PlayerCurr, 255.0f);
 	UI::DisplayLife(hp.current);
 
 	if (DebugMode) {
@@ -75,11 +79,14 @@ void Player::Render(void)
 }
 void Player::LoadTex(void) {
 	playerTex = AEGfxTextureLoad(FP::PlayerSpriteSheetIdle);
+	playerMovTex = AEGfxTextureLoad(FP::WaterSlimeSprite);
 	AE_ASSERT_MESG(playerTex, "Failed to create texture!");
+	AE_ASSERT_MESG(playerMovTex, "Failed to create texture!");
 }
 
 void Player::Unload(void) {
 	AEGfxTextureUnload(playerTex);
+	AEGfxTextureUnload(playerMovTex);
 
 }
 void Player::Update_Position(void)
@@ -263,7 +270,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 
 void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, const f32 height)
 {
-	player.sprite.Init(FP::PlayerSpriteSheetIdle, width, height, pos, Mesh::Anim);
+	player.sprite.Init(FP::PlayerSpriteSheetIdle, width, height, pos, Mesh::PlayerCurr);
 	player.startingPos = pos;
 	player.sprite.pos = pos;
 	player.playerBB.width = width;

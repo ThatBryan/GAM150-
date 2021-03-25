@@ -29,6 +29,7 @@ private:
 
 public:
 	static AEGfxTexture* playerTex;
+	static AEGfxTexture* playerMovTex;
 	Player(AEGfxTexture*, const f32 width, const f32 height);
 	Player();
 	Image sprite;

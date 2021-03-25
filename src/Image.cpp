@@ -65,7 +65,7 @@ void Image::Draw_Texture(const f32 alpha, const f32 r, const f32 g, const f32 b,
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 //
-void Image::Draw_Texture(int counter, const f32 alpha, const f32 r, const f32 g, const f32 b, const f32 a)
+void Image::Draw_Texture(int counter, AEGfxTexture* texture, AEGfxVertexList* mesh, const f32 alpha, const f32 r, const f32 g, const f32 b, const f32 a)
 {
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
@@ -73,22 +73,32 @@ void Image::Draw_Texture(int counter, const f32 alpha, const f32 r, const f32 g,
 	AEGfxSetTransparency(alpha / colorcodeMax);
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	++count;
-	if (count < counter)
+	if (Mesh::PlayerCurr == Mesh::Anim)
 	{
-		AEGfxTextureSet(pTex, objtexX, 0);
-		//printf("%.2f \n", objtexX);
-	}		// Same object, different texture
-	else
-	{
-		objtexX += 0.2f;
-		AEGfxTextureSet(pTex, objtexX, 0);		// Same object, different texture
-		printf("%.2f \n", objtexX);
-		count = 0;
+		pTex = texture;
+		++count;
+		if (count < counter)
+		{
+			AEGfxTextureSet(pTex, objtexX, 0);
+			//printf("%.2f \n", objtexX);
+		}		// Same object, different texture
+		else
+		{
+			objtexX += 0.2f;
+			AEGfxTextureSet(pTex, objtexX, 0);		// Same object, different texture
+			printf("%.2f \n", objtexX);
+			count = 0;
+		}
+		if (objtexX == 1.0f)
+		{
+			objtexX = 0.0f;
+		}
 	}
-	if (objtexX == 1.0f)
+
+	if (Mesh::PlayerCurr == Mesh::Rect)
 	{
-		objtexX = 0.0f;
+		pTex = texture;
+		AEGfxTextureSet(pTex, objtexX, 0);
 	}
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }

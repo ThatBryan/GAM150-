@@ -65,6 +65,12 @@ namespace Mesh {
 	AEGfxVertexList* Rect = nullptr;
 	AEGfxVertexList* Circle = nullptr;
 	AEGfxVertexList* Anim = nullptr;
+
+	AEGfxVertexList* PlayerCurr = nullptr;
+}
+
+namespace Tex {
+	AEGfxTexture* PlayerCurr = nullptr;
 }
 
 

@@ -81,6 +81,11 @@ void MapUpdate()
 	if (!paused)
 		app_time += g_dt;
 
+	if (AEInputCheckCurr(AEVK_LEFT) || AEInputCheckCurr(AEVK_RIGHT))
+		Mesh::PlayerCurr = Mesh::Rect;
+	else
+		Mesh::PlayerCurr = Mesh::Anim;
+
 	if (AEInputCheckReleased(AEVK_R))
 	{
 		gamestateNext = GS_RESTART;
@@ -135,9 +140,9 @@ void MapLoad()
 		default:
 			gamestateNext = GS_MAINMENU;
 	}
-	Mesh::Anim = Graphics::Mesh_Animation(player_idle_anim_offset_x);
-	assert(Map_Height > 0 && Map_Width > 0);
-
+	//Mesh::Anim = Graphics::Mesh_Animation(player_idle_anim_offset_x);
+	//assert(Map_Height > 0 && Map_Width > 0);
+	Mesh::PlayerCurr = Mesh::Anim;
 	Tiles::LoadTex();
 	Player::LoadTex();
 	Enemies::LoadTex();
@@ -151,7 +156,7 @@ void MapLoad()
 
 void MapUnload()
 {
-	AEGfxMeshFree(Mesh::Anim);
+	//AEGfxMeshFree(Mesh::Anim);
 	Tiles::Unload();
 	Enemies::Unload();
 	Player::Unload();

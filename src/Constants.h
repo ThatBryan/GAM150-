@@ -82,6 +82,12 @@ namespace Mesh {
 	extern AEGfxVertexList* Rect;
 	extern AEGfxVertexList* Anim;
 	extern AEGfxVertexList* Circle;
+
+	extern AEGfxVertexList* PlayerCurr;
+}
+
+namespace Tex {
+	extern AEGfxTexture* PlayerCurr;
 }
 
 // Hot key bindings.
