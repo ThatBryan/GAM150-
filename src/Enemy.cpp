@@ -194,8 +194,8 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 	// Temp fixes
 	if (type == EnemyType::Bat)
 	{
-		Enemy.collider.SetWidthHeight(Enemy.collider.left, 20.0f, 40.0f);
-		Enemy.collider.SetWidthHeight(Enemy.collider.right, 20.0f, 40.0f);
+		Enemy.collider.SetWidthHeight(Enemy.collider.left, 20.0f, 30.0f);
+		Enemy.collider.SetWidthHeight(Enemy.collider.right, 20.0f, 30.0f);
 	}
 	if (type == EnemyType::Squirrel) {
 		Enemy.collider.SetWidthHeight(Enemy.collider.left, 20.0f, 20.0f);
