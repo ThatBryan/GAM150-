@@ -14,6 +14,7 @@ namespace FilePaths {
 	const char* GoalTile = "./Assets/Art/Goal.png";
 	const char* SpecialTile = "./Assets/Art/Special_Tile.png";
 	const char* GreyTile = "./Assets/Art/Safe_Tile.png";
+	const char* DialogueTile = "./Assets/Art/Instruction.png";
 	const char* FontFile = "./Assets/Font/Roboto-Regular.ttf";
 	const char* ButtonTest = "./Assets/Art/ResumeButton.png";
 	const char* ButtonTest2 = "./Assets/Art/PlanetTexture.png";

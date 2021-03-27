@@ -11,7 +11,8 @@ enum class TYPE_OBJECT
 	JUMPERMAN,					//5
 	SLIME,						//6
 	BAT,						//7	
-	SQUIRREL					//8
+	SQUIRREL,					//8
+	DIALOGUE					//9
 };
 
 enum class EnemySizes {

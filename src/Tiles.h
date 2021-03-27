@@ -6,7 +6,7 @@
 #include "Constants.h"
 #include "Collider.h"
 
-enum class TileType { Grass = 0, Goal, Safe, Special, Max };
+enum class TileType { Grass = 0, Goal, Safe, Special, Dialogue, Max };
 TileType& operator++(TileType& rhs);
 
 // Foward declaration

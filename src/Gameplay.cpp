@@ -81,6 +81,10 @@ void MapInit(void)
 				else
 				Enemies::AddNew(enemies, EnemyType::Squirrel, AEVec2Set(j * grid_width, i * grid_height), enemy_width, squirrel_height);
 			}
+			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::DIALOGUE))
+			{
+				Tiles::AddTile(tilemap, TileType::Dialogue, grid_width, grid_height, AEVec2Set(j * grid_width, i * grid_height));
+			}
 		}
 	}
 	tileManager.push_back(&tilemap);

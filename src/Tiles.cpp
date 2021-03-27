@@ -230,6 +230,9 @@ void Tiles::LoadTex() {
 		case TileType::Special:
 			pTex = FP::SpecialTile;
 			break;
+		case TileType::Dialogue:
+			pTex = FP::DialogueTile;
+			break;
 		default:
 			return;
 		}

@@ -16,6 +16,7 @@ namespace FilePaths {
 	extern const char* GrassTile;
 	extern const char* GoalTile;
 	extern const char* GreyTile;
+	extern const char* DialogueTile;
 	extern const char* SpecialTile;
 	extern const char* FontFile;
 	extern const char* ButtonTest;
