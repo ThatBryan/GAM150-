@@ -21,7 +21,8 @@ float Player::gravityStrength = 20.0f;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{ false },
 active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel },
-hp(), direction{ MovementState::Right }, chargedjumpvel{ player_chargedjumpvel }, gravityMultiplier{ base_gravityMultiplier }
+hp(), direction{ MovementState::Right }, chargedjumpvel{ player_chargedjumpvel }, gravityMultiplier{ base_gravityMultiplier }, 
+chargedjump_counter{ player_chargedjump_counter }
 {
 	playerBB.color.Set(Color{ 0, 0, 0, 255.0f });
 	maxY = static_cast<f32>(AEGetWindowHeight());

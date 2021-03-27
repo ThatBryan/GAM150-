@@ -28,14 +28,16 @@ private:
 
 	Graphics::Rect enemyBB {enemy_width, enemy_height};
 
-	bool isGravity, killed;
-	float counter, velocity, jumpcounter, jumpvelocity, alpha, alphaTimer;
+	bool isGravity, killed, squirrelJump;
+	int jumpcounter;
+	float counter, velocity, jumpvelocity, alpha, alphaTimer;
 	float stepGravityMultiplier;
 	unsigned short ID; // Maybe unnecessary
 
 	static float slime_counter, slime_speed, slimeBBOffset;
 	static float bat_speed, bat_counter, batBBOffset;
-	static float squirrel_speed, squirrel_counter, squirrel_jumpspeed, jump_counter, squirrelBBOffset;
+	static float squirrel_speed, squirrel_counter, squirrel_jumpspeed, squirrelBBOffset, squirrel_offset_x;
+	static int jump_counter;
 	static float baseGravityStrength;
 
 	// Private functions

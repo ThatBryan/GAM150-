@@ -358,8 +358,8 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 				enemy.velocity *= -1.0f;
 				enemy.sprite.pos.x = TheTile.image.pos.x - TheTile.image.width / 2.0f - abs(enemy.sprite.width) / 2.0f - 2.0f;
 				enemy.sprite.width *= -1.0f;
-				if (DebugMode)
-					printf("right\n");
+				//if (DebugMode)
+					//printf("right\n");
 			}
 
 			if (Utils::ColliderAABB(enemy.collider.left.pos, enemy.collider.left.width, enemy.collider.left.height,
@@ -369,19 +369,23 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 				enemy.velocity *= -1.0f;
 				enemy.sprite.pos.x = TheTile.image.pos.x + TheTile.image.width / 2.0f + abs(enemy.sprite.width) / 2.0f + 2.0f;
 				enemy.sprite.width *= -1.0f;
-				if (DebugMode)
-					printf("left\n");
+				//if (DebugMode)
+					//printf("left\n");
 			}		
 
-			if (enemy.type == EnemyType::Bat || enemy.type == EnemyType::Slime)
-				continue;
+			
+			if (enemy.type == EnemyType::Squirrel)
+			{
 
-			if (Utils::ColliderAABB(enemy.collider.bottom.pos, enemy.collider.bottom.width, enemy.collider.bottom.height,
-				TheTile.collider.top.pos, TheTile.collider.top.width, TheTile.collider.top.height)) {
-				enemy.sprite.pos.y = TheTile.collider.top.pos.y - enemy.sprite.height / 2.0f - 10.0f;
-				//if (DebugMode)
-				//	printf("top");
+				if (Utils::ColliderAABB(enemy.collider.bottom.pos, enemy.collider.bottom.width, enemy.collider.bottom.height,
+					TheTile.collider.top.pos, TheTile.collider.top.width, TheTile.collider.top.height)) {
+					enemy.squirrelJump = true;
+					//if (DebugMode)
+						//printf("top");
+				}
 			}
+
+			
 		}
 	}
 }
