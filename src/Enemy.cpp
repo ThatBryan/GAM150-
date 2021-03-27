@@ -8,7 +8,7 @@ float Enemies::baseGravityStrength = 20.0f;
 
 float Enemies::slime_counter = 2.0f, Enemies::slime_speed = 50.0f, Enemies::slimeBBOffset = 22.0f;
 float Enemies::bat_counter = 5.0f, Enemies::bat_speed = 100.0f, Enemies::batBBOffset = 9.0f;
-float Enemies::squirrel_counter = 3.0f, Enemies::squirrel_speed = 110.0f, Enemies::squirrelBBOffset = 20.0f, Enemies::squirrel_offset_x = 10.0f,
+float Enemies::squirrel_counter = 4.0f, Enemies::squirrel_speed = 110.0f, Enemies::squirrelBBOffset = 20.0f, Enemies::squirrel_offset_x = 10.0f,
 Enemies::squirrel_jumpspeed = 100.0f;
 
 int Enemies::jump_counter = 5;
@@ -92,7 +92,7 @@ void Enemies::Squirrel_Movement(f32 maxX)
 	}
 
 	const float halfWidth{ fabsf(sprite.width / 2.0f) };
-	if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + halfWidth >= maxX)
+	if (!isGravity && counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + halfWidth >= maxX)
 	{
 		if (sprite.pos.x + halfWidth >= maxX)
 			sprite.pos.x = maxX - halfWidth;
