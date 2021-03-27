@@ -396,7 +396,6 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 			
 			if (enemy.type == EnemyType::Squirrel)
 			{
-
 				if (Utils::ColliderAABB(enemy.collider.bottom.pos, enemy.collider.bottom.width, enemy.collider.bottom.height,
 					TheTile.collider.top.pos, TheTile.collider.top.width, TheTile.collider.top.height)) {
 					enemy.squirrelJump = true;
@@ -410,7 +409,7 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 	}
 }
 
-void Tiles::CreateDialogue(void)
-{
-
-}
+//void Tiles::CreateDialogue(void)
+//{
+//
+//}

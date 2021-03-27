@@ -17,13 +17,13 @@ class Tiles
 {
 public:
 	// Reference to a vector, containing a vector of Tiles*
-	short ID;
 
 	using TileMgr = std::vector<std::vector<Tiles>*>&;
 private:
 	Graphics::Rect ColliderAABB;
 	Collider collider;
 	TileType type;
+	short ID;
 	f64 collapseDelay;
 	bool active, isCollapsing;
 
@@ -55,7 +55,6 @@ public:
 	static void CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer);
 	static void CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy);
 	static void CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy);
-	static void CreateDialogue(void);
 
 	// Add single tile to a given vector.
 	static void AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, const f32 height, AEVec2 pos);
