@@ -101,7 +101,8 @@ void Tiles::CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer)
 			
 			Tiles& Tile = TileManager[i]->at(j);
 			if(Utils::ColliderAABB(Tile.collider.top.pos, Tile.collider.top.width, Tile.collider.top.height,
-				ThePlayer.collider.bottom.pos, ThePlayer.collider.bottom.width, ThePlayer.collider.bottom.height)){
+				ThePlayer.collider.bottom.pos, ThePlayer.collider.bottom.width, ThePlayer.collider.bottom.height)
+				&& Tile.type != TileType::Dialogue){
 				ThePlayer.gravity = false;
 				ThePlayer.jump = false;
 				ThePlayer.chargedjump = false;
@@ -298,6 +299,7 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 				continue;
 
 			Tiles& TheTile = TileManager[i]->at(j);
+
 			if (Utils::ColliderAABB(TheTile.collider.bottom.pos, TheTile.collider.bottom.width, TheTile.collider.bottom.height,
 				ThePlayer.collider.top.pos, ThePlayer.collider.top.width, ThePlayer.collider.top.height)){
 					ThePlayer.gravity = true;
@@ -310,17 +312,32 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 
 			if (Utils::ColliderAABB(TheTile.collider.right.pos, TheTile.collider.right.width, TheTile.collider.right.height,
 				ThePlayer.collider.left.pos, ThePlayer.collider.left.width, ThePlayer.collider.left.height)){
-					ThePlayer.sprite.pos.x = TheTile.image.pos.x + TheTile.image.width / 2.0f + abs(ThePlayer.sprite.width) / 2.0f;
+				if (TheTile.type != TileType::Dialogue)
+					ThePlayer.sprite.pos.x = TheTile.image.pos.x + TheTile.image.width / 2.0f + abs(ThePlayer.sprite.width) / 2.0f;			
 					//if (DebugMode)
 					//	printf("Left Collision\n");
 				}
 
 			if (Utils::ColliderAABB(TheTile.collider.left.pos, TheTile.collider.left.width, TheTile.collider.left.height,
 				ThePlayer.collider.right.pos, ThePlayer.collider.right.width, ThePlayer.collider.right.height)){
+				if (TheTile.type != TileType::Dialogue)
 					ThePlayer.sprite.pos.x = TheTile.image.pos.x - TheTile.image.width / 2.0f - abs(ThePlayer.sprite.width) / 2.0f;
 					//if (DebugMode)
 					//	printf("Right Collision\n");
 				}
+
+			if (TheTile.type == TileType::Dialogue)
+			{
+				if (Utils::ColliderAABB(TheTile.ColliderAABB.pos, TheTile.ColliderAABB.width, TheTile.ColliderAABB.height,
+					ThePlayer.collider.right.pos, ThePlayer.collider.right.width, ThePlayer.collider.right.height) ||
+					Utils::ColliderAABB(TheTile.ColliderAABB.pos, TheTile.ColliderAABB.width, TheTile.ColliderAABB.height,
+						ThePlayer.collider.left.pos, ThePlayer.collider.left.width, ThePlayer.collider.left.height))
+				{
+					//CreateDialogue()
+					printf("%i", TileManager[i]->at(j).ID);
+				}
+			}
+			
 		}
 	}
 }
@@ -391,4 +408,9 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 			
 		}
 	}
+}
+
+void Tiles::CreateDialogue(void)
+{
+
 }

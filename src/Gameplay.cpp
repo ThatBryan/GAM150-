@@ -24,6 +24,7 @@ Player Jumperman;
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
 extern AEVec2 EnemySizeArray[static_cast<int>(EnemySizes::MAX)];
+
 void MapInit(void)
 {
 	float Offset = 35.0f;
