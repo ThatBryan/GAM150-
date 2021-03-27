@@ -21,7 +21,7 @@ private:
 	MovementState direction;
 	Health hp;
 	bool win, lose;
-	float jumpvel, chargedjumpvel;
+	float jumpvel, chargedjumpvel, chargedjump_counter;
 	static f32 gravityStrength;
 	void Update_Position(void);
 	void CheckOutOfBound(void);

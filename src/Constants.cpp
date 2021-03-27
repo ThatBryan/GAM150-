@@ -29,6 +29,7 @@ const float player_width = 45.0f;
 const float player_height = 50.0f;
 const float player_jumpvel = 3.5f;
 const float player_chargedjumpvel = 8.0f;
+const float player_chargedjump_counter = 1.0f;
 const float player_collider_offset_y = 24.0f;
 const float player_collider_offset_x = 6.0f;
 const short player_hp_max = 3U;

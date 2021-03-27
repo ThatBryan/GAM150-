@@ -32,7 +32,7 @@ hp(), direction{ MovementState::Right }, chargedjumpvel{ player_chargedjumpvel }
 
 Player::Player() : lose{ false }, active{ true }, gravity{ false }, jump{ false }, chargedjump{ false },
 win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel }, chargedjumpvel{ player_chargedjumpvel },
-hp(), direction{ MovementState::Right }, gravityMultiplier{ base_gravityMultiplier } {
+hp(), direction{ MovementState::Right }, gravityMultiplier{ base_gravityMultiplier }, chargedjump_counter{player_chargedjump_counter }{
 
 	playerBB.color.Set(Color{ 0, 0, 0, 255.0f });
 
@@ -52,6 +52,7 @@ void Player::Reset(void)
 	sprite.pos = startingPos;
 	jumpvel = player_jumpvel;
 	chargedjumpvel = player_chargedjumpvel;
+	chargedjump_counter = player_chargedjump_counter;
 	hp.current = hp.max;
 	sprite.rotation = 0;
 	gravityMultiplier = base_gravityMultiplier;
@@ -106,7 +107,6 @@ void Player::Update_Position(void)
 		}
 	}
 
-	static float chargedjump_counter = 1.0f;
 	if (AEInputCheckCurr(AEVK_SPACE) && !chargedjump && !gravity)
 	{
 		chargedjump_counter -= g_dt;
