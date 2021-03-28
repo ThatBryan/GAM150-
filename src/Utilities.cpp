@@ -63,6 +63,14 @@ AEVec2 Utils::GetRandomPos(void)
 	return AEVec2{ Utils::RandomRangeFloat(0, Width), Utils::RandomRangeFloat(0, Height)};
 }
 
+AEVec2 Utils::GetRandomRangePos(const AEVec2 lowerBound, const AEVec2 upperBound)
+{
+	AEVec2 Rand{ 0, 0 };
+	Rand.x = Utils::RandomRangeFloat(lowerBound.x, upperBound.x);
+	Rand.y = Utils::RandomRangeFloat(lowerBound.y, upperBound.y);
+	return Rand;
+}
+
 AEVec2 Utils::GetRandomVecVel(void)
 {
 	AEVec2 Vel{ Utils::RandomRangeFloat(-1.0f, 1.0f), Utils::RandomRangeFloat(-1.0f, 1.0f) };

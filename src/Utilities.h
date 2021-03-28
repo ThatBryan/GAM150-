@@ -23,6 +23,7 @@ namespace Utils
 
 	AEVec2 GetScreenMiddle(void);
 	AEVec2 GetRandomPos(void);
+	AEVec2 GetRandomRangePos(const AEVec2 lowerBound, const AEVec2 upperBound);
 	// Returns a random normalized vector.
 	AEVec2 GetRandomVecVel(void);
 

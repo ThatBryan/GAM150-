@@ -78,6 +78,11 @@ void MainMenu::Update(void)
 
 	if (AEInputCheckTriggered(AEVK_ESCAPE))
 		gamestateNext = GS_QUIT;
+
+	if (AEInputCheckTriggered(AEVK_SPACE)) {
+		AEVec2 Test = Utils::GetRandomRangePos(AEVec2{ 300, 400 }, AEVec2{ 400, 500 });
+		std::cout << Test.x << "\t" << Test.y << std::endl;
+	}
 }
 
 void MainMenu::Render() {
