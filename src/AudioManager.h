@@ -31,4 +31,5 @@ public:
 	static void SetVolume(AudioID ID, float volume);
 	static void SetMute(AudioID ID);
 	static void MuteAll();
+	static bool GetGlobalMute();
 };

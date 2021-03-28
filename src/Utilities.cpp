@@ -57,6 +57,11 @@ void Utils::ToggleFullscreen()
 	AEToogleFullScreen(fullscreen);
 }
 
+bool Utils::GetFullscreen()
+{
+	return fullscreen;
+}
+
 f32 Utils::Get_HalfWindowWidth(void)
 {
 	return static_cast<f32>((AEGetWindowWidth() / 2.0f));

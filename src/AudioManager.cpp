@@ -6,10 +6,10 @@
 AudioManager Audio;
 std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest{ NULL };
 AudioData soundData[static_cast<int>(AudioID::Max)];
-static bool isMuteAll;
+static bool globalMute;
 // Default ctor.
 AudioData::AudioData() : ID{ AudioID::None }, channel{ nullptr }, volume{ 1.0f }, mute{ false } {
-	isMuteAll = false;
+	globalMute = false;
 }
 
 AudioManager::AudioManager() {
@@ -30,8 +30,8 @@ void AudioManager::createAudio(AudioClass* pSound, const char* pFile) {
 }
 
 void AudioManager::playAudio(AudioClass& Sound, AudioID ID, bool bLoop) {
-	if (isMuteAll)
-		return;
+	//if (globalMute)
+	//	return;
 
 	if (!bLoop) {
 		Sound->setMode(FMOD_LOOP_OFF);
@@ -49,6 +49,7 @@ void AudioManager::update() {
 	m_pSystem->update();
 	for (int i = 0; i < static_cast<int>(AudioID::Max); ++i) {
 		soundData[i].channel->setPaused(paused);
+		soundData[i].channel->setMute(soundData[i].mute);
 	}
 }
 
@@ -72,11 +73,18 @@ void AudioManager::SetMute(AudioID ID) {
 
 void AudioManager::MuteAll()
 {
-	isMuteAll = !isMuteAll;
+	globalMute = !globalMute;
+	globalMute == 0 ? std::cout << "false\n" : std::cout << "true\n";
 	for (AudioID i = static_cast<AudioID>(0); i < AudioID::Max; ++i) {
 		Audio.SetMute(i);
 	}
 }
+
+bool AudioManager::GetGlobalMute()
+{
+	return globalMute;
+}
+
 
 AudioID& operator++(AudioID& rhs)
 {

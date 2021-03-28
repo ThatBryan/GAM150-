@@ -298,6 +298,8 @@ void Settings::Init()
 
 void Settings::Update()
 {
+	Utils::GetFullscreen() == true ? SettingsBtn[0].Set_Text("Windows Mode") : SettingsBtn[0].Set_Text("Fullscreen");
+	AudioManager::GetGlobalMute() == true ? SettingsBtn[1].Set_Text("Unmute") : SettingsBtn[1].Set_Text("Mute");
 	for (size_t i = 0; i < SettingsBtn.size(); ++i) {
 		SettingsBtn[i].Update();
 	}
@@ -307,7 +309,13 @@ void Settings::Update()
 
 void Settings::Render()
 {
+	static Graphics::Text SettingsPage;
+	SettingsPage.SetText("Settings");
+	SettingsPage.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	SettingsPage.SetScale(1.0f);
+
 	for (size_t i = 0; i < SettingsBtn.size(); ++i) {
 		SettingsBtn[i].Render();
 	}
+	SettingsPage.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() / 10)));
 }
