@@ -18,6 +18,16 @@ AEVec2 AEVec2Set(const f32 x, const f32 y)
 	return AEVec2{ x, y };
 }
 
+const float Episilon{ 2.0f };
+bool operator==(const AEVec2& lhs, const AEVec2& rhs)
+{
+	if (lhs.x <= rhs.x + Episilon && lhs.x >= rhs.x + Episilon &&
+		lhs.y <= rhs.y + Episilon && lhs.y >= rhs.y + Episilon)
+		return true;
+
+	return false;
+}
+
 AEVec2 AEVec2Zero()
 {
 	return AEVec2{0, 0};
@@ -63,7 +73,7 @@ AEVec2 Utils::GetRandomPos(void)
 	return AEVec2{ Utils::RandomRangeFloat(0, Width), Utils::RandomRangeFloat(0, Height)};
 }
 
-AEVec2 Utils::GetRandomRangePos(const AEVec2 lowerBound, const AEVec2 upperBound)
+AEVec2 Utils::GetRandomRangeVec(const AEVec2 lowerBound, const AEVec2 upperBound)
 {
 	AEVec2 Rand{ 0, 0 };
 	Rand.x = Utils::RandomRangeFloat(lowerBound.x, upperBound.x);

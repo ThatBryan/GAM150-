@@ -180,6 +180,7 @@ void MapLoad()
 	assert(Map_Height > 0 && Map_Width > 0);
 
 	Tiles::LoadTex();
+	Particles::Load();
 	Player::LoadTex();
 	Enemies::LoadTex();
 	AudioManager::loadAsset();

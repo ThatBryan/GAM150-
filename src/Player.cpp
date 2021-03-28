@@ -111,6 +111,10 @@ void Player::Update_Position(void)
 	if (AEInputCheckCurr(AEVK_SPACE) && !chargedjump && !gravity)
 	{
 		chargedjump_counter -= g_dt;
+		AEVec2 Min = AEVec2Sub(sprite.pos, AEVec2{ 20, 20});
+		AEVec2 Max = AEVec2Add(sprite.pos, AEVec2{ 20, 20});
+		AEVec2 Destination = AEVec2Add(sprite.pos, AEVec2{ 0, sprite.height / 2.0f });
+		Particles::CreateReverseParticles(Destination, Min, Max, Color{ 255.0f, 255.0f, 0, 255.0f}, 1, Utils::RandomRangeFloat(10.0f, 50.0f), 50.0f, 5.0f, 0.5f);
 	}
 
 	if (AEInputCheckReleased(AEVK_SPACE) && chargedjump_counter < 0)
