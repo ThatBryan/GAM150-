@@ -260,14 +260,14 @@ void Tiles::TileShake(void) {
 void Tiles::CollapsingManager(TileMgr TileManager) {
 static const float allowance{ 6.0f }; // Offset for shake
 	for (size_t i = 0; i < TileManager.size(); ++i) {
+
 		for (size_t j = 0; j < TileManager[i]->size(); ++j) {
 
 			Tiles& tile = TileManager[i]->at(j);
-			if (tile.type == TileType::Grass || tile.type == TileType::Special) {
-
+			if (tile.type == TileType::Grass || tile.type == TileType::Special) { 
 				if (tile.collapseDelay <= 0) {
-					if (j <= TileManager[i]->size()) { // eg j = 0. mgr size = 20, indexing up to 19
 
+					if (j < TileManager[i]->size() - 1) { // eg j = 0. mgr size = 20, indexing up to 19
 						Tiles& NextTile = TileManager[i]->at(j + 1);
 						if (NextTile.type == TileType::Grass || NextTile.type == TileType::Special) {
 							if (Utils::ColliderAABB(tile.image.pos, tile.image.width + allowance, tile.image.height, NextTile.image.pos, NextTile.image.width, NextTile.image.height))

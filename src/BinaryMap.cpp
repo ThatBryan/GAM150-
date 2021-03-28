@@ -15,8 +15,6 @@ written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 #include "BinaryMap.h"
 
-
-
 #include <iostream>
 #include <cstdio>
 #include <fstream>
