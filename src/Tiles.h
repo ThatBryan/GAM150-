@@ -20,7 +20,7 @@ public:
 
 	using TileMgr = std::vector<std::vector<Tiles>*>&;
 private:
-	Graphics::Rect ColliderAABB;
+	//Graphics::Rect ColliderAABB;
 	Collider collider;
 	TileType type;
 	short ID;

@@ -8,10 +8,10 @@ static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
 Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
 active{ true }, isCollapsing{ false }, ID{ 0 }, collapseDelay{ TileCollapseDelay }, type{ TileType::Safe }, spawnPos{ 0, 0 },
-ColliderAABB{width, height}, collider()
+collider() /*ColliderAABB{ width, height }*/
 {
-	ColliderAABB.color.Set(Color{ 150, 0, 0, 150 });
-
+	//ColliderAABB.color.Set(Color{ 150, 0, 0, 150 });
+	collider.SetWidthHeight(collider.sprite, width, height);
 	collider.SetWidthHeight(collider.top, width - 2.0f, 5.0f);
 	collider.SetWidthHeight(collider.left, 30, height);
 	collider.SetWidthHeight(collider.right, 30, height);
@@ -29,7 +29,7 @@ void Tiles::Collapse(const Player& ThePlayer)
 	}
 	if (type == TileType::Special) {
 		if (Utils::ColliderAABB(ThePlayer.collider.bottom.pos, ThePlayer.collider.bottom.width, ThePlayer.collider.bottom.height,
-			ColliderAABB.pos, ColliderAABB.width, ColliderAABB.height)
+			collider.sprite.pos, collider.sprite.width, collider.sprite.height)
 			&& (AEInputCheckTriggered(AEVK_DOWN) || AEInputCheckTriggered(AEVK_S)))
 		{
 			isCollapsing = true;
@@ -51,7 +51,7 @@ void Tiles::CheckPlayerGoal(Player& ThePlayer)
 void Tiles::CheckPos(void) {
 	if (active)
 	{
-		ColliderAABB.pos = image.pos;
+		collider.sprite.pos = image.pos;
 
 		collider.bottom.pos = AEVec2Set(image.pos.x, image.pos.y + image.height / 2.0f);
 		collider.right.pos = AEVec2Set(image.pos.x + abs(image.width) / 2.0f - collider.right.width / 2.0f, image.pos.y);
@@ -197,7 +197,7 @@ void Tiles::Render() {
 		image.Draw_Texture(255);
 		if (DebugMode)
 		{
-			ColliderAABB.Draw();
+			//ColliderAABB.Draw();
 			collider.Draw();
 		}	
 	}
@@ -328,9 +328,9 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 
 			if (TheTile.type == TileType::Dialogue)
 			{
-				if (Utils::ColliderAABB(TheTile.ColliderAABB.pos, TheTile.ColliderAABB.width, TheTile.ColliderAABB.height,
+				if (Utils::ColliderAABB(TheTile.collider.sprite.pos, TheTile.collider.sprite.width, TheTile.collider.sprite.height,
 					ThePlayer.collider.right.pos, ThePlayer.collider.right.width, ThePlayer.collider.right.height) ||
-					Utils::ColliderAABB(TheTile.ColliderAABB.pos, TheTile.ColliderAABB.width, TheTile.ColliderAABB.height,
+					Utils::ColliderAABB(TheTile.collider.sprite.pos, TheTile.collider.sprite.width, TheTile.collider.sprite.height,
 						ThePlayer.collider.left.pos, ThePlayer.collider.left.width, ThePlayer.collider.left.height))
 				{
 					//CreateDialogue()

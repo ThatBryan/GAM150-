@@ -254,7 +254,6 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 					if (!DebugMode) {
 						--hp.current;
 						Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerTex);
-						std::cout << "bam\n";
 						sprite.pos = startingPos;
 					}
 					if (DebugMode)
