@@ -22,6 +22,7 @@ class Particles{
 		static void Render();
 		static void Unload();
 		static size_t GetCapacity();
+		static size_t GetSize();
 
 	private:
 		AEVec2 vel, pos, destination;

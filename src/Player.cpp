@@ -111,10 +111,13 @@ void Player::Update_Position(void)
 	if (AEInputCheckCurr(AEVK_SPACE) && !chargedjump && !gravity)
 	{
 		chargedjump_counter -= g_dt;
-		AEVec2 Min = AEVec2Sub(sprite.pos, AEVec2{ 20, 20});
-		AEVec2 Max = AEVec2Add(sprite.pos, AEVec2{ 20, 20});
+		AEVec2 Min = AEVec2Sub(sprite.pos, AEVec2{ sprite.width, 15});
+		AEVec2 Max = AEVec2Add(sprite.pos, AEVec2{ sprite.width, 15});
+		//std::cout << "\nMin.x: " << Min.x << "Min.y: " << Min.y << std::endl;
+		//std::cout << "Max.x: " << Max.x << "Max.y: " << Max.y << std::endl;
 		AEVec2 Destination = AEVec2Add(sprite.pos, AEVec2{ 0, sprite.height / 2.0f });
-		Particles::CreateReverseParticles(Destination, Min, Max, Color{ 255.0f, 255.0f, 0, 255.0f}, 1, Utils::RandomRangeFloat(10.0f, 50.0f), 50.0f, 5.0f, 0.5f);
+		Particles::CreateReverseParticles(Destination, Min, Max, Color{ 255.0f, 255.0f, 0, 255.0f}, 1, Utils::RandomRangeFloat(10.0f, 100.0f), 50.0f, 2.5f, 1.0f);
+		//std::cout << Particles::GetSize() << std::endl;
 	}
 
 	if (AEInputCheckReleased(AEVK_SPACE) && chargedjump_counter < 0)

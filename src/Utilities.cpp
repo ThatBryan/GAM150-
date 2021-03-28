@@ -18,11 +18,11 @@ AEVec2 AEVec2Set(const f32 x, const f32 y)
 	return AEVec2{ x, y };
 }
 
-const float Episilon{ 2.0f };
+const float Episilon{ 1.0f };
 bool operator==(const AEVec2& lhs, const AEVec2& rhs)
 {
-	if (lhs.x <= rhs.x + Episilon && lhs.x >= rhs.x + Episilon &&
-		lhs.y <= rhs.y + Episilon && lhs.y >= rhs.y + Episilon)
+	if (fabsf(lhs.x - rhs.x) <= Episilon &&
+		fabsf(lhs.y - rhs.y) <= Episilon)
 		return true;
 
 	return false;

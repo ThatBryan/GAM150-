@@ -77,7 +77,7 @@ void Particles::CreateReverseParticles(AEVec2 Destination, AEVec2 Min, AEVec2 Ma
 	AEVec2 RandPos = Utils::GetRandomRangeVec(Min, Max);
 	AEVec2 Vel = AEVec2Sub(Destination, RandPos);
 	AEVec2Normalize(&Vel, &Vel);
-
+	//std::cout << "\nRandPos.x: " << RandPos.x << "RandPos.y: " << RandPos.y << std::endl;
 	for (size_t i = 0; i < p.size(); ++i) {
 		if (count < 0)
 			return;
@@ -160,8 +160,10 @@ void Particles::Update()
 		}
 
 		if (p[i].type == ParticlesType::Reverse) {
-			if (p[i].pos == p[i].destination)
+  			if (p[i].pos == p[i].destination) {
+				//std::cout << "cmp true\n";
 				p[i].active = false;
+			}
 		}
 	}
 }
@@ -198,6 +200,11 @@ void Particles::Unload()
 size_t Particles::GetCapacity()
 {
 	return p.capacity();
+}
+
+size_t Particles::GetSize()
+{
+	return p.size();
 }
 
 
