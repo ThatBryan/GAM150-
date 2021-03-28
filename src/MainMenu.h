@@ -23,10 +23,19 @@ namespace MainMenu
 	void TestEnemyMovement(void);
 	void TestPlayerMovement(void);
 
-	void SwitchToLevelSelection(void);
 	void SwitchToMainMenu(void);
+	void SwitchToLevelSelection(void);
+	void SwitchToSettings();
+}
 
-	void TestLevelSelectionUpdate(void);
-	void TestLevelSelectionRender(void);
+namespace LevelSelection{
+	void Init(void);
+	void Update(void);
+	void Render(void);
+}
 
+namespace Settings {
+	void Init();
+	void Update();
+	void Render();
 }

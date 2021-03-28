@@ -184,9 +184,9 @@ void MapLoad()
 	Player::LoadTex();
 	Enemies::LoadTex();
 	AudioManager::loadAsset();
-	AudioManager::SetVolume(AudioID::Jump, 0.0f);
+	AudioManager::SetVolume(AudioID::Jump, 0.2f);
 	AudioManager::SetVolume(AudioID::BGM, 0.2f);
-	//Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
+	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 	Overlay::Load();
 	Overlay::Init();
 }

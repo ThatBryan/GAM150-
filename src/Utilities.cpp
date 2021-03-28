@@ -3,6 +3,7 @@
 #include "Constants.h"
 #include <iostream>
 #include <fstream>
+#include "AudioManager.h"
 
 
 int Utils::RandomRangeInt(const s32 lowerBound, const s32 upperBound)
@@ -42,13 +43,18 @@ AEVec2 AEVec2Sub(const AEVec2 vec1, const AEVec2 vec2)
 	return AEVec2{ vec1.x - vec2.x, vec1.y - vec2.y };
 }
 
-void Utils::CheckFullScreenInput(void)
+void Utils::CheckFullScreenKeyInput(void)
 {
 	if (AEInputCheckCurr(FULLSCREEN_KEY1) && AEInputCheckTriggered(FULLSCREEN_KEY2))
 	{
-		fullscreen = !fullscreen;
-		AEToogleFullScreen(fullscreen);
+		Utils::ToggleFullscreen();
 	}
+}
+
+void Utils::ToggleFullscreen()
+{
+	fullscreen = !fullscreen;
+	AEToogleFullScreen(fullscreen);
 }
 
 f32 Utils::Get_HalfWindowWidth(void)

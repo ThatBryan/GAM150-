@@ -23,8 +23,9 @@ extern AudioData soundData[static_cast<int>(AudioID::Max)];
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
 
 static std::vector <Image> Images;
-static std::vector<Button> buttons;
-static std::vector<Button> LevelButtons;
+static std::vector<Button> MenuBtn;
+static std::vector<Button> LevelBtn;
+static std::vector<Button> SettingsBtn;
 static std::vector<Enemies> enemy;
 static std::vector<Tiles> tiles;
 static std::vector<Player> player;
@@ -39,7 +40,8 @@ void MainMenu::Init(void)
 
 	ScreenMid = Utils::GetScreenMiddle();
 	MainMenu::Buttons_Init();
-	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
+	LevelSelection::Init();
+	Settings::Init();
 
 	const float width = 80.0f, height = 100.0f;
 	int size = static_cast<int>(AEGetWindowWidth() / width);
@@ -70,8 +72,8 @@ void MainMenu::Update(void)
 	Audio.update();
 	MainMenu::TestPlayerMovement();
 	MainMenu::TestEnemyMovement();
-	for (int i = 0; i < buttons.size(); ++i) {
-		buttons[i].Update();
+	for (int i = 0; i < MenuBtn.size(); ++i) {
+		MenuBtn[i].Update();
 	}
 	player[0].sprite.rotation += 100.0f * g_dt;
 	Particles::Update();
@@ -99,8 +101,9 @@ void MainMenu::Render() {
 void MainMenu::Load(void)
 {
 	AudioManager::loadAsset();
-	AudioManager::SetVolume(AudioID::BGM, 0.0f);
+	AudioManager::SetVolume(AudioID::BGM, 0.5f);
 	AudioManager::SetVolume(AudioID::Jump, 0.2f);
+	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 	Tiles::LoadTex();
 	Enemies::LoadTex();
 	Player::LoadTex();
@@ -118,8 +121,9 @@ void MainMenu::Unload(void)
 	}
 	Images.clear();
 	enemy.clear();
-	buttons.clear();
-	LevelButtons.clear();
+	MenuBtn.clear();
+	LevelBtn.clear();
+	SettingsBtn.clear();
 	player.clear();
 	tiles.clear();
 	EnemyCount = 0;
@@ -137,52 +141,30 @@ void MainMenu::Buttons_Init() {
 	
 	const float BtnWidth{ 200.0f }, BtnHeight{ 50.0f };
 	for (int i = 0; i < 6; ++i) {
-		buttons.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));
+		MenuBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));
 		if(i % 2 == 0)
-			buttons[i].Set_Position(AEVec2Set(ScreenMid.x - BtnWidth, ScreenMid.y / 1.3f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
+			MenuBtn[i].Set_Position(AEVec2Set(ScreenMid.x - BtnWidth, ScreenMid.y / 1.3f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
 		else
-			buttons[i].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth, ScreenMid.y / 1.3f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
+			MenuBtn[i].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth, ScreenMid.y / 1.3f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
 
 	}
+	LevelSys.GetKey() == 1 ? MenuBtn[0].Set_Text("Start") : MenuBtn[0].Set_Text("Continue");
+	MenuBtn[0].Set_Callback(StartGame);
 
-	LevelSys.GetKey() == 1 ? buttons[0].Set_Text("Start") : buttons[0].Set_Text("Continue");
-	buttons[0].Set_Callback(StartGame);
+	MenuBtn[1].Set_Text("Credits");
+	MenuBtn[1].Set_Callback(placeholder);
 
-	buttons[1].Set_Text("Credits");
-	buttons[1].Set_Callback(placeholder);
+	MenuBtn[2].Set_Text("Level selection");
+	MenuBtn[2].Set_Callback(MainMenu::SwitchToLevelSelection);
 
-	buttons[2].Set_Text("Level selection");
-	buttons[2].Set_Callback(MainMenu::SwitchToLevelSelection);
+	MenuBtn[3].Set_Text("Leaderboards");
+	MenuBtn[3].Set_Callback(placeholder);
 
-	buttons[3].Set_Text("Leaderboards");
-	buttons[3].Set_Callback(placeholder);
+	MenuBtn[4].Set_Text("Settings");
+	MenuBtn[4].Set_Callback(MainMenu::SwitchToSettings);
 
-	buttons[4].Set_Text("Settings");
-	buttons[4].Set_Callback(placeholder);
-
-	buttons[5].Set_Text("Quit");
-	buttons[5].Set_Callback(QuitGame);
-
-	for (unsigned short i = 0; i < 10; ++i) {
-		LevelButtons.push_back(Button(ButtonType::Color, 150.0, 75.0f, 0.5f));
-		LevelButtons[i].SetID(i + 1);
-		LevelButtons[i].Set_TextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
-		LevelButtons[i].Set_Callback(MainMenu::LockedLevel);
-		LevelButtons[i].Set_Text("Locked");
-
-	}
-	for (size_t i = 0; i < 3; ++i) {
-		for (size_t j = 0; j < 3; ++j) {
-			LevelButtons[(i *3) + j].Set_Position(AEVec2Set(175.0f + 225.0f * j, 162.5f + 150.0f * i));// Mid = 400. 400 - 75, 325. 325 - 150 175.0f // 600 / 3, 200 - 37.5 = 162.5f
-			if (LevelButtons[i * 3 + j].GetID() > LevelSys.GetKey()) {
-				LevelButtons[i * 3 + j].SetStateColor(ButtonState::Idle, Color(255.0f, 0.0f, 0.0f, 10.0f));
-			}
-		}
-	}
-
-	LevelButtons[9].Set_Position(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() - LevelButtons[9].GetHeight() / 2.0f)));
-	LevelButtons[9].Set_Text("Exit");
-	LevelButtons[9].Set_Callback(MainMenu::SwitchToMainMenu);
+	MenuBtn[5].Set_Text("Quit");
+	MenuBtn[5].Set_Callback(QuitGame);
 }
 
 const float baseSpeed = 50.0f;
@@ -226,18 +208,48 @@ void MainMenu::TestPlayerMovement() {
 	player[0].sprite.pos.y += 4 * std::sin(Test3 / 7.5f);
 }
 
+void LevelSelection::Init(void)
+{
+	for (unsigned short i = 0; i < 10; ++i) {
+		LevelBtn.push_back(Button(ButtonType::Color, 150.0, 75.0f, 0.5f));
+		LevelBtn[i].SetID(i + 1);
+		LevelBtn[i].Set_TextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+		LevelBtn[i].Set_Callback(MainMenu::LockedLevel);
+		LevelBtn[i].Set_Text("Locked");
+
+	}
+	for (size_t i = 0; i < 3; ++i) {
+		for (size_t j = 0; j < 3; ++j) {
+			LevelBtn[(i * 3) + j].Set_Position(AEVec2Set(175.0f + 225.0f * j, 162.5f + 150.0f * i));// Mid = 400. 400 - 75, 325. 325 - 150 175.0f // 600 / 3, 200 - 37.5 = 162.5f
+			if (LevelBtn[i * 3 + j].GetID() > LevelSys.GetKey()) {
+				LevelBtn[i * 3 + j].SetStateColor(ButtonState::Idle, Color(255.0f, 0.0f, 0.0f, 10.0f));
+			}
+		}
+	}
+
+	LevelBtn[9].Set_Position(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() - LevelBtn[9].GetHeight() / 2.0f)));
+	LevelBtn[9].Set_Text("Exit");
+	LevelBtn[9].Set_Callback(MainMenu::SwitchToMainMenu);
+}
+
 void MainMenu::SwitchToLevelSelection(void)
 {
 	std::cout << "Level Key: " << LevelSys.GetKey() << std::endl;
 
 	for (size_t i = 0; i < LevelSys.GetKey(); ++i) {
-			LevelButtons[i].SetStateColor(ButtonState::Idle, Color(0, 255.0f, 0.0f, 10.0f));
-			LevelButtons[i].Set_Callback(LevelSystem::SetLevel);
+			LevelBtn[i].SetStateColor(ButtonState::Idle, Color(0, 255.0f, 0.0f, 10.0f));
+			LevelBtn[i].Set_Callback(LevelSystem::SetLevel);
 			std::string tmp{ "Level " + std::to_string(i + 1) };
-			LevelButtons[i].Set_Text(tmp.c_str());
+			LevelBtn[i].Set_Text(tmp.c_str());
 	}
-	GameStateUpdate = MainMenu::TestLevelSelectionUpdate;
-	GameStateDraw = MainMenu::TestLevelSelectionRender;
+	GameStateUpdate = LevelSelection::Update;
+	GameStateDraw = LevelSelection::Render;
+}
+
+void MainMenu::SwitchToSettings()
+{
+	GameStateUpdate = Settings::Update;
+	GameStateDraw = Settings::Render;
 }
 
 
@@ -247,26 +259,55 @@ void MainMenu::SwitchToMainMenu(void)
 	GameStateDraw = MainMenu::Render;
 }
 
-void MainMenu::TestLevelSelectionUpdate(void)
+void LevelSelection::Update(void)
 {
-	for (int i = 0; i < LevelButtons.size(); ++i) {
-		LevelButtons[i].Update();
+	for (int i = 0; i < LevelBtn.size(); ++i) {
+		LevelBtn[i].Update();
 	}
 
 	if (AEInputCheckReleased(AEVK_ESCAPE))
-		SwitchToMainMenu();
+		MainMenu::SwitchToMainMenu();
 }
 
 
-void MainMenu::TestLevelSelectionRender(void)
+void LevelSelection::Render(void)
 {
 	static Graphics::Text LevelSelection;
 	LevelSelection.SetText("Level Selection");
 	LevelSelection.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	LevelSelection.SetScale(1.0f);
 
-	for (int i = 0; i < LevelButtons.size(); ++i) {
-		LevelButtons[i].Render();
+	for (int i = 0; i < LevelBtn.size(); ++i) {
+		LevelBtn[i].Render();
 	}
 	LevelSelection.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() / 10)));
+}
+
+void Settings::Init()
+{
+	const size_t btnCount{ 2 };
+	for (size_t i = 0; i < btnCount; ++i) {
+		SettingsBtn.push_back(Button(ButtonType::Color, 200.0f, 50.0f, 0.7f));
+		SettingsBtn[i].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y - 50.0f + i * 150.0f));
+	}
+	SettingsBtn[0].Set_Text("Fullscreen");
+	SettingsBtn[0].Set_Callback(Utils::ToggleFullscreen);
+	SettingsBtn[1].Set_Text("Mute");
+	SettingsBtn[1].Set_Callback(AudioManager::MuteAll);
+}
+
+void Settings::Update()
+{
+	for (size_t i = 0; i < SettingsBtn.size(); ++i) {
+		SettingsBtn[i].Update();
+	}
+	if (AEInputCheckReleased(AEVK_ESCAPE))
+		MainMenu::SwitchToMainMenu();
+}
+
+void Settings::Render()
+{
+	for (size_t i = 0; i < SettingsBtn.size(); ++i) {
+		SettingsBtn[i].Render();
+	}
 }

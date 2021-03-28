@@ -1,13 +1,16 @@
 #include "AudioManager.h"
 #include <array>
 #include "Constants.h"
+#include <iostream>
 
 AudioManager Audio;
 std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest{ NULL };
 AudioData soundData[static_cast<int>(AudioID::Max)];
-
+static bool isMuteAll;
 // Default ctor.
-AudioData::AudioData() : ID{ AudioID::None }, channel{ nullptr }, volume{ 1.0f }, mute{ false } {}
+AudioData::AudioData() : ID{ AudioID::None }, channel{ nullptr }, volume{ 1.0f }, mute{ false } {
+	isMuteAll = false;
+}
 
 AudioManager::AudioManager() {
 	if (FMOD::System_Create(&m_pSystem) != FMOD_OK)
@@ -27,6 +30,9 @@ void AudioManager::createAudio(AudioClass* pSound, const char* pFile) {
 }
 
 void AudioManager::playAudio(AudioClass& Sound, AudioID ID, bool bLoop) {
+	if (isMuteAll)
+		return;
+
 	if (!bLoop) {
 		Sound->setMode(FMOD_LOOP_OFF);
 	}
@@ -62,5 +68,19 @@ void AudioManager::SetVolume(AudioID ID, float volume) {
 void AudioManager::SetMute(AudioID ID) {
 	soundData[static_cast<int>(ID)].mute = !(soundData[static_cast<int>(ID)].mute);
 	soundData[static_cast<int>(ID)].channel->setMute(soundData[static_cast<int>(ID)].mute);
+}
+
+void AudioManager::MuteAll()
+{
+	isMuteAll = !isMuteAll;
+	for (AudioID i = static_cast<AudioID>(0); i < AudioID::Max; ++i) {
+		Audio.SetMute(i);
+	}
+}
+
+AudioID& operator++(AudioID& rhs)
+{
+	rhs = static_cast<AudioID>((static_cast<int>(rhs) + 1));
+	return rhs;
 }
 
