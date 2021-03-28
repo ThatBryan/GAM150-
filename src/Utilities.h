@@ -18,7 +18,7 @@ namespace Utils
 	void CheckFullScreenKeyInput(void);// Set window to full screen with L ALT + Enter.
 	void ToggleFullscreen();
 	bool GetFullscreen();
-	void CheckPauseInput(void); 	// Press Tab to pause the game.
+	void TogglePause(void); 	// Press Tab to pause the game.
 	void CheckDebugMode(void);		// F1 to enter debug mode
 	void ReturnToMenu(void);
 	void RestartLevel(void);

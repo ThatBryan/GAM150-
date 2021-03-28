@@ -197,12 +197,12 @@ void Particles::Unload()
 	p.clear();
 }
 
-size_t Particles::GetCapacity()
+size_t Particles::GetContainerCapacity()
 {
 	return p.capacity();
 }
 
-size_t Particles::GetSize()
+size_t Particles::GetContainerSize()
 {
 	return p.size();
 }

@@ -30,8 +30,6 @@ void AudioManager::createAudio(AudioClass* pSound, const char* pFile) {
 }
 
 void AudioManager::playAudio(AudioClass& Sound, AudioID ID, bool bLoop) {
-	//if (globalMute)
-	//	return;
 
 	if (!bLoop) {
 		Sound->setMode(FMOD_LOOP_OFF);
@@ -74,7 +72,6 @@ void AudioManager::SetMute(AudioID ID) {
 void AudioManager::MuteAll()
 {
 	globalMute = !globalMute;
-	globalMute == 0 ? std::cout << "false\n" : std::cout << "true\n";
 	for (AudioID i = static_cast<AudioID>(0); i < AudioID::Max; ++i) {
 		Audio.SetMute(i);
 	}

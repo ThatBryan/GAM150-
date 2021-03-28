@@ -197,7 +197,6 @@ void Tiles::Render() {
 		image.Draw_Texture(255);
 		if (DebugMode)
 		{
-			//ColliderAABB.Draw();
 			collider.Draw();
 		}	
 	}

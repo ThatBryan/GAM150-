@@ -106,7 +106,7 @@ AEVec2 Utils::GetMousePos(void)
 	return AEVec2Set(static_cast<f32>(mouseX), static_cast<f32>(mouseY));
 }
 
-void Utils::CheckPauseInput(void)
+void Utils::TogglePause(void)
 {
 	paused = !paused;
 }
@@ -135,8 +135,6 @@ bool Utils::ColliderAABB(AEVec2 A, f32 A_width, f32 A_height, AEVec2 B, f32 B_wi
 		A.y - A_height / 2.0f > B.y + B_height / 2.0f ||
 		A.x - A_width / 2.0f > B.x + B_width / 2.0f ||
 		A.y + A_height / 2.0f < B.y - B_height / 2.0f) {
-		//printf("%.2f %.2f %.2f %.2f\n", A.x, A.y, A_width, A_height);
-		//printf("%.2f %.2f %.2f %.2f\n", B.x, B.y, B_width, B_height);
 		return false;
 	}
 
