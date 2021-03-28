@@ -238,7 +238,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 	{
 		if (!enemy[i].GetKilledStatus())
 		{
-			if (Utils::ColliderAABB(enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, playerBB.pos, playerBB.width, playerBB.height))
+			if (Utils::ColliderAABB(enemy[i].collider.sprite.pos, enemy[i].collider.sprite.width, enemy[i].collider.sprite.height, playerBB.pos, playerBB.width, playerBB.height))
 			{
 				if (Utils::ColliderAABB(enemy[i].collider.top.pos, enemy[i].collider.top.width, enemy[i].collider.top.height, collider.bottom.pos, collider.bottom.width, collider.bottom.height)) {
 					if (!DebugMode) {

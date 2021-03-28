@@ -15,22 +15,21 @@ int Enemies::jump_counter = 5;
 
 static AEGfxTexture* enemyTex[static_cast<int>(EnemyType::Max)]{ nullptr };
 
-Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), 
+Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), collider(), 
 spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, counter{ 0 }, jumpcounter{ 5 }, squirrelJump { false },
 velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }, alphaTimer{ 1.0f }, stepGravityMultiplier{ base_gravityMultiplier }{
 	ID = EnemyCount;
 	EnemyCount++;
-	enemyBB.color.Set(Color{ 0, 0, 0, 100.0f });
+	collider.sprite.color.Set(Color{ 0, 0, 0, 100.0f });
 }
 
 void Enemies::Update_Position(void)
 {
 	f32 maxX{ static_cast<f32>(AEGetWindowWidth()) };
 
-
 	if (active && !killed) {
 
-	enemyBB.pos = sprite.pos;
+	collider.sprite.pos = sprite.pos;
 	collider.top.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0f);
 	collider.bottom.pos = AEVec2Set(sprite.pos.x, sprite.pos.y + sprite.height / 2.0f);
 	collider.right.pos = AEVec2Set(sprite.pos.x + abs(sprite.width) / 2.0f - collider.right.width / 2.0f, sprite.pos.y);
@@ -68,9 +67,6 @@ void Enemies::Bat_Movement(f32 maxX)
 	sprite.pos.x += velocity * g_dt;
 	sprite.pos.y = spawnPos.y + 10.0f * sinf(static_cast<f32>(sprite.pos.x) * 2.0f * PI / 180.0f); // y = amplitude * sin(x * period * pi / 180)
 
-	//enemyBB.pos = sprite.pos;
-	//collider.top.pos = sprite.pos;
-	//collider.top.pos.y = sprite.pos.y - (sprite.height / 2.0f) + (collider.top.height / 2.0f);
 	counter -= g_dt;
 
 	if (counter < 0.0f || sprite.pos.x + sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
@@ -154,7 +150,6 @@ void Enemies::Draw()
 		sprite.Draw_Texture(alpha);
 		if (DebugMode) {
 			collider.Draw();
-			enemyBB.Draw();
 		}
 	}
 }
@@ -189,13 +184,12 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 	Enemy.sprite.pos = pos;
 	Enemy.type = type;
 	Enemy.spawnPos = pos;
-	Enemy.enemyBB.height = bbHeight;
-	Enemy.enemyBB.width = width;
 	Enemy.counter = counter;
 	Enemy.velocity = vel;
 	Enemy.jumpcounter = jumpcounter;
 	Enemy.jumpvelocity = jumpvel;
 
+	Enemy.collider.SetWidthHeight(Enemy.collider.sprite, width, bbHeight);
 	Enemy.collider.SetWidthHeight(Enemy.collider.top, Enemy.sprite.width, 5.0f);
 	Enemy.collider.SetWidthHeight(Enemy.collider.left, 20.0f, Enemy.sprite.height * 0.7f);
 	Enemy.collider.SetWidthHeight(Enemy.collider.right, 20.0f, Enemy.sprite.height * 0.7f);

@@ -92,7 +92,7 @@ void MainMenu::Render() {
 	
 	player[0].sprite.Draw_Texture(255.0f);
 
-	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - AEGetWindowHeight() / 4));
+	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - AEGetWindowHeight() / 3));
 	Particles::Render();
 }
 
@@ -126,7 +126,7 @@ void MainMenu::Unload(void)
 }
 
 void MainMenu::StartGame(void) {
-	Level = 1;
+	Level = LevelSys.GetKey();
 	gamestateNext = GS_TEST;
 }
 void MainMenu::QuitGame(void) {
@@ -134,25 +134,34 @@ void MainMenu::QuitGame(void) {
 }
 
 void MainMenu::Buttons_Init() {
-	for (int i = 0; i < 4; ++i) {
-		buttons.push_back(Button(ButtonType::Color, 200.0f, 50.0f, 0.7f));
+	
+	const float BtnWidth{ 200.0f }, BtnHeight{ 50.0f };
+	for (int i = 0; i < 6; ++i) {
+		buttons.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));
+		if(i % 2 == 0)
+			buttons[i].Set_Position(AEVec2Set(ScreenMid.x - BtnWidth, ScreenMid.y / 1.3f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
+		else
+			buttons[i].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth, ScreenMid.y / 1.3f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
+
 	}
-	buttons[0].Set_Position(AEVec2Set(ScreenMid.x - buttons[0].GetWidth(), ScreenMid.y - buttons[0].GetHeight()));
-	buttons[0].Set_Text("Start");
+
+	LevelSys.GetKey() == 1 ? buttons[0].Set_Text("Start") : buttons[0].Set_Text("Continue");
 	buttons[0].Set_Callback(StartGame);
 
-	buttons[1].Set_Position(AEVec2Set(ScreenMid.x - buttons[1].GetWidth(), ScreenMid.y + buttons[1].GetHeight()));
-	buttons[1].Set_Text("Quit");
-	buttons[1].Set_Callback(QuitGame);
+	buttons[1].Set_Text("Credits");
+	buttons[1].Set_Callback(placeholder);
 
-
-	buttons[2].Set_Position(AEVec2Set(ScreenMid.x + buttons[2].GetWidth(), ScreenMid.y - buttons[2].GetHeight()));
 	buttons[2].Set_Text("Level selection");
 	buttons[2].Set_Callback(MainMenu::SwitchToLevelSelection);
 
-	buttons[3].Set_Position(AEVec2Set(ScreenMid.x + buttons[3].GetWidth(), ScreenMid.y + buttons[3].GetHeight()));
 	buttons[3].Set_Text("Leaderboards");
 	buttons[3].Set_Callback(placeholder);
+
+	buttons[4].Set_Text("Settings");
+	buttons[4].Set_Callback(placeholder);
+
+	buttons[5].Set_Text("Quit");
+	buttons[5].Set_Callback(QuitGame);
 
 	for (unsigned short i = 0; i < 10; ++i) {
 		LevelButtons.push_back(Button(ButtonType::Color, 150.0, 75.0f, 0.5f));
@@ -162,7 +171,6 @@ void MainMenu::Buttons_Init() {
 		LevelButtons[i].Set_Text("Locked");
 
 	}
-
 	for (size_t i = 0; i < 3; ++i) {
 		for (size_t j = 0; j < 3; ++j) {
 			LevelButtons[(i *3) + j].Set_Position(AEVec2Set(175.0f + 225.0f * j, 162.5f + 150.0f * i));// Mid = 400. 400 - 75, 325. 325 - 150 175.0f // 600 / 3, 200 - 37.5 = 162.5f

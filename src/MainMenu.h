@@ -14,6 +14,7 @@ namespace MainMenu
 	void Unload(void);
 	void Render(void);
 
+	// Continue from max unlocked level.
 	void StartGame();
 	void QuitGame();
 	inline void placeholder(void) { std::cout << "Feature comming soon!" << std::endl; };
