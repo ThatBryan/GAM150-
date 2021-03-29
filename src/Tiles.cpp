@@ -393,15 +393,16 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 			}		
 
 			
-			if (enemy.type == EnemyType::Squirrel)
-			{
-				if (Utils::ColliderAABB(enemy.collider.bottom.pos, enemy.collider.bottom.width, enemy.collider.bottom.height,
-					TheTile.collider.top.pos, TheTile.collider.top.width, TheTile.collider.top.height)) {
+			if (Utils::ColliderAABB(enemy.collider.bottom.pos, enemy.collider.bottom.width, enemy.collider.bottom.height,
+				TheTile.collider.top.pos, TheTile.collider.top.width, TheTile.collider.top.height)) {
+
+				if (enemy.type == EnemyType::Squirrel)
 					enemy.squirrelJump = true;
-					//if (DebugMode)
-						//printf("top");
-				}
-			}
+				else
+					enemy.sprite.pos.y = TheTile.collider.top.pos.y - TheTile.collider.top.height / 2.0f - enemy.sprite.height / 2.0f;// +2.0f;
+				//if (DebugMode)
+					//printf("top");
+		}
 
 			
 		}
