@@ -87,8 +87,6 @@ void MapInit(void)
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::DIALOGUE))
 			{
 				Tiles::AddTile(tilemap, TileType::Dialogue, grid_width, grid_height, AEVec2Set(j * grid_width, i * grid_height));
-				//tilemap[count].ID = count;
-				//count++;
 			}
 		}
 	}

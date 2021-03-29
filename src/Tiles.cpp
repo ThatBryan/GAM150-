@@ -260,9 +260,9 @@ void Tiles::Unload()
 		AEGfxTextureUnload(tileTex[i]);
 	}
 
-	/*for (size_t i = 1; i < Images.size(); ++i) {
+	for (size_t i = 0; i < Images.size(); ++i) {
 		Images[i].Free();
-	}*/
+	}
 }
 TileType& operator++(TileType& rhs) {
 	rhs = static_cast<TileType>((static_cast<int>(rhs) + 1));
@@ -352,8 +352,8 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 				{
 					CreateDialogue(TileManager[i]->at(j).ID, TheTile.collider.sprite.pos);
 
-		
-					printf("%i", TileManager[i]->at(j).ID);
+					if(DebugMode)
+						printf("%i\n", TileManager[i]->at(j).ID);
 				}
 			}
 		}
@@ -438,20 +438,17 @@ void Tiles::CreateDialogue(int count, AEVec2 tilePos)
 	{
 		case 0:
 			Images[Guide1].Draw_Texture({tilePos.x -100.0f, tilePos.y - 60.0f}, 255.0f);
-			//printf("1");
 			break;
 		case 2:
 			Images[Guide4].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 60.0f }, 255.0f);
 		case 1:
 			Images[Guide2].Draw_Texture({ tilePos.x + 100.0f, tilePos.y - 60.0f }, 255.0f);
-			//printf("2");
 			break;
 		case 3:
 			Images[Guide5].Draw_Texture({ tilePos.x + 100.0f, tilePos.y - 60.0f }, 255.0f);
 			break;
 		case 4:
 			Images[Guide3].Draw_Texture({ tilePos.x + 50.0f, tilePos.y - 80.0f }, 255.0f);
-			//printf("3");
 			break;
 
 	}
