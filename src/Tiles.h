@@ -27,7 +27,6 @@ private:
 	f64 collapseDelay;
 	bool active, isCollapsing;
 
-
 	void DecreaseLifespan(void);
 	void Collapse(const Player& player);
 	void CheckPos(void);
@@ -51,9 +50,9 @@ public:
 	// Resets the level.
 	static void Reset(std::vector <Tiles>& tiles);
 	static void CollapsingManager(TileMgr TileManager);
+	static void CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy);
 	static void CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer);
 	static void CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer);
-	static void CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy);
 	static void CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy);
 
 	// Add single tile to a given vector.

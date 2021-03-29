@@ -22,9 +22,8 @@ float Player::gravityStrength = 20.0f;
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{ false },
 active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel },
 hp(), direction{ MovementState::Right }, chargedjumpvel{ player_chargedjumpvel }, gravityMultiplier{ base_gravityMultiplier }, 
-chargedjump_counter{ player_chargedjump_counter }
+chargedjump_counter{ player_chargedjump_counter }, collider()
 {
-	playerBB.color.Set(Color{ 0, 0, 0, 255.0f });
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
 	hp.max = player_hp_max;
@@ -33,9 +32,8 @@ chargedjump_counter{ player_chargedjump_counter }
 
 Player::Player() : lose{ false }, active{ true }, gravity{ false }, jump{ false }, chargedjump{ false },
 win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel }, chargedjumpvel{ player_chargedjumpvel },
-hp(), direction{ MovementState::Right }, gravityMultiplier{ base_gravityMultiplier }, chargedjump_counter{player_chargedjump_counter }{
-
-	playerBB.color.Set(Color{ 0, 0, 0, 255.0f });
+hp(), direction{ MovementState::Right }, gravityMultiplier{ base_gravityMultiplier }, chargedjump_counter{player_chargedjump_counter }
+, collider(){
 
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
@@ -113,8 +111,6 @@ void Player::Update_Position(void)
 		chargedjump_counter -= g_dt;
 		AEVec2 Min = AEVec2Sub(collider.bottom.pos, AEVec2{ sprite.width, 25.0f});
 		AEVec2 Max = AEVec2Add(collider.bottom.pos, AEVec2{ sprite.width, 25.0f});
-		//std::cout << "\nMin.x: " << Min.x << "Min.y: " << Min.y << std::endl;
-		//std::cout << "Max.x: " << Max.x << "Max.y: " << Max.y << std::endl;
 		AEVec2 Destination = AEVec2Add(sprite.pos, AEVec2{ 0, sprite.height / 2.0f });
 		Particles::CreateReverseParticles(Destination, Min, Max, Color{ 255.0f, 255.0f, 0, 255.0f}, 1, Utils::RandomRangeFloat(10.0f, 100.0f), 50.0f, 2.5f, 1.0f);
 		//std::cout << Particles::GetContainerSize() << std::endl;
@@ -188,7 +184,7 @@ void Player::Update_Position(void)
 			}
 		}
 	}
-	playerBB.pos = sprite.pos;
+	collider.sprite.pos = sprite.pos;
 	if (direction == MovementState::Left) {
 		collider.bottom.pos = AEVec2Set(sprite.pos.x - player_collider_offset_x, sprite.pos.y + +sprite.height / 2.0f - collider.bottom.height / 2.0f);
 	}
@@ -238,9 +234,11 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 	{
 		if (!enemy[i].GetKilledStatus())
 		{
-			if (Utils::ColliderAABB(enemy[i].collider.sprite.pos, enemy[i].collider.sprite.width, enemy[i].collider.sprite.height, playerBB.pos, playerBB.width, playerBB.height))
+			if (Utils::ColliderAABB(enemy[i].collider.sprite.pos, enemy[i].collider.sprite.width, enemy[i].collider.sprite.height, 
+				collider.sprite.pos, collider.sprite.width, collider.sprite.height))
 			{
-				if (Utils::ColliderAABB(enemy[i].collider.top.pos, enemy[i].collider.top.width, enemy[i].collider.top.height, collider.bottom.pos, collider.bottom.width, collider.bottom.height)) {
+				if (Utils::ColliderAABB(enemy[i].collider.top.pos, enemy[i].collider.top.width, enemy[i].collider.top.height, 
+					collider.bottom.pos, collider.bottom.width, collider.bottom.height)) {
 					if (!DebugMode) {
 						jump = true;
 						jumpvel += player_jumpvel / 2.0f;
@@ -269,9 +267,8 @@ void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, con
 	player.sprite.Init(FP::PlayerSprite, width, height, pos);
 	player.startingPos = pos;
 	player.sprite.pos = pos;
-	player.playerBB.width = width;
-	player.playerBB.height = height;
 
+	player.collider.SetWidthHeight(player.collider.sprite, width, height);
 	player.collider.SetWidthHeight(player.collider.top, player_width - 4.0f, 5.0f);
 	player.collider.SetWidthHeight(player.collider.left, 20.0f, player_height - 10.0f);
 	player.collider.SetWidthHeight(player.collider.right, 20.0f, player_height - 10.0f);
@@ -284,8 +281,8 @@ void Player::CreateDialogue(Player& player, const AEVec2 pos, const f32 width, c
 	player.sprite.Init(FP::PlayerSprite, width, height, pos);
 	player.startingPos = pos;
 	player.sprite.pos = pos;
-	player.playerBB.width = width;
-	player.playerBB.height = height;
+	//player.playerBB.width = width;
+	//player.playerBB.height = height;
 
 	player.collider.SetWidthHeight(player.collider.top, player_width - 4.0f, 5.0f);
 	player.collider.SetWidthHeight(player.collider.left, 20.0f, player_height - 10.0f);
