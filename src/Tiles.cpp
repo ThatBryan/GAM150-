@@ -7,7 +7,6 @@
 #include <array>
 #include "Utilities.h"
 
-static int count = 0;
 static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
 
@@ -152,7 +151,7 @@ void Tiles::AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, co
 
 	if (Tile.type == TileType::Dialogue)
 	{
-		Tile.ID = count++;
+		Tile.ID = DialogueID++;
 	}
 	Tile.image.pos = AEVec2Set(pos.x + Tile.image.width / 2.0f, pos.y + height / 2.0f - Height / 2.0f);
 	Tile.spawnPos = Tile.image.pos;
@@ -350,7 +349,6 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 						ThePlayer.collider.left.pos, ThePlayer.collider.left.width, ThePlayer.collider.left.height))
 				{
 					CreateDialogue(TileManager[i]->at(j).ID, TheTile.collider.sprite.pos);
-
 					if(DebugMode)
 						printf("%i\n", TileManager[i]->at(j).ID);
 				}
@@ -433,7 +431,6 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 
 void Tiles::CreateDialogue(short count, AEVec2 tilePos)
 {
-	std::cout << "count: " << count << std::endl;
 	switch (count)
 	{
 		case 0:

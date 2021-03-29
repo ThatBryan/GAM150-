@@ -25,10 +25,9 @@ extern AudioData soundData[static_cast<int>(AudioID::Max)];
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
 extern AEVec2 EnemySizeArray[static_cast<int>(EnemySizes::MAX)];
 
-static int count = 0;
-
 void MapInit(void)
 {
+	DialogueID = 0;
 	float Offset = 35.0f;
 	f32 grid_height{ static_cast<f32>(AEGetWindowHeight() / Map_Height) }, grid_width{ static_cast<f32>(AEGetWindowWidth() / Map_Width) };
 	for (int i = 0; i < Map_Height; ++i)
@@ -102,7 +101,6 @@ void MapUpdate()
 	if (AEInputCheckReleased(AEVK_R))
 	{
 		gamestateNext = GS_RESTART;
-		count = 0;
 	}
 	UpdateManager();
 	Audio.update();

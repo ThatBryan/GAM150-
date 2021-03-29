@@ -52,6 +52,7 @@ const float TileCollapseDelay = 0.5f;
 const float TileCollapseSpeed = 250.0f;
 const float tile_aabb_rect_offset_x = 5.0f;
 const float tile_aabb_rect_offset_y = 1.0f;
+unsigned short DialogueID = 0;
 
 // Enemy stuff
 short EnemyCount = 1;

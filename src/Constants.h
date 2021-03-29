@@ -63,6 +63,7 @@ extern const float TileCollapseDelay;
 extern const float TileCollapseSpeed;
 extern const float tile_aabb_rect_offset_x;
 extern const float tile_aabb_rect_offset_y;
+extern unsigned short DialogueID;
 // Enemy stuff
 extern short EnemyCount;
 
