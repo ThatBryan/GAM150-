@@ -4,6 +4,12 @@
 
 namespace FilePaths {
 	// Art
+	extern const char* Guide1;
+	extern const char* Guide2;
+	extern const char* Guide3;
+	extern const char* Guide4;
+	extern const char* Guide5;
+
 	extern const char* DigipenLogoRed;
 	extern const char* DigipenLogoWhite;
 	extern const char* PauseOverlay;

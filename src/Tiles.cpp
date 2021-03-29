@@ -2,13 +2,21 @@
 #include <iostream>
 #include "Player.h"
 #include "Enemy.h"
+#include "Constants.h"
+#include "Image.h"
+#include <array>
 #include "Utilities.h"
 
+static int count = 0;
 static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
+
+enum Images { Guide1 = 0, Guide2, Guide3, Guide4, Guide5, MAX_IMAGE };
+static std::array <Image, MAX_IMAGE> Images;
+
 Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
-active{ true }, isCollapsing{ false }, ID{ 0 }, collapseDelay{ TileCollapseDelay }, type{ TileType::Safe }, spawnPos{ 0, 0 },
-collider() /*ColliderAABB{ width, height }*/
+active{ true }, isCollapsing{ false }, collapseDelay{ TileCollapseDelay }, type{ TileType::Safe }, spawnPos{ 0, 0 },
+collider(), ID{ 0 } /*ColliderAABB{ width, height }*/
 {
 	//ColliderAABB.color.Set(Color{ 150, 0, 0, 150 });
 	collider.SetWidthHeight(collider.sprite, width, height);
@@ -146,6 +154,11 @@ void Tiles::AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, co
 		Tile.collider.SetHeight(Tile.collider.left, GrassOffset);
 		Tile.collider.SetHeight(Tile.collider.right, GrassOffset);
 	}
+
+	if (Tile.type == TileType::Dialogue)
+	{
+		Tile.ID = count++;
+	}
 	Tile.image.pos = AEVec2Set(pos.x + Tile.image.width / 2.0f, pos.y + height / 2.0f - Height / 2.0f);
 	Tile.spawnPos = Tile.image.pos;
 }
@@ -238,6 +251,12 @@ void Tiles::LoadTex() {
 		}
 		tileTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex);
 		AE_ASSERT_MESG(pTex, "Failed to create texture!");
+
+		Images[Guide1].Init(FP::Guide1, 150.0f, 150.0f, { 0.0f, 0.0f });
+		Images[Guide2].Init(FP::Guide2, 150.0f, 150.0f, { 0.0f, 0.0f });
+		Images[Guide3].Init(FP::Guide3, 150.0f, 150.0f, { 0.0f, 0.0f });
+		Images[Guide4].Init(FP::Guide4, 150.0f, 150.0f, { 0.0f, 0.0f });
+		Images[Guide5].Init(FP::Guide5, 150.0f, 150.0f, { 0.0f, 0.0f });
 	}
 }
 void Tiles::Unload()
@@ -245,6 +264,10 @@ void Tiles::Unload()
 	for (size_t i = 0; i < static_cast<int>(TileType::Max); i++){
 		AEGfxTextureUnload(tileTex[i]);
 	}
+
+	/*for (size_t i = 1; i < Images.size(); ++i) {
+		Images[i].Free();
+	}*/
 }
 TileType& operator++(TileType& rhs) {
 	rhs = static_cast<TileType>((static_cast<int>(rhs) + 1));
@@ -332,8 +355,10 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 					Utils::ColliderAABB(TheTile.collider.sprite.pos, TheTile.collider.sprite.width, TheTile.collider.sprite.height,
 						ThePlayer.collider.left.pos, ThePlayer.collider.left.width, ThePlayer.collider.left.height))
 				{
-					//CreateDialogue()
-					//printf("%i", TileManager[i]->at(j).ID);
+					CreateDialogue(TileManager[i]->at(j).ID, TheTile.collider.sprite.pos);
+
+		
+					printf("%i", TileManager[i]->at(j).ID);
 				}
 			}
 			
@@ -408,7 +433,27 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 	}
 }
 
-//void Tiles::CreateDialogue(void)
-//{
-//
-//}
+void Tiles::CreateDialogue(int count, AEVec2 tilePos)
+{
+	switch (count)
+	{
+		case 0:
+			Images[Guide1].Draw_Texture({tilePos.x -100.0f, tilePos.y - 60.0f}, 255.0f);
+			//printf("1");
+			break;
+		case 2:
+			Images[Guide4].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 60.0f }, 255.0f);
+		case 1:
+			Images[Guide2].Draw_Texture({ tilePos.x + 100.0f, tilePos.y - 60.0f }, 255.0f);
+			//printf("2");
+			break;
+		case 3:
+			Images[Guide5].Draw_Texture({ tilePos.x + 100.0f, tilePos.y - 60.0f }, 255.0f);
+			break;
+		case 4:
+			Images[Guide3].Draw_Texture({ tilePos.x + 50.0f, tilePos.y - 80.0f }, 255.0f);
+			//printf("3");
+			break;
+
+	}
+}

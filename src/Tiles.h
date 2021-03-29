@@ -17,13 +17,13 @@ class Tiles
 {
 public:
 	// Reference to a vector, containing a vector of Tiles*
+	short ID;
 
 	using TileMgr = std::vector<std::vector<Tiles>*>&;
 private:
 	//Graphics::Rect ColliderAABB;
 	Collider collider;
 	TileType type;
-	short ID;
 	f64 collapseDelay;
 	bool active, isCollapsing;
 
@@ -67,4 +67,6 @@ public:
 
 	//// Add whole new row of tile. Only for main menu.
 	static void AddTileRow(std::vector < Tiles>& tile, TileType type, const int count, const f32 width, const f32 height, const AEVec2 pos);
+
+	static void CreateDialogue(int count, AEVec2 tilePos);
 };

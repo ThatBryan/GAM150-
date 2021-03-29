@@ -25,6 +25,8 @@ extern AudioData soundData[static_cast<int>(AudioID::Max)];
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
 extern AEVec2 EnemySizeArray[static_cast<int>(EnemySizes::MAX)];
 
+static int count = 0;
+
 void MapInit(void)
 {
 	float Offset = 35.0f;
@@ -85,6 +87,8 @@ void MapInit(void)
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::DIALOGUE))
 			{
 				Tiles::AddTile(tilemap, TileType::Dialogue, grid_width, grid_height, AEVec2Set(j * grid_width, i * grid_height));
+				//tilemap[count].ID = count;
+				//count++;
 			}
 		}
 	}
@@ -100,6 +104,7 @@ void MapUpdate()
 	if (AEInputCheckReleased(AEVK_R))
 	{
 		gamestateNext = GS_RESTART;
+		count = 0;
 	}
 	UpdateManager();
 	Audio.update();
@@ -113,6 +118,8 @@ void MapRender()
 	{
 		tilemap[i].Render();
 	}
+
+	Tiles::CheckPlayerCollision(tileManager, Jumperman);
 	Jumperman.Render();
 	for (size_t j = 0; j < enemies.size(); ++j)
 	{
@@ -120,8 +127,8 @@ void MapRender()
 	}
 	Overlay::Render(Jumperman);
 	UI::Draw();
-	UI::Update();
 	Particles::Render();
+	UI::Update();
 }
 
 void MapLoad()
@@ -220,10 +227,11 @@ void UpdateManager()
 {
 	if (!paused && !Jumperman.GetLoseStatus() && !Jumperman.GetWinStatus()) {
 		Jumperman.Update();
-		Tiles::UpdateManager(tilemap, Jumperman, enemies);
+		
 		Tiles::CollapsingManager(tileManager);
 		Tiles::CheckPlayerGravity(tileManager, Jumperman);
-		Tiles::CheckPlayerCollision(tileManager, Jumperman);
+		Tiles::UpdateManager(tilemap, Jumperman, enemies);
+
 		Jumperman.GravityManager();
 		for (size_t i = 0; i < enemies.size(); i++)
 		{

@@ -278,18 +278,3 @@ void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, con
 	player.collider.SetWidthHeight(player.collider.bottom, player_width / 2.0f, 5.0f);
 	player.collider.SetMeshes();
 }
-
-void Player::CreateDialogue(Player& player, const AEVec2 pos, const f32 width, const f32 height)
-{
-	player.sprite.Init(FP::PlayerSprite, width, height, pos);
-	player.startingPos = pos;
-	player.sprite.pos = pos;
-	player.playerBB.width = width;
-	player.playerBB.height = height;
-
-	player.collider.SetWidthHeight(player.collider.top, player_width - 4.0f, 5.0f);
-	player.collider.SetWidthHeight(player.collider.left, 20.0f, player_height - 10.0f);
-	player.collider.SetWidthHeight(player.collider.right, 20.0f, player_height - 10.0f);
-	player.collider.SetWidthHeight(player.collider.bottom, player_width / 2.0f, 5.0f);
-	player.collider.SetMeshes();
-}
