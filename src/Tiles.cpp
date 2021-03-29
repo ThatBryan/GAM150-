@@ -433,6 +433,7 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 
 void Tiles::CreateDialogue(short count, AEVec2 tilePos)
 {
+	std::cout << "count: " << count << std::endl;
 	switch (count)
 	{
 		case 0:
@@ -440,6 +441,7 @@ void Tiles::CreateDialogue(short count, AEVec2 tilePos)
 			break;
 		case 2:
 			Images[Guide4].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 60.0f }, 255.0f);
+			break;
 		case 1:
 			Images[Guide2].Draw_Texture({ tilePos.x + 100.0f, tilePos.y - 60.0f }, 255.0f);
 			break;
