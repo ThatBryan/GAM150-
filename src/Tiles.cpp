@@ -246,11 +246,11 @@ void Tiles::LoadTex() {
 		tileTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex);
 		AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	}
-	Images[Guide1].Init(FP::Guide1, 150.0f, 150.0f, { 0.0f, 0.0f });
-	Images[Guide2].Init(FP::Guide2, 150.0f, 150.0f, { 0.0f, 0.0f });
-	Images[Guide3].Init(FP::Guide3, 150.0f, 150.0f, { 0.0f, 0.0f });
-	Images[Guide4].Init(FP::Guide4, 150.0f, 150.0f, { 0.0f, 0.0f });
-	Images[Guide5].Init(FP::Guide5, 150.0f, 150.0f, { 0.0f, 0.0f });
+	Images[Guide1].Init(FP::Guide1, 200.0f, 150.0f, { 0.0f, 0.0f });
+	Images[Guide2].Init(FP::Guide2, 200.0f, 150.0f, { 0.0f, 0.0f });
+	Images[Guide3].Init(FP::Guide3, 200.0f, 150.0f, { 0.0f, 0.0f });
+	Images[Guide4].Init(FP::Guide4, 200.0f, 100.0f, { 0.0f, 0.0f });
+	Images[Guide5].Init(FP::Guide5, 200.0f, 150.0f, { 0.0f, 0.0f });
 }
 void Tiles::Unload()
 {
@@ -384,10 +384,9 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 	for (size_t i = 0; i < TileManager.size(); ++i) {
 		for (size_t j = 0; j < TileManager[i]->size(); ++j) {
 
-			if (TileManager[i]->at(j).GetActive() == false)
-				continue;
-
 			Tiles& TheTile = TileManager[i]->at(j);
+			if (TheTile.GetActive() == false || TheTile.isCollapsing == true)
+				continue;
 
 			if (Utils::ColliderAABB(enemy.collider.right.pos, enemy.collider.right.width, enemy.collider.right.height,
 				TheTile.collider.left.pos, TheTile.collider.left.width, TheTile.collider.left.height)){ // && enemy.isGravity
@@ -423,8 +422,6 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 				//if (DebugMode)
 					//printf("top");
 		}
-
-			
 		}
 	}
 }
@@ -434,7 +431,7 @@ void Tiles::CreateDialogue(short count, AEVec2 tilePos)
 	switch (count)
 	{
 		case 0:
-			Images[Guide1].Draw_Texture({tilePos.x -100.0f, tilePos.y - 60.0f}, 255.0f);
+			Images[Guide1].Draw_Texture({tilePos.x -150.0f, tilePos.y - 60.0f}, 255.0f);
 			break;
 		case 2:
 			Images[Guide4].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 60.0f }, 255.0f);
@@ -443,7 +440,7 @@ void Tiles::CreateDialogue(short count, AEVec2 tilePos)
 			Images[Guide2].Draw_Texture({ tilePos.x + 100.0f, tilePos.y - 60.0f }, 255.0f);
 			break;
 		case 3:
-			Images[Guide5].Draw_Texture({ tilePos.x + 100.0f, tilePos.y - 60.0f }, 255.0f);
+			Images[Guide5].Draw_Texture({ tilePos.x + 70.0f, tilePos.y - 60.0f }, 255.0f);
 			break;
 		case 4:
 			Images[Guide3].Draw_Texture({ tilePos.x + 50.0f, tilePos.y - 80.0f }, 255.0f);
