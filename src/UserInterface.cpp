@@ -86,7 +86,7 @@ void UI::PausedInit()
 {
 	ScreenMid = Utils::GetScreenMiddle();
 
-	const size_t btnCount{5};
+	const size_t btnCount{6};
 	const float BtnHeight{ 50.0f }, BtnWidth{ 150.0f };
 	static const float WindHeight{ static_cast<float>(AEGetWindowHeight()) };
 	for (size_t i = 0; i < btnCount; ++i) {
@@ -103,15 +103,20 @@ void UI::PausedInit()
 	PausedBtn[3].Set_Callback(Utils::ReturnToMenu);
 
 	PausedBtn[4].Set_Text("Quit Game");
-	PausedBtn[4].Set_Position(AEVec2Set(ScreenMid.x, WindHeight - BtnHeight / 2.0f));
 	PausedBtn[4].Set_Callback(Utils::ToggleQuitUI);
 
-	const float PosY{ PausedBtn[4].GetPosY() };
-	std::cout << "PosY: " << PosY << std::endl;
-	for (size_t i = 0; i < btnCount - 1; ++i) {
+	PausedBtn[5].Set_Text("Restart Level");
+	PausedBtn[5].Set_Callback(Utils::RestartLevel);
+
+
+	const float PosY{ WindHeight - BtnHeight / 2.0f };
+
+	for (size_t i = 0; i < btnCount - 2; ++i) {
 		PausedBtn[i].Set_Position(AEVec2Set(BtnWidth / 4.0f + BtnWidth / 2.0f + BtnWidth * i * 1.3f, PosY - BtnHeight * 1.2f ));
 	}
 
+	PausedBtn[4].Set_Position(AEVec2Set(PausedBtn[2].GetPosX(), PosY));
+	PausedBtn[5].Set_Position(AEVec2Set(PausedBtn[1].GetPosX(), PosY));
 }
 
 void UI::PausedUpdate()
@@ -154,11 +159,11 @@ void UI::QuitInit()
 	}
 	QuitBtn[0].Set_Text("Cancel");
 	QuitBtn[0].Set_Callback(Utils::ToggleQuitUI);
-	QuitBtn[0].Set_Position(AEVec2Set(ScreenMid.x - BtnWidth, 300.0f));
+	QuitBtn[0].Set_Position(AEVec2Set(ScreenMid.x - BtnWidth, ScreenMid.y + 50.0f));
 
 	QuitBtn[1].Set_Text("Quit");
 	QuitBtn[1].Set_Callback(Utils::ExitGame);
-	QuitBtn[1].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth, 300.0f));
+	QuitBtn[1].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth, ScreenMid.y + 50.0f));
 
 	QuitText.SetText("Do you want to exit?");
 	QuitText.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
@@ -177,14 +182,13 @@ void UI::QuitRender()
 	for (size_t i = 0; i < QuitBtn.size(); ++i) {
 		QuitBtn[i].Render();
 	}
-	QuitText.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - 100.0f));
+	QuitText.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - 50.0f));
 }
 
 void UI::QuitUnload()
 {
 	QuitBtn.clear();
 }
-
 
 void UI::Unload()
 {

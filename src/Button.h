@@ -30,6 +30,7 @@ public:
 	inline void SetID(unsigned short x) { ID = x; }
 	inline int GetID() const { return ID; }
 	inline float GetPosY() const { return button.pos.y; }
+	inline float GetPosX() const { return button.pos.x; }
 private:
 	Graphics::Rect button;
 	Graphics::Text text;
