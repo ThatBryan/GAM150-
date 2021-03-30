@@ -29,12 +29,13 @@ public:
 	inline float GetWidth() const { return button.width; }
 	inline void SetID(unsigned short x) { ID = x; }
 	inline int GetID() const { return ID; }
+	inline float GetPosY() const { return button.pos.y; }
 private:
 	Graphics::Rect button;
 	Graphics::Text text;
 	ButtonType type;
 	AEGfxTexture* pTex;
-	AEVec2 pos;
+	AEVec2 pos; // maybe unnecessary
 	fn_ptr callback;
 	Test_Ptr TestCallback;
 	Color buttonState[static_cast<int>(ButtonState::MaxColor)];

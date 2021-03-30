@@ -20,6 +20,8 @@ Graphics::Text LevelDisplay(strBuffer1, 0.5f);
 Graphics::Text TimerDisplay(strBuffer2, 0.5f);
 
 static std::vector <Button> PausedBtn;
+static std::vector <Button> QuitBtn;
+static Graphics::Text QuitText;
 static AEVec2 ScreenMid;
 extern Player Jumperman;
 Image lives;
@@ -27,6 +29,7 @@ Image lives;
 void UI::Init() {
 
 	UI::PausedInit();
+	UI::QuitInit();
 
 	FPS_Display.color.Set(Color{ 0, 0, 0, 255 });
 	LevelDisplay.color.Set(Color{0, 0, 0, 255});
@@ -81,8 +84,11 @@ void UI::DisplayLife(short livesCount) {
 
 void UI::PausedInit()
 {
-	const size_t btnCount{4};
+	ScreenMid = Utils::GetScreenMiddle();
+
+	const size_t btnCount{5};
 	const float BtnHeight{ 50.0f }, BtnWidth{ 150.0f };
+	static const float WindHeight{ static_cast<float>(AEGetWindowHeight()) };
 	for (size_t i = 0; i < btnCount; ++i) {
 		PausedBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.45f));
 	}
@@ -96,28 +102,42 @@ void UI::PausedInit()
 	PausedBtn[3].Set_Text("Exit to Main Menu");
 	PausedBtn[3].Set_Callback(Utils::ReturnToMenu);
 
+	PausedBtn[4].Set_Text("Quit Game");
+	PausedBtn[4].Set_Position(AEVec2Set(ScreenMid.x, WindHeight - BtnHeight / 2.0f));
+	PausedBtn[4].Set_Callback(Utils::ToggleQuitUI);
 
-	ScreenMid = Utils::GetScreenMiddle();
-	for (size_t i = 0; i < btnCount; ++i) {
-		PausedBtn[i].Set_Position(AEVec2Set(BtnWidth / 4.0f + BtnWidth / 2.0f + BtnWidth * i * 1.3f, ScreenMid.y + 2 * BtnHeight));
+	const float PosY{ PausedBtn[4].GetPosY() };
+	std::cout << "PosY: " << PosY << std::endl;
+	for (size_t i = 0; i < btnCount - 1; ++i) {
+		PausedBtn[i].Set_Position(AEVec2Set(BtnWidth / 4.0f + BtnWidth / 2.0f + BtnWidth * i * 1.3f, PosY - BtnHeight * 1.2f ));
 	}
+
 }
 
 void UI::PausedUpdate()
 {
 	AudioManager::GetGlobalMute() == true ? PausedBtn[1].Set_Text("Unmute") : PausedBtn[1].Set_Text("Mute");
-	Utils::GetFullscreen() == true ? PausedBtn[2].Set_Text("Windows Mode") : PausedBtn[2].Set_Text("Fullscreen");
+	Utils::GetFullscreenStatus() == true ? PausedBtn[2].Set_Text("Windows Mode") : PausedBtn[2].Set_Text("Fullscreen");
 
-	for (size_t i = 0; i < PausedBtn.size(); ++i) {
-		PausedBtn[i].Update();
+	if (!DisplayQuitUI) {
+		for (size_t i = 0; i < PausedBtn.size(); ++i) {
+			PausedBtn[i].Update();
+		}
 	}
+
+	if (DisplayQuitUI)
+		UI::QuitUpdate();
 }
 
 void UI::PausedRender()
 {
-	for (size_t i = 0; i < PausedBtn.size(); ++i) {
-		PausedBtn[i].Render();
+	if (!DisplayQuitUI) {
+		for (size_t i = 0; i < PausedBtn.size(); ++i) {
+			PausedBtn[i].Render();
+		}
 	}
+	if (DisplayQuitUI)
+		UI::QuitRender();
 }
 
 void UI::PausedUnload()
@@ -125,9 +145,50 @@ void UI::PausedUnload()
 	PausedBtn.clear();
 }
 
+void UI::QuitInit()
+{
+	const size_t QuitBtnCount{ 2 };
+	const float BtnHeight{ 50.0f }, BtnWidth{ 150.0f };
+	for (size_t i = 0; i < QuitBtnCount; ++i) {
+		QuitBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));
+	}
+	QuitBtn[0].Set_Text("Cancel");
+	QuitBtn[0].Set_Callback(Utils::ToggleQuitUI);
+	QuitBtn[0].Set_Position(AEVec2Set(ScreenMid.x - BtnWidth, 300.0f));
+
+	QuitBtn[1].Set_Text("Quit");
+	QuitBtn[1].Set_Callback(Utils::ExitGame);
+	QuitBtn[1].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth, 300.0f));
+
+	QuitText.SetText("Do you want to exit?");
+	QuitText.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	QuitText.SetScale(1.0f);
+}
+
+void UI::QuitUpdate()
+{
+	for (size_t i = 0; i < QuitBtn.size(); ++i) {
+		QuitBtn[i].Update();
+	}
+}
+
+void UI::QuitRender()
+{
+	for (size_t i = 0; i < QuitBtn.size(); ++i) {
+		QuitBtn[i].Render();
+	}
+	QuitText.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - 100.0f));
+}
+
+void UI::QuitUnload()
+{
+	QuitBtn.clear();
+}
+
 
 void UI::Unload()
 {
 	lives.Free();
 	UI::PausedUnload();
+	UI::QuitUnload();
 }

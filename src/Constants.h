@@ -74,6 +74,7 @@ extern const float colorcodeMax;
 extern bool paused;
 extern bool DebugMode;
 extern bool fullscreen;
+extern bool DisplayQuitUI;
 extern float g_dt;
 extern float app_time;
 

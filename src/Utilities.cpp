@@ -57,7 +57,7 @@ void Utils::ToggleFullscreen()
 	AEToogleFullScreen(fullscreen);
 }
 
-bool Utils::GetFullscreen()
+bool Utils::GetFullscreenStatus()
 {
 	return fullscreen;
 }
@@ -124,6 +124,16 @@ void Utils::ReturnToMenu(void) {
 void Utils::RestartLevel(void)
 {
 	gamestateNext = GS_RESTART;
+}
+
+void Utils::ExitGame(void)
+{
+	gamestateNext = GS_QUIT;
+}
+
+void Utils::ToggleQuitUI(void)
+{
+	DisplayQuitUI = !DisplayQuitUI;
 }
 
 

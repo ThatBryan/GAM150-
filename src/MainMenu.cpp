@@ -302,7 +302,7 @@ void Options::Init()
 
 void Options::Update()
 {
-	Utils::GetFullscreen() == true ? SettingsBtn[0].Set_Text("Windows Mode") : SettingsBtn[0].Set_Text("Fullscreen");
+	Utils::GetFullscreenStatus() == true ? SettingsBtn[0].Set_Text("Windows Mode") : SettingsBtn[0].Set_Text("Fullscreen");
 	AudioManager::GetGlobalMute() == true ? SettingsBtn[1].Set_Text("Unmute") : SettingsBtn[1].Set_Text("Mute");
 	for (size_t i = 0; i < SettingsBtn.size(); ++i) {
 		SettingsBtn[i].Update();

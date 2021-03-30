@@ -78,5 +78,6 @@ namespace Mesh {
 bool paused = false;
 bool DebugMode = false;
 bool fullscreen = true;
+bool DisplayQuitUI = false;
 float g_dt = 0;
 float app_time = 0;

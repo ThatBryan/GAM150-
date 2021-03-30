@@ -17,11 +17,13 @@ namespace Utils
 
 	void CheckFullScreenKeyInput(void);// Set window to full screen with L ALT + Enter.
 	void ToggleFullscreen();
-	bool GetFullscreen();
+	bool GetFullscreenStatus();
 	void TogglePause(void); 	// Press Tab to pause the game.
 	void CheckDebugMode(void);		// F1 to enter debug mode
 	void ReturnToMenu(void);
 	void RestartLevel(void);
+	void ExitGame(void);
+	void ToggleQuitUI(void);
 
 	AEVec2 GetScreenMiddle(void);
 	AEVec2 GetRandomPos(void);

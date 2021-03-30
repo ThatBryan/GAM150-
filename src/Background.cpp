@@ -10,10 +10,10 @@
 #include "LevelSystem.h"
 #include "Particles.h"
 
-enum { Pause = 0, Victory, Defeat, MAX_IMAGE };
+enum ImageIndex{ Pause = 0, Victory, Defeat, MAX_IMAGE };
 
 static std::array <Image, MAX_IMAGE> Images;
-static std::vector<Button> MenuBtn;
+static std::vector<Button> MenuBtn;	Graphics::Text text;
 
 static AEVec2 Midpt;
 
@@ -33,7 +33,6 @@ void Background::Init()
 	MenuBtn[0].Set_Callback(Utils::ReturnToMenu);
 	MenuBtn[0].Set_Text("Menu");
 
-
 	MenuBtn[1].Set_Text("Next Level");
 	MenuBtn[1].Set_Callback(LevelSystem::SetNextLevel);
 	
@@ -51,6 +50,11 @@ void Background::Init()
 		else
 			MenuBtn[i].Set_Position(AEVec2{ Midpt.x - MenuBtn[i].GetWidth(), Midpt.y * 2 - MenuBtn[i].GetHeight() / 2.0f });
 	}
+
+	text.SetPos(AEVec2Set(Midpt.x, Midpt.y + 100.0f));
+	text.SetColor(Color{ 0, 0, 0, 255.0f });
+	text.SetScale(1.0f);
+
 }
 
 void Background::Update()
@@ -59,12 +63,7 @@ void Background::Update()
 
 void Background::Render(Player& player)
 {
-	Graphics::Text text;
-	text.SetPos(Utils::GetScreenMiddle());
-	text.SetColor(Color{ 0, 0, 0, 255.0f });
-	text.SetScale(1.0f);
-
-	if (paused && player.active && !player.GetWinStatus())
+	if (!DisplayQuitUI && (paused && player.active && !player.GetWinStatus()))
 	{
 		Images[Pause].Draw_Texture(100.0f);
 		text.SetText(const_cast<s8*>("PAUSED"));
