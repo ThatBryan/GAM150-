@@ -1,4 +1,4 @@
-#include "Overlay.h"
+#include "Background.h"
 #include <array>
 #include "Image.h"
 #include "Button.h"
@@ -17,14 +17,14 @@ static std::vector<Button> MenuBtn;
 
 static AEVec2 Midpt;
 
-void Overlay::Load()
+void Background::Load()
 {
 	Images[Pause].Init(FP::PauseOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 	Images[Victory].Init(FP::VictoryOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 	Images[Defeat].Init(FP::GameoverOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 }
 
-void Overlay::Init()
+void Background::Init()
 {
 	for (int i = 0; i < 4; ++i) {
 		MenuBtn.push_back(Button(ButtonType::Color, 150.0f, 75.0f, 0.8f));
@@ -53,11 +53,11 @@ void Overlay::Init()
 	}
 }
 
-void Overlay::Update()
+void Background::Update()
 {
 }
 
-void Overlay::Render(Player& player)
+void Background::Render(Player& player)
 {
 	Graphics::Text text;
 	text.SetPos(Utils::GetScreenMiddle());
@@ -103,7 +103,7 @@ void Overlay::Render(Player& player)
 	}
 }
 
-void Overlay::Unload()
+void Background::Unload()
 {
 	for (size_t i = 0; i < Images.size(); ++i) {
 		Images[i].Free();

@@ -2,7 +2,7 @@
 
 class Player;
 
-namespace Overlay {
+namespace Background {
 	void Load();
 	void Init();
 	void Update();
