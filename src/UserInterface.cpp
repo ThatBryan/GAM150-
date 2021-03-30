@@ -93,7 +93,7 @@ void UI::Buttons_Init() {
 	buttonTest[1].Set_Text("Mute BGM");
 
 	buttonTest[2].Set_Text("Resume");
-	buttonTest[2].Set_Callback(Utils::CheckPauseInput);
+	buttonTest[2].Set_Callback(Utils::TogglePause);
 	buttonTest[2].Set_Position(AEVec2{ Midpt.x - buttonTest[2].GetWidth(), Midpt.y + buttonTest[2].GetHeight() * 2});
 
 	buttonTest[3].Set_Text("Menu");

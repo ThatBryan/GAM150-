@@ -21,6 +21,7 @@ void LevelSystem::Init()
 	if (!File.is_open()) {
 		File.open("./Assets/Level_System/Key.txt", std::fstream::in | std::fstream::out | std::fstream::trunc);
 		File << 1 << std::endl;
+		key = 1;
 		File.close();
 		std::cout << "\nFailed to open key file, A new file with '1' will be created\n";
 	}
@@ -33,8 +34,7 @@ void LevelSystem::Init()
 
 void LevelSystem::UnlockNext()
 {	
-	const int TempLevelsCount{ 4 };
-	if (key < TempLevelsCount && Level == key) {
+	if (key < LevelMax && Level == key) {
 		++key;
 		std::cout << "Level: " << key << " unlocked!\n";
 	}
@@ -70,9 +70,8 @@ void LevelSystem::SaveKeyToFile(void)
 
 void LevelSystem::SetNextLevel(void)
 {
-	const int TempLevelsCount{ 4 };
-
-	if (Level < TempLevelsCount) {
+	if (Level < LevelMax)
+	{
 		gamestateNext = ++Level;
 
 		if (gamestateCurr == GS_LEVEL1)
@@ -83,6 +82,11 @@ void LevelSystem::SetNextLevel(void)
 		{
 			gamestateNext = GS_LEVEL1;
 		}
+	}
+
+	else
+	{
+		gamestateNext = GS_MAINMENU;
 	}
 }
 

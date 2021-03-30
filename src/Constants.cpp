@@ -1,6 +1,11 @@
 #include "Constants.h"
 
 namespace FilePaths {
+	const char* Guide1 = "./Assets/Art/Guide1.png";
+	const char* Guide2 = "./Assets/Art/Guide2.png";
+	const char* Guide3 = "./Assets/Art/Guide3.png";
+	const char* Guide4 = "./Assets/Art/Guide4.png";
+	const char* Guide5 = "./Assets/Art/Guide5.png";
 	const char* DigipenLogoRed = "./Assets/Logo/DigiPen_RED.png";
 	const char* DigipenLogoWhite = "./Assets/Logo/DigiPen_WHITE.png";
 	const char* PauseOverlay = "./Assets/Art/pause_temp.png";
@@ -15,6 +20,7 @@ namespace FilePaths {
 	const char* GoalTile = "./Assets/Art/Goal.png";
 	const char* SpecialTile = "./Assets/Art/Special_Tile.png";
 	const char* GreyTile = "./Assets/Art/Safe_Tile.png";
+	const char* DialogueTile = "./Assets/Art/Instruction.png";
 	const char* FontFile = "./Assets/Font/Roboto-Regular.ttf";
 	const char* ButtonTest = "./Assets/Art/ResumeButton.png";
 	const char* ButtonTest2 = "./Assets/Art/PlanetTexture.png";
@@ -26,14 +32,15 @@ namespace FilePaths {
 unsigned short Level{ 0 };
 // Player constants
 const float player_speed = 150.0f;
-const float player_width = 40.0f;
+const float player_width = 45.0f;
 const float player_height = 50.0f;
-const float player_jumpvel = 3.0f;
-const float player_chargedjumpvel = 10.0f;
+const float player_jumpvel = 3.5f;
+const float player_chargedjumpvel = 8.0f;
+const float player_chargedjump_counter = 1.0f;
 const float player_collider_offset_y = 24.0f;
 const float player_collider_offset_x = 6.0f;
 const short player_hp_max = 3U;
-const float player_base_gravityMultiplier = 2.0f;
+const float base_gravityMultiplier = 2.0f;
 
 // Enemy constants
 const float enemy_width = 50.0f;
@@ -49,6 +56,7 @@ const float TileCollapseDelay = 0.5f;
 const float TileCollapseSpeed = 250.0f;
 const float tile_aabb_rect_offset_x = 5.0f;
 const float tile_aabb_rect_offset_y = 1.0f;
+unsigned short DialogueID = 0;
 
 // Enemy stuff
 short EnemyCount = 1;

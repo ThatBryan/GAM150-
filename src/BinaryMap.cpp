@@ -15,8 +15,6 @@ written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 #include "BinaryMap.h"
 
-
-
 #include <iostream>
 #include <cstdio>
 #include <fstream>
@@ -40,6 +38,8 @@ int Map_Height;
 /*This will contain all the data of the map, which will be retreived from a file
 when the "ImportMapDataFromFile" function is called*/
 int** MapData;
+
+AEVec2 EnemySizeArray[static_cast<int>(EnemySizes::MAX)];
 
 /*This will contain the collision data of the binary map. It will be filled in the
 "ImportMapDataFromFile" after filling "MapData". Basically, if an array element
@@ -109,11 +109,18 @@ int ImportMapDataFromFile(const char* FileName)
 		std::string Map;
 		std::getline(ifs, Map);
 		Map.erase(0, Map.find_first_of("1234567890"));
-		if (i == 0) // loop count 0 will be the reading of Map_Width data.
+		if (i == 0) // loop count 0 will read Map_Width.
 			Map_Width = std::stoi(Map);
-		else       // Next loop will read height data
+		else if (i == 1)     //loop 1 will read Map_Height
 			Map_Height = std::stoi(Map);
 	}
+	//std::cout << "EnemySizes: \n";
+	for (size_t i = 0; i < 3; ++i) {
+		ifs >> EnemySizeArray[i].x >> EnemySizeArray[i].y;
+		//std::cout << "X: " << EnemySizeArray[i].x << "\t" << "Y: " << EnemySizeArray[i].y << std::endl;
+	}
+
+
 	MapData = new int* [Map_Height];
 
 	for (int i = 0; i < Map_Height; i++) {

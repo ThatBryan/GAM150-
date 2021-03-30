@@ -1,7 +1,5 @@
 #pragma once
-#ifndef BINARY_MAP_H_
-#define BINARY_MAP_H_
-
+#include "AEEngine.h"
 
 enum class TYPE_OBJECT
 {
@@ -13,14 +11,20 @@ enum class TYPE_OBJECT
 	JUMPERMAN,					//5
 	SLIME,						//6
 	BAT,						//7	
-	SQUIRREL					//8
+	SQUIRREL,					//8
+	DIALOGUE					//9
 };
 
-	extern int** MapData;
-	extern int Map_Width;
-	extern int Map_Height;
+enum class EnemySizes {
+	SLIME = 0,
+	BAT,
+	SQUIRREL,
+	MAX
+};
+
+extern int** MapData;
+extern int Map_Width;
+extern int Map_Height;
 
 int		ImportMapDataFromFile(const char* FileName);
 void	FreeMapData(void);
-
-#endif // BINARY_MAP_H_

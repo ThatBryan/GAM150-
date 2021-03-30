@@ -22,9 +22,9 @@ float Player::gravityStrength = 20.0f;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::PlayerCurr, width, height), lose{false},
 active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel },
-hp(), direction{ MovementState::Right }, chargedjumpvel{ player_chargedjumpvel }, gravityMultiplier{ player_base_gravityMultiplier }
+hp(), direction{ MovementState::Right }, chargedjumpvel{ player_chargedjumpvel }, gravityMultiplier{ base_gravityMultiplier }, 
+chargedjump_counter{ player_chargedjump_counter }, collider()
 {
-	playerBB.color.Set(Color{ 0, 0, 0, 255.0f });
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
 	hp.max = player_hp_max;
@@ -33,9 +33,8 @@ hp(), direction{ MovementState::Right }, chargedjumpvel{ player_chargedjumpvel }
 
 Player::Player() : lose{ false }, active{ true }, gravity{ false }, jump{ false }, chargedjump{ false },
 win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel }, chargedjumpvel{ player_chargedjumpvel },
-hp(), direction{ MovementState::Right }, gravityMultiplier{ player_base_gravityMultiplier } {
-
-	playerBB.color.Set(Color{ 0, 0, 0, 255.0f });
+hp(), direction{ MovementState::Right }, gravityMultiplier{ base_gravityMultiplier }, chargedjump_counter{player_chargedjump_counter }
+, collider(){
 
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
@@ -53,9 +52,10 @@ void Player::Reset(void)
 	sprite.pos = startingPos;
 	jumpvel = player_jumpvel;
 	chargedjumpvel = player_chargedjumpvel;
+	chargedjump_counter = player_chargedjump_counter;
 	hp.current = hp.max;
 	sprite.rotation = 0;
-	gravityMultiplier = player_base_gravityMultiplier;
+	gravityMultiplier = base_gravityMultiplier;
 	direction = MovementState::Right;
 }
 
@@ -113,36 +113,32 @@ void Player::Update_Position(void)
 		}
 	}
 
-	static float chargedjump_counter = 1.0f;
 	if (AEInputCheckCurr(AEVK_SPACE) && !chargedjump && !gravity)
 	{
 		chargedjump_counter -= g_dt;
-		if (chargedjump_counter < 0)
-		{
-			chargedjump = true;
-			jump = false;
-
-		}
-
-		//printf("%.2f\n", chargedjump_counter);
+		AEVec2 Min = AEVec2Sub(collider.bottom.pos, AEVec2{ sprite.width, 25.0f});
+		AEVec2 Max = AEVec2Add(collider.bottom.pos, AEVec2{ sprite.width, 25.0f});
+		AEVec2 Destination = AEVec2Add(sprite.pos, AEVec2{ 0, sprite.height / 2.0f });
+		Particles::CreateReverseParticles(Destination, Min, Max, Color{ 255.0f, 255.0f, 0, 255.0f}, 1, Utils::RandomRangeFloat(10.0f, 100.0f), 50.0f, 2.5f, 1.0f);
+		//std::cout << Particles::GetContainerSize() << std::endl;
 	}
-	if (AEInputCheckReleased(AEVK_SPACE))
+
+	if (AEInputCheckReleased(AEVK_SPACE) && chargedjump_counter < 0)
 	{
-		chargedjump = false;
+		chargedjump = true;
 		chargedjump_counter = 1.0f;
 	}
 	if (chargedjump)
 	{
-		//printf("chargedjump\n");
 		if (sprite.pos.y + sprite.height / 2 <= maxY)
 		{
 			sprite.pos.y -= chargedjumpvel;
 
 			chargedjumpvel -= 0.2f; // velocity decrease as y increases
-			if (chargedjumpvel < -10.0f)
+			if (chargedjumpvel < -player_chargedjumpvel)
 			{
 				chargedjump = false;
-				chargedjumpvel = 10.0f;
+				chargedjumpvel = player_chargedjumpvel;
 			}
 		}
 	}
@@ -150,7 +146,7 @@ void Player::Update_Position(void)
 	if (!gravity) // reset counter if player's feet touches the ground
 	{
 		jumpvel = player_jumpvel;
-		chargedjumpvel = 10.0f;
+		chargedjumpvel = player_chargedjumpvel;
 	}
 
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
@@ -195,7 +191,7 @@ void Player::Update_Position(void)
 			}
 		}
 	}
-	playerBB.pos = sprite.pos;
+	collider.sprite.pos = sprite.pos;
 	if (direction == MovementState::Left) {
 		collider.bottom.pos = AEVec2Set(sprite.pos.x - player_collider_offset_x, sprite.pos.y + +sprite.height / 2.0f - collider.bottom.height / 2.0f);
 	}
@@ -219,7 +215,6 @@ void Player::CheckOutOfBound() {
 	if (sprite.pos.x - (sprite.width / 2.0f) < 0) {
 		sprite.pos.x = sprite.width / 2.0f;
 	}
-	//std::cout << sprite.pos.x << std::endl;
 }
 void Player::GravityManager(void)
 {
@@ -246,19 +241,25 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 	{
 		if (!enemy[i].GetKilledStatus())
 		{
-			if (Utils::ColliderAABB(enemy[i].enemyBB.pos, enemy[i].enemyBB.width, enemy[i].enemyBB.height, playerBB.pos, playerBB.width, playerBB.height))
+			if (Utils::ColliderAABB(enemy[i].collider.sprite.pos, enemy[i].collider.sprite.width, enemy[i].collider.sprite.height, 
+				collider.sprite.pos, collider.sprite.width, collider.sprite.height))
 			{
-				if (Utils::ColliderAABB(enemy[i].topBB.pos, enemy[i].topBB.width, enemy[i].topBB.height, collider.bottom.pos, collider.bottom.width, collider.bottom.height)) {
-					if (!DebugMode)
+				if (Utils::ColliderAABB(enemy[i].collider.top.pos, enemy[i].collider.top.width, enemy[i].collider.top.height, 
+					collider.bottom.pos, collider.bottom.width, collider.bottom.height)) {
+					if (!DebugMode) {
+						jump = true;
+						jumpvel += player_jumpvel / 2.0f;
+						gravityMultiplier = base_gravityMultiplier;
 						enemy[i].KillEnemy();
-
+					}
 					if (DebugMode)
 						printf("enemy dies\n");
 				}
 				else {
 					if (!DebugMode) {
-						sprite.pos = startingPos;
 						--hp.current;
+						Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerTex);
+						sprite.pos = startingPos;
 					}
 					if (DebugMode)
 						printf("player dies\n");
@@ -273,9 +274,8 @@ void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, con
 	player.sprite.Init(FP::PlayerSpriteSheetIdle, width, height, pos, Mesh::PlayerCurr);
 	player.startingPos = pos;
 	player.sprite.pos = pos;
-	player.playerBB.width = width;
-	player.playerBB.height = height;
 
+	player.collider.SetWidthHeight(player.collider.sprite, width, height);
 	player.collider.SetWidthHeight(player.collider.top, player_width - 4.0f, 5.0f);
 	player.collider.SetWidthHeight(player.collider.left, 20.0f, player_height - 10.0f);
 	player.collider.SetWidthHeight(player.collider.right, 20.0f, player_height - 10.0f);
