@@ -63,6 +63,7 @@ void Player::Update() {
 	Update_Position();
 	if (hp.current <= 0)
 		SetPlayerLose();
+	GravityManager();
 }
 void Player::Render(void)
 {

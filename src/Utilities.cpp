@@ -109,12 +109,20 @@ AEVec2 Utils::GetMousePos(void)
 void Utils::TogglePause(void)
 {
 	paused = !paused;
+	if (!paused)
+		DisplayQuitUI = false;
 }
 
 void Utils::CheckDebugMode(void)
 {
 	if (AEInputCheckTriggered(DEBUG_KEY))
 		DebugMode = !DebugMode;
+	if (DebugMode && AEInputCheckTriggered(COLLISION_OFF_KEY)) {
+		DisableCollision = !DisableCollision;
+		DisableCollision == false ? std::cout << "Collision turned off\n" : std::cout << "Collision turned on \n";
+	}
+	if (!DebugMode)
+		DisableCollision = false;
 }
 
 void Utils::ReturnToMenu(void) {

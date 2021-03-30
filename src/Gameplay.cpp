@@ -215,10 +215,10 @@ void UpdateManager()
 		Jumperman.Update();
 		
 		Tiles::CollapsingManager(tileManager);
-		Tiles::CheckPlayerGravity(tileManager, Jumperman);
-		Tiles::UpdateManager(tilemap, Jumperman, enemies);
+		if (!DisableCollision)
+			Tiles::CheckPlayerGravity(tileManager, Jumperman);
 
-		Jumperman.GravityManager();
+		Tiles::UpdateManager(tilemap, Jumperman, enemies);
 		for (size_t i = 0; i < enemies.size(); i++)
 		{
 			enemies[i].Update();

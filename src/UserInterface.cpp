@@ -95,7 +95,6 @@ void UI::PausedInit()
 	PausedBtn[0].Set_Callback(Utils::TogglePause);
 	PausedBtn[0].Set_Text("Resume");
 
-
 	PausedBtn[1].Set_Callback(AudioManager::ToggleMuteAll);
 	PausedBtn[2].Set_Callback(Utils::ToggleFullscreen);
 
@@ -165,7 +164,7 @@ void UI::QuitInit()
 	QuitBtn[1].Set_Callback(Utils::ExitGame);
 	QuitBtn[1].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth, ScreenMid.y + 50.0f));
 
-	QuitText.SetText("Do you want to exit?");
+	QuitText.SetText("Do you want to exit the game?");
 	QuitText.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	QuitText.SetScale(1.0f);
 }

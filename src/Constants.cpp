@@ -6,6 +6,7 @@ namespace FilePaths {
 	const char* Guide3 = "./Assets/Art/Guide3.png";
 	const char* Guide4 = "./Assets/Art/Guide4.png";
 	const char* Guide5 = "./Assets/Art/Guide5.png";
+	const char* Guide6 = "./Assets/Art/Guide6.png";
 
 	const char* DigipenLogoRed = "./Assets/Logo/DigiPen_RED.png";
 	const char* DigipenLogoWhite = "./Assets/Logo/DigiPen_WHITE.png";
@@ -79,5 +80,6 @@ bool paused = false;
 bool DebugMode = false;
 bool fullscreen = true;
 bool DisplayQuitUI = false;
+bool DisableCollision = false;
 float g_dt = 0;
 float app_time = 0;

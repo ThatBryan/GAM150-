@@ -9,6 +9,7 @@ namespace FilePaths {
 	extern const char* Guide3;
 	extern const char* Guide4;
 	extern const char* Guide5;
+	extern const char* Guide6;
 
 	extern const char* DigipenLogoRed;
 	extern const char* DigipenLogoWhite;
@@ -75,6 +76,7 @@ extern bool paused;
 extern bool DebugMode;
 extern bool fullscreen;
 extern bool DisplayQuitUI;
+extern bool DisableCollision;
 extern float g_dt;
 extern float app_time;
 
@@ -95,3 +97,4 @@ namespace Mesh {
 #define FULLSCREEN_KEY1 AEVK_LALT
 #define FULLSCREEN_KEY2 AEVK_RETURN
 #define DEBUG_KEY AEVK_F1
+#define COLLISION_OFF_KEY AEVK_F2

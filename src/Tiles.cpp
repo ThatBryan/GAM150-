@@ -10,7 +10,7 @@
 static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
 
-enum GuideOverlay{Guide1 = 0, Guide2, Guide3, Guide4, Guide5, MAX_IMAGE };
+enum GuideOverlay{Guide1 = 0, Guide2, Guide3, Guide4, Guide5, Guide6, MAX_IMAGE };
 std::array <Image, GuideOverlay::MAX_IMAGE> Images;
 
 Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
@@ -251,10 +251,11 @@ void Tiles::LoadTex() {
 	Images[Guide3].Init(FP::Guide3, 200.0f, 150.0f, { 0.0f, 0.0f });
 	Images[Guide4].Init(FP::Guide4, 200.0f, 100.0f, { 0.0f, 0.0f });
 	Images[Guide5].Init(FP::Guide5, 200.0f, 150.0f, { 0.0f, 0.0f });
+	Images[Guide6].Init(FP::Guide6, 100.0f, 75.0f, { 0.0f, 0.0f });
 }
 void Tiles::Unload()
 {
-	for (size_t i = 0; i < 5; ++i) {
+	for (size_t i = 0; i < Images.size(); ++i) {
 		Images[i].Free();
 	}
 	for (size_t i = 0; i < static_cast<int>(TileType::Max); i++){
@@ -314,7 +315,18 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 				continue;
 
 			Tiles& TheTile = TileManager[i]->at(j);
-
+			if (TheTile.type == TileType::Dialogue)
+			{
+				if (Utils::ColliderAABB(TheTile.collider.sprite.pos, TheTile.collider.sprite.width, TheTile.collider.sprite.height,
+					ThePlayer.collider.right.pos, ThePlayer.collider.right.width, ThePlayer.collider.right.height) ||
+					Utils::ColliderAABB(TheTile.collider.sprite.pos, TheTile.collider.sprite.width, TheTile.collider.sprite.height,
+						ThePlayer.collider.left.pos, ThePlayer.collider.left.width, ThePlayer.collider.left.height))
+					{
+						CreateDialogue(TileManager[i]->at(j).ID, TheTile.collider.sprite.pos);
+					}
+			}
+			if (DisableCollision)
+				return;
 			if (Utils::ColliderAABB(TheTile.collider.bottom.pos, TheTile.collider.bottom.width, TheTile.collider.bottom.height,
 				ThePlayer.collider.top.pos, ThePlayer.collider.top.width, ThePlayer.collider.top.height)){
 					ThePlayer.gravity = true;
@@ -341,18 +353,6 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 					//	printf("Right Collision\n");
 				}
 
-			if (TheTile.type == TileType::Dialogue)
-			{
-				if (Utils::ColliderAABB(TheTile.collider.sprite.pos, TheTile.collider.sprite.width, TheTile.collider.sprite.height,
-					ThePlayer.collider.right.pos, ThePlayer.collider.right.width, ThePlayer.collider.right.height) ||
-					Utils::ColliderAABB(TheTile.collider.sprite.pos, TheTile.collider.sprite.width, TheTile.collider.sprite.height,
-						ThePlayer.collider.left.pos, ThePlayer.collider.left.width, ThePlayer.collider.left.height))
-				{
-					CreateDialogue(TileManager[i]->at(j).ID, TheTile.collider.sprite.pos);
-					if(DebugMode)
-						printf("%i\n", TileManager[i]->at(j).ID);
-				}
-			}
 		}
 	}
 }
@@ -443,6 +443,9 @@ void Tiles::CreateDialogue(short count, AEVec2 tilePos)
 			Images[Guide5].Draw_Texture({ tilePos.x + 70.0f, tilePos.y - 60.0f }, 255.0f);
 			break;
 		case 4:
+			Images[Guide6].Draw_Texture({ tilePos.x - 70.0f, tilePos.y - 60.0f }, 255.0f);
+			break;
+		case 5:
 			Images[Guide3].Draw_Texture({ tilePos.x + 50.0f, tilePos.y - 80.0f }, 255.0f);
 			break;
 
