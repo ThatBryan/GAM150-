@@ -285,15 +285,20 @@ void LevelSelection::Render(void)
 
 void Settings::Init()
 {
-	const size_t btnCount{ 2 };
+	const size_t btnCount{ 3 };
 	for (size_t i = 0; i < btnCount; ++i) {
 		SettingsBtn.push_back(Button(ButtonType::Color, 200.0f, 50.0f, 0.7f));
-		SettingsBtn[i].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y - 50.0f + i * 150.0f));
+		SettingsBtn[i].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y / 2.0f - 25.0f + i * 150.0f));
 	}
 	SettingsBtn[0].Set_Text("Fullscreen");
 	SettingsBtn[0].Set_Callback(Utils::ToggleFullscreen);
 	SettingsBtn[1].Set_Text("Mute");
 	SettingsBtn[1].Set_Callback(AudioManager::MuteAll);
+
+
+	//SettingsBtn[2].Set_Position(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() - LevelBtn[9].GetHeight() / 2.0f)));
+	SettingsBtn[2].Set_Text("Exit");
+	SettingsBtn[2].Set_Callback(MainMenu::SwitchToMainMenu);
 }
 
 void Settings::Update()

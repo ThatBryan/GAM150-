@@ -17,9 +17,8 @@ class Tiles
 {
 public:
 	// Reference to a vector, containing a vector of Tiles*
-	short ID;
-
 	using TileMgr = std::vector<std::vector<Tiles>*>&;
+
 private:
 	//Graphics::Rect ColliderAABB;
 	Collider collider;
@@ -39,6 +38,7 @@ public:
 	Tiles(AEGfxTexture*, const f32 width, const f32 height);
 	Image image;
 	AEVec2 spawnPos;
+	short ID;
 	void Render(void);
 
 	inline bool GetActive() const { return active; }
@@ -49,6 +49,7 @@ public:
 
 	// Resets the level.
 	static void Reset(std::vector <Tiles>& tiles);
+
 	static void CollapsingManager(TileMgr TileManager);
 	static void CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy);
 	static void CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer);
