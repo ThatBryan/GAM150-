@@ -101,7 +101,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				gamestateNext = GS_QUIT;
 
 
-			Utils::CheckFullScreenInput();
+			Utils::CheckFullScreenKeyInput();
 		}
 		GameStateFree(); //Resets the game state
 

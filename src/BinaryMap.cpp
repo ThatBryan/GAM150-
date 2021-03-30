@@ -15,8 +15,6 @@ written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 #include "BinaryMap.h"
 
-
-
 #include <iostream>
 #include <cstdio>
 #include <fstream>
@@ -116,10 +114,10 @@ int ImportMapDataFromFile(const char* FileName)
 		else if (i == 1)     //loop 1 will read Map_Height
 			Map_Height = std::stoi(Map);
 	}
-	std::cout << "EnemySizes: \n";
+	//std::cout << "EnemySizes: \n";
 	for (size_t i = 0; i < 3; ++i) {
 		ifs >> EnemySizeArray[i].x >> EnemySizeArray[i].y;
-		std::cout << "X: " << EnemySizeArray[i].x << "\t" << "Y: " << EnemySizeArray[i].y << std::endl;
+		//std::cout << "X: " << EnemySizeArray[i].x << "\t" << "Y: " << EnemySizeArray[i].y << std::endl;
 	}
 
 

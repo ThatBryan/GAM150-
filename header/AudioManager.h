@@ -7,6 +7,7 @@
 using AudioClass = FMOD::Sound*;
 
 enum class AudioID {BGM = 0, Jump, Max, None };
+AudioID& operator++(AudioID& rhs);
 
 struct AudioData {
 	AudioData();
@@ -29,4 +30,6 @@ public:
 	static void unloadAsset(void);
 	static void SetVolume(AudioID ID, float volume);
 	static void SetMute(AudioID ID);
+	static void MuteAll();
+	static bool GetGlobalMute();
 };

@@ -18,23 +18,19 @@ class Enemies
 private:
 	friend class Player; // Enemy can modify player
 	EnemyType type;
+	Collider collider;
 	AEVec2 spawnPos;
 
-	Graphics::Rect topBB {enemy_width, 5.0f};
-	Graphics::Rect bottomBB{ enemy_width, 5.0f };
-	Graphics::Rect leftBB{ 20.0f,  enemy_height - topBB.height - bottomBB.height};
-	Graphics::Rect rightBB{ 20.0f, enemy_height -topBB.height - bottomBB.height};
-
-	Graphics::Rect enemyBB {enemy_width, enemy_height};
-
-	bool isGravity, killed;
-	float counter, velocity, jumpcounter, jumpvelocity, alpha, alphaTimer;
+	bool isGravity, killed, squirrelJump;
+	int jumpcounter;
+	float counter, velocity, jumpvelocity, alpha, alphaTimer;
 	float stepGravityMultiplier;
 	unsigned short ID; // Maybe unnecessary
 
 	static float slime_counter, slime_speed, slimeBBOffset;
 	static float bat_speed, bat_counter, batBBOffset;
-	static float squirrel_speed, squirrel_counter, squirrel_jumpspeed, jump_counter, squirrelBBOffset;
+	static float squirrel_speed, squirrel_counter, squirrel_jumpspeed, squirrelBBOffset, squirrel_offset_x;
+	static int jump_counter;
 	static float baseGravityStrength;
 
 	// Private functions

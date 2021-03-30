@@ -24,8 +24,10 @@ Player Jumperman;
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
 extern AEVec2 EnemySizeArray[static_cast<int>(EnemySizes::MAX)];
+
 void MapInit(void)
 {
+	DialogueID = 0;
 	float Offset = 35.0f;
 	f32 grid_height{ static_cast<f32>(AEGetWindowHeight() / Map_Height) }, grid_width{ static_cast<f32>(AEGetWindowWidth() / Map_Width) };
 	for (int i = 0; i < Map_Height; ++i)
@@ -58,8 +60,8 @@ void MapInit(void)
 				Player::CreatePlayer(Jumperman, AEVec2Set(j * grid_width, i * grid_height), player_width, player_height);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SLIME))
-			{
-				if (Level == 5 ||Level == 6 || Level == 9)
+			{	// Testing reading enemy size from file.
+				if (Level == 1 || Level == 2 || Level == 5 ||Level == 6 || Level == 9)
 					Enemies::AddNew(enemies, EnemyType::Slime, AEVec2Set(j * grid_width, i * grid_height), 
 						EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].x, EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].y);
 				else
@@ -67,7 +69,7 @@ void MapInit(void)
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::BAT))
 			{
-				if (Level == 5 || Level == 6 || Level == 9)
+				if (Level == 1 || Level == 2 || Level == 5 || Level == 6 || Level == 9)
 					Enemies::AddNew(enemies, EnemyType::Bat, AEVec2Set(j * grid_width, i * grid_height),
 						EnemySizeArray[static_cast<int>(EnemySizes::BAT)].x, EnemySizeArray[static_cast<int>(EnemySizes::BAT)].y);
 				else
@@ -75,11 +77,15 @@ void MapInit(void)
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SQUIRREL))
 			{
-				if (Level == 5 || Level == 6 || Level == 9)
+				if (Level == 1 || Level == 2 || Level == 5 || Level == 6 || Level == 9)
 					Enemies::AddNew(enemies, EnemyType::Squirrel, AEVec2Set(j * grid_width, i * grid_height),
 						EnemySizeArray[static_cast<int>(EnemySizes::SQUIRREL)].x, EnemySizeArray[static_cast<int>(EnemySizes::SQUIRREL)].y);
 				else
 				Enemies::AddNew(enemies, EnemyType::Squirrel, AEVec2Set(j * grid_width, i * grid_height), enemy_width, squirrel_height);
+			}
+			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::DIALOGUE))
+			{
+				Tiles::AddTile(tilemap, TileType::Dialogue, grid_width, grid_height, AEVec2Set(j * grid_width, i * grid_height));
 			}
 		}
 	}
@@ -108,6 +114,8 @@ void MapRender()
 	{
 		tilemap[i].Render();
 	}
+
+	Tiles::CheckPlayerCollision(tileManager, Jumperman);
 	Jumperman.Render();
 	for (size_t j = 0; j < enemies.size(); ++j)
 	{
@@ -115,8 +123,8 @@ void MapRender()
 	}
 	Overlay::Render(Jumperman);
 	UI::Draw();
-	UI::Update();
 	Particles::Render();
+	UI::Update();
 }
 
 void MapLoad()
@@ -175,12 +183,13 @@ void MapLoad()
 	assert(Map_Height > 0 && Map_Width > 0);
 
 	Tiles::LoadTex();
+	Particles::Load();
 	Player::LoadTex();
 	Enemies::LoadTex();
 	AudioManager::loadAsset();
-	AudioManager::SetVolume(AudioID::Jump, 0.0f);
+	AudioManager::SetVolume(AudioID::Jump, 0.2f);
 	AudioManager::SetVolume(AudioID::BGM, 0.2f);
-	//Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
+	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 	Overlay::Load();
 	Overlay::Init();
 }
@@ -214,10 +223,11 @@ void UpdateManager()
 {
 	if (!paused && !Jumperman.GetLoseStatus() && !Jumperman.GetWinStatus()) {
 		Jumperman.Update();
-		Tiles::UpdateManager(tilemap, Jumperman, enemies);
+		
 		Tiles::CollapsingManager(tileManager);
 		Tiles::CheckPlayerGravity(tileManager, Jumperman);
-		Tiles::CheckPlayerCollision(tileManager, Jumperman);
+		Tiles::UpdateManager(tilemap, Jumperman, enemies);
+
 		Jumperman.GravityManager();
 		for (size_t i = 0; i < enemies.size(); i++)
 		{

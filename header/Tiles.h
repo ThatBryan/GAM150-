@@ -6,7 +6,7 @@
 #include "Constants.h"
 #include "Collider.h"
 
-enum class TileType { Grass = 0, Goal, Safe, Special, Max };
+enum class TileType { Grass = 0, Goal, Safe, Special, Dialogue, Max };
 TileType& operator++(TileType& rhs);
 
 // Foward declaration
@@ -17,16 +17,15 @@ class Tiles
 {
 public:
 	// Reference to a vector, containing a vector of Tiles*
+	short ID;
 
 	using TileMgr = std::vector<std::vector<Tiles>*>&;
 private:
-	Graphics::Rect ColliderAABB;
+	//Graphics::Rect ColliderAABB;
 	Collider collider;
 	TileType type;
-	short ID;
 	f64 collapseDelay;
 	bool active, isCollapsing;
-
 
 	void DecreaseLifespan(void);
 	void Collapse(const Player& player);
@@ -51,9 +50,9 @@ public:
 	// Resets the level.
 	static void Reset(std::vector <Tiles>& tiles);
 	static void CollapsingManager(TileMgr TileManager);
+	static void CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy);
 	static void CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer);
 	static void CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer);
-	static void CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy);
 	static void CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy);
 
 	// Add single tile to a given vector.
@@ -67,4 +66,6 @@ public:
 
 	//// Add whole new row of tile. Only for main menu.
 	static void AddTileRow(std::vector < Tiles>& tile, TileType type, const int count, const f32 width, const f32 height, const AEVec2 pos);
+
+	static void CreateDialogue(short count, AEVec2 tilePos);
 };

@@ -21,6 +21,7 @@ void LevelSystem::Init()
 	if (!File.is_open()) {
 		File.open("./Assets/Level_System/Key.txt", std::fstream::in | std::fstream::out | std::fstream::trunc);
 		File << 1 << std::endl;
+		key = 1;
 		File.close();
 		std::cout << "\nFailed to open key file, A new file with '1' will be created\n";
 	}
