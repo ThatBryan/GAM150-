@@ -51,7 +51,6 @@ void Overlay::Init()
 		else
 			MenuBtn[i].Set_Position(AEVec2{ Midpt.x - MenuBtn[i].GetWidth(), Midpt.y * 2 - MenuBtn[i].GetHeight() / 2.0f });
 	}
-
 }
 
 void Overlay::Update()
@@ -63,7 +62,7 @@ void Overlay::Render(Player& player)
 	Graphics::Text text;
 	text.SetPos(Utils::GetScreenMiddle());
 	text.SetColor(Color{ 0, 0, 0, 255.0f });
-	text.SetScale(2.0f);
+	text.SetScale(1.0f);
 
 	if (paused && player.active && !player.GetWinStatus())
 	{

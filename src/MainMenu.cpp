@@ -41,7 +41,7 @@ void MainMenu::Init(void)
 	ScreenMid = Utils::GetScreenMiddle();
 	MainMenu::Buttons_Init();
 	LevelSelection::Init();
-	Settings::Init();
+	Options::Init();
 
 	const float width = 80.0f, height = 100.0f;
 	int size = static_cast<int>(AEGetWindowWidth() / width);
@@ -123,9 +123,9 @@ void MainMenu::Unload(void)
 	enemy.clear();
 	MenuBtn.clear();
 	LevelBtn.clear();
-	SettingsBtn.clear();
 	player.clear();
 	tiles.clear();
+	Options::Unload();
 	EnemyCount = 0;
 }
 
@@ -148,7 +148,7 @@ void MainMenu::Buttons_Init() {
 			MenuBtn[i].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth, ScreenMid.y / 1.3f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
 
 	}
-	LevelSys.GetKey() == 1 ? MenuBtn[0].Set_Text("Start") : MenuBtn[0].Set_Text("Continue");
+	LevelSys.GetKey() == 1 ? MenuBtn[0].Set_Text("Start Game") : MenuBtn[0].Set_Text("Continue");
 	MenuBtn[0].Set_Callback(StartGame);
 
 	MenuBtn[1].Set_Text("Credits");
@@ -160,10 +160,10 @@ void MainMenu::Buttons_Init() {
 	MenuBtn[3].Set_Text("Leaderboards");
 	MenuBtn[3].Set_Callback(placeholder);
 
-	MenuBtn[4].Set_Text("Settings");
+	MenuBtn[4].Set_Text("Options");
 	MenuBtn[4].Set_Callback(MainMenu::SwitchToSettings);
 
-	MenuBtn[5].Set_Text("Quit");
+	MenuBtn[5].Set_Text("Quit Game");
 	MenuBtn[5].Set_Callback(QuitGame);
 }
 
@@ -210,7 +210,7 @@ void MainMenu::TestPlayerMovement() {
 
 void LevelSelection::Init(void)
 {
-	for (unsigned short i = 0; i < 10; ++i) {
+	for (unsigned short i = 0; i < 9; ++i) {
 		LevelBtn.push_back(Button(ButtonType::Color, 150.0, 75.0f, 0.5f));
 		LevelBtn[i].SetID(i + 1);
 		LevelBtn[i].Set_TextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
@@ -226,9 +226,9 @@ void LevelSelection::Init(void)
 			}
 		}
 	}
-
+	LevelBtn.push_back(Button(ButtonType::Color, 150.0, 75.0f, 0.4f));
 	LevelBtn[9].Set_Position(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() - LevelBtn[9].GetHeight() / 2.0f)));
-	LevelBtn[9].Set_Text("Exit");
+	LevelBtn[9].Set_Text("Exit to Main Menu");
 	LevelBtn[9].Set_Callback(MainMenu::SwitchToMainMenu);
 }
 
@@ -248,8 +248,8 @@ void MainMenu::SwitchToLevelSelection(void)
 
 void MainMenu::SwitchToSettings()
 {
-	GameStateUpdate = Settings::Update;
-	GameStateDraw = Settings::Render;
+	GameStateUpdate = Options::Update;
+	GameStateDraw = Options::Render;
 }
 
 
@@ -283,36 +283,35 @@ void LevelSelection::Render(void)
 	LevelSelection.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() / 10)));
 }
 
-void Settings::Init()
+void Options::Init()
 {
 	const size_t btnCount{ 3 };
 	for (size_t i = 0; i < btnCount; ++i) {
-		SettingsBtn.push_back(Button(ButtonType::Color, 200.0f, 50.0f, 0.7f));
+		SettingsBtn.push_back(Button(ButtonType::Color, 200.0f, 50.0f, 0.6f));
 		SettingsBtn[i].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y / 2.0f - 25.0f + i * 150.0f));
 	}
 	SettingsBtn[0].Set_Text("Fullscreen");
 	SettingsBtn[0].Set_Callback(Utils::ToggleFullscreen);
 	SettingsBtn[1].Set_Text("Mute");
-	SettingsBtn[1].Set_Callback(AudioManager::MuteAll);
+	SettingsBtn[1].Set_Callback(AudioManager::ToggleMuteAll);
 
 
-	//SettingsBtn[2].Set_Position(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() - LevelBtn[9].GetHeight() / 2.0f)));
-	SettingsBtn[2].Set_Text("Exit");
+	SettingsBtn[2].Set_Text("Exit to Main Menu");
 	SettingsBtn[2].Set_Callback(MainMenu::SwitchToMainMenu);
 }
 
-void Settings::Update()
+void Options::Update()
 {
 	Utils::GetFullscreen() == true ? SettingsBtn[0].Set_Text("Windows Mode") : SettingsBtn[0].Set_Text("Fullscreen");
 	AudioManager::GetGlobalMute() == true ? SettingsBtn[1].Set_Text("Unmute") : SettingsBtn[1].Set_Text("Mute");
 	for (size_t i = 0; i < SettingsBtn.size(); ++i) {
 		SettingsBtn[i].Update();
 	}
-	if (AEInputCheckReleased(AEVK_ESCAPE))
+	if (AEInputCheckReleased(AEVK_ESCAPE) && gamestateCurr == GS_MAINMENU)
 		MainMenu::SwitchToMainMenu();
 }
 
-void Settings::Render()
+void Options::Render()
 {
 	static Graphics::Text SettingsPage;
 	SettingsPage.SetText("Settings");
@@ -323,4 +322,9 @@ void Settings::Render()
 		SettingsBtn[i].Render();
 	}
 	SettingsPage.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() / 10)));
+}
+
+void Options::Unload()
+{
+	SettingsBtn.clear();
 }

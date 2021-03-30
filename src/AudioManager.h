@@ -30,6 +30,6 @@ public:
 	static void unloadAsset(void);
 	static void SetVolume(AudioID ID, float volume);
 	static void SetMute(AudioID ID);
-	static void MuteAll();
+	static void ToggleMuteAll();
 	static bool GetGlobalMute();
 };

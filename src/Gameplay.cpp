@@ -105,7 +105,7 @@ void MapUpdate()
 	UpdateManager();
 	Audio.update();
 	if (AEInputCheckReleased(AEVK_ESCAPE))
-		Utils::ReturnToMenu();
+		Utils::TogglePause();
 }
 
 void MapRender()
@@ -238,4 +238,5 @@ void UpdateManager()
 		Jumperman.CheckEnemyCollision(enemies);
 	}
 	Particles::Update();
+
 }

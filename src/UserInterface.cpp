@@ -19,14 +19,14 @@ Graphics::Text FPS_Display(strBuffer, 0.5f);
 Graphics::Text LevelDisplay(strBuffer1, 0.5f);
 Graphics::Text TimerDisplay(strBuffer2, 0.5f);
 
-static std::vector <Button> buttonTest;
-
+static std::vector <Button> PausedBtn;
+static AEVec2 ScreenMid;
 extern Player Jumperman;
 Image lives;
 
 void UI::Init() {
 
-	UI::Buttons_Init();
+	UI::PausedInit();
 
 	FPS_Display.color.Set(Color{ 0, 0, 0, 255 });
 	LevelDisplay.color.Set(Color{0, 0, 0, 255});
@@ -39,7 +39,7 @@ void UI::Init() {
 	lives.Init(FP::HeartSprite, 35.0f, 35.0f, AEVec2Zero());
 }
 
-const size_t pauseButtonIdx{ 2 };
+const size_t pauseButtonIdx{ 1 };
 void UI::Update() {
 
 	sprintf_s(strBuffer, "FPS: %.2f", AEFrameRateControllerGetFrameRate());
@@ -52,15 +52,9 @@ void UI::Update() {
 
 	Utils::CheckDebugMode();
 
-	if (!paused)
-		for (size_t i = 0; i < pauseButtonIdx; ++i) {
-			buttonTest[i].Update();
-		}
-	else if (paused && !Jumperman.GetLoseStatus() && !Jumperman.GetWinStatus()) {
-		for (size_t i = pauseButtonIdx; i < buttonTest.size(); ++i) {
-			buttonTest[i].Update();
-		}
-	}
+	if (paused && !Jumperman.GetWinStatus() && !Jumperman.GetLoseStatus())
+		UI::PausedUpdate();
+
 	UI::Draw();
 }
 
@@ -70,35 +64,13 @@ void UI::Draw() {
 	//if (DebugMode)
 	AEVec2 Pos{ LevelDisplay.GetBufferSize() };
 	AEVec2 Pos2{ TimerDisplay.GetBufferSize() };
+
 	TimerDisplay.Draw_Wrapped(AEVec2Set(AEGetWindowWidth() - Pos2.x / 2.0f, Pos2.y / 2.0f));
 	LevelDisplay.Draw_Wrapped(AEVec2Set(Pos.x / 2.0f, Pos.y / 2.0f));
 
-}
+	if (paused && !Jumperman.GetWinStatus() && !Jumperman.GetLoseStatus())
+		UI::PausedRender();
 
-void UI::Buttons_Init() {
-	const float buttonWidth{ 100.0f }, buttonHeight{ 50.0f };
-
-	AEVec2 Midpt{ Utils::GetScreenMiddle() };
-
-	for (size_t i = 0; i < 4; ++i) {
-		buttonTest.push_back(Button(ButtonType::Color, buttonWidth, buttonHeight, 0.5f));
-	}
-
-	buttonTest[0].Set_Position(AEVec2{ Midpt.x - buttonTest[0].GetWidth(), buttonTest[0].GetHeight() / 2.0f });
-	buttonTest[0].Set_Text("Pause");
-	buttonTest[0].Set_Callback(Test_Callback);
-
-	buttonTest[1].Set_Position(AEVec2{ Midpt.x + buttonTest[0].GetWidth(), buttonTest[1].GetHeight() / 2.0f });
-	buttonTest[1].Set_Callback(Mute_BGM);
-	buttonTest[1].Set_Text("Mute BGM");
-
-	buttonTest[2].Set_Text("Resume");
-	buttonTest[2].Set_Callback(Utils::TogglePause);
-	buttonTest[2].Set_Position(AEVec2{ Midpt.x - buttonTest[2].GetWidth(), Midpt.y + buttonTest[2].GetHeight() * 2});
-
-	buttonTest[3].Set_Text("Menu");
-	buttonTest[3].Set_Callback(Utils::ReturnToMenu);
-	buttonTest[3].Set_Position(AEVec2{ Midpt.x + buttonTest[2].GetWidth(), Midpt.y + buttonTest[3].GetHeight() * 2});
 }
 
 void UI::DisplayLife(short livesCount) {
@@ -107,9 +79,55 @@ void UI::DisplayLife(short livesCount) {
 	}
 }
 
+void UI::PausedInit()
+{
+	const size_t btnCount{4};
+	const float BtnHeight{ 50.0f }, BtnWidth{ 150.0f };
+	for (size_t i = 0; i < btnCount; ++i) {
+		PausedBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.45f));
+	}
+	PausedBtn[0].Set_Callback(Utils::TogglePause);
+	PausedBtn[0].Set_Text("Resume");
+
+
+	PausedBtn[1].Set_Callback(AudioManager::ToggleMuteAll);
+	PausedBtn[2].Set_Callback(Utils::ToggleFullscreen);
+
+	PausedBtn[3].Set_Text("Exit to Main Menu");
+	PausedBtn[3].Set_Callback(Utils::ReturnToMenu);
+
+
+	ScreenMid = Utils::GetScreenMiddle();
+	for (size_t i = 0; i < btnCount; ++i) {
+		PausedBtn[i].Set_Position(AEVec2Set(BtnWidth / 4.0f + BtnWidth / 2.0f + BtnWidth * i * 1.3f, ScreenMid.y + 2 * BtnHeight));
+	}
+}
+
+void UI::PausedUpdate()
+{
+	AudioManager::GetGlobalMute() == true ? PausedBtn[1].Set_Text("Unmute") : PausedBtn[1].Set_Text("Mute");
+	Utils::GetFullscreen() == true ? PausedBtn[2].Set_Text("Windows Mode") : PausedBtn[2].Set_Text("Fullscreen");
+
+	for (size_t i = 0; i < PausedBtn.size(); ++i) {
+		PausedBtn[i].Update();
+	}
+}
+
+void UI::PausedRender()
+{
+	for (size_t i = 0; i < PausedBtn.size(); ++i) {
+		PausedBtn[i].Render();
+	}
+}
+
+void UI::PausedUnload()
+{
+	PausedBtn.clear();
+}
+
 
 void UI::Unload()
 {
-	buttonTest.clear();
 	lives.Free();
+	UI::PausedUnload();
 }
