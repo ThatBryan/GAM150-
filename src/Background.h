@@ -8,5 +8,5 @@ namespace Background {
 	void Update();
 	void Render(Player& player);
 	void Unload();
-	void SetBackgroundColor(void);
+	void LerpBackgroundColor(void);
 }
