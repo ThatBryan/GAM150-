@@ -192,4 +192,5 @@ void UI::Unload()
 {
 	lives.Free();
 	UI::PausedUnload();
+	QuitBtn.clear();
 }

@@ -56,21 +56,21 @@ void GameStateManagerUpdate()
 		break;
 
 	case GS_GAMEPLAY2:
-		GameStateLoad = MapLoad;
-		GameStateInit = MapInit;
-		GameStateUpdate = MapUpdate;
-		GameStateDraw = MapRender;
-		GameStateFree = MapRestart;
-		GameStateUnload = MapUnload;
+		GameStateLoad = Gameplay::Load;
+		GameStateInit = Gameplay::Init;
+		GameStateUpdate = Gameplay::Update;
+		GameStateDraw = Gameplay::Render;
+		GameStateFree = Gameplay::Restart;
+		GameStateUnload = Gameplay::Unload;
 		break;
 
 	case GS_GAMEPLAY:
-		GameStateLoad = MapLoad;
-		GameStateInit = MapInit;
-		GameStateUpdate = MapUpdate;
-		GameStateDraw = MapRender;
-		GameStateFree = MapRestart;
-		GameStateUnload = MapUnload;
+		GameStateLoad = Gameplay::Load;
+		GameStateInit = Gameplay::Init;
+		GameStateUpdate = Gameplay::Update;
+		GameStateDraw = Gameplay::Render;
+		GameStateFree = Gameplay::Restart;
+		GameStateUnload = Gameplay::Unload;
 		break;
 	default:
 		printf("FATAL ERROR!\n");

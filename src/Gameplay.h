@@ -1,9 +1,14 @@
 #pragma once
 
-void MapInit();
-void MapUpdate();
-void MapLoad();
-void MapRender();
-void MapRestart();
-void MapUnload();
-void UpdateManager(void);
+
+namespace Gameplay {
+
+	void Init();
+	void Update();
+	void Load();
+	void Render();
+	void Restart();
+	void Unload();
+
+	void UpdateManager(void);
+}

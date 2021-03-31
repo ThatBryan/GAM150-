@@ -25,7 +25,8 @@ extern AudioData soundData[static_cast<int>(AudioID::Max)];
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
 extern AEVec2 EnemySizeArray[static_cast<int>(EnemySizes::MAX)];
 
-void MapInit(void)
+
+void Gameplay::Init(void)
 {
 	DialogueID = 0;
 	f32 grid_height{ static_cast<f32>(AEGetWindowHeight() / Map_Height) }, grid_width{ static_cast<f32>(AEGetWindowWidth() / Map_Width) };
@@ -83,7 +84,7 @@ void MapInit(void)
 	UI::Init();
 }
 
-void MapUpdate()
+void Gameplay::Update()
 {
 
 
@@ -105,7 +106,7 @@ void MapUpdate()
 		Utils::TogglePause();
 }
 
-void MapRender()
+void Gameplay::Render()
 {
 	for (size_t i = 0; i < tilemap.size(); ++i)
 	{
@@ -124,7 +125,7 @@ void MapRender()
 	UI::Update();
 }
 
-void MapLoad()
+void Gameplay::Load()
 {
 	switch (Level)
 	{
@@ -191,7 +192,7 @@ void MapLoad()
 	Background::Init();
 }
 
-void MapUnload()
+void Gameplay::Unload()
 {
 	Tiles::Unload();
 	Enemies::Unload();
@@ -202,7 +203,7 @@ void MapUnload()
 	Background::Unload();
 }
 
-void MapRestart()
+void Gameplay::Restart()
 {
 	Tiles::Reset(tilemap);
 	Enemies::Reset(enemies);
@@ -216,7 +217,7 @@ void MapRestart()
 	UI::Unload();
 }
 
-void UpdateManager()
+void Gameplay::UpdateManager()
 {
 	if (!paused && !Jumperman.GetLoseStatus() && !Jumperman.GetWinStatus()) {
 		Jumperman.Update();
