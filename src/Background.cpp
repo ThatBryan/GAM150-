@@ -36,7 +36,6 @@ void Background::Load()
 	SceneColors[static_cast<int>(SceneType::Noon)] = Color{ 255.0f, 175.0f, 51.0f, 255.0f };
 	SceneColors[static_cast<int>(SceneType::Nightfall)] = Color{ 100.0f, 149.0f, 237.0f, 255.0f };
 
-
 	Scene.Set(SceneColors[static_cast<int>(SceneType::Day)]);
 }
 
@@ -138,6 +137,6 @@ void Background::LerpBackgroundColor(void)
 		t = 0;
 	}
 	Scene = Color::Lerp(Scene, Destination, t);
-	t += 0.00001f;
+	t += 0.000005f;
 }
 

@@ -81,7 +81,7 @@ namespace Mesh {
 // Miscallenous
 bool paused = false;
 bool DebugMode = false;
-bool fullscreen = true;
+bool fullscreen = false;
 bool DisplayQuitUI = false;
 bool DisableCollision = false;
 float g_dt = 0;

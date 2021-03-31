@@ -178,7 +178,8 @@ void MainMenu::Buttons_Init() {
 	MenuBtn[3].Set_Text("Leaderboards");
 	MenuBtn[3].Set_Callback(placeholder);
 
-	MenuBtn[4].Set_Text("Options");
+	MenuBtn[4].SetType(ButtonType::Texture);
+	MenuBtn[4].Set_Texture("./Assets/Art/OptionsBtn.png");
 	MenuBtn[4].Set_Callback(MainMenu::SwitchToSettings);
 
 	MenuBtn[5].Set_Text("Quit Game");
@@ -236,6 +237,8 @@ void LevelSelection::Init(void)
 		LevelBtn[i].Set_Text("Locked");
 
 	}
+
+
 	for (size_t i = 0; i < 3; ++i) {
 		for (size_t j = 0; j < 3; ++j) {
 			LevelBtn[(i * 3) + j].Set_Position(AEVec2Set(175.0f + 225.0f * j, 162.5f + 150.0f * i));// Mid = 400. 400 - 75, 325. 325 - 150 175.0f // 600 / 3, 200 - 37.5 = 162.5f
@@ -244,7 +247,15 @@ void LevelSelection::Init(void)
 			}
 		}
 	}
+
 	LevelBtn.push_back(Button(ButtonType::Color, 150.0, 75.0f, 0.4f));
+
+	for (unsigned short i = LevelSys.GetKey(); i < 9; ++i) {
+		LevelBtn[i].SetType(ButtonType::Texture);
+		LevelBtn[i].Set_Texture("./Assets/Art/Locked.png");
+		LevelBtn[i].Set_Text("");
+	}
+
 	LevelBtn[9].Set_Position(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() - LevelBtn[9].GetHeight() / 2.0f)));
 	LevelBtn[9].Set_Text("Exit to Main Menu");
 	LevelBtn[9].Set_Callback(MainMenu::SwitchToMainMenu);
@@ -259,7 +270,8 @@ void MainMenu::SwitchToLevelSelection(void)
 			LevelBtn[i].Set_Callback(LevelSystem::SetLevel);
 			std::string tmp{ "Level " + std::to_string(i + 1) };
 			LevelBtn[i].Set_Text(tmp.c_str());
-	}
+	}	
+
 	GameStateUpdate = LevelSelection::Update;
 	GameStateDraw = LevelSelection::Render;
 }

@@ -16,6 +16,12 @@ Button::Button(ButtonType Type, const f32 width, const f32 height, const f32 sca
 	text.color = { 0, 0, 0, 255.0f };
 }
 
+Button::~Button()
+{
+	if (type == ButtonType::Texture)
+		FreeTexture();
+}
+
 void Button::Set_Position(const AEVec2 Pos) {
 	button.pos = Pos;
 	text.pos = Pos;
@@ -33,6 +39,22 @@ void Button::SetStateColor(ButtonState state, Color color) {
 	buttonState[static_cast<int>(state)] = color;
 }
 
+void Button::SetType(ButtonType Type)
+{
+	type = Type;
+	if (type == ButtonType::Texture) {
+		SetStateColor(ButtonState::Idle, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
+		SetStateColor(ButtonState::Hovered, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
+		SetStateColor(ButtonState::Clicked, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
+	}
+}
+void Button::FreeTexture()
+{
+	if (pTex) {
+		AEGfxTextureUnload(pTex); 
+		pTex = nullptr;
+	}
+}
 void Button::Update(void) {
 	AEVec2 Mouse = Utils::GetMousePos();
 	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckReleased(AEVK_LBUTTON))
