@@ -23,7 +23,6 @@ class Image
 	inline void ReflectAboutYAxis() { width *= -1.0f; }
 	inline void Free(void) { if(pTex) AEGfxTextureUnload(pTex);}
 
-
 	// Draw to class member pos.
 	void Draw_Texture(const f32 alpha, const f32 r = 255.0f, const f32 g = 255.0f, const f32 b = 255.0f, const f32 alpha2 = 255.0f);
 

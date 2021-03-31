@@ -12,19 +12,20 @@
 #include "MainMenu.h"
 #include "Player.h"
 
-char strBuffer[100];
-char strBuffer1[100];
-char strBuffer2[100];
-Graphics::Text FPS_Display(strBuffer, 0.5f);
-Graphics::Text LevelDisplay(strBuffer1, 0.5f);
-Graphics::Text TimerDisplay(strBuffer2, 0.5f);
+static char strBuffer[100];
+static char strBuffer1[100];
+static char strBuffer2[100];
+static Graphics::Text FPS_Display(strBuffer, 0.5f);
+static Graphics::Text LevelDisplay(strBuffer1, 0.5f);
+static Graphics::Text TimerDisplay(strBuffer2, 0.5f);
 
 static std::vector <Button> PausedBtn;
 static std::vector <Button> QuitBtn;
 static Graphics::Text QuitText;
 static AEVec2 ScreenMid;
+static Image lives;
+
 extern Player Jumperman;
-Image lives;
 
 void UI::Init() {
 

@@ -6,6 +6,7 @@
 #include "Image.h"
 #include <array>
 #include "Utilities.h"
+#include "GameStateManager.h"
 
 static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
@@ -199,6 +200,7 @@ void Tiles::UpdateManager(std::vector <Tiles>& tiles, Player& ThePlayer, std::ve
 		tiles[i].Update(ThePlayer);
 	}
 }
+bool Tiles::isTutorialLevel = false;
 
 void Tiles::LoadTex() {
 	for (TileType i = TileType::Grass; i < TileType::Max; ++i) {
@@ -225,22 +227,23 @@ void Tiles::LoadTex() {
 		tileTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex);
 		AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	}
-	Images[Guide1].Init(FP::Guide1, 200.0f, 150.0f, { 0.0f, 0.0f });
-	Images[Guide2].Init(FP::Guide2, 200.0f, 150.0f, { 0.0f, 0.0f });
-	Images[Guide3].Init(FP::Guide3, 200.0f, 150.0f, { 0.0f, 0.0f });
-	Images[Guide4].Init(FP::Guide4, 200.0f, 100.0f, { 0.0f, 0.0f });
-	Images[Guide5].Init(FP::Guide5, 200.0f, 150.0f, { 0.0f, 0.0f });
-	Images[Guide6].Init(FP::Guide6, 100.0f, 75.0f, { 0.0f, 0.0f });
+	if (Level == 1 && (gamestateCurr == GS_GAMEPLAY || gamestateCurr == GS_GAMEPLAY2)) {
+		std::cout << "Loaded Tutorial Textures\n";
+		isTutorialLevel = true;
+		LoadTutorialTexture();
+	}
+	else
+		isTutorialLevel = false;
 }
 void Tiles::Unload()
 {
-	for (size_t i = 0; i < Images.size(); ++i) {
-		Images[i].Free();
-	}
 	for (size_t i = 0; i < static_cast<int>(TileType::Max); i++){
 		AEGfxTextureUnload(tileTex[i]);
 	}
-
+	if (isTutorialLevel) {
+		std::cout << "Freed Tutorial Textures\n";
+		FreeTutorialTexture();
+	}
 }
 TileType& operator++(TileType& rhs) {
 	rhs = static_cast<TileType>((static_cast<int>(rhs) + 1));
@@ -251,6 +254,23 @@ void Tiles::TileShake(void) {
 	AEVec2 ShakeVec = Utils::GetRandomVecVel();
 	const float ShakeStrength{ 15.0f };
 	AEVec2ScaleAdd(&image.pos, &ShakeVec, &image.pos, g_dt * ShakeStrength);
+}
+
+void Tiles::LoadTutorialTexture(void)
+{
+	Images[Guide1].Init(FP::Guide1, 200.0f, 150.0f, { 0.0f, 0.0f });
+	Images[Guide2].Init(FP::Guide2, 200.0f, 150.0f, { 0.0f, 0.0f });
+	Images[Guide3].Init(FP::Guide3, 200.0f, 150.0f, { 0.0f, 0.0f });
+	Images[Guide4].Init(FP::Guide4, 200.0f, 100.0f, { 0.0f, 0.0f });
+	Images[Guide5].Init(FP::Guide5, 200.0f, 150.0f, { 0.0f, 0.0f });
+	Images[Guide6].Init(FP::Guide6, 100.0f, 75.0f, { 0.0f, 0.0f });
+}
+
+void Tiles::FreeTutorialTexture(void)
+{
+	for (size_t i = 0; i < Images.size(); ++i) {
+		Images[i].Free();
+	}
 }
 
 void Tiles::CollapsingManager(TileMgr TileManager) {
@@ -410,7 +430,7 @@ void Tiles::CreateDialogue(const short ID, const AEVec2 tilePos)
 	switch (ID)
 	{
 		case 0:
-			Images[Guide1].Draw_Texture({tilePos.x -150.0f, tilePos.y - 60.0f}, 255.0f);
+			Images[Guide1].Draw_Texture({tilePos.x + 150.0f, tilePos.y - 60.0f}, 255.0f);
 			break;
 		case 2:
 			Images[Guide4].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 60.0f }, 255.0f);
@@ -425,7 +445,7 @@ void Tiles::CreateDialogue(const short ID, const AEVec2 tilePos)
 			Images[Guide6].Draw_Texture({ tilePos.x - 70.0f, tilePos.y - 60.0f }, 255.0f);
 			break;
 		case 5:
-			Images[Guide3].Draw_Texture({ tilePos.x + 50.0f, tilePos.y - 80.0f }, 255.0f);
+			Images[Guide3].Draw_Texture({ tilePos.x + 60.0f, tilePos.y - 80.0f }, 255.0f);
 			break;
 
 	}

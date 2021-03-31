@@ -119,7 +119,7 @@ void Utils::CheckDebugMode(void)
 		DebugMode = !DebugMode;
 	if (DebugMode && AEInputCheckTriggered(COLLISION_OFF_KEY)) {
 		DisableCollision = !DisableCollision;
-		DisableCollision == false ? std::cout << "Collision turned off\n" : std::cout << "Collision turned on \n";
+		DisableCollision == false ? std::cout << "Collision turned on \n" : std::cout << "Collision turned off \n";
 	}
 	if (!DebugMode)
 		DisableCollision = false;

@@ -25,7 +25,7 @@ private:
 	TileType type;
 	f64 collapseDelay;
 	bool active, isCollapsing;
-
+	static bool isTutorialLevel;
 	void DecreaseLifespan(void);
 	void Collapse(const Player& player);
 	void CheckPos(void);
@@ -33,6 +33,8 @@ private:
 	void CheckEnemyStatus(std::vector <Enemies>& enemy);
 	void Update(Player& player);
 	void TileShake(void);
+	static void LoadTutorialTexture(void);
+	static void FreeTutorialTexture(void);
 
 public:
 	Tiles(AEGfxTexture*, const f32 width, const f32 height);
