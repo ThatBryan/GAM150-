@@ -20,6 +20,8 @@ public:
 	void Set_Text(std::string text);
 	void Set_TextColor(Color color);
 	void SetStateColor(ButtonState state, Color color);
+
+	// ONLY CALL AFTER ALL PUSHBACKS. OTHERWISE THE VECTOR CONTAINER WILL CALL THE DTOR.
 	void SetType(ButtonType Type);
 
 	inline int GetID() const { return ID; }
@@ -37,7 +39,7 @@ private:
 	Graphics::Text text;
 	ButtonType type;
 	AEGfxTexture* pTex;
-	AEVec2 pos; // maybe unnecessary
+	//AEVec2 pos; // maybe unnecessary
 	fn_ptr callback;
 	Test_Ptr TestCallback;
 	Color buttonState[static_cast<int>(ButtonState::MaxColor)];

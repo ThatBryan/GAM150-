@@ -104,7 +104,8 @@ void MainMenu::Render() {
 	for (int i = 0; i < enemy.size(); ++i) {
 		enemy[i].sprite.Draw_Texture(255.0f);
 	}
-	
+
+
 	player[0].sprite.Draw_Texture(255.0f);
 
 	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - AEGetWindowHeight() / 3));
@@ -112,6 +113,11 @@ void MainMenu::Render() {
 
 	if (DisplayQuitUI)
 		UI::QuitRender();
+	else {
+		for (size_t i = 0; i < MenuBtn.size(); ++i) {
+			MenuBtn[i].Render();
+		}
+	}
 }
 
 void MainMenu::Load(void)

@@ -6,10 +6,10 @@
 #include "Utilities.h"
 #include "Player.h"
 
-extern Player Jumperman;
+//extern Player Jumperman;
 
 Button::Button(ButtonType Type, const f32 width, const f32 height, const f32 scale) : button(width, height), text(std::string(), scale)
-, pos{ 0,0 }, callback{ nullptr }, pTex{ nullptr }, type{ Type }, ID{ 0 }, TestCallback{ nullptr } {
+, callback{ nullptr }, pTex{ nullptr }, type{ Type }, ID{ 0 }, TestCallback{ nullptr } {
 	buttonState[static_cast<int>(ButtonState::Idle)] = { 0, 255.0f, 0, 255.0f };
 	buttonState[static_cast<int>(ButtonState::Hovered)] = { 255.0f, 255.0f, 0, 255.0f };
 	buttonState[static_cast<int>(ButtonState::Clicked)] = { 0, 0, 255.0f, 255.0f };
@@ -66,7 +66,6 @@ void Button::Update(void) {
 			callback();
 		}
 	}
-	Render();
 }
 
 void Button::Render(void) {
