@@ -8,7 +8,7 @@ namespace Utils
 	int RandomRangeInt(const s32 lowerBound, const s32 upperBound);
 	float RandomRangeFloat(const f32 lowerBound, const f32 upperBound);
 
-	// Returns half window width/height to be used for calculations.
+	// Returns half window width/height.
 	f32 Get_HalfWindowWidth(void);
 	f32 Get_HalfWindowHeight(void);
 

@@ -11,7 +11,6 @@ EnemyType& operator++(EnemyType& rhs);
 
 // Foward declarations
 class Player;
-//class Tiles;
 
 class Enemies
 {
@@ -22,10 +21,10 @@ private:
 	AEVec2 spawnPos;
 
 	bool isGravity, killed, squirrelJump;
-	int jumpcounter;
 	float counter, velocity, jumpvelocity, alpha, alphaTimer;
 	float stepGravityMultiplier;
 	unsigned short ID; // Maybe unnecessary
+	int jumpcounter;
 
 	static float slime_counter, slime_speed, slimeBBOffset;
 	static float bat_speed, bat_counter, batBBOffset;
@@ -33,7 +32,6 @@ private:
 	static int jump_counter;
 	static float baseGravityStrength;
 
-	// Private functions
 	void Update_Position(void);
 	void ApplyGravity(void);
 	void Bat_Movement(f32 maxX);
@@ -53,7 +51,7 @@ public:
 	inline bool GetKilledStatus() const { return killed; }
 	inline void SetGravity(bool X) { isGravity = X; }
 
-	// Add new enemy into the vector.
+	// Adds new enemy into the vector.
 	static void AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 pos, const f32 width, const f32 height);
 	static void Reset(std::vector <Enemies>& enemy);
 	static void LoadTex(void);

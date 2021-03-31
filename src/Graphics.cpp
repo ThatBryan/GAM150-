@@ -53,7 +53,7 @@ void Color::Decrement(float i) {
 		b *= -1.0f;
 }
 
-Color Color::Lerp(Color begin, Color end, const float t)
+Color Color::Lerp(const Color& begin, const Color& end, const float t)
 {
 	Color temp;
 	temp.r = Utils::Lerp(begin.r, end.r, t);

@@ -157,27 +157,6 @@ void Tiles::AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, co
 	Tile.spawnPos = Tile.image.pos;
 }
 
-void Tiles::CollapseNext(std::vector <Tiles>& tiles)
-{
-	for (size_t i = 0; i < tiles.size(); i++)
-	{
-		if (tiles[i].type == TileType::Grass || tiles[i].type == TileType::Special) {
-			if (tiles[i].collapseDelay <= 0) {
-
-				if (i < tiles.size() - 1)
-				{
-					if(tiles[i + 1].type == TileType::Grass || tiles[i + 1].type == TileType::Special)
-						tiles[i + 1].isCollapsing = true;
-				}
-				if (i > 0)
-				{
-					if (tiles[i - 1].type == TileType::Grass || tiles[i - 1].type == TileType::Special)
-						tiles[i - 1].isCollapsing = true;
-				}
-			}
-		}
-	}
-}
 void Tiles::Reset(std::vector <Tiles>& tiles)
 {
 	for (size_t i = 0; i < tiles.size(); i++){
@@ -426,9 +405,9 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 	}
 }
 
-void Tiles::CreateDialogue(short count, AEVec2 tilePos)
+void Tiles::CreateDialogue(const short ID, const AEVec2 tilePos)
 {
-	switch (count)
+	switch (ID)
 	{
 		case 0:
 			Images[Guide1].Draw_Texture({tilePos.x -150.0f, tilePos.y - 60.0f}, 255.0f);

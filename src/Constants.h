@@ -35,8 +35,8 @@ namespace FilePaths {
 	extern const char* jumpSFX;
 	extern const char* GameplayBGM;
 }
-
 namespace FP = FilePaths; // Short hand 
+
 
 // Level tracker
 extern unsigned short Level;
@@ -65,6 +65,7 @@ extern const float TileCollapseSpeed;
 extern const float tile_aabb_rect_offset_x;
 extern const float tile_aabb_rect_offset_y;
 extern unsigned short DialogueID;
+
 // Enemy stuff
 extern short EnemyCount;
 
@@ -93,8 +94,8 @@ namespace Mesh {
 
 // Hot key bindings.
 #define PAUSE_KEY AEVK_TAB 
-#define RESTART_KEY AEVK_R
-#define FULLSCREEN_KEY1 AEVK_LALT
-#define FULLSCREEN_KEY2 AEVK_RETURN
 #define DEBUG_KEY AEVK_F1
 #define COLLISION_OFF_KEY AEVK_F2
+#define FULLSCREEN_KEY1 AEVK_LALT
+#define FULLSCREEN_KEY2 AEVK_RETURN
+#define RESTART_KEY AEVK_R

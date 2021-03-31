@@ -149,7 +149,6 @@ float Utils::Lerp(const float start, const float end, const float t)
 	return start + t * (end - start);
 }
 
-
 bool Utils::ColliderAABB(AEVec2 A, f32 A_width, f32 A_height, AEVec2 B, f32 B_width, f32 B_height) {
 	A_width = fabsf(A_width);
 	B_width = fabsf(B_width);

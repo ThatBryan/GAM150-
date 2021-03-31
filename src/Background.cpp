@@ -54,7 +54,6 @@ void Background::Init()
 	text.SetPos(AEVec2Set(Midpt.x, Midpt.y + 100.0f));
 	text.SetColor(Color{ 0, 0, 0, 255.0f });
 	text.SetScale(1.0f);
-
 }
 
 void Background::Update()
