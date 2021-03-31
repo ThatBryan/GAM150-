@@ -16,12 +16,28 @@ static std::array <Image, MAX_IMAGE> Images;
 static std::vector<Button> MenuBtn;	Graphics::Text text;
 
 static AEVec2 Midpt;
+static Color Scene;
+
+enum class SceneType { Day = 0, Noon, Nightfall, Max};
+static Color SceneColors [static_cast<int>(SceneType::Max)];
+
+SceneType& operator++(SceneType& rhs) {
+	rhs = (rhs == SceneType::Nightfall) ? SceneType::Day : SceneType((int)rhs + 1);
+	return rhs;
+}
 
 void Background::Load()
 {
 	Images[Pause].Init(FP::PauseOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 	Images[Victory].Init(FP::VictoryOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 	Images[Defeat].Init(FP::GameoverOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+
+	SceneColors[static_cast<int>(SceneType::Day)] = Color{ 51.0f, 215.0f, 255.0f, 255.0f };
+	SceneColors[static_cast<int>(SceneType::Noon)] = Color{ 255.0f, 175.0f, 51.0f, 255.0f };
+	SceneColors[static_cast<int>(SceneType::Nightfall)] = Color{ 100.0f, 149.0f, 237.0f, 255.0f };
+
+
+	Scene.Set(SceneColors[static_cast<int>(SceneType::Day)]);
 }
 
 void Background::Init()
@@ -58,6 +74,8 @@ void Background::Init()
 
 void Background::Update()
 {
+	LerpBackgroundColor();
+	AEGfxSetBackgroundColor(Scene.r, Scene.g, Scene.b);
 }
 
 void Background::Render(Player& player)
@@ -107,5 +125,19 @@ void Background::Unload()
 		Images[i].Free();
 	}
 	MenuBtn.clear();
+}
+void Background::LerpBackgroundColor(void)
+{
+	static float t = 0;
+	static SceneType Identifier = SceneType::Noon;
+	static Color Destination = SceneColors[static_cast<int>(Identifier)];
+
+	if (Scene == Destination) {
+		++Identifier;
+		Destination = SceneColors[static_cast<int>(Identifier)];
+		t = 0;
+	}
+	Scene = Color::Lerp(Scene, Destination, t);
+	t += 0.00001f;
 }
 

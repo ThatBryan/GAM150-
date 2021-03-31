@@ -87,7 +87,7 @@ void Gameplay::Init(void)
 void Gameplay::Update()
 {
 
-
+	Background::Update();
 	if (!paused) {
 		app_time += g_dt;
 		if (IsIconic(AESysGetWindowHandle())) {
