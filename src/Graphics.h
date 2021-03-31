@@ -15,7 +15,9 @@ struct Color
 	void Decrement(float i = 0.1f);
 
 	// Returns a random color
+	static Color Lerp(Color begin, Color end, const float t);
 	static Color CreateRandomColor();
+	bool operator ==(const Color& rhs);
 };
 
 

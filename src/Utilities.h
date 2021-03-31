@@ -25,6 +25,9 @@ namespace Utils
 	void ExitGame(void);
 	void ToggleQuitUI(void);
 
+	// User has to increment t
+	float Lerp(const float start, const float end, const float t);
+
 	AEVec2 GetScreenMiddle(void);
 	AEVec2 GetRandomPos(void);
 	AEVec2 GetRandomRangeVec(const AEVec2 lowerBound, const AEVec2 upperBound);

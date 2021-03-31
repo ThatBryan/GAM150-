@@ -31,6 +31,15 @@ Color Color::CreateRandomColor()
 	return Color(r, g, b, a);
 }
 
+bool Color::operator==(const Color& rhs)
+{
+	const float Epsilon{ 0.01f };
+	if (r - rhs.r < Epsilon && g - rhs.g < Epsilon && b - rhs.b < Epsilon && alpha - rhs.alpha < Epsilon)
+		return true;
+
+	return false;
+}
+
 
 void Color::Decrement(float i) {
 	r -= i * g_dt;
@@ -42,6 +51,16 @@ void Color::Decrement(float i) {
 		g *= -1.0f;
 	if (b <= 0)
 		b *= -1.0f;
+}
+
+Color Color::Lerp(Color begin, Color end, const float t)
+{
+	Color temp;
+	temp.r = Utils::Lerp(begin.r, end.r, t);
+	temp.g = Utils::Lerp(begin.g, end.g, t);
+	temp.b = Utils::Lerp(begin.b, end.b, t);
+	temp.alpha = Utils::Lerp(begin.alpha, end.alpha, t);
+	return temp;
 }
 
 

@@ -33,6 +33,7 @@ static Graphics::Text Title;
 static AEVec2 ScreenMid;
 //static AEGfxTexture* test;
 
+static Color background;
 extern LevelSystem LevelSys;
 
 void MainMenu::Init(void)
@@ -53,9 +54,7 @@ void MainMenu::Init(void)
 	player.push_back(Player(Player::playerTex, player_width, player_height));
 	player[0].SetPos(AEVec2Set(player_width / 2.0f, tiles[0].image.pos.y - height - 10.0f));
 
-	Color background;
 	background.Set(Color{ 51.0f, 215.0f, 255.0f, 255.0f });
-	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 	
 	Title.SetText("JUMPERMAN");
 	Title.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
@@ -64,6 +63,17 @@ void MainMenu::Init(void)
 
 void MainMenu::Update(void)
 {
+	static float t = 0;
+	static Color Destination{ Color::CreateRandomColor() };
+	
+	if (background == Destination) {
+		Destination = Color::CreateRandomColor();
+		t = 0;
+	}
+	background = Color::Lerp(background, Destination, t);
+	t += 0.00001f;
+	AEGfxSetBackgroundColor(background.r, background.g, background.b);
+
 	if (AEInputCheckTriggered(AEVK_SPACE)) {
 		for (int i = 0; i < 100; ++i) {
 			Particles::Create(Utils::GetRandomPos(), Utils::GetRandomVecVel(), Color::CreateRandomColor(), 1, 50.0f, Utils::RandomRangeFloat(0.0f, 500.0f), 50.0f, 3.0f);

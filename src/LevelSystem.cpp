@@ -5,7 +5,7 @@
 #include "GameStateManager.h"
 
 const int LevelMax{ 9 };
-LevelSystem::LevelSystem() : maxLevel{LevelMax}, key{ 0 }{
+LevelSystem::LevelSystem() : maxLevel{LevelMax}, key{ 1 }{
 }
 
 LevelSystem::~LevelSystem()
@@ -40,9 +40,9 @@ void LevelSystem::UnlockNext()
 	}
 }
 
-void LevelSystem::SetLevel(unsigned short level)
+void LevelSystem::SetLevel(unsigned short new_level)
 {
-	Level = level;
+	Level = new_level;
 	switch (gamestateCurr) {
 	case GS_GAMEPLAY:
 		gamestateNext = GS_GAMEPLAY2;
