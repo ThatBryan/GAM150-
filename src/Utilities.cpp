@@ -19,9 +19,9 @@ AEVec2 AEVec2Set(const f32 x, const f32 y)
 	return AEVec2{ x, y };
 }
 
-const float Episilon{ 1.0f };
 bool operator==(const AEVec2& lhs, const AEVec2& rhs)
 {
+const float Episilon{ 1.0f };
 	if (fabsf(lhs.x - rhs.x) <= Episilon &&
 		fabsf(lhs.y - rhs.y) <= Episilon)
 		return true;

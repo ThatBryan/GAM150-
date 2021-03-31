@@ -7,11 +7,9 @@ enum
 {
 	GS_SPLASH = 0,
 	GS_MAINMENU,
-	GS_GAMEPLAY,
 	GS_RESTART,
-	GS_TEST,
-	GS_LEVEL1,
-	GS_LEVEL4,		
+	GS_GAMEPLAY, // 2 GameStates for Gameplay to break out of game loop
+	GS_GAMEPLAY2,		
 	GS_QUIT
 };
 

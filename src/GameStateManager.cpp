@@ -55,7 +55,7 @@ void GameStateManagerUpdate()
 		GameStateUnload = MainMenu::Unload;
 		break;
 
-	case GS_TEST:
+	case GS_GAMEPLAY2:
 		GameStateLoad = MapLoad;
 		GameStateInit = MapInit;
 		GameStateUpdate = MapUpdate;
@@ -64,7 +64,7 @@ void GameStateManagerUpdate()
 		GameStateUnload = MapUnload;
 		break;
 
-	case GS_LEVEL1:
+	case GS_GAMEPLAY:
 		GameStateLoad = MapLoad;
 		GameStateInit = MapInit;
 		GameStateUpdate = MapUpdate;

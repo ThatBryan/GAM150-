@@ -44,14 +44,14 @@ void LevelSystem::SetLevel(unsigned short level)
 {
 	Level = level;
 	switch (gamestateCurr) {
-	case GS_LEVEL1:
-		gamestateNext = GS_TEST;
+	case GS_GAMEPLAY:
+		gamestateNext = GS_GAMEPLAY2;
 		return;
-	case GS_TEST:
-		gamestateNext = GS_LEVEL1;
+	case GS_GAMEPLAY2:
+		gamestateNext = GS_GAMEPLAY;
 		return;
 	default:
-		gamestateNext = GS_TEST;
+		gamestateNext = GS_GAMEPLAY2;
 		return;
 	}
 }
@@ -74,13 +74,13 @@ void LevelSystem::SetNextLevel(void)
 	{
 		gamestateNext = ++Level;
 
-		if (gamestateCurr == GS_LEVEL1)
+		if (gamestateCurr == GS_GAMEPLAY)
 		{
-			gamestateNext = GS_TEST;
+			gamestateNext = GS_GAMEPLAY2;
 		}
-		else if (gamestateCurr == GS_TEST)
+		else if (gamestateCurr == GS_GAMEPLAY2)
 		{
-			gamestateNext = GS_LEVEL1;
+			gamestateNext = GS_GAMEPLAY;
 		}
 	}
 

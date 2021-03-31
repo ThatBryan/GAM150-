@@ -130,8 +130,10 @@ void MainMenu::Unload(void)
 }
 
 void MainMenu::StartGame(void) {
-	Level = LevelSys.GetKey();
-	gamestateNext = GS_TEST;
+	//std::cout << "Level : " << Level << std::endl;
+	if (Level == 0)
+		Level = LevelSys.GetKey();
+	gamestateNext = GS_GAMEPLAY2;
 }
 void MainMenu::QuitGame(void) {
 	gamestateNext = GS_QUIT;
