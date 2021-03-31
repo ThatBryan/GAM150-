@@ -72,13 +72,9 @@ void MainMenu::Update(void)
 	}
 	background = Color::Lerp(background, Destination, t);
 	t += 0.00001f;
+
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 
-	if (AEInputCheckTriggered(AEVK_SPACE)) {
-		for (int i = 0; i < 100; ++i) {
-			Particles::Create(Utils::GetRandomPos(), Utils::GetRandomVecVel(), Color::CreateRandomColor(), 1, 50.0f, Utils::RandomRangeFloat(0.0f, 500.0f), 50.0f, 3.0f);
-		}
-	}
 	Audio.update();
 	MainMenu::TestPlayerMovement();
 	MainMenu::TestEnemyMovement();
@@ -140,7 +136,6 @@ void MainMenu::Unload(void)
 }
 
 void MainMenu::StartGame(void) {
-	//std::cout << "Level : " << Level << std::endl;
 	if (Level == 0)
 		Level = LevelSys.GetKey();
 	gamestateNext = GS_GAMEPLAY2;

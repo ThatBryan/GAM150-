@@ -85,8 +85,15 @@ void MapInit(void)
 
 void MapUpdate()
 {
-	if (!paused)
+
+
+	if (!paused) {
 		app_time += g_dt;
+		if (IsIconic(AESysGetWindowHandle())) {
+			std::cout << "Minimized\n";
+			Utils::TogglePause();
+		}
+	}
 
 	if (AEInputCheckReleased(AEVK_R))
 	{
