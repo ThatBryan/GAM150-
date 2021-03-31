@@ -30,7 +30,6 @@ void UI::Init() {
 
 	UI::PausedInit();
 	UI::QuitInit();
-
 	FPS_Display.color.Set(Color{ 0, 0, 0, 255 });
 	LevelDisplay.color.Set(Color{0, 0, 0, 255});
 	TimerDisplay.color.Set(Color{ 0, 0, 0, 255 });
@@ -73,7 +72,6 @@ void UI::Draw() {
 
 	if (paused && !Jumperman.GetWinStatus() && !Jumperman.GetLoseStatus())
 		UI::PausedRender();
-
 }
 
 void UI::DisplayLife(short livesCount) {
@@ -151,6 +149,7 @@ void UI::PausedUnload()
 
 void UI::QuitInit()
 {
+	ScreenMid = Utils::GetScreenMiddle();
 	const size_t QuitBtnCount{ 2 };
 	const float BtnHeight{ 50.0f }, BtnWidth{ 150.0f };
 	for (size_t i = 0; i < QuitBtnCount; ++i) {
@@ -193,5 +192,4 @@ void UI::Unload()
 {
 	lives.Free();
 	UI::PausedUnload();
-	UI::QuitUnload();
 }

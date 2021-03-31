@@ -43,6 +43,7 @@ void MainMenu::Init(void)
 	MainMenu::Buttons_Init();
 	LevelSelection::Init();
 	Options::Init();
+	UI::QuitInit();
 
 	const float width = 80.0f, height = 100.0f;
 	int size = static_cast<int>(AEGetWindowWidth() / width);
@@ -63,6 +64,9 @@ void MainMenu::Init(void)
 
 void MainMenu::Update(void)
 {
+	if (AEInputCheckTriggered(AEVK_ESCAPE))
+		gamestateNext = GS_QUIT;
+
 	static float t = 0;
 	static Color Destination{ Color::CreateRandomColor() };
 	
@@ -74,8 +78,13 @@ void MainMenu::Update(void)
 	t += 0.00001f;
 
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
-
 	Audio.update();
+
+	if (DisplayQuitUI) {
+		UI::QuitUpdate();
+		return;
+	}
+
 	MainMenu::TestPlayerMovement();
 	MainMenu::TestEnemyMovement();
 	for (int i = 0; i < MenuBtn.size(); ++i) {
@@ -84,12 +93,10 @@ void MainMenu::Update(void)
 	player[0].sprite.rotation += 100.0f * g_dt;
 	Particles::Update();
 
-	if (AEInputCheckTriggered(AEVK_ESCAPE))
-		gamestateNext = GS_QUIT;
-
 }
 
 void MainMenu::Render() {
+
 	for (int i = 0; i < tiles.size(); ++i) {
 		tiles[i].image.Draw_Texture(255.0f);
 	}
@@ -102,6 +109,9 @@ void MainMenu::Render() {
 
 	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - AEGetWindowHeight() / 3));
 	Particles::Render();
+
+	if (DisplayQuitUI)
+		UI::QuitRender();
 }
 
 void MainMenu::Load(void)
@@ -132,6 +142,7 @@ void MainMenu::Unload(void)
 	player.clear();
 	tiles.clear();
 	Options::Unload();
+	UI::QuitUnload();
 	EnemyCount = 0;
 }
 
@@ -141,7 +152,7 @@ void MainMenu::StartGame(void) {
 	gamestateNext = GS_GAMEPLAY2;
 }
 void MainMenu::QuitGame(void) {
-	gamestateNext = GS_QUIT;
+	Utils::ToggleQuitUI();
 }
 
 void MainMenu::Buttons_Init() {
