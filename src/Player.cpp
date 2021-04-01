@@ -50,6 +50,7 @@ void Player::Reset(void)
 	lose = false;
 	active = true;
 	sprite.pos = startingPos;
+	sprite.Set_Texture(playerTex);
 	jumpvel = player_jumpvel;
 	chargedjumpvel = player_chargedjumpvel;
 	chargedjump_counter = player_chargedjump_counter;
@@ -68,10 +69,15 @@ void Player::Update() {
 }
 void Player::Render(void)
 {
-	if(Mesh::PlayerCurr == Mesh::Anim)
-		sprite.Draw_Texture(30, playerTex, Mesh::PlayerCurr, 255.0f);
+	if (Mesh::PlayerCurr == Mesh::Anim)
+	{
+		sprite.Set_Texture(playerTex);
+	}
 	else if (Mesh::PlayerCurr == Mesh::Anim2)
-		sprite.Draw_Texture(30, playerMovTex, Mesh::PlayerCurr, 255.0f);
+	{
+		sprite.Set_Texture(playerMovTex);
+	}
+	sprite.Draw_Texture(30, Mesh::PlayerCurr, 255.0f);
 	UI::DisplayLife(hp.current);
 
 	if (DebugMode) {

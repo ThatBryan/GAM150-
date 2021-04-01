@@ -24,8 +24,9 @@ class Image
 	inline void Free(void) { if(pTex) AEGfxTextureUnload(pTex);}
 
 	// Draw to class member pos.
+	void Set_Texture(AEGfxTexture* texture);
 	void Draw_Texture(const f32 alpha, const f32 r = 255.0f, const f32 g = 255.0f, const f32 b = 255.0f, const f32 alpha2 = 255.0f);
-	void Draw_Texture(int counter, AEGfxTexture* texture, AEGfxVertexList* mesh, const f32 alpha, const f32 r = 255.0f, const f32 g = 255.0f, const f32 b = 255.0f, const f32 alpha2 = 255.0f);
+	void Draw_Texture(int counter, AEGfxVertexList* mesh, const f32 alpha, const f32 r = 255.0f, const f32 g = 255.0f, const f32 b = 255.0f, const f32 alpha2 = 255.0f);
 
 	// Draw to param position.
 	void Draw_Texture(AEVec2 pos, const f32 alpha, const f32 r = 255.0f, const f32 g = 255.0f, const f32 b = 255.0f, const f32 alpha2 = 255.0f);

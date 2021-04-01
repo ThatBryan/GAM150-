@@ -220,7 +220,7 @@ void Gameplay::Restart()
 	enemies.clear();
 	tileManager.clear();
 	Jumperman.Reset();
-	Jumperman.sprite.Free();
+	//Jumperman.sprite.Free();
 	app_time = 0;
 	paused = false;
 	UI::Unload();

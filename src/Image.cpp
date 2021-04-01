@@ -65,7 +65,7 @@ void Image::Draw_Texture(const f32 alpha, const f32 r, const f32 g, const f32 b,
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 //
-void Image::Draw_Texture(int counter, AEGfxTexture* texture, AEGfxVertexList* mesh, const f32 alpha, const f32 r, const f32 g, const f32 b, const f32 a)
+void Image::Draw_Texture(int counter, AEGfxVertexList* mesh, const f32 alpha, const f32 r, const f32 g, const f32 b, const f32 a)
 {
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
@@ -76,7 +76,9 @@ void Image::Draw_Texture(int counter, AEGfxTexture* texture, AEGfxVertexList* me
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	/*if (Mesh::PlayerCurr == Mesh::Anim)
 	{*/
-		pTex = texture;
+	if (pTex)
+	{
+		//pTex = texture;
 		++count;
 		if (count < counter)
 		{
@@ -94,6 +96,7 @@ void Image::Draw_Texture(int counter, AEGfxTexture* texture, AEGfxVertexList* me
 		{
 			objtexX = 0.0f;
 		}
+	}
 	/*}*/
 
 	/*if (Mesh::PlayerCurr == Mesh::Rect)
@@ -114,5 +117,10 @@ void Image::Draw_Texture(AEVec2 Pos, const f32 alpha, const f32 r, const f32 g, 
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
+}
+
+void Image::Set_Texture(AEGfxTexture* texture)
+{
+	this->pTex = texture;
 }
 
