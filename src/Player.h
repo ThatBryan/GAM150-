@@ -26,6 +26,7 @@ private:
 	void Update_Position(void);
 	void CheckOutOfBound(void);
 	void ChangeDirection(void);
+	void Respawn(void);
 
 public:
 	static AEGfxTexture* playerTex;
