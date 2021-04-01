@@ -85,6 +85,7 @@ void Graphics::Free() {
 	AEGfxMeshFree(Mesh::Circle);
 	AEGfxMeshFree(Mesh::Anim);
 	AEGfxMeshFree(Mesh::Anim2);
+	//AEGfxMeshFree(Mesh::PlayerCurr);
 }
 
 AEGfxVertexList* Graphics::Mesh_Rectangle(void)

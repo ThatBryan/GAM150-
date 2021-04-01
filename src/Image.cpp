@@ -26,6 +26,17 @@ void Image::Init(const char* pFile, const f32 Width, const f32 Height, const AEV
 	rotation = Rotation;
 }
 
+void Image::Set(const AEGfxTexture* texture, const f32 Width, const f32 Height, const AEVec2 Pos, 
+	AEGfxVertexList* Mesh, const f32 Rotation) {
+	pTex = const_cast<AEGfxTexture*>(texture);
+	AE_ASSERT_MESG(pTex, "Failed to create texture!");
+	pMesh = const_cast<AEGfxVertexList*>(Mesh);
+	width = Width;
+	height = Height;
+	pos = Pos;
+	rotation = Rotation;
+}
+
 void Image::SetMatrix(void)
 {
 	static f32 HalfWinHeight, HalfWinWindow;

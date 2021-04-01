@@ -86,7 +86,7 @@ void Player::Render(void)
 }
 void Player::LoadTex(void) {
 	playerTex = AEGfxTextureLoad(FP::PlayerSpriteSheetIdle);
-	playerMovTex = AEGfxTextureLoad(FP::WaterSlimeSprite);
+	playerMovTex = AEGfxTextureLoad(FP::PlayerSpriteSheetIdle);
 	AE_ASSERT_MESG(playerTex, "Failed to create texture!");
 	AE_ASSERT_MESG(playerMovTex, "Failed to create texture!");
 }
@@ -283,7 +283,8 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 
 void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, const f32 height)
 {
-	player.sprite.Init(FP::PlayerSpriteSheetIdle, width, height, pos, Mesh::PlayerCurr);
+	player.sprite.Set(playerTex, width, height, pos, Mesh::PlayerCurr);
+
 	player.startingPos = pos;
 	player.sprite.pos = pos;
 

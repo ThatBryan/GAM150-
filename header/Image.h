@@ -16,6 +16,7 @@ class Image
 	Image(const AEGfxTexture* pTex, AEGfxVertexList* Mesh, const f32 width, const f32 height, const f32 dir = 0); //ctor
 	Image();
 	void Init(const char* pFile, const f32 width, const f32 height, const AEVec2 pos, AEGfxVertexList* = Mesh::Rect, const f32 rotation = 0);
+	void Set(const AEGfxTexture* texture, const f32 width, const f32 height, const AEVec2 pos, AEGfxVertexList* mesh, const f32 rotation = 0);
 	Color color;
 	f32 height, width, rotation;
 	AEVec2 pos;
