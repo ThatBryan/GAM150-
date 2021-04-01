@@ -56,7 +56,6 @@ void MapInit(void)
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::JUMPERMAN))
 			{
-				// Do smth later
 				Player::CreatePlayer(Jumperman, AEVec2Set(j * grid_width, i * grid_height), player_width, player_height);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SLIME))
