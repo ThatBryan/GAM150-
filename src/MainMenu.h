@@ -35,8 +35,9 @@ namespace LevelSelection{
 	void Render(void);
 }
 
-namespace Settings {
+namespace Options {
 	void Init();
 	void Update();
 	void Render();
+	void Unload();
 }

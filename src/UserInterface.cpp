@@ -12,22 +12,25 @@
 #include "MainMenu.h"
 #include "Player.h"
 
-char strBuffer[100];
-char strBuffer1[100];
-char strBuffer2[100];
-Graphics::Text FPS_Display(strBuffer, 0.5f);
-Graphics::Text LevelDisplay(strBuffer1, 0.5f);
-Graphics::Text TimerDisplay(strBuffer2, 0.5f);
+static char strBuffer[100];
+static char strBuffer1[100];
+static char strBuffer2[100];
+static Graphics::Text FPS_Display(strBuffer, 0.5f);
+static Graphics::Text LevelDisplay(strBuffer1, 0.5f);
+static Graphics::Text TimerDisplay(strBuffer2, 0.5f);
 
-static std::vector <Button> buttonTest;
+static std::vector <Button> PausedBtn;
+static std::vector <Button> QuitBtn;
+static Graphics::Text QuitText;
+static AEVec2 ScreenMid;
+static Image lives;
 
 extern Player Jumperman;
-Image lives;
 
 void UI::Init() {
 
-	UI::Buttons_Init();
-
+	UI::PausedInit();
+	UI::QuitInit();
 	FPS_Display.color.Set(Color{ 0, 0, 0, 255 });
 	LevelDisplay.color.Set(Color{0, 0, 0, 255});
 	TimerDisplay.color.Set(Color{ 0, 0, 0, 255 });
@@ -39,7 +42,7 @@ void UI::Init() {
 	lives.Init(FP::HeartSprite, 35.0f, 35.0f, AEVec2Zero());
 }
 
-const size_t pauseButtonIdx{ 2 };
+const size_t pauseButtonIdx{ 1 };
 void UI::Update() {
 
 	sprintf_s(strBuffer, "FPS: %.2f", AEFrameRateControllerGetFrameRate());
@@ -52,15 +55,9 @@ void UI::Update() {
 
 	Utils::CheckDebugMode();
 
-	if (!paused)
-		for (size_t i = 0; i < pauseButtonIdx; ++i) {
-			buttonTest[i].Update();
-		}
-	else if (paused && !Jumperman.GetLoseStatus() && !Jumperman.GetWinStatus()) {
-		for (size_t i = pauseButtonIdx; i < buttonTest.size(); ++i) {
-			buttonTest[i].Update();
-		}
-	}
+	if (paused && !Jumperman.GetWinStatus() && !Jumperman.GetLoseStatus())
+		UI::PausedUpdate();
+
 	UI::Draw();
 }
 
@@ -70,35 +67,12 @@ void UI::Draw() {
 	//if (DebugMode)
 	AEVec2 Pos{ LevelDisplay.GetBufferSize() };
 	AEVec2 Pos2{ TimerDisplay.GetBufferSize() };
+
 	TimerDisplay.Draw_Wrapped(AEVec2Set(AEGetWindowWidth() - Pos2.x / 2.0f, Pos2.y / 2.0f));
 	LevelDisplay.Draw_Wrapped(AEVec2Set(Pos.x / 2.0f, Pos.y / 2.0f));
 
-}
-
-void UI::Buttons_Init() {
-	const float buttonWidth{ 100.0f }, buttonHeight{ 50.0f };
-
-	AEVec2 Midpt{ Utils::GetScreenMiddle() };
-
-	for (size_t i = 0; i < 4; ++i) {
-		buttonTest.push_back(Button(ButtonType::Color, buttonWidth, buttonHeight, 0.5f));
-	}
-
-	buttonTest[0].Set_Position(AEVec2{ Midpt.x - buttonTest[0].GetWidth(), buttonTest[0].GetHeight() / 2.0f });
-	buttonTest[0].Set_Text("Pause");
-	buttonTest[0].Set_Callback(Test_Callback);
-
-	buttonTest[1].Set_Position(AEVec2{ Midpt.x + buttonTest[0].GetWidth(), buttonTest[1].GetHeight() / 2.0f });
-	buttonTest[1].Set_Callback(Mute_BGM);
-	buttonTest[1].Set_Text("Mute BGM");
-
-	buttonTest[2].Set_Text("Resume");
-	buttonTest[2].Set_Callback(Utils::TogglePause);
-	buttonTest[2].Set_Position(AEVec2{ Midpt.x - buttonTest[2].GetWidth(), Midpt.y + buttonTest[2].GetHeight() * 2});
-
-	buttonTest[3].Set_Text("Menu");
-	buttonTest[3].Set_Callback(Utils::ReturnToMenu);
-	buttonTest[3].Set_Position(AEVec2{ Midpt.x + buttonTest[2].GetWidth(), Midpt.y + buttonTest[3].GetHeight() * 2});
+	if (paused && !Jumperman.GetWinStatus() && !Jumperman.GetLoseStatus())
+		UI::PausedRender();
 }
 
 void UI::DisplayLife(short livesCount) {
@@ -107,9 +81,117 @@ void UI::DisplayLife(short livesCount) {
 	}
 }
 
+void UI::PausedInit()
+{
+	ScreenMid = Utils::GetScreenMiddle();
+
+	const size_t btnCount{6};
+	const float BtnHeight{ 50.0f }, BtnWidth{ 150.0f };
+	static const float WindHeight{ static_cast<float>(AEGetWindowHeight()) };
+	for (size_t i = 0; i < btnCount; ++i) {
+		PausedBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.45f));
+	}
+	PausedBtn[0].Set_Callback(Utils::TogglePause);
+	PausedBtn[0].Set_Text("Resume");
+
+	PausedBtn[1].Set_Callback(AudioManager::ToggleMuteAll);
+	PausedBtn[2].Set_Callback(Utils::ToggleFullscreen);
+
+	PausedBtn[3].Set_Text("Exit to Main Menu");
+	PausedBtn[3].Set_Callback(Utils::ReturnToMenu);
+
+	PausedBtn[4].Set_Text("Quit Game");
+	PausedBtn[4].Set_Callback(Utils::ToggleQuitUI);
+
+	PausedBtn[5].Set_Text("Restart Level");
+	PausedBtn[5].Set_Callback(Utils::RestartLevel);
+
+
+	const float PosY{ WindHeight - BtnHeight / 2.0f };
+
+	for (size_t i = 0; i < btnCount - 2; ++i) {
+		PausedBtn[i].Set_Position(AEVec2Set(BtnWidth / 4.0f + BtnWidth / 2.0f + BtnWidth * i * 1.3f, PosY - BtnHeight * 1.2f ));
+	}
+
+	PausedBtn[4].Set_Position(AEVec2Set(PausedBtn[2].GetPosX(), PosY));
+	PausedBtn[5].Set_Position(AEVec2Set(PausedBtn[1].GetPosX(), PosY));
+}
+
+void UI::PausedUpdate()
+{
+	AudioManager::GetGlobalMute() == true ? PausedBtn[1].Set_Text("Unmute") : PausedBtn[1].Set_Text("Mute");
+	Utils::GetFullscreenStatus() == true ? PausedBtn[2].Set_Text("Windows Mode") : PausedBtn[2].Set_Text("Fullscreen");
+
+	if (!DisplayQuitUI) {
+		for (size_t i = 0; i < PausedBtn.size(); ++i) {
+			PausedBtn[i].Update();
+		}
+	}
+
+	if (DisplayQuitUI)
+		UI::QuitUpdate();
+}
+
+void UI::PausedRender()
+{
+	if (!DisplayQuitUI) {
+		for (size_t i = 0; i < PausedBtn.size(); ++i) {
+			PausedBtn[i].Render();
+		}
+	}
+	if (DisplayQuitUI)
+		UI::QuitRender();
+}
+
+void UI::PausedUnload()
+{
+	PausedBtn.clear();
+}
+
+void UI::QuitInit()
+{
+	ScreenMid = Utils::GetScreenMiddle();
+	const size_t QuitBtnCount{ 2 };
+	const float BtnHeight{ 50.0f }, BtnWidth{ 150.0f };
+	for (size_t i = 0; i < QuitBtnCount; ++i) {
+		QuitBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));
+	}
+	QuitBtn[0].Set_Text("Cancel");
+	QuitBtn[0].Set_Callback(Utils::ToggleQuitUI);
+	QuitBtn[0].Set_Position(AEVec2Set(ScreenMid.x - BtnWidth, ScreenMid.y + 50.0f));
+
+	QuitBtn[1].Set_Text("Quit");
+	QuitBtn[1].Set_Callback(Utils::ExitGame);
+	QuitBtn[1].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth, ScreenMid.y + 50.0f));
+
+	QuitText.SetText("Do you want to exit the game?");
+	QuitText.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	QuitText.SetScale(1.0f);
+}
+
+void UI::QuitUpdate()
+{
+	for (size_t i = 0; i < QuitBtn.size(); ++i) {
+		QuitBtn[i].Update();
+	}
+}
+
+void UI::QuitRender()
+{
+	for (size_t i = 0; i < QuitBtn.size(); ++i) {
+		QuitBtn[i].Render();
+	}
+	QuitText.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - 50.0f));
+}
+
+void UI::QuitUnload()
+{
+	QuitBtn.clear();
+}
 
 void UI::Unload()
 {
-	buttonTest.clear();
 	lives.Free();
+	UI::PausedUnload();
+	QuitBtn.clear();
 }

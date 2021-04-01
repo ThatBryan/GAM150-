@@ -7,7 +7,7 @@
 #include "Utilities.h"
 #include "Player.h"
 #include "Button.h"
-#include "Overlay.h"
+#include "Background.h"
 #include "GameStateManager.h"
 #include "Particles.h"
 #include <iostream>
@@ -25,10 +25,10 @@ extern AudioData soundData[static_cast<int>(AudioID::Max)];
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
 extern AEVec2 EnemySizeArray[static_cast<int>(EnemySizes::MAX)];
 
-void MapInit(void)
+
+void Gameplay::Init(void)
 {
 	DialogueID = 0;
-	float Offset = 35.0f;
 	f32 grid_height{ static_cast<f32>(AEGetWindowHeight() / Map_Height) }, grid_width{ static_cast<f32>(AEGetWindowWidth() / Map_Width) };
 	for (int i = 0; i < Map_Height; ++i)
 	{
@@ -56,32 +56,22 @@ void MapInit(void)
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::JUMPERMAN))
 			{
-				// Do smth later
 				Player::CreatePlayer(Jumperman, AEVec2Set(j * grid_width, i * grid_height), player_width, player_height);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SLIME))
-			{	// Testing reading enemy size from file.
-				if (Level == 1 || Level == 2 || Level == 5 ||Level == 6 || Level == 9)
-					Enemies::AddNew(enemies, EnemyType::Slime, AEVec2Set(j * grid_width, i * grid_height), 
-						EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].x, EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].y);
-				else
-					Enemies::AddNew(enemies, EnemyType::Slime, AEVec2Set(j * grid_width, i * grid_height), enemy_width, enemy_height);
+			{	
+				Enemies::AddNew(enemies, EnemyType::Slime, AEVec2Set(j * grid_width, i * grid_height), 
+					EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].x, EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].y);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::BAT))
 			{
-				if (Level == 1 || Level == 2 || Level == 5 || Level == 6 || Level == 9)
-					Enemies::AddNew(enemies, EnemyType::Bat, AEVec2Set(j * grid_width, i * grid_height),
-						EnemySizeArray[static_cast<int>(EnemySizes::BAT)].x, EnemySizeArray[static_cast<int>(EnemySizes::BAT)].y);
-				else
-					Enemies::AddNew(enemies, EnemyType::Bat, AEVec2Set(j * grid_width + Offset, i * grid_height + Offset), enemy_width,  bat_height);
+				Enemies::AddNew(enemies, EnemyType::Bat, AEVec2Set(j * grid_width, i * grid_height),
+					EnemySizeArray[static_cast<int>(EnemySizes::BAT)].x, EnemySizeArray[static_cast<int>(EnemySizes::BAT)].y);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SQUIRREL))
 			{
-				if (Level == 1 || Level == 2 || Level == 5 || Level == 6 || Level == 9)
-					Enemies::AddNew(enemies, EnemyType::Squirrel, AEVec2Set(j * grid_width, i * grid_height),
-						EnemySizeArray[static_cast<int>(EnemySizes::SQUIRREL)].x, EnemySizeArray[static_cast<int>(EnemySizes::SQUIRREL)].y);
-				else
-				Enemies::AddNew(enemies, EnemyType::Squirrel, AEVec2Set(j * grid_width, i * grid_height), enemy_width, squirrel_height);
+				Enemies::AddNew(enemies, EnemyType::Squirrel, AEVec2Set(j * grid_width, i * grid_height),
+					EnemySizeArray[static_cast<int>(EnemySizes::SQUIRREL)].x, EnemySizeArray[static_cast<int>(EnemySizes::SQUIRREL)].y);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::DIALOGUE))
 			{
@@ -90,13 +80,21 @@ void MapInit(void)
 		}
 	}
 	tileManager.push_back(&tilemap);
+
 	UI::Init();
 }
 
-void MapUpdate()
+void Gameplay::Update()
 {
-	if (!paused)
+
+	Background::Update();
+	if (!paused) {
 		app_time += g_dt;
+		if (IsIconic(AESysGetWindowHandle())) {
+			std::cout << "Minimized\n";
+			Utils::TogglePause();
+		}
+	}
 
 	if (AEInputCheckReleased(AEVK_R))
 	{
@@ -105,10 +103,10 @@ void MapUpdate()
 	UpdateManager();
 	Audio.update();
 	if (AEInputCheckReleased(AEVK_ESCAPE))
-		Utils::ReturnToMenu();
+		Utils::TogglePause();
 }
 
-void MapRender()
+void Gameplay::Render()
 {
 	for (size_t i = 0; i < tilemap.size(); ++i)
 	{
@@ -121,13 +119,13 @@ void MapRender()
 	{
 		enemies[j].Draw();
 	}
-	Overlay::Render(Jumperman);
+	Background::Render(Jumperman);
 	UI::Draw();
 	Particles::Render();
 	UI::Update();
 }
 
-void MapLoad()
+void Gameplay::Load()
 {
 	switch (Level)
 	{
@@ -190,11 +188,11 @@ void MapLoad()
 	AudioManager::SetVolume(AudioID::Jump, 0.2f);
 	AudioManager::SetVolume(AudioID::BGM, 0.2f);
 	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
-	Overlay::Load();
-	Overlay::Init();
+	Background::Load();
+	Background::Init();
 }
 
-void MapUnload()
+void Gameplay::Unload()
 {
 	Tiles::Unload();
 	Enemies::Unload();
@@ -202,10 +200,10 @@ void MapUnload()
 	Particles::Unload();
 	AudioManager::unloadAsset();
 	FreeMapData();
-	Overlay::Unload();
+	Background::Unload();
 }
 
-void MapRestart()
+void Gameplay::Restart()
 {
 	Tiles::Reset(tilemap);
 	Enemies::Reset(enemies);
@@ -219,16 +217,16 @@ void MapRestart()
 	UI::Unload();
 }
 
-void UpdateManager()
+void Gameplay::UpdateManager()
 {
 	if (!paused && !Jumperman.GetLoseStatus() && !Jumperman.GetWinStatus()) {
 		Jumperman.Update();
 		
 		Tiles::CollapsingManager(tileManager);
-		Tiles::CheckPlayerGravity(tileManager, Jumperman);
-		Tiles::UpdateManager(tilemap, Jumperman, enemies);
+		if (!DisableCollision)
+			Tiles::CheckPlayerGravity(tileManager, Jumperman);
 
-		Jumperman.GravityManager();
+		Tiles::UpdateManager(tilemap, Jumperman, enemies);
 		for (size_t i = 0; i < enemies.size(); i++)
 		{
 			enemies[i].Update();
@@ -238,4 +236,5 @@ void UpdateManager()
 		Jumperman.CheckEnemyCollision(enemies);
 	}
 	Particles::Update();
+
 }

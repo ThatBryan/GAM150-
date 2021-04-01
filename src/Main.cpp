@@ -100,21 +100,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			if (0 == AESysDoesWindowExist())
 				gamestateNext = GS_QUIT;
 
-			//const float target = 2.0f; //c1
-			//const float start = 0.0f; //c0
-			//static float range = target - start;
-
-			//static float t = 0.0f; //t
-			//static float current = start;
-			//
-
-			//current = current < target ? start + t * range : target;
-			//t += g_dt;
-
-
-			//printf("%f \n", current);
-
-
 			Utils::CheckFullScreenKeyInput();
 		}
 		GameStateFree(); //Resets the game state
