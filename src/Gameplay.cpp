@@ -80,13 +80,12 @@ void Gameplay::Init(void)
 		}
 	}
 	tileManager.push_back(&tilemap);
-
 	UI::Init();
+	ShowCursor(false);
 }
 
 void Gameplay::Update()
 {
-
 	Background::Update();
 	if (!paused) {
 		app_time += g_dt;

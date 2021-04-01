@@ -71,7 +71,6 @@ void Player::LoadTex(void) {
 
 void Player::Unload(void) {
 	AEGfxTextureUnload(playerTex);
-
 }
 void Player::Update_Position(void)
 {
@@ -87,9 +86,6 @@ void Player::Update_Position(void)
 	{
 		if (sprite.pos.y + sprite.height / 2 <= maxY)
 		{
-			if (sprite.pos.y - sprite.height / 2.0f <= 0)
-				jumpvel = 0;
-
 			sprite.pos.y -= jumpvel;
 			jumpvel -= 0.1f; // velocity decrease as y increases
 			if (jumpvel <= 0)
@@ -219,10 +215,16 @@ void Player::CheckOutOfBound() {
 		Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerTex);
 		if(hp.current >= 1)
 			Respawn();
+
 	}
 
 	if (sprite.pos.x - (sprite.width / 2.0f) < 0) {
 		sprite.pos.x = sprite.width / 2.0f;
+	}
+
+	if (sprite.pos.y - sprite.height / 2.0f <= 0) {
+		jumpvel = 0;
+		chargedjumpvel = 0;
 	}
 }
 void Player::GravityManager(void)
