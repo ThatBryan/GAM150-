@@ -215,10 +215,9 @@ void Player::Respawn(void)
 void Player::CheckOutOfBound() {
 	if ((sprite.pos.y - sprite.height / 2) > maxY) {
 		--hp.current;
-		Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, sprite.GetTexturePtr());
+		Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerTex);
 		if(hp.current >= 1)
 			Respawn();
-
 	}
 
 	if (sprite.pos.x - (sprite.width / 2.0f) < 0) {
@@ -273,7 +272,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 				else {
 					if (!DebugMode) {
 						--hp.current;
-						Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, sprite.GetTexturePtr());
+						Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerTex);
 						if(hp.current >= 1)
 							Respawn();
 					}

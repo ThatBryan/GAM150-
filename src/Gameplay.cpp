@@ -182,6 +182,7 @@ void Gameplay::Load()
 	Tiles::LoadTex();
 	Particles::Load();
 	Enemies::LoadTex();
+	Player::LoadTex();
 	AudioManager::loadAsset();
 	AudioManager::SetVolume(AudioID::Jump, 0.2f);
 	AudioManager::SetVolume(AudioID::BGM, 0.2f);
@@ -195,6 +196,7 @@ void Gameplay::Unload()
 	Tiles::Unload();
 	Enemies::Unload();
 	Particles::Unload();
+	Player::Unload();
 	AudioManager::unloadAsset();
 	FreeMapData();
 	Background::Unload();
