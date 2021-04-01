@@ -75,6 +75,7 @@ void Background::Update()
 {
 	LerpBackgroundColor();
 	AEGfxSetBackgroundColor(Scene.r, Scene.g, Scene.b);
+
 }
 
 void Background::Render(Player& player)
@@ -93,6 +94,7 @@ void Background::Render(Player& player)
 		text.Draw_Wrapped(text.pos);
 		for (int i = 2; i < MenuBtn.size(); ++i) {
 			MenuBtn[i].Update();
+			MenuBtn[i].Render();
 		}
 	}
 	if (player.GetWinStatus())
@@ -103,6 +105,7 @@ void Background::Render(Player& player)
 		text.Draw_Wrapped(text.pos);
 		for (int i = 0; i < 2; ++i) {
 			MenuBtn[i].Update();
+			MenuBtn[i].Render();
 		}
 		const int particleCount{ 50 };
 		static float spawnTimer{0.0f};
