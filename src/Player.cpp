@@ -45,6 +45,7 @@ void Player::Reset(void)
 {
 	Respawn();
 	hp.current = hp.max;
+	direction = SpriteDirection::Right;
 }
 
 void Player::Update() {
@@ -86,6 +87,9 @@ void Player::Update_Position(void)
 	{
 		if (sprite.pos.y + sprite.height / 2 <= maxY)
 		{
+			if (sprite.pos.y - sprite.height / 2.0f <= 0)
+				jumpvel = 0;
+
 			sprite.pos.y -= jumpvel;
 			jumpvel -= 0.1f; // velocity decrease as y increases
 			if (jumpvel <= 0)
@@ -202,7 +206,11 @@ void Player::Respawn(void)
 	chargedjump_counter = player_chargedjump_counter;
 	sprite.rotation = 0;
 	gravityMultiplier = base_gravityMultiplier;
-	direction = SpriteDirection::Right;
+
+	static const float spriteWidth{ fabsf(sprite.width) };
+	if (sprite.pos.x - (spriteWidth / 2.0f) <= 0) {
+		sprite.pos.x = spriteWidth / 2.0f;
+	}
 }
 
 void Player::CheckOutOfBound() {
@@ -261,7 +269,8 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 					if (!DebugMode) {
 						--hp.current;
 						Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerTex);
-						sprite.pos = startingPos;
+						if(hp.current >= 1)
+							Respawn();
 					}
 					if (DebugMode)
 						printf("player dies\n");
