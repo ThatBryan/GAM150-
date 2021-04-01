@@ -98,8 +98,8 @@ void MapUpdate()
 	if (!paused)
 		app_time += g_dt;
 
-	if (AEInputCheckCurr(AEVK_LEFT) || AEInputCheckCurr(AEVK_RIGHT))
-		Mesh::PlayerCurr = Mesh::Rect;
+	if (AEInputCheckCurr(AEVK_LEFT) || AEInputCheckCurr(AEVK_RIGHT) || AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_D))
+		Mesh::PlayerCurr = Mesh::Anim2;
 	else
 		Mesh::PlayerCurr = Mesh::Anim;
 

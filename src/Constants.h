@@ -90,6 +90,7 @@ namespace font {
 namespace Mesh {
 	extern AEGfxVertexList* Rect;
 	extern AEGfxVertexList* Anim;
+	extern AEGfxVertexList* Anim2;
 	extern AEGfxVertexList* Circle;
 
 	extern AEGfxVertexList* PlayerCurr;

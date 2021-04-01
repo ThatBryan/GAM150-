@@ -69,12 +69,13 @@ void Image::Draw_Texture(int counter, AEGfxTexture* texture, AEGfxVertexList* me
 {
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+	AEGfxTextureSet(pTex, 0, 0);
 	AEGfxSetTintColor(r / colorcodeMax, g / colorcodeMax, b / colorcodeMax, a / colorcodeMax);
 	AEGfxSetTransparency(alpha / colorcodeMax);
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	if (Mesh::PlayerCurr == Mesh::Anim)
-	{
+	/*if (Mesh::PlayerCurr == Mesh::Anim)
+	{*/
 		pTex = texture;
 		++count;
 		if (count < counter)
@@ -86,20 +87,20 @@ void Image::Draw_Texture(int counter, AEGfxTexture* texture, AEGfxVertexList* me
 		{
 			objtexX += 0.2f;
 			AEGfxTextureSet(pTex, objtexX, 0);		// Same object, different texture
-			printf("%.2f \n", objtexX);
+			//printf("%.2f \n", objtexX);
 			count = 0;
 		}
 		if (objtexX == 1.0f)
 		{
 			objtexX = 0.0f;
 		}
-	}
+	/*}*/
 
-	if (Mesh::PlayerCurr == Mesh::Rect)
+	/*if (Mesh::PlayerCurr == Mesh::Rect)
 	{
 		pTex = texture;
 		AEGfxTextureSet(pTex, objtexX, 0);
-	}
+	}*/
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 

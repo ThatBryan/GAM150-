@@ -53,6 +53,9 @@ void Graphics::Load_Meshes(void)
 	Mesh::Anim = Graphics::Mesh_Animation(player_idle_anim_offset_x);
 	AE_ASSERT_MESG(Mesh::Anim, "fail to create object!!");
 
+	Mesh::Anim2 = Graphics::Mesh_Animation(1.0f);
+	AE_ASSERT_MESG(Mesh::Anim2, "fail to create object!!");
+
 	Mesh::Circle = Graphics::Mesh_Circle();
 	AE_ASSERT_MESG(Mesh::Circle, "fail to create object!!");
 }
@@ -62,6 +65,7 @@ void Graphics::Free() {
 	AEGfxMeshFree(Mesh::Rect);
 	AEGfxMeshFree(Mesh::Circle);
 	AEGfxMeshFree(Mesh::Anim);
+	AEGfxMeshFree(Mesh::Anim2);
 }
 
 AEGfxVertexList* Graphics::Mesh_Rectangle(void)

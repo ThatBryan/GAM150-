@@ -67,9 +67,9 @@ void Player::Update() {
 }
 void Player::Render(void)
 {
-	if(Mesh::PlayerCurr = Mesh::Anim)
+	if(Mesh::PlayerCurr == Mesh::Anim)
 		sprite.Draw_Texture(30, playerTex, Mesh::PlayerCurr, 255.0f);
-	if (Mesh::PlayerCurr = Mesh::Rect)
+	else if (Mesh::PlayerCurr == Mesh::Anim2)
 		sprite.Draw_Texture(30, playerMovTex, Mesh::PlayerCurr, 255.0f);
 	UI::DisplayLife(hp.current);
 

@@ -73,6 +73,7 @@ namespace Mesh {
 	AEGfxVertexList* Rect = nullptr;
 	AEGfxVertexList* Circle = nullptr;
 	AEGfxVertexList* Anim = nullptr;
+	AEGfxVertexList* Anim2 = nullptr;
 
 	AEGfxVertexList* PlayerCurr = nullptr;
 }
