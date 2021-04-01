@@ -6,6 +6,8 @@ namespace FilePaths {
 	const char* Guide3 = "./Assets/Art/Guide3.png";
 	const char* Guide4 = "./Assets/Art/Guide4.png";
 	const char* Guide5 = "./Assets/Art/Guide5.png";
+	const char* Guide6 = "./Assets/Art/Guide6.png";
+
 	const char* DigipenLogoRed = "./Assets/Logo/DigiPen_RED.png";
 	const char* DigipenLogoWhite = "./Assets/Logo/DigiPen_WHITE.png";
 	const char* PauseOverlay = "./Assets/Art/pause_temp.png";
@@ -25,10 +27,14 @@ namespace FilePaths {
 	const char* ButtonTest2 = "./Assets/Art/PlanetTexture.png";
 	const char* boi = "./Assets/Art/boi.png";
 	const char* HeartSprite = "./Assets/Art/Heart.png";
+
 	const char* jumpSFX = "./Assets/Audio/SFX/powerup.wav";
 	const char* GameplayBGM = "./Assets/Audio/BGM/gg.wav";
 }
+
+// Level tracker
 unsigned short Level{ 0 };
+
 // Player constants
 const float player_speed = 150.0f;
 const float player_width = 45.0f;
@@ -57,14 +63,15 @@ unsigned short DialogueID = 0;
 // Enemy stuff
 short EnemyCount = 1;
 
-//Utility constants
+//Color constants
 const float colorcodeMax = 255.0f;
 
-// Graphics
+// Font
 namespace font {
 	char ID = 0;
 }
 
+// Base meshes
 namespace Mesh {
 	AEGfxVertexList* Rect = nullptr;
 	AEGfxVertexList* Circle = nullptr;
@@ -75,5 +82,7 @@ namespace Mesh {
 bool paused = false;
 bool DebugMode = false;
 bool fullscreen = false;
+bool DisplayQuitUI = false;
+bool DisableCollision = false;
 float g_dt = 0;
 float app_time = 0;

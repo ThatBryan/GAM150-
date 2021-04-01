@@ -69,7 +69,7 @@ void AudioManager::SetMute(AudioID ID) {
 	soundData[static_cast<int>(ID)].channel->setMute(soundData[static_cast<int>(ID)].mute);
 }
 
-void AudioManager::MuteAll()
+void AudioManager::ToggleMuteAll()
 {
 	globalMute = !globalMute;
 	for (AudioID i = static_cast<AudioID>(0); i < AudioID::Max; ++i) {

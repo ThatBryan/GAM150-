@@ -100,7 +100,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			if (0 == AESysDoesWindowExist())
 				gamestateNext = GS_QUIT;
 
-
 			Utils::CheckFullScreenKeyInput();
 		}
 		GameStateFree(); //Resets the game state

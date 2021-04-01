@@ -21,7 +21,7 @@ float Player::gravityStrength = 20.0f;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{ false },
 active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel },
-hp(), direction{ MovementState::Right }, chargedjumpvel{ player_chargedjumpvel }, gravityMultiplier{ base_gravityMultiplier }, 
+hp(), direction{ SpriteDirection::Right }, chargedjumpvel{ player_chargedjumpvel }, gravityMultiplier{ base_gravityMultiplier }, 
 chargedjump_counter{ player_chargedjump_counter }, collider()
 {
 	maxY = static_cast<f32>(AEGetWindowHeight());
@@ -32,7 +32,7 @@ chargedjump_counter{ player_chargedjump_counter }, collider()
 
 Player::Player() : lose{ false }, active{ true }, gravity{ false }, jump{ false }, chargedjump{ false },
 win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel }, chargedjumpvel{ player_chargedjumpvel },
-hp(), direction{ MovementState::Right }, gravityMultiplier{ base_gravityMultiplier }, chargedjump_counter{player_chargedjump_counter }
+hp(), direction{ SpriteDirection::Right }, gravityMultiplier{ base_gravityMultiplier }, chargedjump_counter{player_chargedjump_counter }
 , collider(){
 
 	maxY = static_cast<f32>(AEGetWindowHeight());
@@ -55,7 +55,7 @@ void Player::Reset(void)
 	hp.current = hp.max;
 	sprite.rotation = 0;
 	gravityMultiplier = base_gravityMultiplier;
-	direction = MovementState::Right;
+	direction = SpriteDirection::Right;
 }
 
 void Player::Update() {
@@ -63,6 +63,7 @@ void Player::Update() {
 	Update_Position();
 	if (hp.current <= 0)
 		SetPlayerLose();
+	GravityManager();
 }
 void Player::Render(void)
 {
@@ -112,7 +113,7 @@ void Player::Update_Position(void)
 		AEVec2 Min = AEVec2Sub(collider.bottom.pos, AEVec2{ sprite.width, 25.0f});
 		AEVec2 Max = AEVec2Add(collider.bottom.pos, AEVec2{ sprite.width, 25.0f});
 		AEVec2 Destination = AEVec2Add(sprite.pos, AEVec2{ 0, sprite.height / 2.0f });
-		Particles::CreateReverseParticles(Destination, Min, Max, Color{ 255.0f, 255.0f, 0, 255.0f}, 1, Utils::RandomRangeFloat(10.0f, 100.0f), 50.0f, 2.5f, 1.0f);
+		Particles::CreateReverseParticles(Destination, Min, Max, Color{ 255.0f, 255.0f, 0, 255.0f}, 1, Utils::RandomRangeFloat(10.0f, 100.0f), 50.0f, 3.0f, 1.0f);
 		//std::cout << Particles::GetContainerSize() << std::endl;
 	}
 
@@ -128,11 +129,16 @@ void Player::Update_Position(void)
 			sprite.pos.y -= chargedjumpvel;
 
 			chargedjumpvel -= 0.2f; // velocity decrease as y increases
-			if (chargedjumpvel < -player_chargedjumpvel)
+			if (chargedjumpvel < 0.0f)
 			{
 				chargedjump = false;
 				chargedjumpvel = player_chargedjumpvel;
 			}
+			//if (chargedjumpvel < -player_chargedjumpvel)
+			//{
+			//	chargedjump = false;
+			//	chargedjumpvel = player_chargedjumpvel;
+			//}
 		}
 	}
 
@@ -147,9 +153,9 @@ void Player::Update_Position(void)
 		if (sprite.pos.x + sprite.width / 2 <= maxX)
 			sprite.pos.x += player_speed * g_dt;
 
-		if (direction != MovementState::Right) {
+		if (direction != SpriteDirection::Right) {
 			sprite.ReflectAboutYAxis();
-			direction = MovementState::Right;
+			direction = SpriteDirection::Right;
 		}
 
 	}
@@ -159,9 +165,9 @@ void Player::Update_Position(void)
 		if (sprite.pos.x >= 0 - sprite.width / 2.0f)
 			sprite.pos.x -= player_speed * g_dt;
 
-		if (direction != MovementState::Left) {
+		if (direction != SpriteDirection::Left) {
 			sprite.ReflectAboutYAxis();
-			direction = MovementState::Left;
+			direction = SpriteDirection::Left;
 		}
 
 	}
@@ -185,7 +191,7 @@ void Player::Update_Position(void)
 		}
 	}
 	collider.sprite.pos = sprite.pos;
-	if (direction == MovementState::Left) {
+	if (direction == SpriteDirection::Left) {
 		collider.bottom.pos = AEVec2Set(sprite.pos.x - player_collider_offset_x, sprite.pos.y + +sprite.height / 2.0f - collider.bottom.height / 2.0f);
 	}
 	else {

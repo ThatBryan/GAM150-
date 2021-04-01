@@ -19,9 +19,9 @@ AEVec2 AEVec2Set(const f32 x, const f32 y)
 	return AEVec2{ x, y };
 }
 
-const float Episilon{ 1.0f };
 bool operator==(const AEVec2& lhs, const AEVec2& rhs)
 {
+const float Episilon{ 1.0f };
 	if (fabsf(lhs.x - rhs.x) <= Episilon &&
 		fabsf(lhs.y - rhs.y) <= Episilon)
 		return true;
@@ -57,7 +57,7 @@ void Utils::ToggleFullscreen()
 	AEToogleFullScreen(fullscreen);
 }
 
-bool Utils::GetFullscreen()
+bool Utils::GetFullscreenStatus()
 {
 	return fullscreen;
 }
@@ -109,12 +109,20 @@ AEVec2 Utils::GetMousePos(void)
 void Utils::TogglePause(void)
 {
 	paused = !paused;
+	if (!paused)
+		DisplayQuitUI = false;
 }
 
 void Utils::CheckDebugMode(void)
 {
 	if (AEInputCheckTriggered(DEBUG_KEY))
 		DebugMode = !DebugMode;
+	if (DebugMode && AEInputCheckTriggered(COLLISION_OFF_KEY)) {
+		DisableCollision = !DisableCollision;
+		DisableCollision == false ? std::cout << "Collision turned on \n" : std::cout << "Collision turned off \n";
+	}
+	if (!DebugMode)
+		DisableCollision = false;
 }
 
 void Utils::ReturnToMenu(void) {
@@ -126,6 +134,20 @@ void Utils::RestartLevel(void)
 	gamestateNext = GS_RESTART;
 }
 
+void Utils::ExitGame(void)
+{
+	gamestateNext = GS_QUIT;
+}
+
+void Utils::ToggleQuitUI(void)
+{
+	DisplayQuitUI = !DisplayQuitUI;
+}
+
+float Utils::Lerp(const float start, const float end, const float t)
+{
+	return start + t * (end - start);
+}
 
 bool Utils::ColliderAABB(AEVec2 A, f32 A_width, f32 A_height, AEVec2 B, f32 B_width, f32 B_height) {
 	A_width = fabsf(A_width);

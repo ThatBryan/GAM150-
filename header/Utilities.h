@@ -8,7 +8,7 @@ namespace Utils
 	int RandomRangeInt(const s32 lowerBound, const s32 upperBound);
 	float RandomRangeFloat(const f32 lowerBound, const f32 upperBound);
 
-	// Returns half window width/height to be used for calculations.
+	// Returns half window width/height.
 	f32 Get_HalfWindowWidth(void);
 	f32 Get_HalfWindowHeight(void);
 
@@ -17,11 +17,16 @@ namespace Utils
 
 	void CheckFullScreenKeyInput(void);// Set window to full screen with L ALT + Enter.
 	void ToggleFullscreen();
-	bool GetFullscreen();
+	bool GetFullscreenStatus();
 	void TogglePause(void); 	// Press Tab to pause the game.
 	void CheckDebugMode(void);		// F1 to enter debug mode
 	void ReturnToMenu(void);
 	void RestartLevel(void);
+	void ExitGame(void);
+	void ToggleQuitUI(void);
+
+	// User has to increment t
+	float Lerp(const float start, const float end, const float t);
 
 	AEVec2 GetScreenMiddle(void);
 	AEVec2 GetRandomPos(void);

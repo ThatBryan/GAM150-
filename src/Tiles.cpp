@@ -6,11 +6,12 @@
 #include "Image.h"
 #include <array>
 #include "Utilities.h"
+#include "GameStateManager.h"
 
 static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
 
-enum GuideOverlay{Guide1 = 0, Guide2, Guide3, Guide4, Guide5, MAX_IMAGE };
+enum GuideOverlay{Guide1 = 0, Guide2, Guide3, Guide4, Guide5, Guide6, MAX_IMAGE };
 std::array <Image, GuideOverlay::MAX_IMAGE> Images;
 
 Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
@@ -157,27 +158,6 @@ void Tiles::AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, co
 	Tile.spawnPos = Tile.image.pos;
 }
 
-void Tiles::CollapseNext(std::vector <Tiles>& tiles)
-{
-	for (size_t i = 0; i < tiles.size(); i++)
-	{
-		if (tiles[i].type == TileType::Grass || tiles[i].type == TileType::Special) {
-			if (tiles[i].collapseDelay <= 0) {
-
-				if (i < tiles.size() - 1)
-				{
-					if(tiles[i + 1].type == TileType::Grass || tiles[i + 1].type == TileType::Special)
-						tiles[i + 1].isCollapsing = true;
-				}
-				if (i > 0)
-				{
-					if (tiles[i - 1].type == TileType::Grass || tiles[i - 1].type == TileType::Special)
-						tiles[i - 1].isCollapsing = true;
-				}
-			}
-		}
-	}
-}
 void Tiles::Reset(std::vector <Tiles>& tiles)
 {
 	for (size_t i = 0; i < tiles.size(); i++){
@@ -220,6 +200,7 @@ void Tiles::UpdateManager(std::vector <Tiles>& tiles, Player& ThePlayer, std::ve
 		tiles[i].Update(ThePlayer);
 	}
 }
+bool Tiles::isTutorialLevel = false;
 
 void Tiles::LoadTex() {
 	for (TileType i = TileType::Grass; i < TileType::Max; ++i) {
@@ -246,21 +227,23 @@ void Tiles::LoadTex() {
 		tileTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex);
 		AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	}
-	Images[Guide1].Init(FP::Guide1, 200.0f, 150.0f, { 0.0f, 0.0f });
-	Images[Guide2].Init(FP::Guide2, 200.0f, 150.0f, { 0.0f, 0.0f });
-	Images[Guide3].Init(FP::Guide3, 200.0f, 150.0f, { 0.0f, 0.0f });
-	Images[Guide4].Init(FP::Guide4, 200.0f, 100.0f, { 0.0f, 0.0f });
-	Images[Guide5].Init(FP::Guide5, 200.0f, 150.0f, { 0.0f, 0.0f });
+	if (Level == 1 && (gamestateCurr == GS_GAMEPLAY || gamestateCurr == GS_GAMEPLAY2)) {
+		std::cout << "Loaded Tutorial Textures\n";
+		isTutorialLevel = true;
+		LoadTutorialTexture();
+	}
+	else
+		isTutorialLevel = false;
 }
 void Tiles::Unload()
 {
-	for (size_t i = 0; i < 5; ++i) {
-		Images[i].Free();
-	}
 	for (size_t i = 0; i < static_cast<int>(TileType::Max); i++){
 		AEGfxTextureUnload(tileTex[i]);
 	}
-
+	if (isTutorialLevel) {
+		std::cout << "Freed Tutorial Textures\n";
+		FreeTutorialTexture();
+	}
 }
 TileType& operator++(TileType& rhs) {
 	rhs = static_cast<TileType>((static_cast<int>(rhs) + 1));
@@ -271,6 +254,23 @@ void Tiles::TileShake(void) {
 	AEVec2 ShakeVec = Utils::GetRandomVecVel();
 	const float ShakeStrength{ 15.0f };
 	AEVec2ScaleAdd(&image.pos, &ShakeVec, &image.pos, g_dt * ShakeStrength);
+}
+
+void Tiles::LoadTutorialTexture(void)
+{
+	Images[Guide1].Init(FP::Guide1, 200.0f, 150.0f, { 0.0f, 0.0f });
+	Images[Guide2].Init(FP::Guide2, 200.0f, 150.0f, { 0.0f, 0.0f });
+	Images[Guide3].Init(FP::Guide3, 200.0f, 150.0f, { 0.0f, 0.0f });
+	Images[Guide4].Init(FP::Guide4, 200.0f, 100.0f, { 0.0f, 0.0f });
+	Images[Guide5].Init(FP::Guide5, 200.0f, 150.0f, { 0.0f, 0.0f });
+	Images[Guide6].Init(FP::Guide6, 100.0f, 75.0f, { 0.0f, 0.0f });
+}
+
+void Tiles::FreeTutorialTexture(void)
+{
+	for (size_t i = 0; i < Images.size(); ++i) {
+		Images[i].Free();
+	}
 }
 
 void Tiles::CollapsingManager(TileMgr TileManager) {
@@ -314,7 +314,18 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 				continue;
 
 			Tiles& TheTile = TileManager[i]->at(j);
-
+			if (TheTile.type == TileType::Dialogue)
+			{
+				if (Utils::ColliderAABB(TheTile.collider.sprite.pos, TheTile.collider.sprite.width, TheTile.collider.sprite.height,
+					ThePlayer.collider.right.pos, ThePlayer.collider.right.width, ThePlayer.collider.right.height) ||
+					Utils::ColliderAABB(TheTile.collider.sprite.pos, TheTile.collider.sprite.width, TheTile.collider.sprite.height,
+						ThePlayer.collider.left.pos, ThePlayer.collider.left.width, ThePlayer.collider.left.height))
+					{
+						CreateDialogue(TileManager[i]->at(j).ID, TheTile.collider.sprite.pos);
+					}
+			}
+			if (DisableCollision)
+				return;
 			if (Utils::ColliderAABB(TheTile.collider.bottom.pos, TheTile.collider.bottom.width, TheTile.collider.bottom.height,
 				ThePlayer.collider.top.pos, ThePlayer.collider.top.width, ThePlayer.collider.top.height)){
 					ThePlayer.gravity = true;
@@ -341,18 +352,6 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 					//	printf("Right Collision\n");
 				}
 
-			if (TheTile.type == TileType::Dialogue)
-			{
-				if (Utils::ColliderAABB(TheTile.collider.sprite.pos, TheTile.collider.sprite.width, TheTile.collider.sprite.height,
-					ThePlayer.collider.right.pos, ThePlayer.collider.right.width, ThePlayer.collider.right.height) ||
-					Utils::ColliderAABB(TheTile.collider.sprite.pos, TheTile.collider.sprite.width, TheTile.collider.sprite.height,
-						ThePlayer.collider.left.pos, ThePlayer.collider.left.width, ThePlayer.collider.left.height))
-				{
-					CreateDialogue(TileManager[i]->at(j).ID, TheTile.collider.sprite.pos);
-					if(DebugMode)
-						printf("%i\n", TileManager[i]->at(j).ID);
-				}
-			}
 		}
 	}
 }
@@ -426,12 +425,12 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 	}
 }
 
-void Tiles::CreateDialogue(short count, AEVec2 tilePos)
+void Tiles::CreateDialogue(const short ID, const AEVec2 tilePos)
 {
-	switch (count)
+	switch (ID)
 	{
 		case 0:
-			Images[Guide1].Draw_Texture({tilePos.x -150.0f, tilePos.y - 60.0f}, 255.0f);
+			Images[Guide1].Draw_Texture({tilePos.x + 150.0f, tilePos.y - 60.0f}, 255.0f);
 			break;
 		case 2:
 			Images[Guide4].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 60.0f }, 255.0f);
@@ -443,7 +442,10 @@ void Tiles::CreateDialogue(short count, AEVec2 tilePos)
 			Images[Guide5].Draw_Texture({ tilePos.x + 70.0f, tilePos.y - 60.0f }, 255.0f);
 			break;
 		case 4:
-			Images[Guide3].Draw_Texture({ tilePos.x + 50.0f, tilePos.y - 80.0f }, 255.0f);
+			Images[Guide6].Draw_Texture({ tilePos.x - 70.0f, tilePos.y - 60.0f }, 255.0f);
+			break;
+		case 5:
+			Images[Guide3].Draw_Texture({ tilePos.x + 60.0f, tilePos.y - 80.0f }, 255.0f);
 			break;
 
 	}
