@@ -181,7 +181,7 @@ void Gameplay::Load()
 
 	Tiles::LoadTex();
 	Particles::Load();
-	Player::LoadTex();
+	//Player::LoadTex();
 	Enemies::LoadTex();
 	AudioManager::loadAsset();
 	AudioManager::SetVolume(AudioID::Jump, 0.2f);

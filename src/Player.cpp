@@ -70,7 +70,10 @@ void Player::LoadTex(void) {
 }
 
 void Player::Unload(void) {
-	AEGfxTextureUnload(playerTex);
+	if (playerTex) {
+		AEGfxTextureUnload(playerTex);
+		playerTex = nullptr;
+	}
 }
 void Player::Update_Position(void)
 {
