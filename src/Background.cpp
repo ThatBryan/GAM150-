@@ -86,7 +86,8 @@ void Background::Render(Player& player)
 	}
 	if (player.GetLoseStatus())
 	{
-		Utils::TogglePause();
+		if(!paused)
+			Utils::TogglePause();
 		Images[Defeat].Draw_Texture(150.0f);
 		text.SetText(const_cast<s8*>("YOU LOSE"));
 		text.Draw_Wrapped(text.pos);
@@ -96,8 +97,9 @@ void Background::Render(Player& player)
 		}
 	}
 	if (player.GetWinStatus())
-	{
-		Utils::TogglePause();
+	{	
+		if (!paused)
+			Utils::TogglePause();
 		Images[Victory].Draw_Texture(50.0f);
 		text.SetText(const_cast<s8*>("YOU WIN"));
 		text.Draw_Wrapped(text.pos);
