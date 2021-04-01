@@ -8,6 +8,6 @@ struct Collider {
 	Collider();
 	void SetMeshes();
 	void SetWidthHeight(Graphics::Rect& arg, float width, float height);
-	void SetHeight(Graphics::Rect& arg, float Height) { arg.height = Height; }
+	inline void SetHeight(Graphics::Rect& arg, float Height) { arg.height = Height; }
 	void Draw();
 };

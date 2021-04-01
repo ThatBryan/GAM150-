@@ -9,7 +9,7 @@
 #include "Collider.h"
 
 // State to track when to flip image.
-enum class MovementState { Left = 0, Right };
+enum class SpriteDirection { Left = 0, Right };
 
 // Foward declarations.
 class Enemies;
@@ -18,7 +18,7 @@ class Rect;
 class Player
 {
 private:
-	MovementState direction;
+	SpriteDirection direction;
 	Health hp;
 	bool win, lose;
 	float jumpvel, chargedjumpvel, chargedjump_counter;

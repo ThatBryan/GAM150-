@@ -17,16 +17,15 @@ class Tiles
 {
 public:
 	// Reference to a vector, containing a vector of Tiles*
-	short ID;
-
 	using TileMgr = std::vector<std::vector<Tiles>*>&;
+
 private:
 	//Graphics::Rect ColliderAABB;
 	Collider collider;
 	TileType type;
 	f64 collapseDelay;
 	bool active, isCollapsing;
-
+	static bool isTutorialLevel;
 	void DecreaseLifespan(void);
 	void Collapse(const Player& player);
 	void CheckPos(void);
@@ -34,11 +33,14 @@ private:
 	void CheckEnemyStatus(std::vector <Enemies>& enemy);
 	void Update(Player& player);
 	void TileShake(void);
+	static void LoadTutorialTexture(void);
+	static void FreeTutorialTexture(void);
 
 public:
 	Tiles(AEGfxTexture*, const f32 width, const f32 height);
 	Image image;
 	AEVec2 spawnPos;
+	short ID;
 	void Render(void);
 
 	inline bool GetActive() const { return active; }
@@ -49,6 +51,7 @@ public:
 
 	// Resets the level.
 	static void Reset(std::vector <Tiles>& tiles);
+
 	static void CollapsingManager(TileMgr TileManager);
 	static void CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy);
 	static void CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer);
@@ -58,14 +61,11 @@ public:
 	// Add single tile to a given vector.
 	static void AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, const f32 height, AEVec2 pos);
 
-	// Collapse the tile on its left and right if it is collapsible.
-	static void CollapseNext(std::vector <Tiles>& tiles);
-
 	// Handles the collision between the enemy and tiles, and enemy with player.
 	static void UpdateManager(std::vector <Tiles>& tiles, Player& player, std::vector <Enemies>& enemy);
 
 	//// Add whole new row of tile. Only for main menu.
 	static void AddTileRow(std::vector < Tiles>& tile, TileType type, const int count, const f32 width, const f32 height, const AEVec2 pos);
 
-	static void CreateDialogue(short count, AEVec2 tilePos);
+	static void CreateDialogue(const short tileID, const AEVec2 tilePos);
 };

@@ -1,6 +1,6 @@
 #pragma once
 
-// Locking / unlocking system for the level selection. Currently called from GS_SPLASH
+// Locking / unlocking system for the level selection. Currently called from GameStateMgr.cpp
 class LevelSystem {
 
 private:

@@ -16,6 +16,8 @@ struct Color
 
 	// Returns a random color
 	static Color CreateRandomColor();
+	static Color Lerp(const Color& begin, const Color& end, const float t);
+	bool operator ==(const Color& rhs);
 };
 
 

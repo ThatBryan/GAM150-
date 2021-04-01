@@ -1,4 +1,4 @@
-#include "Overlay.h"
+#include "Background.h"
 #include <array>
 #include "Image.h"
 #include "Button.h"
@@ -10,21 +10,36 @@
 #include "LevelSystem.h"
 #include "Particles.h"
 
-enum { Pause = 0, Victory, Defeat, MAX_IMAGE };
+enum ImageIndex{ Pause = 0, Victory, Defeat, MAX_IMAGE };
 
 static std::array <Image, MAX_IMAGE> Images;
-static std::vector<Button> MenuBtn;
+static std::vector<Button> MenuBtn;	Graphics::Text text;
 
 static AEVec2 Midpt;
+static Color Scene;
 
-void Overlay::Load()
+enum class SceneType { Day = 0, Noon, Nightfall, Max};
+static Color SceneColors [static_cast<int>(SceneType::Max)];
+
+SceneType& operator++(SceneType& rhs) {
+	rhs = (rhs == SceneType::Nightfall) ? SceneType::Day : SceneType((int)rhs + 1);
+	return rhs;
+}
+
+void Background::Load()
 {
 	Images[Pause].Init(FP::PauseOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 	Images[Victory].Init(FP::VictoryOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 	Images[Defeat].Init(FP::GameoverOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+
+	SceneColors[static_cast<int>(SceneType::Day)] = Color{ 51.0f, 215.0f, 255.0f, 255.0f };
+	SceneColors[static_cast<int>(SceneType::Noon)] = Color{ 255.0f, 175.0f, 51.0f, 255.0f };
+	SceneColors[static_cast<int>(SceneType::Nightfall)] = Color{ 100.0f, 149.0f, 237.0f, 255.0f };
+
+	Scene.Set(SceneColors[static_cast<int>(SceneType::Day)]);
 }
 
-void Overlay::Init()
+void Background::Init()
 {
 	for (int i = 0; i < 4; ++i) {
 		MenuBtn.push_back(Button(ButtonType::Color, 150.0f, 75.0f, 0.8f));
@@ -32,7 +47,6 @@ void Overlay::Init()
 
 	MenuBtn[0].Set_Callback(Utils::ReturnToMenu);
 	MenuBtn[0].Set_Text("Menu");
-
 
 	MenuBtn[1].Set_Text("Next Level");
 	MenuBtn[1].Set_Callback(LevelSystem::SetNextLevel);
@@ -52,20 +66,20 @@ void Overlay::Init()
 			MenuBtn[i].Set_Position(AEVec2{ Midpt.x - MenuBtn[i].GetWidth(), Midpt.y * 2 - MenuBtn[i].GetHeight() / 2.0f });
 	}
 
-}
-
-void Overlay::Update()
-{
-}
-
-void Overlay::Render(Player& player)
-{
-	Graphics::Text text;
-	text.SetPos(Utils::GetScreenMiddle());
+	text.SetPos(AEVec2Set(Midpt.x, Midpt.y + 100.0f));
 	text.SetColor(Color{ 0, 0, 0, 255.0f });
-	text.SetScale(2.0f);
+	text.SetScale(1.0f);
+}
 
-	if (paused && player.active && !player.GetWinStatus())
+void Background::Update()
+{
+	LerpBackgroundColor();
+	AEGfxSetBackgroundColor(Scene.r, Scene.g, Scene.b);
+}
+
+void Background::Render(Player& player)
+{
+	if (!DisplayQuitUI && (paused && player.active && !player.GetWinStatus()))
 	{
 		Images[Pause].Draw_Texture(100.0f);
 		text.SetText(const_cast<s8*>("PAUSED"));
@@ -104,11 +118,25 @@ void Overlay::Render(Player& player)
 	}
 }
 
-void Overlay::Unload()
+void Background::Unload()
 {
 	for (size_t i = 0; i < Images.size(); ++i) {
 		Images[i].Free();
 	}
 	MenuBtn.clear();
+}
+void Background::LerpBackgroundColor(void)
+{
+	static float t = 0;
+	static SceneType Identifier = SceneType::Noon;
+	static Color Destination = SceneColors[static_cast<int>(Identifier)];
+
+	if (Scene == Destination) {
+		++Identifier;
+		Destination = SceneColors[static_cast<int>(Identifier)];
+		t = 0;
+	}
+	Scene = Color::Lerp(Scene, Destination, t);
+	t += 0.000005f;
 }
 

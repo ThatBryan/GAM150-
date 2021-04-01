@@ -2,10 +2,11 @@
 
 class Player;
 
-namespace Overlay {
+namespace Background {
 	void Load();
 	void Init();
 	void Update();
 	void Render(Player& player);
 	void Unload();
+	void LerpBackgroundColor(void);
 }

@@ -116,13 +116,3 @@ void Image::Draw_Texture(AEVec2 Pos, const f32 alpha, const f32 r, const f32 g, 
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
-void Image::Draw_Color(const f32 r, const f32 g, const f32 b, const f32 alpha)
-{
-	SetMatrix();
-	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	AEGfxSetTintColor(r / colorcodeMax, g / colorcodeMax, b / colorcodeMax, alpha / colorcodeMax);
-	AEGfxSetTransparency(alpha / colorcodeMax);
-	AEGfxSetTransform(transformMtx.m);
-	AEGfxSetBlendMode(AE_GFX_BM_NONE);
-	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
-}

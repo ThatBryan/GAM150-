@@ -1,7 +1,7 @@
 #pragma once
 #pragma warning(push)
-#pragma warning(disable : 26812)
 #include "fmod.hpp"
+#pragma warning(disable : 26812)
 #pragma warning(pop)
 
 using AudioClass = FMOD::Sound*;
@@ -30,6 +30,6 @@ public:
 	static void unloadAsset(void);
 	static void SetVolume(AudioID ID, float volume);
 	static void SetMute(AudioID ID);
-	static void MuteAll();
+	static void ToggleMuteAll();
 	static bool GetGlobalMute();
 };
