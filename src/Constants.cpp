@@ -1,7 +1,7 @@
 #include "Constants.h"
 
-namespace FilePaths {
-	const char* Guide1 = "./Assets/Art/Guide1.jpg";
+namespace FILE_PATHS {
+	const char* Guide1 = "./Assets/Art/Guide1.png";
 	const char* Guide2 = "./Assets/Art/Guide2.png";
 	const char* Guide3 = "./Assets/Art/Guide3.png";
 	const char* Guide4 = "./Assets/Art/Guide4.png";
@@ -36,58 +36,44 @@ namespace FilePaths {
 	const char* jumpSFX = "./Assets/Audio/SFX/powerup.wav";
 	const char* GameplayBGM = "./Assets/Audio/BGM/gg.wav";
 }
+namespace PLAYER_CONST {
+	const float SPEED = 150.0f;
+	const float WIDTH = 45.0f;
+	const float HEIGHT = 50.0f;
+	const float JUMPVEL = 3.5f;
+	const float CHARGED_JUMPVEL = 8.0f;
+	const short HP_MAX = 3U;
+	const float CHARGEDJUMP_COUNTER = 1.0f;
+	const float COLLIDER_OFFSET_X = 6.0f;
+}
+namespace TILE_CONST {
+	const float COLLAPSE_DELAY = 0.5f;
+	const float COLLAPSE_SPEED = 250.0f;
 
-// Level tracker
-unsigned short Level{ 0 };
+}
+namespace GAMEPLAY_MISC {
+	bool PAUSED = false;
+	bool DEV_MODE = false;
+	bool DEBUG_MODE = false;
+	bool FULLSCREEN = false;
+	bool DISPLAY_QUIT_UI = false;
+	bool DISABLE_COLLISION = false;
 
-// Player constants
-const float player_speed = 150.0f;
-const float player_width = 45.0f;
-const float player_height = 50.0f;
-const float player_jumpvel = 3.5f;
-const float player_chargedjumpvel = 8.0f;
-const float player_chargedjump_counter = 1.0f;
-const float player_collider_offset_y = 24.0f;
-const float player_collider_offset_x = 6.0f;
-const short player_hp_max = 3U;
-const float base_gravityMultiplier = 2.0f;
+	const float BASE_GRAVITY_MULTIPLIER = 2.0f;
+	float app_time = 0;
 
-// Enemy constants
-const float enemy_width = 50.0f;
-const float enemy_height = 50.0f;
-const float squirrel_height = 43.0f;
-const float bat_height = 24.0f;
-
-// Tile constants
-const float TileCollapseDelay = 0.5f;
-const float TileCollapseSpeed = 250.0f;
-const float tile_aabb_rect_offset_x = 5.0f;
-const float tile_aabb_rect_offset_y = 1.0f;
-unsigned short DialogueID = 0;
-
-// Enemy stuff
-short EnemyCount = 1;
-
-//Color constants
-const float colorcodeMax = 255.0f;
-
-// Font
+	// Level tracker
+	unsigned short Level{ 0 };
+}
 namespace font {
 	char ID = 0;
 }
-
-// Base meshes
 namespace Mesh {
 	AEGfxVertexList* Rect = nullptr;
 	AEGfxVertexList* Circle = nullptr;
 }
-
-
-// Miscallenous
-bool paused = false;
-bool DebugMode = false;
-bool fullscreen = false;
-bool DisplayQuitUI = false;
-bool DisableCollision = false;
+// Non const
+unsigned short DialogueID = 0;
+// Enemy stuff maybe not needed
+short EnemyCount = 1;
 float g_dt = 0;
-float app_time = 0;

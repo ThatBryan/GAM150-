@@ -46,16 +46,16 @@ const size_t pauseButtonIdx{ 1 };
 void UI::Update() {
 
 	sprintf_s(strBuffer, "FPS: %.2f", AEFrameRateControllerGetFrameRate());
-	sprintf_s(strBuffer1, "Current Level: %d", Level);
-	sprintf_s(strBuffer2, "Time Elapsed: %.2f", app_time);
+	sprintf_s(strBuffer1, "Current Level: %d", GAMEPLAY_MISC::Level);
+	sprintf_s(strBuffer2, "Time Elapsed: %.2f", GAMEPLAY_MISC::app_time);
 
 	FPS_Display.SetText(strBuffer);
 	LevelDisplay.SetText(strBuffer1);
 	TimerDisplay.SetText(strBuffer2);
 
-	Utils::CheckDebugMode();
+	Utils::ToggleDebugMode();
 
-	if (paused && !Jumperman.GetWinStatus() && !Jumperman.GetLoseStatus())
+	if (GAMEPLAY_MISC::PAUSED && !Jumperman.GetWinStatus() && !Jumperman.GetLoseStatus())
 		UI::PausedUpdate();
 
 	UI::Draw();
@@ -71,7 +71,7 @@ void UI::Draw() {
 	TimerDisplay.Draw_Wrapped(AEVec2Set(AEGetWindowWidth() - Pos2.x / 2.0f, Pos2.y / 2.0f));
 	LevelDisplay.Draw_Wrapped(AEVec2Set(Pos.x / 2.0f, Pos.y / 2.0f));
 
-	if (paused && !Jumperman.GetWinStatus() && !Jumperman.GetLoseStatus())
+	if (GAMEPLAY_MISC::PAUSED && !Jumperman.GetWinStatus() && !Jumperman.GetLoseStatus())
 		UI::PausedRender();
 }
 
@@ -122,24 +122,24 @@ void UI::PausedUpdate()
 	AudioManager::GetGlobalMute() == true ? PausedBtn[1].Set_Text("Unmute") : PausedBtn[1].Set_Text("Mute");
 	Utils::GetFullscreenStatus() == true ? PausedBtn[2].Set_Text("Windows Mode") : PausedBtn[2].Set_Text("Fullscreen");
 
-	if (!DisplayQuitUI) {
+	if (!GAMEPLAY_MISC::DISPLAY_QUIT_UI) {
 		for (size_t i = 0; i < PausedBtn.size(); ++i) {
 			PausedBtn[i].Update();
 		}
 	}
 
-	if (DisplayQuitUI)
+	if (GAMEPLAY_MISC::DISPLAY_QUIT_UI)
 		UI::QuitUpdate();
 }
 
 void UI::PausedRender()
 {
-	if (!DisplayQuitUI) {
+	if (!GAMEPLAY_MISC::DISPLAY_QUIT_UI) {
 		for (size_t i = 0; i < PausedBtn.size(); ++i) {
 			PausedBtn[i].Render();
 		}
 	}
-	if (DisplayQuitUI)
+	if (GAMEPLAY_MISC::DISPLAY_QUIT_UI)
 		UI::QuitRender();
 }
 

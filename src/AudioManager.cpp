@@ -46,7 +46,7 @@ void AudioManager::playAudio(AudioClass& Sound, AudioID ID, bool bLoop) {
 void AudioManager::update() {
 	m_pSystem->update();
 	for (int i = 0; i < static_cast<int>(AudioID::Max); ++i) {
-		soundData[i].channel->setPaused(paused);
+		soundData[i].channel->setPaused(GAMEPLAY_MISC::PAUSED);
 		soundData[i].channel->setMute(soundData[i].mute);
 	}
 }

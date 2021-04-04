@@ -56,7 +56,7 @@ void Gameplay::Init(void)
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::JUMPERMAN))
 			{
-				Player::CreatePlayer(Jumperman, AEVec2Set(j * grid_width, i * grid_height), player_width, player_height);
+				Player::CreatePlayer(Jumperman, AEVec2Set(j * grid_width, i * grid_height), PLAYER_CONST::WIDTH, PLAYER_CONST::HEIGHT);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SLIME))
 			{	
@@ -87,8 +87,8 @@ void Gameplay::Init(void)
 void Gameplay::Update()
 {
 	Background::Update();
-	if (!paused) {
-		app_time += g_dt;
+	if (!GAMEPLAY_MISC::PAUSED) {
+		GAMEPLAY_MISC::app_time += g_dt;
 		if (IsIconic(AESysGetWindowHandle())) {
 			std::cout << "Minimized\n";
 			Utils::TogglePause();
@@ -126,7 +126,7 @@ void Gameplay::Render()
 
 void Gameplay::Load()
 {
-	switch (Level)
+	switch (GAMEPLAY_MISC::Level)
 	{
 		case 1:
 		{
@@ -211,18 +211,18 @@ void Gameplay::Restart()
 	tileManager.clear();
 	Jumperman.Reset();
 	Jumperman.sprite.Free();
-	app_time = 0;
-	paused = false;
+	GAMEPLAY_MISC::app_time = 0;
+	GAMEPLAY_MISC::PAUSED = false;
 	UI::Unload();
 }
 
 void Gameplay::UpdateManager()
 {
-	if (!paused && !Jumperman.GetLoseStatus() && !Jumperman.GetWinStatus()) {
+	if (!GAMEPLAY_MISC::PAUSED && !Jumperman.GetLoseStatus() && !Jumperman.GetWinStatus()) {
 		Jumperman.Update();
 		
 		Tiles::CollapsingManager(tileManager);
-		if (!DisableCollision)
+		if (!GAMEPLAY_MISC::DISABLE_COLLISION)
 			Tiles::CheckPlayerGravity(tileManager, Jumperman);
 
 		Tiles::UpdateManager(tilemap, Jumperman, enemies);

@@ -2,7 +2,7 @@
 #include "AEEngine.h"
 
 
-namespace FilePaths {
+namespace FILE_PATHS {
 	// Art
 	extern const char* Guide1;
 	extern const char* Guide2;
@@ -40,67 +40,54 @@ namespace FilePaths {
 	extern const char* jumpSFX;
 	extern const char* GameplayBGM;
 }
-namespace FP = FilePaths; // Short hand 
+namespace FP = FILE_PATHS; // Short hand 
 
+namespace PLAYER_CONST {
+	extern const float SPEED;
+	extern const float WIDTH;
+	extern const float HEIGHT;
+	extern const float JUMPVEL;
+	extern const float CHARGED_JUMPVEL;
+	extern const short HP_MAX;
+	extern const float CHARGEDJUMP_COUNTER;
+	extern const float COLLIDER_OFFSET_X;
+}
+namespace TILE_CONST {
+	extern const float COLLAPSE_DELAY;
+	extern const float COLLAPSE_SPEED;
+}
+namespace GAMEPLAY_MISC{
+	extern const float BASE_GRAVITY_MULTIPLIER;
 
-// Level tracker
-extern unsigned short Level;
+	extern bool PAUSED;
+	extern bool DEV_MODE;
+	extern bool DEBUG_MODE;
+	extern bool FULLSCREEN;
+	extern bool DISPLAY_QUIT_UI;
+	extern bool DISABLE_COLLISION;
 
-// Player constants
-extern const float player_speed;
-extern const float player_width;
-extern const float player_height;
-extern const float player_jumpvel;
-extern const float player_chargedjumpvel;
-extern const float player_chargedjump_counter;
-extern const float player_collider_offset_y;
-extern const float player_collider_offset_x;
-extern const short player_hp_max;
-extern const float base_gravityMultiplier;
-
-// Enemy constants
-extern const float enemy_width;
-extern const float enemy_height;
-extern const float squirrel_height;
-extern const float bat_height;
-
-// Tile constants
-extern const float TileCollapseDelay;
-extern const float TileCollapseSpeed;
-extern const float tile_aabb_rect_offset_x;
-extern const float tile_aabb_rect_offset_y;
-extern unsigned short DialogueID;
-
-// Enemy stuff
-extern short EnemyCount;
-
-//Utility constants
-extern const float colorcodeMax;
-
-// Miscallenous
-extern bool paused;
-extern bool DebugMode;
-extern bool fullscreen;
-extern bool DisplayQuitUI;
-extern bool DisableCollision;
-extern float g_dt;
-extern float app_time;
-
-// Graphics stuff
+	extern float app_time;
+	// Level tracker
+	extern unsigned short Level;
+}
 namespace font {
 	extern char ID;
 }
-
-// Base meshes
-namespace Mesh {
+namespace Mesh { // Base Meshes
 	extern AEGfxVertexList* Rect;
 	extern AEGfxVertexList* Circle;
 }
-
-// Hot key bindings.
+// Key bindings.
 #define PAUSE_KEY AEVK_TAB 
 #define DEBUG_KEY AEVK_F1
 #define COLLISION_OFF_KEY AEVK_F2
 #define FULLSCREEN_KEY1 AEVK_LALT
 #define FULLSCREEN_KEY2 AEVK_RETURN
 #define RESTART_KEY AEVK_R
+
+//Tile constants
+extern unsigned short DialogueID;
+// Enemy stuff
+extern short EnemyCount;
+// Miscallenous
+extern float g_dt;

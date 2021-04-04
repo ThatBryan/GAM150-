@@ -34,7 +34,6 @@ static std::vector<Tiles> tiles;
 static std::vector<Player> player;
 static Graphics::Text Title;
 static AEVec2 ScreenMid;
-//static AEGfxTexture* test;
 
 static Color background;
 extern LevelSystem LevelSys;
@@ -62,8 +61,8 @@ void MainMenu::Init(void)
 	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2{520.0f, tiles[0].image.pos.y - height / 2.0f }, 60.0f, 60.0f);
 	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2{710.0f, tiles[0].image.pos.y - height / 2.0f}, 60.0f, 60.0f);
 	
-	player.push_back(Player(Player::playerTex, player_width, player_height));
-	player[0].SetPos(AEVec2Set(player_width / 2.0f, tiles[0].image.pos.y - height - 10.0f));
+	player.push_back(Player(Player::playerTex, PLAYER_CONST::WIDTH, PLAYER_CONST::HEIGHT));
+	player[0].SetPos(AEVec2Set(PLAYER_CONST::WIDTH / 2.0f, tiles[0].image.pos.y - height - 10.0f));
 
 	background.Set(Color{ 51.0f, 215.0f, 255.0f, 255.0f });
 	
@@ -91,13 +90,13 @@ void MainMenu::Update(void)
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 	Audio.update();
 
-	if (DisplayQuitUI) {
+	if (GAMEPLAY_MISC::DISPLAY_QUIT_UI) {
 		UI::QuitUpdate();
 		return;
 	}
 
-	MainMenu::TestPlayerMovement();
-	MainMenu::TestEnemyMovement();
+	MainMenu::PlayerMovement();
+	MainMenu::EnemyMovement();
 	for (int i = 0; i < MenuBtn.size(); ++i) {
 		MenuBtn[i].Update();
 	}
@@ -122,7 +121,7 @@ void MainMenu::Render() {
 	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - AEGetWindowHeight() / 3));
 	Particles::Render();
 
-	if (DisplayQuitUI)
+	if (GAMEPLAY_MISC::DISPLAY_QUIT_UI)
 		UI::QuitRender();
 	else {
 		for (size_t i = 0; i < MenuBtn.size(); ++i) {
@@ -155,17 +154,18 @@ void MainMenu::Unload(void)
 	Images.clear();
 	enemy.clear();
 	MenuBtn.clear();
-	LevelBtn.clear();
 	player.clear();
 	tiles.clear();
 	Options::Unload();
+	LevelSelection::Unload();
 	UI::QuitUnload();
+
 	EnemyCount = 0;
 }
 
 void MainMenu::StartGame(void) {
-	if (Level == 0)
-		Level = LevelSys.GetKey();
+	if (GAMEPLAY_MISC::Level == 0)
+		GAMEPLAY_MISC::Level = LevelSys.GetKey();
 	gamestateNext = GS_GAMEPLAY2;
 }
 void MainMenu::QuitGame(void) {
@@ -206,7 +206,7 @@ void MainMenu::Buttons_Init() {
 const float baseSpeed = 50.0f;
 static float WindowWidth = 0;
 
-void MainMenu::TestEnemyMovement() {
+void MainMenu::EnemyMovement() {
 	WindowWidth = static_cast<f32>(AEGetWindowWidth());
 
 	static float Test{ enemy[2].sprite.pos.x };
@@ -235,7 +235,7 @@ void MainMenu::TestEnemyMovement() {
 	}
 }
 
-void MainMenu::TestPlayerMovement() {
+void MainMenu::PlayerMovement() {
 	static float Test3{ AEDegToRad(0) };
 
 	player[0].sprite.pos.x = AEWrap(player[0].sprite.pos.x, -(player[0].sprite.width / 2.0f), WindowWidth + player[0].sprite.width / 2.0f);
@@ -336,27 +336,36 @@ void LevelSelection::Render(void)
 	LevelSelection.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() / 10)));
 }
 
+void LevelSelection::Unload(void)
+{
+	LevelBtn.clear();
+}
+
 void Options::Init()
 {
-	const size_t btnCount{ 3 };
+	const size_t btnCount{ 4 };
 	for (size_t i = 0; i < btnCount; ++i) {
 		SettingsBtn.push_back(Button(ButtonType::Color, 200.0f, 50.0f, 0.6f));
 		SettingsBtn[i].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y / 2.0f - 25.0f + i * 150.0f));
 	}
 	SettingsBtn[0].Set_Text("Fullscreen");
 	SettingsBtn[0].Set_Callback(Utils::ToggleFullscreen);
+
 	SettingsBtn[1].Set_Text("Mute");
 	SettingsBtn[1].Set_Callback(AudioManager::ToggleMuteAll);
 
+	SettingsBtn[2].Set_Callback(Utils::ToggleDevMode);
 
-	SettingsBtn[2].Set_Text("Exit to Main Menu");
-	SettingsBtn[2].Set_Callback(MainMenu::SwitchToMainMenu);
+	SettingsBtn[3].Set_Text("Exit to Main Menu");
+	SettingsBtn[3].Set_Callback(MainMenu::SwitchToMainMenu);
 }
 
 void Options::Update()
 {
 	Utils::GetFullscreenStatus() == true ? SettingsBtn[0].Set_Text("Windows Mode") : SettingsBtn[0].Set_Text("Fullscreen");
 	AudioManager::GetGlobalMute() == true ? SettingsBtn[1].Set_Text("Unmute") : SettingsBtn[1].Set_Text("Mute");
+	GAMEPLAY_MISC::DEV_MODE == true ? SettingsBtn[2].Set_Text("Dev Mode Off") : SettingsBtn[2].Set_Text("Dev Mode On");
+
 	for (size_t i = 0; i < SettingsBtn.size(); ++i) {
 		SettingsBtn[i].Update();
 	}
@@ -417,11 +426,6 @@ void Credits::Update()
 		if (count < MAX_PICTURES-1)
 			count++;
 	}
-	printf("count: %i", count);
-	/*for (int i = 0; i < CreditBtn.size(); ++i) {
-		CreditBtn[i].Update();
-	}*/
-	
 }
 
 void Credits::Render()
