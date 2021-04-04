@@ -27,6 +27,7 @@ namespace MainMenu
 	void SwitchToLevelSelection(void);
 	void SwitchToCreditScreen(void);
 	void SwitchToSettings();
+	void SwitchToLeaderboard(void);
 }
 
 namespace LevelSelection{
