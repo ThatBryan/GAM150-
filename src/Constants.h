@@ -11,6 +11,10 @@ namespace FilePaths {
 	extern const char* Guide5;
 	extern const char* Guide6;
 	extern const char* CreditScreen1;
+	extern const char* CreditScreen2;
+	extern const char* CreditScreen3;
+	extern const char* CreditScreen4;
+	extern const char* CreditScreen5;
 
 	extern const char* DigipenLogoRed;
 	extern const char* DigipenLogoWhite;

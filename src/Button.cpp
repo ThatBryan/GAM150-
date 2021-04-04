@@ -68,6 +68,14 @@ void Button::Update(void) {
 	}
 }
 
+bool Button::OnClick(void) {
+	AEVec2 Mouse = Utils::GetMousePos();
+	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckReleased(AEVK_LBUTTON))
+	{
+		return true;
+	}
+}
+
 void Button::Render(void) {
 	switch (type) {
 	case ButtonType::Color:

@@ -40,8 +40,10 @@ static Color background;
 extern LevelSystem LevelSys;
 
 
-enum CreditScreen { CreditScreen1 = 0, CreditScreen2, MAX_PICTURES };
+enum CreditScreen { CreditScreen1 = 0, CreditScreen2, CreditScreen3, CreditScreen4, CreditScreen5, MAX_PICTURES };
 std::array <Image, CreditScreen::MAX_PICTURES> Pictures;
+
+static int count = 0;
 
 void MainMenu::Init(void)
 {
@@ -383,34 +385,75 @@ void Options::Unload()
 void Credits::Init()
 {
 	const float BtnWidth{ 100.0f }, BtnHeight{ 50.0f };
-	Pictures[CreditScreen1].Init(FP::CreditScreen1, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 
-	CreditBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));
-	CreditBtn[0].Set_Position(AEVec2Set(AEGetWindowWidth() - 80.0f, AEGetWindowHeight() - 50.0f));
-	CreditBtn[0].Set_Text("More");
-	
+	Pictures[CreditScreen1].Init(FP::CreditScreen1, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+	Pictures[CreditScreen2].Init(FP::CreditScreen2, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+	Pictures[CreditScreen3].Init(FP::CreditScreen3, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+	Pictures[CreditScreen4].Init(FP::CreditScreen4, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+	Pictures[CreditScreen5].Init(FP::CreditScreen5, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+
+	for (int i = 0; i < 2; ++i) {
+		CreditBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));
+	}
+
+	CreditBtn[0].Set_Position(AEVec2Set(AEGetWindowWidth() - 80.0f, AEGetWindowHeight() - 120.0f));
+	CreditBtn[0].Set_Text("Back");
+	CreditBtn[1].Set_Position(AEVec2Set(AEGetWindowWidth() - 80.0f, AEGetWindowHeight() - 50.0f));
+	CreditBtn[1].Set_Text("More");
 }
 void Credits::Update()
 {
 	if (AEInputCheckReleased(AEVK_ESCAPE))
 		MainMenu::SwitchToMainMenu();
 
-	for (int i = 0; i < CreditBtn.size(); ++i) {
-		CreditBtn[i].Update();
+
+	if (CreditBtn[0].OnClick())
+	{
+		if (count > 0)
+			count--;
 	}
+	if (CreditBtn[1].OnClick())
+	{
+		if (count < MAX_PICTURES-1)
+			count++;
+	}
+	printf("count: %i", count);
+	/*for (int i = 0; i < CreditBtn.size(); ++i) {
+		CreditBtn[i].Update();
+	}*/
+	
 }
 
 void Credits::Render()
 {
-	Pictures[CreditScreen1].Draw_Texture(255.0f);
+	switch (count)
+	{
+		case 0:
+			Pictures[CreditScreen1].Draw_Texture(255.0f);
+			break;
+		case 1:
+			Pictures[CreditScreen2].Draw_Texture(255.0f);
+			break;
+		case 2:
+			Pictures[CreditScreen3].Draw_Texture(255.0f);
+			break;
+		case 3:
+			Pictures[CreditScreen4].Draw_Texture(255.0f);
+			break;
+		case 4:
+			Pictures[CreditScreen5].Draw_Texture(255.0f);
+			break;
+	}
 
 	for (size_t i = 0; i < CreditBtn.size(); ++i) {
 		CreditBtn[i].Render();
 	}
+	
 }
 
 void Credits::Unload()
 {
+	count = 0;
 	for (size_t i = 0; i < Pictures.size(); ++i) {
 		Pictures[i].Free();
 	}

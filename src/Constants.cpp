@@ -1,13 +1,17 @@
 #include "Constants.h"
 
 namespace FilePaths {
-	const char* Guide1 = "./Assets/Art/Guide1.png";
+	const char* Guide1 = "./Assets/Art/Guide1.jpg";
 	const char* Guide2 = "./Assets/Art/Guide2.png";
 	const char* Guide3 = "./Assets/Art/Guide3.png";
 	const char* Guide4 = "./Assets/Art/Guide4.png";
 	const char* Guide5 = "./Assets/Art/Guide5.png";
 	const char* Guide6 = "./Assets/Art/Guide6.png";
 	const char* CreditScreen1 = "./Assets/Art/CreditScreen.png";
+	const char* CreditScreen2 = "./Assets/Art/CreditScreen2.jpg";
+	const char* CreditScreen3 = "./Assets/Art/CreditScreen3.jpg";
+	const char* CreditScreen4 = "./Assets/Art/CreditScreen4.jpg";
+	const char* CreditScreen5 = "./Assets/Art/CreditScreen5.jpg";
 
 	const char* DigipenLogoRed = "./Assets/Logo/DigiPen_RED.png";
 	const char* DigipenLogoWhite = "./Assets/Logo/DigiPen_WHITE.png";

@@ -15,6 +15,7 @@ public:
 	Button(ButtonType Type, const f32 width, const f32 height, const f32 textScale = 1.0f);
 	~Button();
 	void Update();
+	bool OnClick(void);
 	void Render();
 	void Set_Position(const AEVec2 pos);
 	void Set_Text(std::string text);
