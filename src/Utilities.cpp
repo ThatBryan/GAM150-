@@ -53,13 +53,13 @@ void Utils::CheckFullScreenKeyInput(void)
 
 void Utils::ToggleFullscreen()
 {
-	fullscreen = !fullscreen;
-	AEToogleFullScreen(fullscreen);
+	GAMEPLAY_MISC::FULLSCREEN = !GAMEPLAY_MISC::FULLSCREEN;
+	AEToogleFullScreen(GAMEPLAY_MISC::FULLSCREEN);
 }
 
 bool Utils::GetFullscreenStatus()
 {
-	return fullscreen;
+	return GAMEPLAY_MISC::FULLSCREEN;
 }
 
 f32 Utils::Get_HalfWindowWidth(void)
@@ -108,13 +108,13 @@ AEVec2 Utils::GetMousePos(void)
 
 void Utils::TogglePause(void)
 {
-	paused = !paused;
-	if (!paused) {
-		DisplayQuitUI = false;
+	GAMEPLAY_MISC::PAUSED = !GAMEPLAY_MISC::PAUSED;
+	if (!GAMEPLAY_MISC::PAUSED) {
+		GAMEPLAY_MISC::DISPLAY_QUIT_UI = false;
 		ShowCursor(false);
 		std::cout << "Cursor disabled\n";
 	}
-	if (paused) {
+	if (GAMEPLAY_MISC::PAUSED) {
 		ShowCursor(true);
 		std::cout << "Cursor enabled\n";
 	}
@@ -123,13 +123,13 @@ void Utils::TogglePause(void)
 void Utils::CheckDebugMode(void)
 {
 	if (AEInputCheckTriggered(DEBUG_KEY))
-		DebugMode = !DebugMode;
-	if (DebugMode && AEInputCheckTriggered(COLLISION_OFF_KEY)) {
-		DisableCollision = !DisableCollision;
-		DisableCollision == false ? std::cout << "Collision turned on \n" : std::cout << "Collision turned off \n";
+		GAMEPLAY_MISC::DEBUG_MODE = !GAMEPLAY_MISC::DEBUG_MODE;
+	if (GAMEPLAY_MISC::DEBUG_MODE && AEInputCheckTriggered(COLLISION_OFF_KEY)) {
+		GAMEPLAY_MISC::DISABLE_COLLISION = !GAMEPLAY_MISC::DISABLE_COLLISION;
+		GAMEPLAY_MISC::DISABLE_COLLISION == false ? std::cout << "Collision turned on \n" : std::cout << "Collision turned off \n";
 	}
-	if (!DebugMode) {
-		DisableCollision = false;
+	if (!GAMEPLAY_MISC::DEBUG_MODE) {
+		GAMEPLAY_MISC::DISABLE_COLLISION = false;
 	}
 }
 
@@ -149,7 +149,7 @@ void Utils::ExitGame(void)
 
 void Utils::ToggleQuitUI(void)
 {
-	DisplayQuitUI = !DisplayQuitUI;
+	GAMEPLAY_MISC::DISPLAY_QUIT_UI = !GAMEPLAY_MISC::DISPLAY_QUIT_UI;
 }
 
 float Utils::Lerp(const float start, const float end, const float t)

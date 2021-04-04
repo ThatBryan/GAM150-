@@ -31,7 +31,6 @@ static std::vector<Tiles> tiles;
 static std::vector<Player> player;
 static Graphics::Text Title;
 static AEVec2 ScreenMid;
-//static AEGfxTexture* test;
 
 static Color background;
 extern LevelSystem LevelSys;
@@ -52,8 +51,8 @@ void MainMenu::Init(void)
 	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2{520.0f, tiles[0].image.pos.y - height / 2.0f }, 60.0f, 60.0f);
 	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2{710.0f, tiles[0].image.pos.y - height / 2.0f}, 60.0f, 60.0f);
 	
-	player.push_back(Player(Player::playerTex, player_width, player_height));
-	player[0].SetPos(AEVec2Set(player_width / 2.0f, tiles[0].image.pos.y - height - 10.0f));
+	player.push_back(Player(Player::playerTex, PLAYER_CONST::WIDTH, PLAYER_CONST::HEIGHT));
+	player[0].SetPos(AEVec2Set(PLAYER_CONST::WIDTH / 2.0f, tiles[0].image.pos.y - height - 10.0f));
 
 	background.Set(Color{ 51.0f, 215.0f, 255.0f, 255.0f });
 	
@@ -81,13 +80,13 @@ void MainMenu::Update(void)
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 	Audio.update();
 
-	if (DisplayQuitUI) {
+	if (GAMEPLAY_MISC::DISPLAY_QUIT_UI) {
 		UI::QuitUpdate();
 		return;
 	}
 
-	MainMenu::TestPlayerMovement();
-	MainMenu::TestEnemyMovement();
+	MainMenu::PlayerMovement();
+	MainMenu::EnemyMovement();
 	for (int i = 0; i < MenuBtn.size(); ++i) {
 		MenuBtn[i].Update();
 	}
@@ -112,7 +111,7 @@ void MainMenu::Render() {
 	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - AEGetWindowHeight() / 3));
 	Particles::Render();
 
-	if (DisplayQuitUI)
+	if (GAMEPLAY_MISC::DISPLAY_QUIT_UI)
 		UI::QuitRender();
 	else {
 		for (size_t i = 0; i < MenuBtn.size(); ++i) {
@@ -145,17 +144,18 @@ void MainMenu::Unload(void)
 	Images.clear();
 	enemy.clear();
 	MenuBtn.clear();
-	LevelBtn.clear();
 	player.clear();
 	tiles.clear();
 	Options::Unload();
+	LevelSelection::Unload();
 	UI::QuitUnload();
+
 	EnemyCount = 0;
 }
 
 void MainMenu::StartGame(void) {
-	if (Level == 0)
-		Level = LevelSys.GetKey();
+	if (GAMEPLAY_MISC::Level == 0)
+		GAMEPLAY_MISC::Level = LevelSys.GetKey();
 	gamestateNext = GS_GAMEPLAY2;
 }
 void MainMenu::QuitGame(void) {
@@ -196,7 +196,7 @@ void MainMenu::Buttons_Init() {
 const float baseSpeed = 50.0f;
 static float WindowWidth = 0;
 
-void MainMenu::TestEnemyMovement() {
+void MainMenu::EnemyMovement() {
 	WindowWidth = static_cast<f32>(AEGetWindowWidth());
 
 	static float Test{ enemy[2].sprite.pos.x };
@@ -225,7 +225,7 @@ void MainMenu::TestEnemyMovement() {
 	}
 }
 
-void MainMenu::TestPlayerMovement() {
+void MainMenu::PlayerMovement() {
 	static float Test3{ AEDegToRad(0) };
 
 	player[0].sprite.pos.x = AEWrap(player[0].sprite.pos.x, -(player[0].sprite.width / 2.0f), WindowWidth + player[0].sprite.width / 2.0f);
@@ -318,6 +318,11 @@ void LevelSelection::Render(void)
 		LevelBtn[i].Render();
 	}
 	LevelSelection.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() / 10)));
+}
+
+void LevelSelection::Unload(void)
+{
+	LevelBtn.clear();
 }
 
 void Options::Init()

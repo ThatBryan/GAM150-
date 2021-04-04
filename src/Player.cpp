@@ -20,25 +20,25 @@ float Player::gravityStrength = 20.0f;
 
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{ false },
-active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel },
-hp(), direction{ SpriteDirection::Right }, chargedjumpvel{ player_chargedjumpvel }, gravityMultiplier{ base_gravityMultiplier }, 
-chargedjump_counter{ player_chargedjump_counter }, collider()
+active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL },
+hp(), direction{ SpriteDirection::Right }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL }, gravityMultiplier{ GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER },
+chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider()
 {
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
-	hp.max = player_hp_max;
-	hp.current = player_hp_max;
+	hp.max = PLAYER_CONST::HP_MAX;
+	hp.current = PLAYER_CONST::HP_MAX;
 }
 
 Player::Player() : lose{ false }, active{ true }, gravity{ false }, jump{ false }, chargedjump{ false },
-win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ player_jumpvel }, chargedjumpvel{ player_chargedjumpvel },
-hp(), direction{ SpriteDirection::Right }, gravityMultiplier{ base_gravityMultiplier }, chargedjump_counter{player_chargedjump_counter }
+win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL },
+hp(), direction{ SpriteDirection::Right }, gravityMultiplier{ GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER }, chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }
 , collider(){
 
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
-	hp.max = player_hp_max;
-	hp.current = player_hp_max;
+	hp.max = PLAYER_CONST::HP_MAX;
+	hp.current = PLAYER_CONST::HP_MAX;
 }
 
 void Player::Reset(void)
@@ -60,7 +60,7 @@ void Player::Render(void)
 	sprite.Draw_Texture(255.0f);
 	UI::DisplayLife(hp.current);
 
-	if (DebugMode) {
+	if (GAMEPLAY_MISC::DEBUG_MODE) {
 		collider.Draw();
 	}
 }
@@ -80,7 +80,7 @@ void Player::Update_Position(void)
 
 	if (!jump && !gravity && (AEInputCheckTriggered(AEVK_W) || AEInputCheckTriggered(AEVK_UP)))
 	{
-		if (!DebugMode) {
+		if (!GAMEPLAY_MISC::DEBUG_MODE) {
 			jump = true;
 			Audio.playAudio(soundTest[static_cast<int>(AudioID::Jump)], AudioID::Jump);
 		}
@@ -94,7 +94,7 @@ void Player::Update_Position(void)
 			if (jumpvel <= 0)
 			{
 				jump = false;
-				jumpvel = player_jumpvel;
+				jumpvel = PLAYER_CONST::JUMPVEL;
 			}
 		}
 	}
@@ -123,21 +123,21 @@ void Player::Update_Position(void)
 			if (chargedjumpvel < 0.0f)
 			{
 				chargedjump = false;
-				chargedjumpvel = player_chargedjumpvel;
+				chargedjumpvel = PLAYER_CONST::CHARGED_JUMPVEL;
 			}
 		}
 	}
 
 	if (!gravity) // reset counter if player's feet touches the ground
 	{
-		jumpvel = player_jumpvel;
-		chargedjumpvel = player_chargedjumpvel;
+		jumpvel = PLAYER_CONST::JUMPVEL;
+		chargedjumpvel = PLAYER_CONST::CHARGED_JUMPVEL;
 	}
 
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
 	{
 		if (sprite.pos.x + sprite.width / 2 <= maxX)
-			sprite.pos.x += player_speed * g_dt;
+			sprite.pos.x += PLAYER_CONST::SPEED * g_dt;
 
 		if (direction != SpriteDirection::Right) {
 			sprite.ReflectAboutYAxis();
@@ -149,7 +149,7 @@ void Player::Update_Position(void)
 	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
 	{
 		if (sprite.pos.x >= 0 - sprite.width / 2.0f)
-			sprite.pos.x -= player_speed * g_dt;
+			sprite.pos.x -= PLAYER_CONST::SPEED * g_dt;
 
 		if (direction != SpriteDirection::Left) {
 			sprite.ReflectAboutYAxis();
@@ -158,7 +158,7 @@ void Player::Update_Position(void)
 
 	}
 
-	if (DebugMode) {
+	if (GAMEPLAY_MISC::DEBUG_MODE) {
 		AEVec2 Mouse = Utils::GetMousePos();
 		if (AETestPointToRect(&Mouse, &sprite.pos, sprite.width, sprite.height))
 		{
@@ -167,21 +167,21 @@ void Player::Update_Position(void)
 		}
 		if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN)) {
 			if (sprite.pos.y + sprite.height / 2 <= maxY) {
-				sprite.pos.y += player_speed * g_dt;
+				sprite.pos.y += PLAYER_CONST::SPEED * g_dt;
 			}
 		}
 		if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP)) {
 			if (sprite.pos.y - sprite.height / 2 >= 0) {
-				sprite.pos.y -= player_speed * g_dt;
+				sprite.pos.y -= PLAYER_CONST::SPEED * g_dt;
 			}
 		}
 	}
 	collider.sprite.pos = sprite.pos;
 	if (direction == SpriteDirection::Left) {
-		collider.bottom.pos = AEVec2Set(sprite.pos.x - player_collider_offset_x, sprite.pos.y + +sprite.height / 2.0f - collider.bottom.height / 2.0f);
+		collider.bottom.pos = AEVec2Set(sprite.pos.x - PLAYER_CONST::COLLIDER_OFFSET_X, sprite.pos.y + +sprite.height / 2.0f - collider.bottom.height / 2.0f);
 	}
 	else {
-		collider.bottom.pos = AEVec2Set(sprite.pos.x + player_collider_offset_x, sprite.pos.y + sprite.height / 2.0f - collider.bottom.height / 2.0f);
+		collider.bottom.pos = AEVec2Set(sprite.pos.x + PLAYER_CONST::COLLIDER_OFFSET_X, sprite.pos.y + sprite.height / 2.0f - collider.bottom.height / 2.0f);
 	}
 	collider.top.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0f + collider.top.height / 2.0f);
 	collider.right.pos = AEVec2Set(sprite.pos.x + abs(sprite.width) / 4.0f, sprite.pos.y);
@@ -199,12 +199,12 @@ void Player::Respawn(void)
 	win = false;
 	lose = false;
 	active = true;
-	sprite.pos = startingPos;
-	jumpvel = player_jumpvel;
-	chargedjumpvel = player_chargedjumpvel;
-	chargedjump_counter = player_chargedjump_counter;
 	sprite.rotation = 0;
-	gravityMultiplier = base_gravityMultiplier;
+	sprite.pos = startingPos;
+	jumpvel = PLAYER_CONST::JUMPVEL;
+	chargedjumpvel = PLAYER_CONST::CHARGED_JUMPVEL;
+	chargedjump_counter = PLAYER_CONST::CHARGEDJUMP_COUNTER;
+	gravityMultiplier = GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER;
 
 	static const float spriteWidth{ fabsf(sprite.width) };
 	if (sprite.pos.x - (spriteWidth / 2.0f) <= 0) {
@@ -233,7 +233,7 @@ void Player::GravityManager(void)
 {
 	if (gravity && !jump && !chargedjump)
 	{
-		if (!DebugMode) {
+		if (!GAMEPLAY_MISC::DEBUG_MODE) {
 			gravityMultiplier += g_dt * 20;
 			sprite.pos.y += (gravityStrength * (g_dt * gravityMultiplier));
 		}
@@ -259,24 +259,24 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 			{
 				if (Utils::ColliderAABB(enemy[i].collider.top.pos, enemy[i].collider.top.width, enemy[i].collider.top.height, 
 					collider.bottom.pos, collider.bottom.width, collider.bottom.height)) {
-					if (!DebugMode) {
+					if (!GAMEPLAY_MISC::DEBUG_MODE) {
 						jump = true;
-						jumpvel += player_jumpvel / 2.0f;
-						gravityMultiplier = base_gravityMultiplier;
+						jumpvel = PLAYER_CONST::JUMPVEL;
+						gravityMultiplier = GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER;
 						enemy[i].KillEnemy();
 						continue;
 					}
-					if (DebugMode)
+					if (GAMEPLAY_MISC::DEBUG_MODE)
 						printf("enemy dies\n");
 				}
 				else {
-					if (!DebugMode) {
+					if (!GAMEPLAY_MISC::DEBUG_MODE) {
 						--hp.current;
 						Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerTex);
 						if(hp.current >= 1)
 							Respawn();
 					}
-					if (DebugMode)
+					if (GAMEPLAY_MISC::DEBUG_MODE)
 						printf("player dies\n");
 				}
 			}
@@ -291,9 +291,9 @@ void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, con
 	player.sprite.pos = pos;
 
 	player.collider.SetWidthHeight(player.collider.sprite, width, height);
-	player.collider.SetWidthHeight(player.collider.top, player_width - 4.0f, 5.0f);
-	player.collider.SetWidthHeight(player.collider.left, 20.0f, player_height - 10.0f);
-	player.collider.SetWidthHeight(player.collider.right, 20.0f, player_height - 10.0f);
-	player.collider.SetWidthHeight(player.collider.bottom, player_width / 1.5f, 5.0f);
+	player.collider.SetWidthHeight(player.collider.top, PLAYER_CONST::WIDTH - 4.0f, 5.0f);
+	player.collider.SetWidthHeight(player.collider.left, 20.0f, PLAYER_CONST::HEIGHT - 10.0f);
+	player.collider.SetWidthHeight(player.collider.right, 20.0f, PLAYER_CONST::HEIGHT - 10.0f);
+	player.collider.SetWidthHeight(player.collider.bottom, PLAYER_CONST::WIDTH / 1.5f, 5.0f);
 	player.collider.SetMeshes();
 }

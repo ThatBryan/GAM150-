@@ -9,6 +9,8 @@ struct Color
 {
 	public:
 	f32 r, g, b, alpha;
+	static const f32 RGB_MAX;
+
 	Color(float r, float g, float b, float a);
 	Color();
 	void Set(Color color);

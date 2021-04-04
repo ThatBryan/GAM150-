@@ -57,7 +57,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	//std::cout << "\nL ALT + Enter streches to full screen during gameplay\n";
 	// Initialises the GSM
 	GameStateManagerInit();
-	AEToogleFullScreen(fullscreen);
+	AEToogleFullScreen(GAMEPLAY_MISC::FULLSCREEN);
 
 	//Checks if game state isnt at quit status
 	while (gamestateCurr != GS_QUIT)
