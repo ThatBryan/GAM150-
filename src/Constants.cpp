@@ -7,6 +7,7 @@ namespace FilePaths {
 	const char* Guide4 = "./Assets/Art/Guide4.png";
 	const char* Guide5 = "./Assets/Art/Guide5.png";
 	const char* Guide6 = "./Assets/Art/Guide6.png";
+	const char* CreditScreen1 = "./Assets/Art/CreditScreen.png";
 
 	const char* DigipenLogoRed = "./Assets/Logo/DigiPen_RED.png";
 	const char* DigipenLogoWhite = "./Assets/Logo/DigiPen_WHITE.png";

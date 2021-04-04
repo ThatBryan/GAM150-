@@ -12,12 +12,14 @@
 #include "Player.h"
 #include "Particles.h"
 #include "LevelSystem.h"
+#include "Credits.h"
 
 #include <array>
 #include <vector>
 #include <cmath>
 #include "Gameplay.h"
 #include <string>
+#include <array>
 
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
@@ -36,6 +38,10 @@ static AEVec2 ScreenMid;
 static Color background;
 extern LevelSystem LevelSys;
 
+
+enum CreditScreen { CreditScreen1 = 0, CreditScreen2, MAX_PICTURES };
+std::array <Image, CreditScreen::MAX_PICTURES> Pictures;
+
 void MainMenu::Init(void)
 {
 
@@ -44,6 +50,7 @@ void MainMenu::Init(void)
 	LevelSelection::Init();
 	Options::Init();
 	UI::QuitInit();
+	Credits::Init();
 
 	const float width = 80.0f, height = 100.0f;
 	int size = static_cast<int>(AEGetWindowWidth() / width);
@@ -177,7 +184,7 @@ void MainMenu::Buttons_Init() {
 	MenuBtn[0].Set_Callback(StartGame);
 
 	MenuBtn[1].Set_Text("Credits");
-	MenuBtn[1].Set_Callback(placeholder);
+	MenuBtn[1].Set_Callback(MainMenu::SwitchToCreditScreen);
 
 	MenuBtn[2].Set_Text("Level selection");
 	MenuBtn[2].Set_Callback(MainMenu::SwitchToLevelSelection);
@@ -283,6 +290,12 @@ void MainMenu::SwitchToLevelSelection(void)
 	GameStateDraw = LevelSelection::Render;
 }
 
+void MainMenu::SwitchToCreditScreen(void)
+{
+	GameStateUpdate = Credits::Update;
+	GameStateDraw = Credits::Render;
+}
+
 void MainMenu::SwitchToSettings()
 {
 	GameStateUpdate = Options::Update;
@@ -365,3 +378,24 @@ void Options::Unload()
 {
 	SettingsBtn.clear();
 }
+
+void Credits::Init()
+{
+	Pictures[CreditScreen1].Init(FP::CreditScreen1, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+}
+void Credits::Update()
+{
+}
+
+void Credits::Render()
+{
+	Pictures[CreditScreen1].Draw_Texture(255.0f);
+}
+
+void Credits::Unload()
+{
+	for (size_t i = 0; i < Pictures.size(); ++i) {
+		Pictures[i].Free();
+	}
+}
+
