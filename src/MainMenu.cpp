@@ -13,6 +13,7 @@
 #include "Particles.h"
 #include "LevelSystem.h"
 #include "Credits.h"
+#include "Leaderboard.h"
 
 #include <array>
 #include <vector>
@@ -157,6 +158,7 @@ void MainMenu::Unload(void)
 	player.clear();
 	tiles.clear();
 	Options::Unload();
+	Credits::Unload();
 	LevelSelection::Unload();
 	UI::QuitUnload();
 
@@ -193,7 +195,7 @@ void MainMenu::Buttons_Init() {
 	MenuBtn[2].Set_Callback(MainMenu::SwitchToLevelSelection);
 
 	MenuBtn[3].Set_Text("Leaderboards");
-	MenuBtn[3].Set_Callback(placeholder);
+	MenuBtn[3].Set_Callback(MainMenu::SwitchToLeaderboard);
 
 	MenuBtn[4].SetType(ButtonType::Texture);
 	MenuBtn[4].Set_Texture("./Assets/Art/OptionsBtn.png");
@@ -303,6 +305,12 @@ void MainMenu::SwitchToSettings()
 {
 	GameStateUpdate = Options::Update;
 	GameStateDraw = Options::Render;
+}
+
+void MainMenu::SwitchToLeaderboard(void)
+{
+	GameStateUpdate = Leaderboard::Update;
+	GameStateDraw = Leaderboard::Render;
 }
 
 
@@ -461,5 +469,6 @@ void Credits::Unload()
 	for (size_t i = 0; i < Pictures.size(); ++i) {
 		Pictures[i].Free();
 	}
+	CreditBtn.clear();
 }
 
