@@ -27,6 +27,7 @@ extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
 static std::vector <Image> Images;
 static std::vector<Button> MenuBtn;
 static std::vector<Button> LevelBtn;
+static std::vector<Button> CreditBtn;
 static std::vector<Button> SettingsBtn;
 static std::vector<Enemies> enemy;
 static std::vector<Tiles> tiles;
@@ -381,15 +382,31 @@ void Options::Unload()
 
 void Credits::Init()
 {
+	const float BtnWidth{ 100.0f }, BtnHeight{ 50.0f };
 	Pictures[CreditScreen1].Init(FP::CreditScreen1, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+
+	CreditBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));
+	CreditBtn[0].Set_Position(AEVec2Set(AEGetWindowWidth() - 80.0f, AEGetWindowHeight() - 50.0f));
+	CreditBtn[0].Set_Text("More");
+	
 }
 void Credits::Update()
 {
+	if (AEInputCheckReleased(AEVK_ESCAPE))
+		MainMenu::SwitchToMainMenu();
+
+	for (int i = 0; i < CreditBtn.size(); ++i) {
+		CreditBtn[i].Update();
+	}
 }
 
 void Credits::Render()
 {
 	Pictures[CreditScreen1].Draw_Texture(255.0f);
+
+	for (size_t i = 0; i < CreditBtn.size(); ++i) {
+		CreditBtn[i].Render();
+	}
 }
 
 void Credits::Unload()
