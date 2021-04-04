@@ -74,6 +74,7 @@ bool Button::OnClick(void) {
 	{
 		return true;
 	}
+	return false;
 }
 
 void Button::Render(void) {
