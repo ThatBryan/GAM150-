@@ -28,7 +28,7 @@ void LevelSystem::Init()
 	else {
 		File >> key;
 		File.close();
-		std::cout << "\nKey file opened successfully, key is: " << key << std::endl;
+		std::cout << "\nKey file opened successfully, key is: " << key << std::endl << std::endl;
 	}
 }
 

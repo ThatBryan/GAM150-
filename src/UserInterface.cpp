@@ -53,7 +53,7 @@ void UI::Update() {
 	LevelDisplay.SetText(strBuffer1);
 	TimerDisplay.SetText(strBuffer2);
 
-	Utils::CheckDebugMode();
+	Utils::ToggleDebugMode();
 
 	if (GAMEPLAY_MISC::PAUSED && !Jumperman.GetWinStatus() && !Jumperman.GetLoseStatus())
 		UI::PausedUpdate();

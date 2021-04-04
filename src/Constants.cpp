@@ -1,6 +1,6 @@
 #include "Constants.h"
 
-namespace FilePaths {
+namespace FILE_PATHS {
 	const char* Guide1 = "./Assets/Art/Guide1.png";
 	const char* Guide2 = "./Assets/Art/Guide2.png";
 	const char* Guide3 = "./Assets/Art/Guide3.png";
@@ -48,6 +48,7 @@ namespace TILE_CONST {
 }
 namespace GAMEPLAY_MISC {
 	bool PAUSED = false;
+	bool DEV_MODE = false;
 	bool DEBUG_MODE = false;
 	bool FULLSCREEN = false;
 	bool DISPLAY_QUIT_UI = false;

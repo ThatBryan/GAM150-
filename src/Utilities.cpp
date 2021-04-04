@@ -120,8 +120,24 @@ void Utils::TogglePause(void)
 	}
 }
 
-void Utils::CheckDebugMode(void)
+void Utils::ToggleDevMode(void)
 {
+	static bool isFirstTime{ false };
+	GAMEPLAY_MISC::DEV_MODE = !GAMEPLAY_MISC::DEV_MODE;
+	GAMEPLAY_MISC::DEV_MODE == true ? std::cout << "\nDeveloper mode turned on\n" : std::cout << "\nDeveloper mode turned off\n";
+
+	if (GAMEPLAY_MISC::DEV_MODE && !isFirstTime) { // Only ever print once
+		std::cout << "\nUse F1 to toggle Debug Mode\n";
+		std::cout << "While in Debug Mode, Use F2 to toggle player collision\n";
+		isFirstTime = true;
+	}
+}
+
+void Utils::ToggleDebugMode(void)
+{
+	//if (!GAMEPLAY_MISC::DEV_MODE) // Exit if dev mode is not enabled. disabled for now. 
+	//	return;
+
 	if (AEInputCheckTriggered(DEBUG_KEY))
 		GAMEPLAY_MISC::DEBUG_MODE = !GAMEPLAY_MISC::DEBUG_MODE;
 	if (GAMEPLAY_MISC::DEBUG_MODE && AEInputCheckTriggered(COLLISION_OFF_KEY)) {

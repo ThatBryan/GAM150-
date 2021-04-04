@@ -327,25 +327,29 @@ void LevelSelection::Unload(void)
 
 void Options::Init()
 {
-	const size_t btnCount{ 3 };
+	const size_t btnCount{ 4 };
 	for (size_t i = 0; i < btnCount; ++i) {
 		SettingsBtn.push_back(Button(ButtonType::Color, 200.0f, 50.0f, 0.6f));
 		SettingsBtn[i].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y / 2.0f - 25.0f + i * 150.0f));
 	}
 	SettingsBtn[0].Set_Text("Fullscreen");
 	SettingsBtn[0].Set_Callback(Utils::ToggleFullscreen);
+
 	SettingsBtn[1].Set_Text("Mute");
 	SettingsBtn[1].Set_Callback(AudioManager::ToggleMuteAll);
 
+	SettingsBtn[2].Set_Callback(Utils::ToggleDevMode);
 
-	SettingsBtn[2].Set_Text("Exit to Main Menu");
-	SettingsBtn[2].Set_Callback(MainMenu::SwitchToMainMenu);
+	SettingsBtn[3].Set_Text("Exit to Main Menu");
+	SettingsBtn[3].Set_Callback(MainMenu::SwitchToMainMenu);
 }
 
 void Options::Update()
 {
 	Utils::GetFullscreenStatus() == true ? SettingsBtn[0].Set_Text("Windows Mode") : SettingsBtn[0].Set_Text("Fullscreen");
 	AudioManager::GetGlobalMute() == true ? SettingsBtn[1].Set_Text("Unmute") : SettingsBtn[1].Set_Text("Mute");
+	GAMEPLAY_MISC::DEV_MODE == true ? SettingsBtn[2].Set_Text("Dev Mode Off") : SettingsBtn[2].Set_Text("Dev Mode On");
+
 	for (size_t i = 0; i < SettingsBtn.size(); ++i) {
 		SettingsBtn[i].Update();
 	}

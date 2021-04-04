@@ -2,7 +2,7 @@
 #include "AEEngine.h"
 
 
-namespace FilePaths {
+namespace FILE_PATHS {
 	// Art
 	extern const char* Guide1;
 	extern const char* Guide2;
@@ -35,7 +35,7 @@ namespace FilePaths {
 	extern const char* jumpSFX;
 	extern const char* GameplayBGM;
 }
-namespace FP = FilePaths; // Short hand 
+namespace FP = FILE_PATHS; // Short hand 
 
 namespace PLAYER_CONST {
 	extern const float SPEED;
@@ -55,6 +55,7 @@ namespace GAMEPLAY_MISC{
 	extern const float BASE_GRAVITY_MULTIPLIER;
 
 	extern bool PAUSED;
+	extern bool DEV_MODE;
 	extern bool DEBUG_MODE;
 	extern bool FULLSCREEN;
 	extern bool DISPLAY_QUIT_UI;
