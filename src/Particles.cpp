@@ -161,7 +161,6 @@ void Particles::Update()
 
 		if (p[i].type == ParticlesType::Reverse) {
   			if (p[i].pos == p[i].destination) {
-				//std::cout << "cmp true\n";
 				p[i].active = false;
 			}
 		}

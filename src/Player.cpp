@@ -43,18 +43,8 @@ hp(), direction{ SpriteDirection::Right }, gravityMultiplier{ base_gravityMultip
 
 void Player::Reset(void)
 {
-	jump = false;
-	chargedjump = false;
-	win = false;
-	lose = false;
-	active = true;
-	sprite.pos = startingPos;
-	jumpvel = player_jumpvel;
-	chargedjumpvel = player_chargedjumpvel;
-	chargedjump_counter = player_chargedjump_counter;
+	Respawn();
 	hp.current = hp.max;
-	sprite.rotation = 0;
-	gravityMultiplier = base_gravityMultiplier;
 	direction = SpriteDirection::Right;
 }
 
@@ -80,8 +70,10 @@ void Player::LoadTex(void) {
 }
 
 void Player::Unload(void) {
-	AEGfxTextureUnload(playerTex);
-
+	if (playerTex) {
+		AEGfxTextureUnload(playerTex);
+		playerTex = nullptr;
+	}
 }
 void Player::Update_Position(void)
 {
@@ -114,7 +106,6 @@ void Player::Update_Position(void)
 		AEVec2 Max = AEVec2Add(collider.bottom.pos, AEVec2{ sprite.width, 25.0f});
 		AEVec2 Destination = AEVec2Add(sprite.pos, AEVec2{ 0, sprite.height / 2.0f });
 		Particles::CreateReverseParticles(Destination, Min, Max, Color{ 255.0f, 255.0f, 0, 255.0f}, 1, Utils::RandomRangeFloat(10.0f, 100.0f), 50.0f, 3.0f, 1.0f);
-		//std::cout << Particles::GetContainerSize() << std::endl;
 	}
 
 	if (AEInputCheckReleased(AEVK_SPACE) && chargedjump_counter < 0)
@@ -134,11 +125,6 @@ void Player::Update_Position(void)
 				chargedjump = false;
 				chargedjumpvel = player_chargedjumpvel;
 			}
-			//if (chargedjumpvel < -player_chargedjumpvel)
-			//{
-			//	chargedjump = false;
-			//	chargedjumpvel = player_chargedjumpvel;
-			//}
 		}
 	}
 
@@ -206,13 +192,41 @@ void Player::ChangeDirection() {
 	sprite.width *= -1.0f;
 }
 
-void Player::CheckOutOfBound() {
-	if ((sprite.pos.y - sprite.height / 2) > maxY)
-		SetPlayerLose();
+void Player::Respawn(void)
+{
+	jump = false;
+	chargedjump = false;
+	win = false;
+	lose = false;
+	active = true;
+	sprite.pos = startingPos;
+	jumpvel = player_jumpvel;
+	chargedjumpvel = player_chargedjumpvel;
+	chargedjump_counter = player_chargedjump_counter;
+	sprite.rotation = 0;
+	gravityMultiplier = base_gravityMultiplier;
 
-	// Resolve collision conflict on spawn
+	static const float spriteWidth{ fabsf(sprite.width) };
+	if (sprite.pos.x - (spriteWidth / 2.0f) <= 0) {
+		sprite.pos.x = spriteWidth / 2.0f;
+	}
+}
+
+void Player::CheckOutOfBound() {
+	if ((sprite.pos.y - sprite.height / 2) > maxY) {
+		--hp.current;
+		Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerTex);
+		if(hp.current >= 1)
+			Respawn();
+	}
+
 	if (sprite.pos.x - (sprite.width / 2.0f) < 0) {
 		sprite.pos.x = sprite.width / 2.0f;
+	}
+
+	if (sprite.pos.y - sprite.height / 2.0f <= 0) {
+		jumpvel = 0;
+		chargedjumpvel = 0;
 	}
 }
 void Player::GravityManager(void)
@@ -250,6 +264,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 						jumpvel += player_jumpvel / 2.0f;
 						gravityMultiplier = base_gravityMultiplier;
 						enemy[i].KillEnemy();
+						continue;
 					}
 					if (DebugMode)
 						printf("enemy dies\n");
@@ -258,7 +273,8 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 					if (!DebugMode) {
 						--hp.current;
 						Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerTex);
-						sprite.pos = startingPos;
+						if(hp.current >= 1)
+							Respawn();
 					}
 					if (DebugMode)
 						printf("player dies\n");
@@ -278,6 +294,6 @@ void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, con
 	player.collider.SetWidthHeight(player.collider.top, player_width - 4.0f, 5.0f);
 	player.collider.SetWidthHeight(player.collider.left, 20.0f, player_height - 10.0f);
 	player.collider.SetWidthHeight(player.collider.right, 20.0f, player_height - 10.0f);
-	player.collider.SetWidthHeight(player.collider.bottom, player_width / 2.0f, 5.0f);
+	player.collider.SetWidthHeight(player.collider.bottom, player_width / 1.5f, 5.0f);
 	player.collider.SetMeshes();
 }

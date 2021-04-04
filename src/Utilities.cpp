@@ -109,8 +109,15 @@ AEVec2 Utils::GetMousePos(void)
 void Utils::TogglePause(void)
 {
 	paused = !paused;
-	if (!paused)
+	if (!paused) {
 		DisplayQuitUI = false;
+		ShowCursor(false);
+		std::cout << "Cursor disabled\n";
+	}
+	if (paused) {
+		ShowCursor(true);
+		std::cout << "Cursor enabled\n";
+	}
 }
 
 void Utils::CheckDebugMode(void)
@@ -121,8 +128,9 @@ void Utils::CheckDebugMode(void)
 		DisableCollision = !DisableCollision;
 		DisableCollision == false ? std::cout << "Collision turned on \n" : std::cout << "Collision turned off \n";
 	}
-	if (!DebugMode)
+	if (!DebugMode) {
 		DisableCollision = false;
+	}
 }
 
 void Utils::ReturnToMenu(void) {

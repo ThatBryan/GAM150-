@@ -35,8 +35,6 @@ void Background::Load()
 	SceneColors[static_cast<int>(SceneType::Day)] = Color{ 51.0f, 215.0f, 255.0f, 255.0f };
 	SceneColors[static_cast<int>(SceneType::Noon)] = Color{ 255.0f, 175.0f, 51.0f, 255.0f };
 	SceneColors[static_cast<int>(SceneType::Nightfall)] = Color{ 100.0f, 149.0f, 237.0f, 255.0f };
-
-	Scene.Set(SceneColors[static_cast<int>(SceneType::Day)]);
 }
 
 void Background::Init()
@@ -69,6 +67,7 @@ void Background::Init()
 	text.SetPos(AEVec2Set(Midpt.x, Midpt.y + 100.0f));
 	text.SetColor(Color{ 0, 0, 0, 255.0f });
 	text.SetScale(1.0f);
+	Scene.Set(SceneColors[static_cast<int>(SceneType::Day)]);
 }
 
 void Background::Update()
@@ -87,22 +86,26 @@ void Background::Render(Player& player)
 	}
 	if (player.GetLoseStatus())
 	{
-		paused = true;
+		if(!paused)
+			Utils::TogglePause();
 		Images[Defeat].Draw_Texture(150.0f);
 		text.SetText(const_cast<s8*>("YOU LOSE"));
 		text.Draw_Wrapped(text.pos);
 		for (int i = 2; i < MenuBtn.size(); ++i) {
 			MenuBtn[i].Update();
+			MenuBtn[i].Render();
 		}
 	}
 	if (player.GetWinStatus())
-	{
-		paused = true;
+	{	
+		if (!paused)
+			Utils::TogglePause();
 		Images[Victory].Draw_Texture(50.0f);
 		text.SetText(const_cast<s8*>("YOU WIN"));
 		text.Draw_Wrapped(text.pos);
 		for (int i = 0; i < 2; ++i) {
 			MenuBtn[i].Update();
+			MenuBtn[i].Render();
 		}
 		const int particleCount{ 50 };
 		static float spawnTimer{0.0f};
@@ -137,6 +140,7 @@ void Background::LerpBackgroundColor(void)
 		t = 0;
 	}
 	Scene = Color::Lerp(Scene, Destination, t);
-	t += 0.000005f;
+	static const float LerpFactor{ 0.000005f };
+	t += LerpFactor;
 }
 

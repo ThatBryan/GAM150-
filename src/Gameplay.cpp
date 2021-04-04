@@ -80,13 +80,12 @@ void Gameplay::Init(void)
 		}
 	}
 	tileManager.push_back(&tilemap);
-
 	UI::Init();
+	ShowCursor(false);
 }
 
 void Gameplay::Update()
 {
-
 	Background::Update();
 	if (!paused) {
 		app_time += g_dt;
@@ -182,8 +181,8 @@ void Gameplay::Load()
 
 	Tiles::LoadTex();
 	Particles::Load();
-	Player::LoadTex();
 	Enemies::LoadTex();
+	Player::LoadTex();
 	AudioManager::loadAsset();
 	AudioManager::SetVolume(AudioID::Jump, 0.2f);
 	AudioManager::SetVolume(AudioID::BGM, 0.2f);
@@ -196,8 +195,8 @@ void Gameplay::Unload()
 {
 	Tiles::Unload();
 	Enemies::Unload();
-	Player::Unload();
 	Particles::Unload();
+	Player::Unload();
 	AudioManager::unloadAsset();
 	FreeMapData();
 	Background::Unload();

@@ -50,6 +50,14 @@ void Image::SetMatrix(AEVec2 Pos)
 	AEMtx33Concat(&temp, &rot, &scale);
 	AEMtx33Concat(&transformMtx, &trans, &temp);
 }
+void Image::Free(void)
+{
+
+	if (pTex){
+		AEGfxTextureUnload(pTex); 
+		pTex = nullptr;
+	}
+}
 void Image::Draw_Texture(const f32 alpha, const f32 r, const f32 g, const f32 b, const f32 a)
 {
 	SetMatrix();

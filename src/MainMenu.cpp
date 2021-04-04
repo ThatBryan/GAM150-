@@ -75,7 +75,8 @@ void MainMenu::Update(void)
 		t = 0;
 	}
 	background = Color::Lerp(background, Destination, t);
-	t += 0.00001f;
+	static const float lerpFactor{ 0.00001f };
+	t += lerpFactor;
 
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
 	Audio.update();
