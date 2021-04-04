@@ -75,6 +75,8 @@ namespace Graphics
 			inline void SetPos(AEVec2 Pos) { pos = Pos; }
 			inline void SetColor(Color c) { color.Set(c); }
 			inline void SetScale(f32 Scale) { scale = Scale; }
+			inline size_t GetBufferLength() { return buffer.length(); }
+			inline void ClearBuffer() { buffer.clear(); }
 			Color color;
 			f32 width, height, scale;
 			AEVec2 pos;
