@@ -70,6 +70,8 @@ void MainMenu::Init(void)
 	Title.SetText("JUMPERMAN");
 	Title.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	Title.SetScale(1.0f);
+
+	Leaderboard::Init();
 }
 
 void MainMenu::Update(void)
