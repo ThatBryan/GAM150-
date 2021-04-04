@@ -18,11 +18,11 @@ static std::vector<Button> MenuBtn;	Graphics::Text text;
 static AEVec2 Midpt;
 static Color Scene;
 
-enum class SceneType { Day = 0, Noon, Nightfall, Max};
+enum class SceneType { Day = 0, Noon, Night, Max};
 static Color SceneColors [static_cast<int>(SceneType::Max)];
 
 SceneType& operator++(SceneType& rhs) {
-	rhs = (rhs == SceneType::Nightfall) ? SceneType::Day : SceneType((int)rhs + 1);
+	rhs = (rhs == SceneType::Night) ? SceneType::Day : SceneType((int)rhs + 1);
 	return rhs;
 }
 
@@ -34,7 +34,7 @@ void Background::Load()
 
 	SceneColors[static_cast<int>(SceneType::Day)] = Color{ 51.0f, 215.0f, 255.0f, 255.0f };
 	SceneColors[static_cast<int>(SceneType::Noon)] = Color{ 255.0f, 175.0f, 51.0f, 255.0f };
-	SceneColors[static_cast<int>(SceneType::Nightfall)] = Color{ 100.0f, 149.0f, 237.0f, 255.0f };
+	SceneColors[static_cast<int>(SceneType::Night)] = Color{ 100.0f, 149.0f, 237.0f, 255.0f };
 }
 
 void Background::Init()
@@ -46,7 +46,7 @@ void Background::Init()
 	MenuBtn[0].Set_Callback(Utils::ReturnToMenu);
 	MenuBtn[0].Set_Text("Menu");
 
-	MenuBtn[1].Set_Text("Next Level");
+	GAMEPLAY_MISC::Level != 9 ? MenuBtn[1].Set_Text("Next Level") : MenuBtn[1].Set_Text("Menu");
 	MenuBtn[1].Set_Callback(LevelSystem::SetNextLevel);
 	
 	MenuBtn[2].Set_Callback(Utils::ReturnToMenu);

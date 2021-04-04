@@ -159,7 +159,7 @@ void MainMenu::Unload(void)
 	Options::Unload();
 	LevelSelection::Unload();
 	UI::QuitUnload();
-
+	Credits::Unload();
 	EnemyCount = 0;
 }
 
