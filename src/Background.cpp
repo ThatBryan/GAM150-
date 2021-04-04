@@ -78,7 +78,7 @@ void Background::Update()
 
 void Background::Render(Player& player)
 {
-	if (!DisplayQuitUI && (paused && player.active && !player.GetWinStatus()))
+	if (!GAMEPLAY_MISC::DISPLAY_QUIT_UI && (GAMEPLAY_MISC::PAUSED && player.active && !player.GetWinStatus()))
 	{
 		Images[Pause].Draw_Texture(100.0f);
 		text.SetText(const_cast<s8*>("PAUSED"));
@@ -86,7 +86,7 @@ void Background::Render(Player& player)
 	}
 	if (player.GetLoseStatus())
 	{
-		if(!paused)
+		if(!GAMEPLAY_MISC::PAUSED)
 			Utils::TogglePause();
 		Images[Defeat].Draw_Texture(150.0f);
 		text.SetText(const_cast<s8*>("YOU LOSE"));
@@ -98,7 +98,7 @@ void Background::Render(Player& player)
 	}
 	if (player.GetWinStatus())
 	{	
-		if (!paused)
+		if (!GAMEPLAY_MISC::PAUSED)
 			Utils::TogglePause();
 		Images[Victory].Draw_Texture(50.0f);
 		text.SetText(const_cast<s8*>("YOU WIN"));

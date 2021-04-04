@@ -3,13 +3,14 @@
 #include <iostream>
 #include "Utilities.h"
 
+const f32 Color::RGB_MAX{ 255.0f };
 
 Color::Color(float r, float g, float b, float a)
 {
-	this->r = r / colorcodeMax;
-	this->g = g / colorcodeMax;
-	this->b = b / colorcodeMax;
-	this->alpha = a / colorcodeMax;
+	this->r = r / RGB_MAX;
+	this->g = g / RGB_MAX;
+	this->b = b / RGB_MAX;
+	this->alpha = a / RGB_MAX;
 }
 
 Color::Color() : r{ 255.0f }, g{ 255.0f }, b{ 255.0f }, alpha{ 255.0f } {}
@@ -147,7 +148,7 @@ void Graphics::Rect::Draw(const f32 alpha)
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxSetTintColor(color.r, color.g , color.b, color.alpha);
-	AEGfxSetTransparency(alpha / colorcodeMax);
+	AEGfxSetTransparency(alpha / Color::RGB_MAX);
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
@@ -158,7 +159,7 @@ void Graphics::Rect::Draw(Color C, const f32 alpha)
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxSetTintColor(C.r, C.g, C.b, C.alpha);
-	AEGfxSetTransparency(alpha / colorcodeMax);
+	AEGfxSetTransparency(alpha / Color::RGB_MAX);
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_NONE);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
@@ -170,7 +171,7 @@ void Graphics::Rect::DrawTexture(AEGfxTexture* pTex, Color C, const f32 alpha)
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 	AEGfxTextureSet(pTex, 0.0f, 0.0f);
 	AEGfxSetTintColor(C.r, C.g, C.b, C.alpha);
-	AEGfxSetTransparency(alpha / colorcodeMax);
+	AEGfxSetTransparency(alpha / Color::RGB_MAX);
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);

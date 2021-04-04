@@ -63,8 +63,8 @@ void Image::Draw_Texture(const f32 alpha, const f32 r, const f32 g, const f32 b,
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 	AEGfxTextureSet(pTex, 0, 0); 
-	AEGfxSetTintColor(r / colorcodeMax, g / colorcodeMax, b / colorcodeMax, a / colorcodeMax);
-	AEGfxSetTransparency(alpha / colorcodeMax);
+	AEGfxSetTintColor(r / Color::RGB_MAX, g / Color::RGB_MAX, b / Color::RGB_MAX, a / Color::RGB_MAX);
+	AEGfxSetTransparency(alpha / Color::RGB_MAX);
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
@@ -74,8 +74,8 @@ void Image::Draw_Texture(AEVec2 Pos, const f32 alpha, const f32 r, const f32 g, 
 	SetMatrix(Pos);
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 	AEGfxTextureSet(pTex, 0, 0);
-	AEGfxSetTintColor(r / colorcodeMax, g / colorcodeMax, b / colorcodeMax, a / colorcodeMax);
-	AEGfxSetTransparency(alpha / colorcodeMax);
+	AEGfxSetTintColor(r / Color::RGB_MAX, g / Color::RGB_MAX, b / Color::RGB_MAX, a / Color::RGB_MAX);
+	AEGfxSetTransparency(alpha / Color::RGB_MAX);
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
