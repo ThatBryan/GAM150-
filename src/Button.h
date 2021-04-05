@@ -3,14 +3,13 @@
 #include "Graphics.h"
 #include "AudioManager.h"
 
-
 enum class ButtonState{Idle = 0, Hovered, Clicked, MaxColor};
 enum class ButtonType{Color = 0, Texture};
 
 class Button {
 public:
-	using fn_ptr = void(*)(void);
-	using Test_Ptr = void(*)(unsigned short);
+	using void_fn_ptr_void = void(*)(void);
+	using void_fn_ptr_short = void(*)(unsigned short);
 
 	Button(ButtonType Type, const f32 width, const f32 height, const f32 textScale = 1.0f);
 	~Button();
@@ -21,6 +20,7 @@ public:
 	void Set_Text(std::string text);
 	void Set_TextColor(Color color);
 	void SetStateColor(ButtonState state, Color color);
+	void Set_Texture(const char* pFile);
 	void RandomizeAllStateColor();
 
 	// ONLY CALL AFTER ALL PUSHBACKS. OTHERWISE THE VECTOR CONTAINER WILL CALL THE DTOR.
@@ -28,9 +28,8 @@ public:
 
 	inline int GetID() const { return ID; }
 	inline void SetID(unsigned short x) { ID = x; }
-	inline void Set_Callback(Test_Ptr ThePtr) { TestCallback = ThePtr; }
-	inline void Set_Callback(fn_ptr ThePtr) { callback = ThePtr; }
-	inline void Set_Texture(const char* pFile) { pTex = AEGfxTextureLoad(pFile); }
+	inline void Set_Callback(void_fn_ptr_short ThePtr) { callback_short = ThePtr; }
+	inline void Set_Callback(void_fn_ptr_void ThePtr) { callback_void = ThePtr; }
 	inline void SetTextType(const char id) { text.SetFontType(id); }
 	void FreeTexture();
 	inline float GetHeight() const { return button.height; }
@@ -42,9 +41,8 @@ private:
 	Graphics::Text text;
 	ButtonType type;
 	AEGfxTexture* pTex;
-	//AEVec2 pos; // maybe unnecessary
-	fn_ptr callback;
-	Test_Ptr TestCallback;
+	void_fn_ptr_void callback_void;
+	void_fn_ptr_short callback_short;
 	Color buttonState[static_cast<int>(ButtonState::MaxColor)];
 	unsigned short ID;
 

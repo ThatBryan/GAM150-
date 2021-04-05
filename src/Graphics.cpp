@@ -23,12 +23,12 @@ void Color::Set(Color color)
 	this->alpha = color.alpha;
 }
 
-Color Color::CreateRandomColor()
+Color Color::CreateRandomColor(const float max_alpha)
 {
 	float r = Utils::RandomRangeFloat(0.0f, 255.0f);
 	float g = Utils::RandomRangeFloat(0.0f, 255.0f);
 	float b = Utils::RandomRangeFloat(0.0f, 255.0f);
-	float a = Utils::RandomRangeFloat(0.0f, 255.0f);
+	float a = Utils::RandomRangeFloat(0.0f, max_alpha);
 	return Color(r, g, b, a);
 }
 

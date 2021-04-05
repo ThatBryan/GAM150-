@@ -186,6 +186,19 @@ void MainMenu::Buttons_Init() {
 			MenuBtn[i].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth, ScreenMid.y / 1.3f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
 
 	}
+	for (int i = 0; i < 6; ++i) {
+		if (i % 2 == 0) {
+			MenuBtn[i].SetType(ButtonType::Texture);
+			MenuBtn[i].Set_Texture("./Assets/Art/BtnTest.png");
+			MenuBtn[i].SetStateColor(ButtonState::Hovered, Color{0.0f, 255.0f, 255.0f, 255.0f });
+		}
+		else{
+			MenuBtn[i].SetType(ButtonType::Texture);
+			MenuBtn[i].Set_Texture("./Assets/Art/BtnTest2.png");
+			MenuBtn[i].SetStateColor(ButtonState::Hovered, Color{ 255.0f, 255.0f, 0.0f, 255.0f });
+		}
+
+	}
 	LevelSys.GetKey() == 1 ? MenuBtn[0].Set_Text("Start Game") : MenuBtn[0].Set_Text("Continue");
 	MenuBtn[0].Set_Callback(StartGame);
 
@@ -198,11 +211,9 @@ void MainMenu::Buttons_Init() {
 	MenuBtn[3].Set_Text("Leaderboards");
 	MenuBtn[3].Set_Callback(MainMenu::SwitchToLeaderboard);
 
-	MenuBtn[4].SetType(ButtonType::Texture);
-	MenuBtn[4].Set_Texture("./Assets/Art/BtnTest.png");
+
 	MenuBtn[4].Set_Text("Options");
 	MenuBtn[4].Set_Callback(MainMenu::SwitchToSettings);
-	MenuBtn[4].SetStateColor(ButtonState::Hovered, Color{ 0.0f, 255.0f, 255.0f, 255.0f });
 
 	MenuBtn[5].Set_Text("Quit Game");
 	MenuBtn[5].Set_Callback(QuitGame);
@@ -254,30 +265,35 @@ void MainMenu::PlayerMovement() {
 
 void LevelSelection::Init(void)
 {
-	for (unsigned short i = 0; i < 9; ++i) {
-		LevelBtn.push_back(Button(ButtonType::Color, 150.0, 75.0f, 0.5f));
+	for (unsigned short i = 0; i < 10; ++i) {
+		if (i == 9) {
+			LevelBtn.push_back(Button(ButtonType::Texture, 150.0, 75.0f, 0.4f));
+			break;
+		}
+		LevelBtn.push_back(Button(ButtonType::Texture, 150.0, 75.0f, 0.5f));
+
+	}
+	for (unsigned short i = 0; i < 10; ++i) {
 		LevelBtn[i].SetID(i + 1);
 		LevelBtn[i].Set_TextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 		LevelBtn[i].Set_Callback(MainMenu::LockedLevel);
-		LevelBtn[i].Set_Text("Locked");
+		LevelBtn[i].SetTextType(fontID::Strawberry_Muffins_Demo);
+		LevelBtn[i].Set_Texture("./Assets/Art/BtnTest3.png");
+		LevelBtn[i].SetStateColor(ButtonState::Hovered, Color{ 247.0f, 161.0f, 187.0f, 255.0f });
 	}
 
 
 	for (size_t i = 0; i < 3; ++i) {
 		for (size_t j = 0; j < 3; ++j) {
 			LevelBtn[(i * 3) + j].Set_Position(AEVec2Set(175.0f + 225.0f * j, 162.5f + 150.0f * i));// Mid = 400. 400 - 75, 325. 325 - 150 175.0f // 600 / 3, 200 - 37.5 = 162.5f
-			LevelBtn[(i * 3) + j].SetTextType(fontID::Pixel_Digivolve);
 
 			if (LevelBtn[i * 3 + j].GetID() > LevelSys.GetKey()) {
-				LevelBtn[i * 3 + j].SetStateColor(ButtonState::Idle, Color(255.0f, 0.0f, 0.0f, 10.0f));
+				LevelBtn[i * 3 + j].SetStateColor(ButtonState::Idle, Color(255.0f, 255.0f, 255.0f, 175.0f));
 			}
 		}
 	}
 
-	LevelBtn.push_back(Button(ButtonType::Color, 150.0, 75.0f, 0.4f));
-
 	for (unsigned short i = LevelSys.GetKey(); i < 9; ++i) {
-		LevelBtn[i].SetType(ButtonType::Texture);
 		LevelBtn[i].Set_Texture("./Assets/Art/Locked.png");
 		LevelBtn[i].Set_Text("");
 	}
@@ -292,7 +308,6 @@ void MainMenu::SwitchToLevelSelection(void)
 	std::cout << "Level Key: " << LevelSys.GetKey() << std::endl;
 
 	for (size_t i = 0; i < LevelSys.GetKey(); ++i) {
-			LevelBtn[i].SetStateColor(ButtonState::Idle, Color(0, 255.0f, 0.0f, 10.0f));
 			LevelBtn[i].Set_Callback(LevelSystem::SetLevel);
 			std::string tmp{ "Level " + std::to_string(i + 1) };
 			LevelBtn[i].Set_Text(tmp.c_str());
