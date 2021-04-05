@@ -51,6 +51,8 @@ void MainMenu::Init(void)
 	UI::QuitInit();
 	Credits::Init();
 
+	count = 0;
+
 	const float width = 80.0f, height = 100.0f;
 	int size = static_cast<int>(AEGetWindowWidth() / width);
 	Tiles::AddTileRow(tiles, TileType::Grass, size + 1, width, height, AEVec2{width / 2.0f, AEGetWindowHeight() - height });
@@ -228,8 +230,8 @@ static float WindowWidth = 0;
 void MainMenu::EnemyMovement() {
 	WindowWidth = static_cast<f32>(AEGetWindowWidth());
 
-	static float Test{ enemy[2].sprite.pos.x };
-	static float Test2{ enemy[1].sprite.pos.x };
+	static float SquirrelPos{ enemy[2].sprite.pos.x };
+	static float BatPos{ enemy[1].sprite.pos.x };
 
 	for (int i = 0; i < enemy.size(); ++i) {
 		enemy[i].sprite.pos.x = AEWrap(enemy[i].sprite.pos.x, -(enemy[i].sprite.width / 2.0f), WindowWidth + enemy[i].sprite.width / 2.0f);
@@ -241,14 +243,14 @@ void MainMenu::EnemyMovement() {
 
 		case EnemyType::Bat:
 			enemy[i].sprite.pos.x += 2.5f * baseSpeed * g_dt;
-			Test2 += baseSpeed * g_dt;
-			enemy[i].sprite.pos.y += std::sin(Test2 / 15.0f);
+			BatPos += baseSpeed * g_dt;
+			enemy[i].sprite.pos.y += std::sin(BatPos / 15.0f);
 			continue;
 
 		case EnemyType::Squirrel:
 			enemy[i].sprite.pos.x += 2.0f * baseSpeed * g_dt;
-			Test +=  baseSpeed * g_dt;
-			enemy[i].sprite.pos.y += 2 * std::sin(Test / 10.0f);
+			SquirrelPos +=  baseSpeed * g_dt;
+			enemy[i].sprite.pos.y += 2 * std::sin(SquirrelPos / 10.0f);
 			continue;
 		}
 	}
@@ -338,6 +340,7 @@ void MainMenu::SwitchToLeaderboard(void)
 
 void MainMenu::SwitchToMainMenu(void)
 {
+	count = 0;
 	GameStateUpdate = MainMenu::Update;
 	GameStateDraw = MainMenu::Render;
 }
@@ -426,20 +429,21 @@ void Options::Unload()
 void Credits::Init()
 {
 	const float BtnWidth{ 100.0f }, BtnHeight{ 50.0f };
+	static const float WindWidth{ static_cast<f32>(AEGetWindowWidth()) }, WindHeight{ static_cast<f32>(AEGetWindowHeight()) };
 
-	Pictures[CreditScreen1].Init(FP::CreditScreen1, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
-	Pictures[CreditScreen2].Init(FP::CreditScreen2, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
-	Pictures[CreditScreen3].Init(FP::CreditScreen3, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
-	Pictures[CreditScreen4].Init(FP::CreditScreen4, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
-	Pictures[CreditScreen5].Init(FP::CreditScreen5, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+	Pictures[CreditScreen1].Init(FP::CreditScreen1, WindWidth, WindHeight, ScreenMid);
+	Pictures[CreditScreen2].Init(FP::CreditScreen2, WindWidth, WindHeight, ScreenMid);
+	Pictures[CreditScreen3].Init(FP::CreditScreen3, WindWidth, WindHeight, ScreenMid);
+	Pictures[CreditScreen4].Init(FP::CreditScreen4, WindWidth, WindHeight, ScreenMid);
+	Pictures[CreditScreen5].Init(FP::CreditScreen5, WindWidth, WindHeight, ScreenMid);
 
 	for (int i = 0; i < 2; ++i) {
 		CreditBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));
 	}
 
-	CreditBtn[0].Set_Position(AEVec2Set(AEGetWindowWidth() - 80.0f, AEGetWindowHeight() - 120.0f));
+	CreditBtn[0].Set_Position(AEVec2Set(WindWidth - 80.0f, WindHeight - 120.0f));
 	CreditBtn[0].Set_Text("Back");
-	CreditBtn[1].Set_Position(AEVec2Set(AEGetWindowWidth() - 80.0f, AEGetWindowHeight() - 50.0f));
+	CreditBtn[1].Set_Position(AEVec2Set(WindWidth - 80.0f, WindHeight - 50.0f));
 	CreditBtn[1].Set_Text("More");
 }
 void Credits::Update()
@@ -480,11 +484,9 @@ void Credits::Render()
 			Pictures[CreditScreen5].Draw_Texture(255.0f);
 			break;
 	}
-
 	for (size_t i = 0; i < CreditBtn.size(); ++i) {
 		CreditBtn[i].Render();
 	}
-	
 }
 
 void Credits::Unload()

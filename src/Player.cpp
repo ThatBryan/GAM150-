@@ -261,7 +261,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 					collider.bottom.pos, collider.bottom.width, collider.bottom.height)) {
 					if (!GAMEPLAY_MISC::DEBUG_MODE) {
 						jump = true;
-						jumpvel = PLAYER_CONST::JUMPVEL;
+						jumpvel = PLAYER_CONST::JUMPVEL * 1.2f;
 						gravityMultiplier = GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER;
 						enemy[i].KillEnemy();
 						continue;
