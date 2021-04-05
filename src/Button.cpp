@@ -44,7 +44,6 @@ void Button::SetType(ButtonType Type)
 	type = Type;
 	if (type == ButtonType::Texture) {
 		SetStateColor(ButtonState::Idle, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
-		SetStateColor(ButtonState::Hovered, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
 		SetStateColor(ButtonState::Clicked, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
 	}
 }

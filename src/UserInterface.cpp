@@ -165,6 +165,7 @@ void UI::QuitInit()
 	QuitBtn[1].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth, ScreenMid.y + 50.0f));
 
 	QuitText.SetText("Do you want to exit the game?");
+	QuitText.SetFontType(fontID::Roboto);
 	QuitText.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	QuitText.SetScale(1.0f);
 }

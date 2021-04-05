@@ -30,6 +30,7 @@ public:
 	inline void Set_Callback(Test_Ptr ThePtr) { TestCallback = ThePtr; }
 	inline void Set_Callback(fn_ptr ThePtr) { callback = ThePtr; }
 	inline void Set_Texture(const char* pFile) { pTex = AEGfxTextureLoad(pFile); }
+	inline void SetTextType(const char id) { text.SetFontType(id); }
 	void FreeTexture();
 	inline float GetHeight() const { return button.height; }
 	inline float GetWidth() const { return button.width; }

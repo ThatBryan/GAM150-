@@ -14,11 +14,11 @@
 #include "LevelSystem.h"
 #include "Credits.h"
 #include "Leaderboard.h"
+#include "Gameplay.h"
 
 #include <array>
 #include <vector>
 #include <cmath>
-#include "Gameplay.h"
 #include <string>
 #include <array>
 
@@ -26,10 +26,7 @@ extern AudioData soundData[static_cast<int>(AudioID::Max)];
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
 
 static std::vector <Image> Images;
-static std::vector<Button> MenuBtn;
-static std::vector<Button> LevelBtn;
-static std::vector<Button> CreditBtn;
-static std::vector<Button> SettingsBtn;
+static std::vector<Button> MenuBtn, LevelBtn, CreditBtn, SettingsBtn;
 static std::vector<Enemies> enemy;
 static std::vector<Tiles> tiles;
 static std::vector<Player> player;
@@ -38,7 +35,6 @@ static AEVec2 ScreenMid;
 
 static Color background;
 extern LevelSystem LevelSys;
-
 
 enum CreditScreen { CreditScreen1 = 0, CreditScreen2, CreditScreen3, CreditScreen4, CreditScreen5, MAX_PICTURES };
 std::array <Image, CreditScreen::MAX_PICTURES> Pictures;
@@ -68,6 +64,7 @@ void MainMenu::Init(void)
 	background.Set(Color{ 51.0f, 215.0f, 255.0f, 255.0f });
 	
 	Title.SetText("JUMPERMAN");
+	Title.SetFontType(fontID::Courier);
 	Title.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	Title.SetScale(1.0f);
 
@@ -181,6 +178,7 @@ void MainMenu::Buttons_Init() {
 	const float BtnWidth{ 200.0f }, BtnHeight{ 50.0f };
 	for (int i = 0; i < 6; ++i) {
 		MenuBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));
+		
 		if(i % 2 == 0)
 			MenuBtn[i].Set_Position(AEVec2Set(ScreenMid.x - BtnWidth, ScreenMid.y / 1.3f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
 		else
@@ -200,11 +198,16 @@ void MainMenu::Buttons_Init() {
 	MenuBtn[3].Set_Callback(MainMenu::SwitchToLeaderboard);
 
 	MenuBtn[4].SetType(ButtonType::Texture);
-	MenuBtn[4].Set_Texture("./Assets/Art/OptionsBtn.png");
+	MenuBtn[4].Set_Texture("./Assets/Art/BtnTest.png");
+	MenuBtn[4].Set_Text("Options");
 	MenuBtn[4].Set_Callback(MainMenu::SwitchToSettings);
+	MenuBtn[4].SetStateColor(ButtonState::Hovered, Color{ 0.0f, 255.0f, 255.0f, 255.0f });
 
 	MenuBtn[5].Set_Text("Quit Game");
 	MenuBtn[5].Set_Callback(QuitGame);
+	for (int i = 0; i < MenuBtn.size(); ++i) {
+		MenuBtn[i].SetTextType(fontID::Strawberry_Muffins_Demo);
+	}
 }
 
 const float baseSpeed = 50.0f;
@@ -256,13 +259,14 @@ void LevelSelection::Init(void)
 		LevelBtn[i].Set_TextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 		LevelBtn[i].Set_Callback(MainMenu::LockedLevel);
 		LevelBtn[i].Set_Text("Locked");
-
 	}
 
 
 	for (size_t i = 0; i < 3; ++i) {
 		for (size_t j = 0; j < 3; ++j) {
 			LevelBtn[(i * 3) + j].Set_Position(AEVec2Set(175.0f + 225.0f * j, 162.5f + 150.0f * i));// Mid = 400. 400 - 75, 325. 325 - 150 175.0f // 600 / 3, 200 - 37.5 = 162.5f
+			LevelBtn[(i * 3) + j].SetTextType(fontID::Pixel_Digivolve);
+
 			if (LevelBtn[i * 3 + j].GetID() > LevelSys.GetKey()) {
 				LevelBtn[i * 3 + j].SetStateColor(ButtonState::Idle, Color(255.0f, 0.0f, 0.0f, 10.0f));
 			}
@@ -357,6 +361,7 @@ void Options::Init()
 	for (size_t i = 0; i < btnCount; ++i) {
 		SettingsBtn.push_back(Button(ButtonType::Color, 200.0f, 50.0f, 0.6f));
 		SettingsBtn[i].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y / 2.0f - 25.0f + i * 150.0f));
+		SettingsBtn[i].SetTextType(fontID::Strawberry_Muffins_Demo);
 	}
 	SettingsBtn[0].Set_Text("Fullscreen");
 	SettingsBtn[0].Set_Callback(Utils::ToggleFullscreen);

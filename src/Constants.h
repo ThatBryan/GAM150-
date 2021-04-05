@@ -30,7 +30,6 @@ namespace FILE_PATHS {
 	extern const char* GreyTile;
 	extern const char* DialogueTile;
 	extern const char* SpecialTile;
-	extern const char* FontFile;
 	extern const char* ButtonTest;
 	extern const char* ButtonTest2;
 	extern const char* HeartSprite;
@@ -39,6 +38,11 @@ namespace FILE_PATHS {
 	// Sound
 	extern const char* jumpSFX;
 	extern const char* GameplayBGM;
+
+	extern const char* Font_Roboto;
+	extern const char* Font_Strawberry_Muffins_Demo;
+	extern const char* Font_Courier;
+	extern const char* Font_Pixel_Digivolve;
 }
 namespace FP = FILE_PATHS; // Short hand 
 
@@ -70,8 +74,11 @@ namespace GAMEPLAY_MISC{
 	// Level tracker
 	extern unsigned short Level;
 }
-namespace font {
-	extern char ID;
+namespace fontID {
+	extern char Roboto;
+	extern char Strawberry_Muffins_Demo;
+	extern char Courier;
+	extern char Pixel_Digivolve;
 }
 namespace Mesh { // Base Meshes
 	extern AEGfxVertexList* Rect;

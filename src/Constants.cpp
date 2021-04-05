@@ -27,7 +27,6 @@ namespace FILE_PATHS {
 	const char* SpecialTile = "./Assets/Art/Special_Tile.png";
 	const char* GreyTile = "./Assets/Art/Safe_Tile.png";
 	const char* DialogueTile = "./Assets/Art/Instruction.png";
-	const char* FontFile = "./Assets/Font/Roboto-Regular.ttf";
 	const char* ButtonTest = "./Assets/Art/ResumeButton.png";
 	const char* ButtonTest2 = "./Assets/Art/PlanetTexture.png";
 	const char* boi = "./Assets/Art/boi.png";
@@ -35,6 +34,12 @@ namespace FILE_PATHS {
 
 	const char* jumpSFX = "./Assets/Audio/SFX/powerup.wav";
 	const char* GameplayBGM = "./Assets/Audio/BGM/gg.wav";
+
+	const char* Font_Roboto = "./Assets/Font/Roboto-Regular.ttf";
+	const char* Font_Strawberry_Muffins_Demo = "./Assets/Font/Strawberry_Muffins_Demo.ttf";
+	const char* Font_Courier = "./Assets/Font/COURIER.ttf";
+	const char* Font_Pixel_Digivolve = "./Assets/Font/Pixel Digivolve.otf";
+
 }
 namespace PLAYER_CONST {
 	const float SPEED = 150.0f;
@@ -65,8 +70,11 @@ namespace GAMEPLAY_MISC {
 	// Level tracker
 	unsigned short Level{ 0 };
 }
-namespace font {
-	char ID = 0;
+namespace fontID {
+	char Roboto = 0;
+	char Strawberry_Muffins_Demo = 0;
+	char Courier = 0;
+	char Pixel_Digivolve = 0;
 }
 namespace Mesh {
 	AEGfxVertexList* Rect = nullptr;

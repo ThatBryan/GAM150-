@@ -43,7 +43,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// reset the system modules
 
-	font::ID = AEGfxCreateFont(FP::FontFile, 40);
+	//fontID::Strawberry_Muffins_Demo = AEGfxCreateFont(FP::Font_Strawberry_Muffins_Demo, 40);
+	//fontID::Roboto = AEGfxCreateFont(FP::Font_Roboto, 40);
+	//fontID::Courier = AEGfxCreateFont(FP::Font_Courier, 40);
+	Graphics::Load_Fonts();
 	Graphics::Load_Meshes();
 
 	// Initialises the GSM
