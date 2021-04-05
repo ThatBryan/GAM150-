@@ -178,6 +178,7 @@ void MainMenu::Buttons_Init() {
 	const float BtnWidth{ 200.0f }, BtnHeight{ 50.0f };
 	for (int i = 0; i < 6; ++i) {
 		MenuBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));
+		MenuBtn[i].RandomizeAllStateColor();
 		
 		if(i % 2 == 0)
 			MenuBtn[i].Set_Position(AEVec2Set(ScreenMid.x - BtnWidth, ScreenMid.y / 1.3f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
@@ -362,6 +363,7 @@ void Options::Init()
 		SettingsBtn.push_back(Button(ButtonType::Color, 200.0f, 50.0f, 0.6f));
 		SettingsBtn[i].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y / 2.0f - 25.0f + i * 150.0f));
 		SettingsBtn[i].SetTextType(fontID::Strawberry_Muffins_Demo);
+		SettingsBtn[i].RandomizeAllStateColor();
 	}
 	SettingsBtn[0].Set_Text("Fullscreen");
 	SettingsBtn[0].Set_Callback(Utils::ToggleFullscreen);

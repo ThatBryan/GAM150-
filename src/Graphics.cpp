@@ -259,7 +259,7 @@ AEVec2 Graphics::Text::Calculate_Offset(AEVec2 Pos)
 
 AEVec2 Graphics::Text::GetBufferSize()
 {
-	AEGfxGetPrintSize(fontID::Roboto, const_cast<s8*>(buffer.c_str()), scale, width, height);
+	AEGfxGetPrintSize(ID, const_cast<s8*>(buffer.c_str()), scale, width, height);
 	
 	return AEVec2{ width / 2 * AEGetWindowWidth(), height / 2 * AEGetWindowHeight() };
 }

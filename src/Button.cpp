@@ -39,6 +39,13 @@ void Button::SetStateColor(ButtonState state, Color color) {
 	buttonState[static_cast<int>(state)] = color;
 }
 
+void Button::RandomizeAllStateColor()
+{
+	buttonState[static_cast<int>(ButtonState::Idle)] = Color::CreateRandomColor();
+	buttonState[static_cast<int>(ButtonState::Hovered)] = Color::CreateRandomColor();
+	buttonState[static_cast<int>(ButtonState::Clicked)] = Color::CreateRandomColor();
+}
+
 void Button::SetType(ButtonType Type)
 {
 	type = Type;

@@ -21,6 +21,7 @@ public:
 	void Set_Text(std::string text);
 	void Set_TextColor(Color color);
 	void SetStateColor(ButtonState state, Color color);
+	void RandomizeAllStateColor();
 
 	// ONLY CALL AFTER ALL PUSHBACKS. OTHERWISE THE VECTOR CONTAINER WILL CALL THE DTOR.
 	void SetType(ButtonType Type);

@@ -35,6 +35,10 @@ void UI::Init() {
 	LevelDisplay.color.Set(Color{0, 0, 0, 255});
 	TimerDisplay.color.Set(Color{ 0, 0, 0, 255 });
 
+	FPS_Display.SetFontType(fontID::Courier);
+	LevelDisplay.SetFontType(fontID::Courier);
+	TimerDisplay.SetFontType(fontID::Courier);
+
 	memset(strBuffer, 0, 100 * sizeof(char));
 	memset(strBuffer1, 0, 100 * sizeof(char));
 	memset(strBuffer2, 0, 100 * sizeof(char));
