@@ -29,7 +29,6 @@ void Leaderboard::Update()
 	if (AEInputCheckReleased(AEVK_ESCAPE))
 		MainMenu::SwitchToMainMenu();
 
-	Leaders::SortLeaders(L);
 	Leaderboard::Render();
 }
 
@@ -91,8 +90,10 @@ void Leaders::ReadFromFile(const char* filePath)
 		while (!ifs.eof())
 		{
 			ifs >> name >> score;
+	
 			L[count].name = name;
 			L[count].score = score;
+
 			count++;
 		}
 		ifs.close();
