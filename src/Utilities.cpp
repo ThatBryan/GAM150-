@@ -3,8 +3,17 @@
 \file				Utilities.h
 \primary author: 	Bryan Koh Yan Wei
 \par    			email: yanweibryan.koh@digipen.edu
-\date   			February 28, 2021
-\brief
+\date   			April 6, 2021
+\brief				Contains the definition of helper functions used 
+					throughout the game development process.
+
+					Some functionalities are:
+
+					Random number generators
+					Lerping of float.
+					Function overloading for AEVec2 type.
+					Toggling of pause/fullscreen.
+					etc.
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.

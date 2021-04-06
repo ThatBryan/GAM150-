@@ -4,8 +4,17 @@
 \primary author: 	Bryan Koh Yan Wei
 \secondary author:	Seet Min Yi
 \par    			email: yanweibryan.koh@digipen.edu
-\date   			February 28, 2021
-\brief
+\date   			April 6, 2021
+\brief				Contains the function definitions for the Tiles type.
+
+					Functionalities include:
+					Loading/Unloading of Variables.
+					Creating of Tiles during gameplay.
+					Update function
+					Render function
+					Collision checking between Tiles, player & enemy.
+
+					Creating dialogue during tutorial.
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.

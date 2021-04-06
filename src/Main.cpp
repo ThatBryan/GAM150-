@@ -36,13 +36,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 	//// Enable run-time memory check for debug builds.
-
 	#if defined(DEBUG) | defined(_DEBUG)
 		_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 	#endif
 
 	//int * pi = new int;
-	///////////////////////
 	srand(static_cast<u32>(time(NULL)));
 
 	// Using custom window procedure
@@ -53,9 +51,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// reset the system modules
 
-	//fontID::Strawberry_Muffins_Demo = AEGfxCreateFont(FP::Font_Strawberry_Muffins_Demo, 40);
-	//fontID::Roboto = AEGfxCreateFont(FP::Font_Roboto, 40);
-	//fontID::Courier = AEGfxCreateFont(FP::Font_Courier, 40);
 	Graphics::Load_Fonts();
 	Graphics::Load_Meshes();
 

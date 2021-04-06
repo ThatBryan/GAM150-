@@ -4,8 +4,18 @@
 \primary author: 	Bryan Koh Yan Wei
 \secondary author:	Seet Min Yi
 \par    			email: yanweibryan.koh@digipen.edu
-\date   			February 28, 2021
-\brief
+\date   			April 6, 2021
+
+\brief				Function definition for the player type.
+	
+					Functionalities inclueds:
+
+					Initializing/Loading of player data members.
+					Update function.
+					Render function
+					Accessor/Modifiers.
+
+
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.

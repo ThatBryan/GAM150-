@@ -4,8 +4,8 @@
 \primary author: 	Bryan Koh Yan Wei
 \secondary author:	Seet Min Yi
 \par    			email: yanweibryan.koh@digipen.edu
-\date   			February 28, 2021
-\brief
+\date   			April 6, 2021
+\brief				Type definition for Tile objects.
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.
@@ -32,7 +32,6 @@ public:
 	using TileMgr = std::vector<std::vector<Tiles>*>&;
 
 private:
-	//Graphics::Rect ColliderAABB;
 	Collider collider;
 	TileType type;
 	f64 collapseDelay;
