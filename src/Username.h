@@ -9,4 +9,5 @@ namespace Username {
 	void Update();
 	void Render();
 	void Unload();
+	void DrawCursor(void);
 }

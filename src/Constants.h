@@ -35,6 +35,7 @@ namespace FILE_PATHS {
 	extern const char* PauseOverlay;
 	extern const char* VictoryOverlay;
 	extern const char* GameoverOverlay;
+	extern const char* Black;
 	extern const char* WaterSlimeSprite;
 	extern const char* FlyingEnemySprite;
 	extern const char* SquirrelSprite;
