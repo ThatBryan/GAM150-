@@ -84,7 +84,6 @@ void Leaders::ReadFromFile(const char* filePath)
 	float score;
 	int count = 0;
 
-	//ifs.open(filePath);
 	if (ifs.is_open()) {
 		// Read values from a text file into your struct. Sample code available below if you get stuck
 
@@ -94,7 +93,6 @@ void Leaders::ReadFromFile(const char* filePath)
 	
 			L[count].name = name;
 			L[count].score = score;
-			
 
 			count++;
 		}

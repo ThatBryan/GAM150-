@@ -489,7 +489,7 @@ void Credits::Update()
 
 	if (CreditBtn[0].OnClick())
 	{
-		if (count > 0)
+		if (count >= 0)
 			count--;
 	}
 	if (CreditBtn[1].OnClick())
@@ -503,6 +503,9 @@ void Credits::Render()
 {
 	switch (count)
 	{
+		case -1:
+			MainMenu::SwitchToMainMenu();
+			break;
 		case 0:
 			Pictures[CreditScreen1].Draw_Texture(255.0f);
 			break;
