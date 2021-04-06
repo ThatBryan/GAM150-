@@ -36,19 +36,28 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AudioManager.h" />
+    <ClInclude Include="src\Background.h" />
     <ClInclude Include="src\BinaryMap.h" />
     <ClInclude Include="src\Button.h" />
     <ClInclude Include="src\Collider.h" />
     <ClInclude Include="src\Constants.h" />
+    <ClInclude Include="src\Credits.h" />
     <ClInclude Include="src\Enemy.h" />
+    <ClInclude Include="src\Gameplay.h" />
     <ClInclude Include="src\GameStateManager.h" />
     <ClInclude Include="src\Globals.h" />
-    <ClInclude Include="src\Image.h" />
     <ClInclude Include="src\Graphics.h" />
+    <ClInclude Include="src\Image.h" />
     <ClInclude Include="src\Leaderboard.h" />
     <ClInclude Include="src\LevelSystem.h" />
     <ClInclude Include="src\MainMenu.h" />
-    <ClInclude Include="src\Background.h" />
+    <ClInclude Include="src\Particles.h" />
+    <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\PlayerHp.h" />
+    <ClInclude Include="src\Splash.h" />
+    <ClInclude Include="src\Tiles.h" />
+    <ClInclude Include="src\UserInterface.h" />
+    <ClInclude Include="src\Utilities.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
