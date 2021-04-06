@@ -43,7 +43,7 @@ hp(), direction{ SpriteDirection::Right }, gravityMultiplier{ GAMEPLAY_MISC::BAS
 
 void Player::Reset(void)
 {
-	jump = false;
+	/*jump = false;
 	chargedjump = false;
 	win = false;
 	lose = false;
@@ -52,7 +52,7 @@ void Player::Reset(void)
 	sprite.Set_Texture(playerTex);
 	jumpvel = player_jumpvel;
 	chargedjumpvel = player_chargedjumpvel;
-	chargedjump_counter = player_chargedjump_counter;
+	chargedjump_counter = player_chargedjump_counter;*/
 	
 	Respawn();
 	hp.current = hp.max;
@@ -76,7 +76,7 @@ void Player::Render(void)
 	{
 		sprite.Set_Texture(playerMovTex);
 	}
-	sprite.Draw_Texture(20, player_idle_anim_offset_x, Mesh::PlayerCurr, 255.0f);
+	sprite.Draw_Texture(20, PLAYER_CONST::PLAYER_IDLE_OFFSET_X, Mesh::PlayerCurr, 255.0f);
 	UI::DisplayLife(hp.current);
 
 	if (GAMEPLAY_MISC::DEBUG_MODE) {
@@ -225,6 +225,7 @@ void Player::Respawn(void)
 	active = true;
 	sprite.rotation = 0;
 	sprite.pos = startingPos;
+	sprite.Set_Texture(playerTex);
 	jumpvel = PLAYER_CONST::JUMPVEL;
 	chargedjumpvel = PLAYER_CONST::CHARGED_JUMPVEL;
 	chargedjump_counter = PLAYER_CONST::CHARGEDJUMP_COUNTER;

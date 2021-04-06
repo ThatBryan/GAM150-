@@ -59,10 +59,7 @@ namespace TILE_CONST {
 	const float COLLAPSE_SPEED = 250.0f;
 
 }
-extern float player_objtexX = 0.0f;
 
-const float bat_anim_offset_x = 0.5f;
-extern float bat_objtexX = 0.0f;
 namespace GAMEPLAY_MISC {
 	bool PAUSED = false;
 	bool DEV_MODE = false;
@@ -99,6 +96,11 @@ namespace Tex {
 }
 // Non const
 unsigned short DialogueID = 0;
+
+extern float player_objtexX = 0.0f;
+
+const float bat_anim_offset_x = 0.5f;
+extern float bat_objtexX = 0.0f;
 // Enemy stuff maybe not needed
 short EnemyCount = 1;
 float g_dt = 0;

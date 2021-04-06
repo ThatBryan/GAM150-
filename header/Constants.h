@@ -105,9 +105,15 @@ namespace Tex {
 #define FULLSCREEN_KEY2 AEVK_RETURN
 #define RESTART_KEY AEVK_R
 
+//Anim
+extern float player_objtexX;
+
 //Tile constants
 extern unsigned short DialogueID;
 // Enemy stuff
 extern short EnemyCount;
+
+extern const float bat_anim_offset_x;
+extern float bat_objtexX;
 // Miscallenous
 extern float g_dt;

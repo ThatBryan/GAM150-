@@ -201,7 +201,6 @@ void Gameplay::Load()
 
 void Gameplay::Unload()
 {
-	//AEGfxMeshFree(Mesh::Anim);
 	Tiles::Unload();
 	Enemies::Unload();
 	Particles::Unload();
@@ -209,9 +208,6 @@ void Gameplay::Unload()
 	AudioManager::unloadAsset();
 	FreeMapData();
 	Background::Unload();
-	//Player::Unload();
-	//Jumperman.sprite.Free();
-	Player::Unload();
 }
 
 void Gameplay::Restart()
@@ -222,8 +218,6 @@ void Gameplay::Restart()
 	enemies.clear();
 	tileManager.clear();
 	Jumperman.Reset();
-	//Jumperman.sprite.Free();
-	//Player::Unload();
 	GAMEPLAY_MISC::app_time = 0;
 	GAMEPLAY_MISC::PAUSED = false;
 	UI::Unload();

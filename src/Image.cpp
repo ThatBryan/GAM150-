@@ -15,8 +15,7 @@ Image::Image(const AEGfxTexture* pTex, AEGfxVertexList* Mesh, const f32 width, c
 Image::Image() : rotation{0}, width{0}, height{0}, pTex{ nullptr }, 
 pMesh{ nullptr }, pos{ 0, 0 }, transformMtx{ NULL }{}
 
-void Image::Init(const char* pFile, const f32 Width, const f32 Height, const AEVec2 Pos,
-	AEGfxVertexList* Mesh, const f32 Rotation){
+void Image::Init(const char* pFile, const f32 Width, const f32 Height, const AEVec2 Pos, const f32 Rotation, AEGfxVertexList* Mesh){
 	pTex = AEGfxTextureLoad(pFile);
 	AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	pMesh = const_cast<AEGfxVertexList*>(Mesh);
@@ -89,8 +88,8 @@ void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 	AEGfxTextureSet(pTex, 0, 0);
-	AEGfxSetTintColor(r / colorcodeMax, g / colorcodeMax, b / colorcodeMax, a / colorcodeMax);
-	AEGfxSetTransparency(alpha / colorcodeMax);
+	AEGfxSetTintColor(r / Color::RGB_MAX, g / Color::RGB_MAX, b / Color::RGB_MAX, a / Color::RGB_MAX);
+	AEGfxSetTransparency(alpha / Color::RGB_MAX);
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	if (mesh == Mesh::PlayerCurr)
