@@ -34,8 +34,8 @@ public:
 	void Set_TextColor(Color color);
 	void SetStateColor(ButtonState state, Color color);
 	void Set_Texture(const char* pFile);
+	void FreeTexture();
 	void RandomizeAllStateColor();
-
 	// ONLY CALL AFTER ALL PUSHBACKS. OTHERWISE THE VECTOR CONTAINER WILL CALL THE DTOR.
 	void SetType(ButtonType Type);
 
@@ -44,7 +44,6 @@ public:
 	inline void Set_Callback(void_fn_ptr_short ThePtr) { callback_short = ThePtr; }
 	inline void Set_Callback(void_fn_ptr_void ThePtr) { callback_void = ThePtr; }
 	inline void SetTextType(const char id) { text.SetFontType(id); }
-	void FreeTexture();
 	inline float GetHeight() const { return button.height; }
 	inline float GetWidth() const { return button.width; }
 	inline float GetPosY() const { return button.pos.y; }

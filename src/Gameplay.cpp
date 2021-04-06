@@ -26,6 +26,7 @@ rights reserved.
 #include "GameStateManager.h"
 #include "Particles.h"
 #include "MainMenu.h"
+#include "Globals.h"
 
 #include <iostream>
 #include <vector>

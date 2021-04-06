@@ -21,14 +21,16 @@ rights reserved.
  */
  /******************************************************************************/
 #include "Tiles.h"
-#include <iostream>
 #include "Player.h"
 #include "Enemy.h"
 #include "Constants.h"
 #include "Image.h"
-#include <array>
 #include "Utilities.h"
 #include "GameStateManager.h"
+#include "Globals.h"
+
+#include <iostream>
+#include <array>
 
 static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
@@ -132,7 +134,7 @@ void Tiles::CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer)
 				ThePlayer.jump = false;
 				ThePlayer.gravity = false;
 				ThePlayer.chargedjump = false;
-				ThePlayer.gravityMultiplier = GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER;
+				ThePlayer.gravityMultiplier = GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER;
 				ThePlayer.sprite.pos.y = Tile.collider.top.pos.y - Tile.collider.top.height / 2.0f - ThePlayer.sprite.height / 2.0f;
 				return;
 			}
@@ -382,7 +384,7 @@ void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy)
 				Tile.collider.top.pos, Tile.collider.top.width, Tile.collider.top.height)) {
 
 				enemy.SetGravity(false);
-				enemy.stepGravityMultiplier = GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER;
+				enemy.stepGravityMultiplier = GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER;
 				return;
 			}
 		}

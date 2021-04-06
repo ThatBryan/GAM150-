@@ -18,8 +18,10 @@ rights reserved.
  /******************************************************************************/
 #include "Graphics.h"
 #include "Image.h"
-#include <iostream>
 #include "Utilities.h"
+#include "Globals.h"
+
+#include <iostream>
 
 const f32 Color::RGBA_MAX{ 255.0f };
 

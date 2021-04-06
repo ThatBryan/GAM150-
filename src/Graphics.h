@@ -19,6 +19,7 @@ rights reserved.
 #pragma once
 #include "AEEngine.h"
 #include "Constants.h"
+#include "Globals.h"
 #include <string>
 
 //https://htmlcolorcodes.com/
@@ -45,7 +46,6 @@ namespace Graphics
 {
 	// Sets the mesh for a rectangle and returns a pointer to the AEGfxVertexList.
 	// Only call once at the start of application!!
-
 	AEGfxVertexList* Mesh_Circle(void);
 	AEGfxVertexList* Mesh_Rectangle(void);
 	void Load_Meshes(void);

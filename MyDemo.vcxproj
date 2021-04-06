@@ -19,6 +19,7 @@
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\Gameplay.cpp" />
     <ClCompile Include="src\GameStateManager.cpp" />
+    <ClCompile Include="src\Globals.cpp" />
     <ClCompile Include="src\Graphics.cpp" />
     <ClCompile Include="src\Image.cpp" />
     <ClCompile Include="src\Leaderboard.cpp" />
@@ -41,6 +42,7 @@
     <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\Enemy.h" />
     <ClInclude Include="src\GameStateManager.h" />
+    <ClInclude Include="src\Globals.h" />
     <ClInclude Include="src\Image.h" />
     <ClInclude Include="src\Graphics.h" />
     <ClInclude Include="src\Leaderboard.h" />

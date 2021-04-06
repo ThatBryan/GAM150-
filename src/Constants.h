@@ -74,30 +74,10 @@ namespace TILE_CONST {
 	extern const float COLLAPSE_DELAY;
 	extern const float COLLAPSE_SPEED;
 }
-namespace GAMEPLAY_MISC{
+namespace GAMEPLAY_CONST {
 	extern const float BASE_GRAVITY_MULTIPLIER;
+}
 
-	extern bool PAUSED;
-	extern bool DEV_MODE;
-	extern bool DEBUG_MODE;
-	extern bool FULLSCREEN;
-	extern bool DISPLAY_QUIT_UI;
-	extern bool DISABLE_COLLISION;
-
-	extern float app_time;
-	// Level tracker
-	extern unsigned short Level;
-}
-namespace fontID {
-	extern char Roboto;
-	extern char Strawberry_Muffins_Demo;
-	extern char Courier;
-	extern char Pixel_Digivolve;
-}
-namespace Mesh { // Base Meshes
-	extern AEGfxVertexList* Rect;
-	extern AEGfxVertexList* Circle;
-}
 // Key bindings.
 #define PAUSE_KEY AEVK_TAB 
 #define DEBUG_KEY AEVK_F1
@@ -105,10 +85,3 @@ namespace Mesh { // Base Meshes
 #define FULLSCREEN_KEY1 AEVK_LALT
 #define FULLSCREEN_KEY2 AEVK_RETURN
 #define RESTART_KEY AEVK_R
-
-//Tile constants
-extern unsigned short DialogueID;
-// Enemy stuff
-extern short EnemyCount;
-// Miscallenous
-extern float g_dt;

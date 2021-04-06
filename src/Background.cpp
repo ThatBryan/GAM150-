@@ -20,16 +20,18 @@ rights reserved.
  */
  /******************************************************************************/
 #include "Background.h"
-#include <array>
+#include "Globals.h"
 #include "Image.h"
 #include "Button.h"
 #include "Utilities.h"
 #include "Player.h"
-#include <vector>
 #include "MainMenu.h"
 #include "AEEngine.h"
 #include "LevelSystem.h"
 #include "Particles.h"
+
+#include <array>
+#include <vector>
 
 enum ImageIndex{ Pause = 0, Victory, Defeat, MAX_IMAGE };
 

@@ -22,10 +22,12 @@ rights reserved.
  */
  /******************************************************************************/
 #include "LevelSystem.h"
-#include <iostream>
 #include "Constants.h"
-#include <fstream>
 #include "GameStateManager.h"
+#include "Globals.h"
+
+#include <iostream>
+#include <fstream>
 
 const int LevelMax{ 9 };
 LevelSystem::LevelSystem() : maxLevel{LevelMax}, key{ 1 }{

@@ -36,7 +36,6 @@ private:
 	bool isGravity, killed, squirrelJump;
 	float counter, velocity, jumpvelocity, alpha, alphaTimer;
 	float stepGravityMultiplier;
-	unsigned short ID; // Maybe unnecessary
 	int jumpcounter;
 
 	static float slime_counter, slime_speed, slimeBBOffset;

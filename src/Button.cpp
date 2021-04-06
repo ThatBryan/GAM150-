@@ -21,12 +21,13 @@ rights reserved.
  */
  /******************************************************************************/
 #include "Button.h"
-#include <cstring>
-#include <vector>
-#include <iostream>
 #include "Constants.h"
 #include "Utilities.h"
 #include "Player.h"
+
+#include <cstring>
+#include <vector>
+#include <iostream>
 
 Button::Button(ButtonType Type, const f32 width, const f32 height, const f32 scale) : button(width, height), text(std::string(), scale)
 , callback_void{ nullptr }, pTex{ nullptr }, type{ Type }, ID{ 0 }, callback_short{ nullptr } {
@@ -64,7 +65,7 @@ void Button::SetStateColor(ButtonState state, Color color) {
 
 void Button::Set_Texture(const char* pFile)
 {
-	// Incase there is a change of texture.
+	// Incase there of a change in texture pointer.
 	if (pTex) {
 		AEGfxTextureUnload(pTex);
 		pTex = nullptr;

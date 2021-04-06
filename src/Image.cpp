@@ -19,6 +19,8 @@ rights reserved.
  /******************************************************************************/
 #include "Image.h"
 #include "Utilities.h"
+#include "Globals.h"
+
 #include <iostream>
 
 Image::Image(const AEGfxTexture* pTex, const f32 width, const f32 height, const f32 dir) : rotation{dir}, 

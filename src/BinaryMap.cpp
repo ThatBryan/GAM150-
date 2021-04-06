@@ -15,12 +15,6 @@ written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 #include "BinaryMap.h"
 
-#include <iostream>
-#include <cstdio>
-#include <fstream>
-#include <vector>
-#include <array>
-#include <stdlib.h>
 #include "Utilities.h"
 #include "Graphics.h"
 #include "Player.h"
@@ -28,6 +22,13 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "Constants.h"
 #include "Tiles.h"
 #include "Enemy.h"
+
+#include <iostream>
+#include <cstdio>
+#include <fstream>
+#include <vector>
+#include <array>
+#include <stdlib.h>
 
 /*The number of horizontal elements*/
 int Map_Width;

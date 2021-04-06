@@ -15,7 +15,6 @@ rights reserved.
 #pragma once
 #include "AEEngine.h"
 #include "Graphics.h"
-#include "Constants.h"
 
 class Image
 {

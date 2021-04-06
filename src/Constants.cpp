@@ -14,18 +14,7 @@ rights reserved.
 #include "Constants.h"
 
 namespace FILE_PATHS {
-	const char* Guide1 = "./Assets/Art/Guide1.png";
-	const char* Guide2 = "./Assets/Art/Guide2.png";
-	const char* Guide3 = "./Assets/Art/Guide3.png";
-	const char* Guide4 = "./Assets/Art/Guide4.png";
-	const char* Guide5 = "./Assets/Art/Guide5.png";
-	const char* Guide6 = "./Assets/Art/Guide6.png";
-	const char* CreditScreen1 = "./Assets/Art/CreditScreen.png";
-	const char* CreditScreen2 = "./Assets/Art/CreditScreen2.jpg";
-	const char* CreditScreen3 = "./Assets/Art/CreditScreen3.jpg";
-	const char* CreditScreen4 = "./Assets/Art/CreditScreen4.jpg";
-	const char* CreditScreen5 = "./Assets/Art/CreditScreen5.jpg";
-
+	// Sprites & background overlays
 	const char* DigipenLogoRed = "./Assets/Logo/DigiPen_RED.png";
 	const char* DigipenLogoWhite = "./Assets/Logo/DigiPen_WHITE.png";
 	const char* PauseOverlay = "./Assets/Art/pause_temp.png";
@@ -44,15 +33,27 @@ namespace FILE_PATHS {
 	const char* ButtonTest2 = "./Assets/Art/PlanetTexture.png";
 	const char* boi = "./Assets/Art/boi.png";
 	const char* HeartSprite = "./Assets/Art/Heart.png";
-
+	// Tutorial level sprites.
+	const char* Guide1 = "./Assets/Art/Guide1.png";
+	const char* Guide2 = "./Assets/Art/Guide2.png";
+	const char* Guide3 = "./Assets/Art/Guide3.png";
+	const char* Guide4 = "./Assets/Art/Guide4.png";
+	const char* Guide5 = "./Assets/Art/Guide5.png";
+	const char* Guide6 = "./Assets/Art/Guide6.png";
+	// Credits screen overlay.
+	const char* CreditScreen1 = "./Assets/Art/CreditScreen.png";
+	const char* CreditScreen2 = "./Assets/Art/CreditScreen2.jpg";
+	const char* CreditScreen3 = "./Assets/Art/CreditScreen3.jpg";
+	const char* CreditScreen4 = "./Assets/Art/CreditScreen4.jpg";
+	const char* CreditScreen5 = "./Assets/Art/CreditScreen5.jpg";
+	// Sounds
 	const char* jumpSFX = "./Assets/Audio/SFX/powerup.wav";
 	const char* GameplayBGM = "./Assets/Audio/BGM/gg.wav";
-
+	// Fonts
 	const char* Font_Roboto = "./Assets/Font/Roboto-Regular.ttf";
 	const char* Font_Strawberry_Muffins_Demo = "./Assets/Font/Strawberry_Muffins_Demo.ttf";
 	const char* Font_Courier = "./Assets/Font/COURIER.ttf";
 	const char* Font_Pixel_Digivolve = "./Assets/Font/Pixel Digivolve.otf";
-
 }
 namespace PLAYER_CONST {
 	const float SPEED = 150.0f;
@@ -67,35 +68,7 @@ namespace PLAYER_CONST {
 namespace TILE_CONST {
 	const float COLLAPSE_DELAY = 0.5f;
 	const float COLLAPSE_SPEED = 250.0f;
-
 }
-namespace GAMEPLAY_MISC {
-	bool PAUSED = false;
-	bool DEV_MODE = false;
-	bool DEBUG_MODE = false;
-	bool FULLSCREEN = false;
-	bool DISPLAY_QUIT_UI = false;
-	bool DISABLE_COLLISION = false;
-
+namespace GAMEPLAY_CONST {
 	const float BASE_GRAVITY_MULTIPLIER = 2.0f;
-	float app_time = 0;
-
-	// Level tracker
-	unsigned short Level{ 0 };
 }
-namespace fontID {
-	char Roboto = 0;
-	char Strawberry_Muffins_Demo = 0;
-	char Courier = 0;
-	char Pixel_Digivolve = 0;
-}
-namespace Mesh {
-	AEGfxVertexList* Rect = nullptr;
-	AEGfxVertexList* Circle = nullptr;
-}
-
-// Non const
-unsigned short DialogueID = 0;
-// Enemy stuff maybe not needed
-short EnemyCount = 1;
-float g_dt = 0;

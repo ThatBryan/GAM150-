@@ -24,6 +24,8 @@ rights reserved.
 #include "Tiles.h"
 #include "Utilities.h"
 #include "Particles.h"
+#include "Globals.h"
+
 #include <iostream>
 
 float Enemies::baseGravityStrength = 20.0f;
@@ -39,8 +41,7 @@ static AEGfxTexture* enemyTex[static_cast<int>(EnemyType::Max)]{ nullptr };
 
 Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, width, height), collider(), 
 spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, counter{ 0 }, jumpcounter{ 5 }, squirrelJump { false },
-velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }, alphaTimer{ 1.0f }, stepGravityMultiplier{ GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER }{
-	ID = EnemyCount;
+velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }, alphaTimer{ 1.0f }, stepGravityMultiplier{ GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER }{
 	EnemyCount++;
 	collider.sprite.color.Set(Color{ 0, 0, 0, 100.0f });
 }
@@ -199,6 +200,7 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 		vel = Enemies::slime_speed;
 		break;
 	default:
+		std::cout << "Invalid enemy type!\n";
 		break;
 	}
 	enemy.push_back(Enemies(enemyTex[static_cast<int>(type)], width, height));
