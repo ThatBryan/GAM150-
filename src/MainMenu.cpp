@@ -48,7 +48,7 @@ extern AudioData soundData[static_cast<int>(AudioID::Max)];
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
 
 static std::vector <Image> Images;
-static std::vector<Button> MenuBtn, LevelBtn, CreditBtn, SettingsBtn;
+static std::vector<Button> MenuBtn, LevelBtn, CreditBtn, SettingsBtn, UsernameBtn;
 static std::vector<Enemies> enemy;
 static std::vector<Tiles> tiles;
 static std::vector<Player> player;
@@ -250,6 +250,11 @@ void MainMenu::Buttons_Init() {
 	for (int i = 0; i < MenuBtn.size(); ++i) {
 		MenuBtn[i].SetTextType(fontID::Strawberry_Muffins_Demo);
 	}
+
+	
+	UsernameBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));
+	UsernameBtn[0].Set_Position(AEVec2Set(AEGetWindowWidth() * 0.8, AEGetWindowHeight() * 0.2));
+	UsernameBtn[0].Set_Text("Username");
 }
 
 const float baseSpeed = 50.0f;
