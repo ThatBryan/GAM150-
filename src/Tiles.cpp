@@ -287,7 +287,7 @@ void Tiles::LoadTutorialTexture(void)
 	Images[Guide3].Init(FP::Guide3, 200.0f, 150.0f, { 0.0f, 0.0f });
 	Images[Guide4].Init(FP::Guide4, 200.0f, 100.0f, { 0.0f, 0.0f });
 	Images[Guide5].Init(FP::Guide5, 200.0f, 150.0f, { 0.0f, 0.0f });
-	Images[Guide6].Init(FP::Guide6, 100.0f, 75.0f, { 0.0f, 0.0f });
+	Images[Guide6].Init(FP::Guide6, 150.0f, 125.0f, { 0.0f, 0.0f });
 }
 
 void Tiles::FreeTutorialTexture(void)
@@ -346,7 +346,6 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 						ThePlayer.collider.left.pos, ThePlayer.collider.left.width, ThePlayer.collider.left.height))
 					{
 						CreateDialogue(TileManager[i]->at(j).ID, TheTile.collider.sprite.pos);
-						printf("%i", TileManager[i]->at(j).ID);
 					}
 			}
 			if (GAMEPLAY_MISC::DISABLE_COLLISION)
@@ -452,7 +451,7 @@ void Tiles::CreateDialogue(const short ID, const AEVec2 tilePos)
 			Images[Guide5].Draw_Texture({ tilePos.x + 70.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
 			break;
 		case 4:
-			Images[Guide6].Draw_Texture({ tilePos.x - 70.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
+			Images[Guide6].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 40.0f }, Color::RGBA_MAX);
 			break;
 		case 5:
 			Images[Guide3].Draw_Texture({ tilePos.x + 60.0f, tilePos.y - 80.0f }, Color::RGBA_MAX);

@@ -39,6 +39,7 @@ struct Color
 	// Returns a random color
 	static Color CreateRandomColor(const float max_alpha = 255.0f);
 	static Color Lerp(const Color& begin, const Color& end, const float t);
+	static void Print(const Color& color);
 	bool operator ==(const Color& rhs);
 };
 
