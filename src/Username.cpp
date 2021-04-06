@@ -15,6 +15,8 @@ static std::vector<Button> InputBtn;
 enum BgImage { CursorRect = 0, MAX_IMAGES };
 std::array <Image, BgImage::MAX_IMAGES> Images;
 
+static std::string username{};
+static bool clicked = false;
 
 void Username::Init()
 {
@@ -31,22 +33,123 @@ void Username::Init()
 void Username::Update()
 {
 	if (AEInputCheckReleased(AEVK_ESCAPE))
-		MainMenu::SwitchToMainMenu();
-
-	Username::Render();
-	
-
-	/*static float counter = 2.0f;
-	counter -= g_dt;
-	if (counter < 0)
 	{
-		Username::Render();
-		counter = 1.0f;
+		MainMenu::SwitchToMainMenu();
+		clicked = false;
 	}
-	printf("%f", counter);*/
+	if (clicked)
+	{
+		if (AEInputCheckTriggered(AEVK_A))
+		{
+			username += 'A';
+		}
+		if (AEInputCheckTriggered(AEVK_B))
+		{
+			username += 'B';
+		}
+		if (AEInputCheckTriggered(AEVK_C))
+		{
+			username += 'C';
+		}
+		if (AEInputCheckTriggered(AEVK_D))
+		{
+			username += 'D';
+		}
+		if (AEInputCheckTriggered(AEVK_E))
+		{
+			username += 'E';
+		}
+		if (AEInputCheckTriggered(AEVK_F))
+		{
+			username += 'F';
+		}
+		if (AEInputCheckTriggered(AEVK_G))
+		{
+			username += 'G';
+		}
+		if (AEInputCheckTriggered(AEVK_H))
+		{
+			username += 'H';
+		}
+		if (AEInputCheckTriggered(AEVK_I))
+		{
+			username += 'I';
+		}
+		if (AEInputCheckTriggered(AEVK_J))
+		{
+			username += 'J';
+		}
+		if (AEInputCheckTriggered(AEVK_K))
+		{
+			username += 'K';
+		}
+		if (AEInputCheckTriggered(AEVK_L))
+		{
+			username += 'L';
+		}
+		if (AEInputCheckTriggered(AEVK_M))
+		{
+			username += 'M';
+		}
+		if (AEInputCheckTriggered(AEVK_N))
+		{
+			username += 'N';
+		}
+		if (AEInputCheckTriggered(AEVK_O))
+		{
+			username += 'O';
+		}
+		if (AEInputCheckTriggered(AEVK_P))
+		{
+			username += 'P';
+		}
+		if (AEInputCheckTriggered(AEVK_Q))
+		{
+			username += 'Q';
+		}
+		if (AEInputCheckTriggered(AEVK_R))
+		{
+			username += 'R';
+		}
+		if (AEInputCheckTriggered(AEVK_S))
+		{
+			username += 'S';
+		}
+		if (AEInputCheckTriggered(AEVK_T))
+		{
+			username += 'T';
+		}
+		if (AEInputCheckTriggered(AEVK_U))
+		{
+			username += 'U';
+		}
+		if (AEInputCheckTriggered(AEVK_V))
+		{
+			username += 'V';
+		}
+		if (AEInputCheckTriggered(AEVK_W))
+		{
+			username += 'W';
+		}
+		if (AEInputCheckTriggered(AEVK_X))
+		{
+			username += 'X';
+		}
+		if (AEInputCheckTriggered(AEVK_Y))
+		{
+			username += 'Y';
+		}
+		if (AEInputCheckTriggered(AEVK_Z))
+		{
+			username += 'Z';
+		}
+	}
+	
 }
+
 void Username::Render()
 {
+	std::cout << username << std::endl;
 	static Graphics::Text UsernameTxt;
 	UsernameTxt.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	UsernameTxt.SetScale(1.0f);
@@ -54,9 +157,23 @@ void Username::Render()
 	UsernameTxt.SetText("Username");
 	UsernameTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() / 10)));
 
-	// Draw Input
+	// Draw Input Rect
 	InputBtn[0].Render();
 
+	if (InputBtn[0].OnClick())
+		clicked = true;
+
+	if (clicked)
+		Username::DrawCursor();	
+}
+void Username::Unload()
+{
+	Images[0].Free();
+	InputBtn.clear();
+}
+
+void Username::DrawCursor(void)
+{
 	// Draw Cursor Rect
 	static float counter = 1.0f;
 	static float counter2 = 1.0f;
@@ -74,12 +191,4 @@ void Username::Render()
 	{
 		Images[CursorRect].Draw_Texture(255.0f);
 	}
-	
-}
-void Username::Unload()
-{
-	for (size_t i = 0; i < Images.size(); ++i) {
-		Images[i].Free();
-	}
-	InputBtn.clear();
 }
