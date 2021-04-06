@@ -69,17 +69,6 @@ hp(), direction{ SpriteDirection::Right }, gravityMultiplier{ GAMEPLAY_CONST::BA
 
 void Player::Reset(void)
 {
-	/*jump = false;
-	chargedjump = false;
-	win = false;
-	lose = false;
-	active = true;
-	sprite.pos = startingPos;
-	sprite.Set_Texture(playerTex);
-	jumpvel = player_jumpvel;
-	chargedjumpvel = player_chargedjumpvel;
-	chargedjump_counter = player_chargedjump_counter;*/
-	
 	Respawn();
 	hp.current = hp.max;
 	direction = SpriteDirection::Right;
@@ -119,23 +108,55 @@ void Player::LoadTex(void) {
 }
 
 void Player::Unload(void) {
-	AEGfxTextureUnload(playerTex);
-	AEGfxTextureUnload(playerMovTex);
-	AEGfxTextureUnload(playerParticle);
-
-	// if (playerTex) {
-	// 	AEGfxTextureUnload(playerTex);
-	// 	playerTex = nullptr;
-	// }
+	if (playerTex) {
+		AEGfxTextureUnload(playerTex);
+		playerTex = nullptr;
+	}
+	if (playerMovTex) {
+		AEGfxTextureUnload(playerMovTex);
+		playerMovTex = nullptr;
+	}
+	if (playerParticle) {
+		AEGfxTextureUnload(playerParticle);
+		playerParticle = nullptr;
+	}
 }
 void Player::Update_Position(void)
 {
 
-	if (!jump && !gravity && (AEInputCheckTriggered(AEVK_W) || AEInputCheckTriggered(AEVK_UP)))
-	{
+	if (!jump && !gravity && (AEInputCheckReleased(AEVK_SPACE))){
 		if (!GAMEPLAY_MISC::DEBUG_MODE) {
 			jump = true;
 			Audio.playAudio(soundTest[static_cast<int>(AudioID::Jump)], AudioID::Jump);
+		}
+	}
+	else if (AEInputCheckCurr(AEVK_SPACE) && !chargedjump && !gravity)
+	{
+		chargedjump_counter -= g_dt;
+		AEVec2 Min = AEVec2Sub(collider.bottom.pos, AEVec2{ sprite.width, 25.0f });
+		AEVec2 Max = AEVec2Add(collider.bottom.pos, AEVec2{ sprite.width, 25.0f });
+		AEVec2 Destination = AEVec2Add(sprite.pos, AEVec2{ 0, sprite.height / 2.0f });
+		Particles::CreateReverseParticles(Destination, Min, Max, Color{ 255.0f, 255.0f, 0, 255.0f }, 1, Utils::RandomRangeFloat(10.0f, 100.0f), 50.0f, 3.0f, 1.0f);
+	}
+
+	if (AEInputCheckReleased(AEVK_SPACE) && chargedjump_counter < 0)
+	{
+		chargedjump = true;
+		chargedjump_counter = 1.0f;
+	}
+	if (chargedjump)
+	{
+		jump = false;
+		if (sprite.pos.y + sprite.height / 2 <= maxY)
+		{
+			sprite.pos.y -= chargedjumpvel;
+
+			chargedjumpvel -= 0.2f; // velocity decrease as y increases
+			if (chargedjumpvel < 0.0f)
+			{
+				chargedjump = false;
+				chargedjumpvel = PLAYER_CONST::CHARGED_JUMPVEL;
+			}
 		}
 	}
 	if (jump)
@@ -148,35 +169,6 @@ void Player::Update_Position(void)
 			{
 				jump = false;
 				jumpvel = PLAYER_CONST::JUMPVEL;
-			}
-		}
-	}
-
-	if (AEInputCheckCurr(AEVK_SPACE) && !chargedjump && !gravity)
-	{
-		chargedjump_counter -= g_dt;
-		AEVec2 Min = AEVec2Sub(collider.bottom.pos, AEVec2{ sprite.width, 25.0f});
-		AEVec2 Max = AEVec2Add(collider.bottom.pos, AEVec2{ sprite.width, 25.0f});
-		AEVec2 Destination = AEVec2Add(sprite.pos, AEVec2{ 0, sprite.height / 2.0f });
-		Particles::CreateReverseParticles(Destination, Min, Max, Color{ 255.0f, 255.0f, 0, 255.0f}, 1, Utils::RandomRangeFloat(10.0f, 100.0f), 50.0f, 3.0f, 1.0f);
-	}
-
-	if (AEInputCheckReleased(AEVK_SPACE) && chargedjump_counter < 0)
-	{
-		chargedjump = true;
-		chargedjump_counter = 1.0f;
-	}
-	if (chargedjump)
-	{
-		if (sprite.pos.y + sprite.height / 2 <= maxY)
-		{
-			sprite.pos.y -= chargedjumpvel;
-
-			chargedjumpvel -= 0.2f; // velocity decrease as y increases
-			if (chargedjumpvel < 0.0f)
-			{
-				chargedjump = false;
-				chargedjumpvel = PLAYER_CONST::CHARGED_JUMPVEL;
 			}
 		}
 	}
@@ -321,8 +313,8 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 						enemy[i].KillEnemy();
 						continue;
 					}
-					if (GAMEPLAY_MISC::DEBUG_MODE)
-						printf("enemy dies\n");
+					//if (GAMEPLAY_MISC::DEBUG_MODE)
+					//	printf("enemy dies\n");
 				}
 				else {
 					if (!GAMEPLAY_MISC::DEBUG_MODE) {
@@ -331,8 +323,8 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 						if(hp.current >= 1)
 							Respawn();
 					}
-					if (GAMEPLAY_MISC::DEBUG_MODE)
-						printf("player dies\n");
+					//if (GAMEPLAY_MISC::DEBUG_MODE)
+					//	printf("player dies\n");
 				}
 			}
 		}

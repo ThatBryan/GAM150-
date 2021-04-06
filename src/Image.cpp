@@ -1,18 +1,18 @@
 /******************************************************************************/
 /*!
-\file		Image.cpp
+\file				Image.cpp
 \primary author: 	Bryan Koh Yan Wei
 \secondary authors: Lim Wee Boon
-\par    	email: yanweibryan.koh@digipen.edu
-\date   	April 6, 2021
-\brief		Source file which contains the definition of an Image class used
-			to draw still images to screen.
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Source file which contains the definition of an Image class used
+					to draw still images to screen.
 
-			Functionalities include:
-			Loading/Initializing of variables.
-			Freeing of the texture pointers.
-			Rendering of the images.
-			Animating the images and changing meshes and images.
+					Functionalities include:
+					Loading/Initializing of variables.
+					Freeing of texture pointers.
+					Rendering of images.
+					Animating the images and changing meshes and images.
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.
