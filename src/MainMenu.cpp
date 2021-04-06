@@ -34,7 +34,6 @@ rights reserved.
 #include "Player.h"
 #include "Particles.h"
 #include "LevelSystem.h"
-#include "Credits.h"
 #include "Leaderboard.h"
 #include "Gameplay.h"
 #include "Globals.h"
