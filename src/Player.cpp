@@ -109,7 +109,7 @@ void Player::Render(void)
 }
 void Player::LoadTex(void) {
 	playerTex = AEGfxTextureLoad(FP::PlayerSpriteSheetIdle);
-	playerMovTex = AEGfxTextureLoad(FP::PlayerSpriteSheetIdle);
+	playerMovTex = AEGfxTextureLoad(FP::WaterSlimeSprite);
 	AE_ASSERT_MESG(playerTex, "Failed to create texture!");
 	AE_ASSERT_MESG(playerMovTex, "Failed to create texture!");
 }

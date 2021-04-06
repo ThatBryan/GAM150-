@@ -106,8 +106,8 @@ void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 	AEGfxTextureSet(pTex, 0, 0);
-	AEGfxSetTintColor(r / Color::RGB_MAX, g / Color::RGB_MAX, b / Color::RGB_MAX, a / Color::RGB_MAX);
-	AEGfxSetTransparency(alpha / Color::RGB_MAX);
+	AEGfxSetTintColor(r / Color::RGBA_MAX, g / Color::RGBA_MAX, b / Color::RGBA_MAX, a / Color::RGBA_MAX);
+	AEGfxSetTransparency(alpha / Color::RGBA_MAX);
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	if (mesh == Mesh::PlayerCurr)
@@ -139,7 +139,6 @@ void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const
 		else
 		{
 			bat_objtexX += offset;
-			printf("%f\n", bat_objtexX);
 			AEGfxTextureSet(pTex, bat_objtexX, 0);
 			count = 0;
 		}
