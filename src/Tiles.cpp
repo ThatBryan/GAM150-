@@ -346,7 +346,6 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 						ThePlayer.collider.left.pos, ThePlayer.collider.left.width, ThePlayer.collider.left.height))
 					{
 						CreateDialogue(TileManager[i]->at(j).ID, TheTile.collider.sprite.pos);
-						printf("%i", TileManager[i]->at(j).ID);
 					}
 			}
 			if (GAMEPLAY_MISC::DISABLE_COLLISION)

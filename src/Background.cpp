@@ -33,24 +33,27 @@ rights reserved.
 #include <array>
 #include <vector>
 
+static float WindowWidth, WindowHeight;
+
 enum BackgroundIndex{ Pause = 0, Victory, Defeat, MAX_IMAGE };
 
 static std::array <Image, BackgroundIndex::MAX_IMAGE> Images;
 
 enum BackgroundObj{Cloud = 0, MAX};
-static const int BgObjMax{ 5 };
+static const int BgObjMax{ 7 };
+static const int LastCloudIdx{ 5 };
 
 static std::array <Image, BgObjMax> BgObj;
 static std::vector<Button> MenuBtn;	
 static Graphics::Text text;
 
 static AEVec2 Midpt;
-static Color Scene;
-static float WindowWidth, WindowHeight;
-static Color LerpDestination;
-enum class SceneType { Day = 0, Noon, Night, Max};
+static Color Scene, LerpDestination;
 
-//static AEVec2 CloudPos{ Utils::GetRandomRangeVec(AEVec2{0, 50.0f}, (AEVec2{0, 100.0f})) };
+
+enum class SceneType { Day = 0, SunSet, Night, Max};
+static SceneType CurrentScene;
+
 
 static Color SceneColors [static_cast<int>(SceneType::Max)];
 
@@ -65,18 +68,22 @@ void Background::Load()
 	WindowWidth = static_cast<f32>(AEGetWindowWidth());
 	WindowHeight = static_cast<f32>(AEGetWindowHeight());
 
-	Images[Pause].Init(FP::PauseOverlay, WindowWidth, WindowHeight, Midpt);
-	Images[Victory].Init(FP::VictoryOverlay, WindowWidth, WindowHeight, Midpt);
-	Images[Defeat].Init(FP::GameoverOverlay, WindowWidth, WindowHeight, Midpt);
+	Images[BackgroundIndex::Pause].Init(FP::PauseOverlay, WindowWidth, WindowHeight, Midpt);
+	Images[BackgroundIndex::Victory].Init(FP::VictoryOverlay, WindowWidth, WindowHeight, Midpt);
+	Images[BackgroundIndex::Defeat].Init(FP::GameoverOverlay, WindowWidth, WindowHeight, Midpt);
 
-	for (int i = 0; i < BgObjMax; ++i) {
-		BgObj[i].Init("./Assets/Art/cloud.png", Utils::RandomRangeFloat(50.0f, 100.0f), 
-			Utils::RandomRangeFloat(20.0f, 40.0f), Utils::GetRandomRangeVec(AEVec2{ 0 + i * 100.0f, 10.0f }, (AEVec2{ 800.0f - i * 100.0f, 25.0f })));
+	for (int i = 0; i < LastCloudIdx; ++i) {
+		BgObj[i].Init("./Assets/Art/cloud.png", Utils::RandomRangeFloat(50.0f, 100.0f), Utils::RandomRangeFloat(20.0f, 40.0f),
+			AEVec2Set(i * 100.0f + Utils::RandomRangeFloat(-50.0f, 50.0f), Utils::RandomRangeFloat(25.0f, 50.0f)));
 	}
+	BgObj[5].Init("./Assets/Art/moon.png", 50.0f, 50.0f, AEVec2{ 40, 30.0f });
+	BgObj[6].Init("./Assets/Art/moon.png", 50.0f, 50.0f, AEVec2{ 760, 30.0f });
+	BgObj[6].ReflectAboutYAxis();
 
 	SceneColors[static_cast<int>(SceneType::Day)] = Color{ 51.0f, 215.0f, 255.0f, 255.0f };
-	SceneColors[static_cast<int>(SceneType::Noon)] = Color{ 255.0f, 175.0f, 51.0f, 255.0f };
+	SceneColors[static_cast<int>(SceneType::SunSet)] = Color{ 255.0f, 175.0f, 51.0f, 255.0f };
 	SceneColors[static_cast<int>(SceneType::Night)] = Color{ 100.0f, 149.0f, 237.0f, 255.0f };
+
 }
 
 void Background::Init()
@@ -115,6 +122,8 @@ void Background::Init()
 	text.SetScale(0.9f);
 	text.SetFontType(fontID::Pixel_Digivolve);
 	Scene.Set(SceneColors[static_cast<int>(SceneType::Day)]);
+
+	CurrentScene = SceneType::Day;
 }
 
 void Background::Update()
@@ -126,7 +135,7 @@ void Background::Update()
 	AEGfxSetBackgroundColor(Scene.r, Scene.g, Scene.b);
 
 	if (!GAMEPLAY_MISC::PAUSED) {
-		for (int i = 0; i < BgObjMax; ++i) {
+		for (int i = 0; i < LastCloudIdx; ++i) {
 			AEVec2ScaleAdd(&BgObj[i].pos, &CloudDir, &BgObj[i].pos, g_dt * CloudSpeed);
 			BgObj[i].pos.x = AEWrap(BgObj[i].pos.x, - BgObj[i].width / 2.0f, WindowWidth + BgObj[i].width / 2.0f);
 		}
@@ -136,8 +145,13 @@ void Background::Update()
 void Background::Render(Player& player)
 {
 	static const float CloudAlpha{ 100.0f };
-	for (size_t i = 0; i < BgObj.size(); ++i) {
+	for (size_t i = 0; i < LastCloudIdx; ++i) {
 		BgObj[i].Draw_Texture(BgObj[i].pos, CloudAlpha);
+	}
+	if (CurrentScene != SceneType::Day) {
+		for (size_t i = LastCloudIdx; i < BgObj.size(); ++i) {
+			BgObj[i].Draw_Texture(BgObj[i].pos, CloudAlpha);
+		}
 	}
 
 	if (!GAMEPLAY_MISC::DISPLAY_QUIT_UI && (GAMEPLAY_MISC::PAUSED && player.active && !player.GetWinStatus()))
@@ -204,12 +218,14 @@ void Background::LerpBackgroundColor(void)
 {
 	static float t = 0;
 	static const float LerpFactor{ 0.000005f }; // per t increment
-	static SceneType Identifier = SceneType::Noon;
-	LerpDestination = SceneColors[static_cast<int>(Identifier)];
+	static SceneType nextScene = SceneType::SunSet;
+	LerpDestination = SceneColors[static_cast<int>(nextScene)];
 
 	if (Scene == LerpDestination) {
-		++Identifier;
-		LerpDestination = SceneColors[static_cast<int>(Identifier)];
+		++nextScene;
+		++CurrentScene;
+
+		LerpDestination = SceneColors[static_cast<int>(nextScene)];
 		t = 0;
 	}
 	Scene = Color::Lerp(Scene, LerpDestination, t);

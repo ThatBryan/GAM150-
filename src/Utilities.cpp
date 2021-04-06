@@ -131,6 +131,7 @@ AEVec2 Utils::GetMousePos(void)
 void Utils::TogglePause(void)
 {
 	GAMEPLAY_MISC::PAUSED = !GAMEPLAY_MISC::PAUSED;
+
 	if (!GAMEPLAY_MISC::PAUSED) {
 		GAMEPLAY_MISC::DISPLAY_QUIT_UI = false;
 		ShowCursor(false);
@@ -162,6 +163,7 @@ void Utils::ToggleDebugMode(void)
 
 	if (AEInputCheckTriggered(DEBUG_KEY))
 		GAMEPLAY_MISC::DEBUG_MODE = !GAMEPLAY_MISC::DEBUG_MODE;
+
 	if (GAMEPLAY_MISC::DEBUG_MODE && AEInputCheckTriggered(COLLISION_OFF_KEY)) {
 		GAMEPLAY_MISC::DISABLE_COLLISION = !GAMEPLAY_MISC::DISABLE_COLLISION;
 		GAMEPLAY_MISC::DISABLE_COLLISION == false ? std::cout << "Collision turned on \n" : std::cout << "Collision turned off \n";
