@@ -192,8 +192,9 @@ void MainMenu::Unload(void)
 	tiles.clear();
 	Options::Unload();
 	Credits::Unload();
-	Username::Unload();
 	LevelSelection::Unload();
+	UsernameBtn.clear();
+	//Username::Unload(); call twice for wat?
 	Username::Unload();
 	UI::QuitUnload();
 	Credits::Unload();
@@ -257,8 +258,8 @@ void MainMenu::Buttons_Init() {
 	}
 
 	// Username Button
-	UsernameBtn.push_back(Button(ButtonType::Color, BtnWidth * 0.5, BtnHeight, 0.5f));
-	UsernameBtn[0].Set_Position(AEVec2Set(AEGetWindowWidth() * 0.93, AEGetWindowHeight() * 0.05));
+	UsernameBtn.push_back(Button(ButtonType::Color, BtnWidth * 0.5f, BtnHeight, 0.5f));
+	UsernameBtn[0].Set_Position(AEVec2Set(AEGetWindowWidth() * 0.93f, AEGetWindowHeight() * 0.05f));
 	UsernameBtn[0].Set_Text("Username");
 	UsernameBtn[0].SetType(ButtonType::Texture);
 	UsernameBtn[0].Set_Texture("./Assets/Art/BtnTest.png");
