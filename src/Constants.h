@@ -1,8 +1,8 @@
 /******************************************************************************/
 /*!
 \file				Constants.h
-\primary author: 	Bryan Koh Yan Wei (94%)
-\Secondary authors:	Seet Min Yi (5%), Dallas Cheong (1%)
+\primary author: 	Bryan Koh Yan Wei (95%)
+\Secondary authors:	Seet Min Yi (5%)
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Contains constants variables and a few other global variables
@@ -79,11 +79,6 @@ namespace TILE_CONST {
 }
 namespace GAMEPLAY_CONST {
 	extern const float BASE_GRAVITY_MULTIPLIER;
-}
-
-
-namespace Tex {
-	extern AEGfxTexture* PlayerCurr;
 }
 // Key bindings.
 #define PAUSE_KEY AEVK_TAB 

@@ -1,3 +1,16 @@
+/******************************************************************************/
+/*!
+\file				Globals.cpp
+\primary author: 	Bryan Koh Yan Wei
+\Secondary authors:	Lim Wee Boon, Dallas Cheong
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Contains definition of global variables
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #include "Globals.h"
 namespace GAMEPLAY_MISC {
 	bool PAUSED = false;
@@ -25,12 +38,13 @@ namespace Mesh {
 	AEGfxVertexList* BatAnim = nullptr;
 	AEGfxVertexList* PlayerCurr = nullptr;
 }
-
+namespace Tex {
+	extern AEGfxTexture* PlayerCurr;
+}
 unsigned short DialogueID = 0;
-
 short EnemyCount = 1;
 float g_dt = 0;
 
-float player_objtexX = 0.0f;
 const float bat_anim_offset_x = 0.5f;
+float player_objtexX = 0.0f;
 float bat_objtexX = 0.0f;

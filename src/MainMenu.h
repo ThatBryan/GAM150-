@@ -62,4 +62,7 @@ namespace Credits {
 	void Update();
 	void Render();
 	void Unload();
+
+	void IncrementOverlay();
+	void DecrementOverlay();
 }

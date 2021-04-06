@@ -1,3 +1,16 @@
+/******************************************************************************/
+/*!
+\file				Globals.h
+\primary author: 	Bryan Koh Yan Wei 
+\Secondary authors:	Lim Wee Boon, , Dallas Cheong
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Contains declaration of global variables 
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #pragma once
 #include "AEEngine.h"
 

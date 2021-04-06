@@ -477,25 +477,21 @@ void Credits::Init()
 
 	CreditBtn[0].Set_Position(AEVec2Set(WindWidth - 80.0f, WindHeight - 120.0f));
 	CreditBtn[0].Set_Text("Back");
+	CreditBtn[0].Set_Callback(Credits::DecrementOverlay);
 	CreditBtn[1].Set_Position(AEVec2Set(WindWidth - 80.0f, WindHeight - 50.0f));
 	CreditBtn[1].Set_Text("More");
+	CreditBtn[1].Set_Callback(Credits::IncrementOverlay);
 }
 void Credits::Update()
 {
 	if (AEInputCheckReleased(AEVK_ESCAPE))
 		MainMenu::SwitchToMainMenu();
 
+	if (count > 0)
+		CreditBtn[0].Update();
 
-	if (CreditBtn[0].OnClick())
-	{
-		if (count >= 0)
-			count--;
-	}
-	if (CreditBtn[1].OnClick())
-	{
-		if (count < MAX_PICTURES-1)
-			count++;
-	}
+	if (count < CreditScreen::MAX_PICTURES - 1)
+		CreditBtn[1].Update();
 }
 
 void Credits::Render()
@@ -521,9 +517,11 @@ void Credits::Render()
 			Pictures[CreditScreen5].Draw_Texture(255.0f);
 			break;
 	}
-	for (size_t i = 0; i < CreditBtn.size(); ++i) {
-		CreditBtn[i].Render();
-	}
+	if (count > 0)
+		CreditBtn[0].Render();
+
+	if (count < CreditScreen::MAX_PICTURES - 1)
+		CreditBtn[1].Render();
 }
 
 void Credits::Unload()
@@ -533,5 +531,17 @@ void Credits::Unload()
 		Pictures[i].Free();
 	}
 	CreditBtn.clear();
+}
+
+void Credits::IncrementOverlay()
+{
+	if (count < MAX_PICTURES - 1)
+		count++;
+}
+
+void Credits::DecrementOverlay()
+{
+	if (count >= 0)
+		count--;
 }
 
