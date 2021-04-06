@@ -64,9 +64,8 @@
     <ClInclude Include="src\Background.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Leaderboard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="src\Credits.h" />
+    <ClInclude Include="src\Leaderboard.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -140,5 +139,6 @@
     <ClCompile Include="src\Leaderboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Credits.cpp" />
   </ItemGroup>
 </Project>
