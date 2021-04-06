@@ -5,11 +5,11 @@
 \secondary author: 	Seet Min Yi
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
-\brief				Handles the GameState MainMenu 
-						
+\brief				Handles the GameState MainMenu
+
 					Functionalities include:
 
-					Switching between update and draw loops depending on 
+					Switching between update and draw loops depending on
 					button interface input
 
 					Loading/Initialize variables.
@@ -37,6 +37,7 @@ rights reserved.
 #include "Leaderboard.h"
 #include "Gameplay.h"
 #include "Globals.h"
+#include "Username.h"
 
 #include <array>
 #include <vector>
@@ -75,27 +76,27 @@ void MainMenu::Init(void)
 	Options::Init();
 	UI::QuitInit();
 	Credits::Init();
+	Username::Init();
+	Leaderboard::Init();
 
 	count = 0;
 
 	const float width = 80.0f, height = 100.0f;
 	int size = static_cast<int>(AEGetWindowWidth() / width);
-	Tiles::AddTileRow(tiles, TileType::Grass, size + 1, width, height, AEVec2{width / 2.0f, AEGetWindowHeight() - height });
-	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2{260.0f, tiles[0].image.pos.y - height / 2.0f }, 60.0f, 60.0f);
-	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2{520.0f, tiles[0].image.pos.y - height / 2.0f }, 60.0f, 60.0f);
-	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2{710.0f, tiles[0].image.pos.y - height / 2.0f}, 60.0f, 60.0f);
-	
+	Tiles::AddTileRow(tiles, TileType::Grass, size + 1, width, height, AEVec2{ width / 2.0f, AEGetWindowHeight() - height });
+	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2{ 260.0f, tiles[0].image.pos.y - height / 2.0f }, 60.0f, 60.0f);
+	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2{ 520.0f, tiles[0].image.pos.y - height / 2.0f }, 60.0f, 60.0f);
+	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2{ 710.0f, tiles[0].image.pos.y - height / 2.0f }, 60.0f, 60.0f);
+
 	player.push_back(Player(Player::playerTex, PLAYER_CONST::WIDTH, PLAYER_CONST::HEIGHT));
 	player[0].SetPos(AEVec2Set(PLAYER_CONST::WIDTH / 2.0f, tiles[0].image.pos.y - height - 10.0f));
 
 	background.Set(Color{ 51.0f, 215.0f, 255.0f, 255.0f });
-	
+
 	Title.SetText("JUMPERMAN");
 	Title.SetFontType(fontID::Courier);
 	Title.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	Title.SetScale(1.0f);
-
-	Leaderboard::Init();
 }
 
 void MainMenu::Update(void)
@@ -105,7 +106,7 @@ void MainMenu::Update(void)
 
 	static float t = 0;
 	static Color Destination{ Color::CreateRandomColor() };
-	
+
 	if (background == Destination) {
 		Color::Print(Destination);
 		Destination = Color::CreateRandomColor();
@@ -130,7 +131,7 @@ void MainMenu::Update(void)
 	}
 	player[0].sprite.rotation += 100.0f * g_dt;
 	Particles::Update();
-
+	UsernameBtn[0].Update();
 }
 
 void MainMenu::Render() {
@@ -138,7 +139,7 @@ void MainMenu::Render() {
 	for (int i = 0; i < tiles.size(); ++i) {
 		tiles[i].image.Draw_Texture(255.0f);
 	}
-	
+
 	for (int i = 0; i < enemy.size(); ++i) {
 		enemy[i].sprite.Draw_Texture(255.0f);
 	}
@@ -155,6 +156,7 @@ void MainMenu::Render() {
 		for (size_t i = 0; i < MenuBtn.size(); ++i) {
 			MenuBtn[i].Render();
 		}
+		UsernameBtn[0].Render();
 	}
 }
 
@@ -190,7 +192,9 @@ void MainMenu::Unload(void)
 	tiles.clear();
 	Options::Unload();
 	Credits::Unload();
+	Username::Unload();
 	LevelSelection::Unload();
+	Username::Unload();
 	UI::QuitUnload();
 	Credits::Unload();
 	EnemyCount = 0;
@@ -206,12 +210,12 @@ void MainMenu::QuitGame(void) {
 }
 
 void MainMenu::Buttons_Init() {
-	
+
 	const float BtnCount{ 6 }, BtnWidth{ 200.0f }, BtnHeight{ 50.0f }, BtntextScale{ 0.7f };
 	for (int i = 0; i < BtnCount; ++i) {
 		MenuBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtntextScale));
-		
-		if(i % 2 == 0)
+
+		if (i % 2 == 0)
 			MenuBtn[i].Set_Position(AEVec2Set(ScreenMid.x - BtnWidth, ScreenMid.y / 1.3f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
 		else
 			MenuBtn[i].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth, ScreenMid.y / 1.3f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
@@ -221,9 +225,9 @@ void MainMenu::Buttons_Init() {
 		if (i % 2 == 0) {
 			MenuBtn[i].SetType(ButtonType::Texture);
 			MenuBtn[i].Set_Texture("./Assets/Art/BtnTest.png");
-			MenuBtn[i].SetStateColor(ButtonState::Hovered, Color{0.0f, 255.0f, 255.0f, 255.0f });
+			MenuBtn[i].SetStateColor(ButtonState::Hovered, Color{ 0.0f, 255.0f, 255.0f, 255.0f });
 		}
-		else{
+		else {
 			MenuBtn[i].SetType(ButtonType::Texture);
 			MenuBtn[i].Set_Texture("./Assets/Art/BtnTest2.png");
 			MenuBtn[i].SetStateColor(ButtonState::Hovered, Color{ 255.0f, 255.0f, 0.0f, 255.0f });
@@ -252,10 +256,15 @@ void MainMenu::Buttons_Init() {
 		MenuBtn[i].SetTextType(fontID::Strawberry_Muffins_Demo);
 	}
 
-	
-	UsernameBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));
-	UsernameBtn[0].Set_Position(AEVec2Set(AEGetWindowWidth() * 0.8f, AEGetWindowHeight() * 0.2f));
+	// Username Button
+	UsernameBtn.push_back(Button(ButtonType::Color, BtnWidth * 0.5, BtnHeight, 0.5f));
+	UsernameBtn[0].Set_Position(AEVec2Set(AEGetWindowWidth() * 0.93, AEGetWindowHeight() * 0.05));
 	UsernameBtn[0].Set_Text("Username");
+	UsernameBtn[0].SetType(ButtonType::Texture);
+	UsernameBtn[0].Set_Texture("./Assets/Art/BtnTest.png");
+	UsernameBtn[0].SetStateColor(ButtonState::Hovered, Color{ 0.0f, 255.0f, 255.0f, 255.0f });
+	UsernameBtn[0].Set_Callback(MainMenu::SwitchToUsername);
+	UsernameBtn[0].SetTextType(fontID::Strawberry_Muffins_Demo);
 }
 
 const float baseSpeed = 50.0f;
@@ -283,7 +292,7 @@ void MainMenu::EnemyMovement() {
 
 		case EnemyType::Squirrel:
 			enemy[i].sprite.pos.x += 2.0f * baseSpeed * g_dt;
-			SquirrelPos +=  baseSpeed * g_dt;
+			SquirrelPos += baseSpeed * g_dt;
 			enemy[i].sprite.pos.y += 2 * std::sin(SquirrelPos / 10.0f);
 			continue;
 		}
@@ -345,15 +354,15 @@ void MainMenu::SwitchToLevelSelection(void)
 	std::cout << "Level Key: " << LevelSys.GetKey() << std::endl;
 
 	for (size_t i = 0; i < LevelSys.GetKey(); ++i) {
-			LevelBtn[i].Set_Callback(LevelSystem::SetLevel);
-			if (i == 0) {
-				LevelBtn[i].Set_Text("Tutorial");
-				continue;
-			}
+		LevelBtn[i].Set_Callback(LevelSystem::SetLevel);
+		if (i == 0) {
+			LevelBtn[i].Set_Text("Tutorial");
+			continue;
+		}
 
-			std::string LevelCount{ "Level " + std::to_string(i) };
-			LevelBtn[i].Set_Text(LevelCount.c_str());
-	}	
+		std::string LevelCount{ "Level " + std::to_string(i) };
+		LevelBtn[i].Set_Text(LevelCount.c_str());
+	}
 
 	GameStateUpdate = LevelSelection::Update;
 	GameStateDraw = LevelSelection::Render;
@@ -375,6 +384,12 @@ void MainMenu::SwitchToLeaderboard(void)
 {
 	GameStateUpdate = Leaderboard::Update;
 	GameStateDraw = Leaderboard::Render;
+}
+
+void MainMenu::SwitchToUsername(void)
+{
+	GameStateUpdate = Username::Update;
+	GameStateDraw = Username::Render;
 }
 
 
