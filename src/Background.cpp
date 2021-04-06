@@ -1,3 +1,24 @@
+/******************************************************************************/
+/*!
+\file		Background.cpp
+\author 	Bryan Koh Yan Wei
+\par    	email: yanweibryan.koh@digipen.edu
+\date   	April 6, 2021
+\brief		Function definitions for the background display during gameplay.
+
+			Functionalities includes:
+			Loading & initializing of Background overlay.
+
+			Spawning of particles on player victory.
+
+			Lerping of background color to simulate a morning to night cycle.
+
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+
+ */
+ /******************************************************************************/
 #include "Background.h"
 #include <array>
 #include "Image.h"

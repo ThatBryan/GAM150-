@@ -73,6 +73,12 @@ void GameStateManagerUpdate()
 		GameStateUnload = Gameplay::Unload;
 		break;
 	default:
-		printf("FATAL ERROR!\n");
+		GameStateLoad = MainMenu::Load;
+		GameStateInit = MainMenu::Init;
+		GameStateUpdate = MainMenu::Update;
+		GameStateDraw = MainMenu::Render;
+		GameStateFree = GameStatePlaceholder;
+		GameStateUnload = MainMenu::Unload;
+		printf("FATAL ERROR! Game state will be set to Main menu\n");
 	}
 }

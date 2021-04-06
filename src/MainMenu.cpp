@@ -1,3 +1,25 @@
+/******************************************************************************/
+/*!
+\file				MainMenu.cpp
+\primary author: 	Bryan Koh Yan Wei
+\secondary author: 	Seet Min Yi
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Handles the GameState MainMenu 
+						
+					Functionalities include:
+
+					Switching between update and draw loops depending on 
+					button interface input
+
+					Loading/Initialize variables.
+
+
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #include "MainMenu.h"
 
 #include "Image.h"
@@ -33,13 +55,16 @@ static std::vector<Player> player;
 static Graphics::Text Title;
 static AEVec2 ScreenMid;
 
+static int count = 0; // For checking CreditScreen overlay.
+
 static Color background;
 extern LevelSystem LevelSys;
 
 enum CreditScreen { CreditScreen1 = 0, CreditScreen2, CreditScreen3, CreditScreen4, CreditScreen5, MAX_PICTURES };
 std::array <Image, CreditScreen::MAX_PICTURES> Pictures;
 
-static int count = 0;
+extern AudioManager Audio;
+
 
 void MainMenu::Init(void)
 {
@@ -315,7 +340,12 @@ void MainMenu::SwitchToLevelSelection(void)
 
 	for (size_t i = 0; i < LevelSys.GetKey(); ++i) {
 			LevelBtn[i].Set_Callback(LevelSystem::SetLevel);
-			std::string tmp{ "Level " + std::to_string(i + 1) };
+			if (i == 0) {
+				LevelBtn[i].Set_Text("Tutorial");
+				continue;
+			}
+
+			std::string tmp{ "Level " + std::to_string(i) };
 			LevelBtn[i].Set_Text(tmp.c_str());
 	}	
 

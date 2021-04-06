@@ -1,3 +1,15 @@
+/******************************************************************************/
+/*!
+\file				Particles.h
+\author: 			Bryan Koh Yan Wei
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Contains the type definition for Particles.
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #pragma once
 #include "AEEngine.h"
 #include "Graphics.h"

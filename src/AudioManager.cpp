@@ -1,3 +1,25 @@
+/******************************************************************************/
+/*!
+\file		AudioManager.cpp
+\author 	Bryan Koh Yan Wei
+\par    	email: yanweibryan.koh@digipen.edu
+\date   	April 6, 2021
+\brief		Source file for the Audio system inside the game. Implemented using
+			FMod. 
+			
+			Contains several interface functions such:
+
+			Muting of audio.
+			Volume control.
+			Loading/Unloading audio assets.
+			Creating of audio assets
+			Playing/Pausing audio assets.
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+
+ */
+ /******************************************************************************/
 #include "AudioManager.h"
 #include <array>
 #include "Constants.h"

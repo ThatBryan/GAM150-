@@ -1,3 +1,16 @@
+/******************************************************************************/
+/*!
+\file				Utilities.h
+\author: 			Bryan Koh Yan Wei
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Contains the declaration of helper functions used 
+					throughout the game development process.
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #pragma once
 
 #include "AEEngine.h"

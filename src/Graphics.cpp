@@ -1,16 +1,34 @@
+/******************************************************************************/
+/*!
+\file				Graphics.cpp
+\author:		 	Bryan Koh Yan Wei
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Source file for the implementation of graphics related
+					types such as Color, Rectangles, Circles and text.
+
+					Functionalities includes:
+					Loading of meshes/fonts
+					Drawing of the type.
+					Accessors/Modifiers
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #include "Graphics.h"
 #include "Image.h"
 #include <iostream>
 #include "Utilities.h"
 
-const f32 Color::RGB_MAX{ 255.0f };
+const f32 Color::RGBA_MAX{ 255.0f };
 
 Color::Color(float r, float g, float b, float a)
 {
-	this->r = r / RGB_MAX;
-	this->g = g / RGB_MAX;
-	this->b = b / RGB_MAX;
-	this->alpha = a / RGB_MAX;
+	this->r = r / RGBA_MAX;
+	this->g = g / RGBA_MAX;
+	this->b = b / RGBA_MAX;
+	this->alpha = a / RGBA_MAX;
 }
 
 Color::Color() : r{ 255.0f }, g{ 255.0f }, b{ 255.0f }, alpha{ 255.0f } {}
@@ -187,7 +205,7 @@ void Graphics::Rect::Draw(const f32 alpha)
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxSetTintColor(color.r, color.g , color.b, color.alpha);
-	AEGfxSetTransparency(alpha / Color::RGB_MAX);
+	AEGfxSetTransparency(alpha / Color::RGBA_MAX);
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
@@ -198,7 +216,7 @@ void Graphics::Rect::Draw(Color C, const f32 alpha)
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxSetTintColor(C.r, C.g, C.b, C.alpha);
-	AEGfxSetTransparency(alpha / Color::RGB_MAX);
+	AEGfxSetTransparency(alpha / Color::RGBA_MAX);
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_NONE);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
@@ -210,7 +228,7 @@ void Graphics::Rect::DrawTexture(AEGfxTexture* pTex, Color C, const f32 alpha)
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 	AEGfxTextureSet(pTex, 0.0f, 0.0f);
 	AEGfxSetTintColor(C.r, C.g, C.b, C.alpha);
-	AEGfxSetTransparency(alpha / Color::RGB_MAX);
+	AEGfxSetTransparency(alpha / Color::RGBA_MAX);
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);

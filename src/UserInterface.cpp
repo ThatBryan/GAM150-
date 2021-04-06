@@ -1,16 +1,30 @@
+/******************************************************************************/
+/*!
+\file				UserInterface.cpp
+\author: 			Bryan Koh Yan Wei
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Source file for UI related code. (I.e player hp, time 
+					elapsed, etc.)
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #include "UserInterface.h"
-#include <fstream>
 #include "AEEngine.h"
 #include "Graphics.h"
 #include "Constants.h"
 #include "Utilities.h"
-#include <string>
-#include <vector>
-#include <array>
 #include "Button.h"
 #include "Image.h"
 #include "MainMenu.h"
 #include "Player.h"
+
+#include <fstream>
+#include <string>
+#include <vector>
+#include <array>
 
 static char strBuffer[100];
 static char strBuffer1[100];

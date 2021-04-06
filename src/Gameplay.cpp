@@ -1,3 +1,18 @@
+/******************************************************************************/
+/*!
+\file				Gameplay.cpp
+\primary author: 	Bryan Koh Yan Wei
+\secondary authors: Dallas Cheong, Seet Min Yi
+
+\date   			April 6, 2021
+\brief				Source file which contains the Game loop for the
+					actual Jumperman gameplay.
+
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #include "AEEngine.h"
 #include "Gameplay.h"
 #include "BinaryMap.h"
@@ -10,8 +25,9 @@
 #include "Background.h"
 #include "GameStateManager.h"
 #include "Particles.h"
-#include <iostream>
 #include "MainMenu.h"
+
+#include <iostream>
 #include <vector>
 #include <array>
 #include <cassert>
@@ -21,6 +37,7 @@ std::vector<Enemies> enemies;
 std::vector <std::vector <Tiles>*> tileManager;
 Player Jumperman;
 
+extern AudioManager Audio;
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
 extern AEVec2 EnemySizeArray[static_cast<int>(EnemySizes::MAX)];

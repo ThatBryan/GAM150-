@@ -1,3 +1,16 @@
+/******************************************************************************/
+/*!
+\file				Constants.cpp
+\primary author: 	Bryan Koh Yan Wei (94%)
+\Secondary authors:	Seet Min Yi (5%), Dallas Cheong (1%)
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Contains the variable definitions.
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #include "Constants.h"
 
 namespace FILE_PATHS {
@@ -94,6 +107,7 @@ namespace Mesh {
 namespace Tex {
 	AEGfxTexture* PlayerCurr = nullptr;
 }
+
 // Non const
 unsigned short DialogueID = 0;
 

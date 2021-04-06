@@ -1,3 +1,17 @@
+/******************************************************************************/
+/*!
+\file				Splash.cpp
+\author: 			Bryan Koh Yan Wei
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Source file which contains the function definitions for
+					the Digipen Logo splash screen displayed on launch
+					of application.
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #include <vector>
 #include "Splash.h"
 #include "Utilities.h"
@@ -10,7 +24,7 @@ Image splash;
 
 
 static float splashLife, alpha;
-const float splashDuration = 3.0f;
+static const float splashDuration = 3.0f;
 
 void Splash::Init() {
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
