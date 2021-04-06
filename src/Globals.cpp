@@ -20,6 +20,10 @@ namespace fontID {
 namespace Mesh {
 	AEGfxVertexList* Rect = nullptr;
 	AEGfxVertexList* Circle = nullptr;
+	AEGfxVertexList* Anim = nullptr;
+	AEGfxVertexList* Anim2 = nullptr;
+	AEGfxVertexList* BatAnim = nullptr;
+	AEGfxVertexList* PlayerCurr = nullptr;
 }
 
 unsigned short DialogueID = 0;
@@ -27,4 +31,6 @@ unsigned short DialogueID = 0;
 short EnemyCount = 1;
 float g_dt = 0;
 
-
+float player_objtexX = 0.0f;
+const float bat_anim_offset_x = 0.5f;
+float bat_objtexX = 0.0f;

@@ -22,8 +22,16 @@ namespace fontID {
 namespace Mesh { // Base Meshes
 	extern AEGfxVertexList* Rect;
 	extern AEGfxVertexList* Circle;
+	extern AEGfxVertexList* Anim;
+	extern AEGfxVertexList* Anim2;
+	extern AEGfxVertexList* BatAnim;
+	extern AEGfxVertexList* PlayerCurr;
 }
 extern unsigned short DialogueID;
 extern short EnemyCount;
 // Miscallenous
 extern float g_dt;
+
+extern const float bat_anim_offset_x;
+extern float player_objtexX;
+extern float bat_objtexX;
