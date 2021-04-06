@@ -4,8 +4,17 @@
 \primary author: 	Bryan Koh Yan Wei
 \secondary author: 	Seet Min Yi
 \par    			email: yanweibryan.koh@digipen.edu
-\date   			February 28, 2021
-\brief
+\date   			April 6, 2021
+\brief				Handles the GameState MainMenu 
+						
+					Functionalities include:
+
+					Switching between update and draw loops depending on 
+					button interface input
+
+					Loading/Initialize variables.
+
+
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.
@@ -46,13 +55,16 @@ static std::vector<Player> player;
 static Graphics::Text Title;
 static AEVec2 ScreenMid;
 
+static int count = 0; // For checking CreditScreen overlay.
+
 static Color background;
 extern LevelSystem LevelSys;
 
 enum CreditScreen { CreditScreen1 = 0, CreditScreen2, CreditScreen3, CreditScreen4, CreditScreen5, MAX_PICTURES };
 std::array <Image, CreditScreen::MAX_PICTURES> Pictures;
 
-static int count = 0;
+extern AudioManager Audio;
+
 
 void MainMenu::Init(void)
 {

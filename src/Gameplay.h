@@ -1,18 +1,19 @@
-#pragma once
 /******************************************************************************/
 /*!
 \file				Gameplay.h
 \primary author: 	Bryan Koh Yan Wei
 \secondary authors: Dallas Cheong, Seet Min Yi
 
-\date   			February 28, 2021
-\brief
+\date   			April 6, 2021
+\brief				Header file which contains the Game loop for the 
+					actual Jumperman gameplay.
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.
  */
  /******************************************************************************/
 
+#pragma once
 namespace Gameplay {
 
 	void Init();

@@ -3,8 +3,16 @@
 \file				Particles.cpp
 \primary author: 	Bryan Koh Yan Wei
 \par    			email: yanweibryan.koh@digipen.edu
-\date   			February 28, 2021
-\brief
+\date   			April 6, 2021
+\brief				Function definitions for the particles type.
+					
+					Functionalities includes:
+
+					Loading/Initialization
+					Update loop to be called every frame.
+					Render loop to be called every frame.
+					Creating of particles.
+					Accessors to the particle container
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.

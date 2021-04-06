@@ -3,8 +3,10 @@
 \file		AudioManager.h
 \author 	Bryan Koh Yan Wei
 \par    	email: yanweibryan.koh@digipen.edu
-\date   	February 28, 2021
-\brief
+\date   	April 6, 2021
+\brief		Header file for the Audio system inside the game using FMod.
+			Also contains several interface functions such
+			as muting and volume control.
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.

@@ -4,8 +4,9 @@
 \primary author: 	Bryan Koh Yan Wei (94%)
 \Secondary authors:	Seet Min Yi (5%), Dallas Cheong (1%)
 \par    			email: yanweibryan.koh@digipen.edu
-\date   			February 28, 2021
-\brief
+\date   			April 6, 2021
+\brief				Contains constants variables and a few other global variables
+					used throughout the game
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.

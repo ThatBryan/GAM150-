@@ -3,9 +3,10 @@
 \file		Image.h
 \author 	Bryan Koh Yan Wei
 \par    	email: yanweibryan.koh@digipen.edu
-\date   	February 28, 2021
-\brief
-
+\date   	April 6, 2021
+\brief		Header file which contains the type definition of an Image class used
+			to draw still images to screen.
+	
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.
 

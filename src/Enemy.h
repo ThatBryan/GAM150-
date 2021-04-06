@@ -4,8 +4,8 @@
 \primary author: 	Bryan Koh Yan Wei
 \Secondary author:	Seet Min Yi
 \par    			email: yanweibryan.koh@digipen.edu
-\date   			February 28, 2021
-\brief
+\date   			April 6, 2021
+\brief				Header file of an Enemy class implementation.
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.

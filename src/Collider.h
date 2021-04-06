@@ -4,7 +4,10 @@
 \author 	Bryan Koh Yan Wei, yanweibryan.koh, 390001520
 \par    	email: yanweibryan.koh@digipen.edu
 \date   	February 28, 2021
-\brief
+\brief		Header file for a user defined type which contains 5 rectangles.
+
+			Used for collision detection between game objects. 
+
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.

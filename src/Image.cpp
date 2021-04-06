@@ -3,8 +3,14 @@
 \file		Image.cpp
 \author 	Bryan Koh Yan Wei, yanweibryan.koh, 390001520
 \par    	email: yanweibryan.koh@digipen.edu
-\date   	February 28, 2021
-\brief		
+\date   	April 6, 2021
+\brief		Source file which contains the definition of an Image class used
+			to draw still images to screen.
+
+			Functionalities include:
+			Loading/Initializing of variables.
+			Freeing of the texture pointers.
+			Rendering of the images.
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.

@@ -1,3 +1,25 @@
+/******************************************************************************/
+/*!
+\file				Enemy.cpp
+\primary author: 	Bryan Koh Yan Wei
+\Secondary author:	Seet Min Yi
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Source file of an Enemy class implementation.
+
+					Functionalities include:
+
+					Creating of enemies.
+					Updating of enemies.
+					Rendering of enemies.
+					Load/unloading of texture pointers for the enemies.
+					Enemy & Tile collision
+					Accessors/Modifiers for the data members.
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #include "Enemy.h"
 #include "Tiles.h"
 #include "Utilities.h"

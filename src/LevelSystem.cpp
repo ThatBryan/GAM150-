@@ -3,8 +3,19 @@
 \file				LevelSystem.cpp
 \primary author: 	Bryan Koh Yan Wei
 \par    			email: yanweibryan.koh@digipen.edu
-\date   			February 28, 2021
-\brief
+\date   			April 6, 2021
+\brief				Source file which contains the function definition of a
+					level system which handles locking/unlocking of levels
+					used throughout the game.
+
+					Functionalities include:
+					Reading of an integer variable from a text file.
+					
+					Writing of an integer variable into a text file.
+
+					Unlocking the next level.
+
+
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.

@@ -3,8 +3,14 @@
 \file				Graphics.cpp
 \primary author: 	Bryan Koh Yan Wei
 \par    			email: yanweibryan.koh@digipen.edu
-\date   			February 28, 2021
-\brief
+\date   			April 6, 2021
+\brief				Source file for the implementation of graphics related
+					types such as Color, Rectangles, Circles and text.
+
+					Functionalities includes:
+					Loading of meshes/fonts
+					Drawing of the type.
+					Accessors/Modifiers
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.
