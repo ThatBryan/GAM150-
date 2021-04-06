@@ -160,6 +160,9 @@ void MainMenu::Render() {
 
 void MainMenu::Load(void)
 {
+	//Mesh::Anim = Graphics::Mesh_Animation(player_idle_anim_offset_x);
+	Mesh::PlayerCurr = Mesh::Anim;
+	//Tex::PlayerCurr = 
 	AudioManager::loadAsset();
 	AudioManager::SetVolume(AudioID::BGM, 0.5f);
 	AudioManager::SetVolume(AudioID::Jump, 0.2f);
@@ -171,6 +174,7 @@ void MainMenu::Load(void)
 
 void MainMenu::Unload(void)
 {
+	//AEGfxMeshFree(Mesh::Anim);
 	Enemies::Unload();
 	Tiles::Unload();
 	Player::Unload();

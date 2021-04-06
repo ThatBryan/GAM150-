@@ -48,6 +48,7 @@ namespace Graphics
 	// Only call once at the start of application!!
 	AEGfxVertexList* Mesh_Circle(void);
 	AEGfxVertexList* Mesh_Rectangle(void);
+	AEGfxVertexList* Mesh_Animation(float offset_X);
 	void Load_Meshes(void);
 	void Load_Fonts(void);
 	void Free();

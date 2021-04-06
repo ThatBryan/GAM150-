@@ -41,10 +41,10 @@ extern LevelSystem LevelSys;
 static f32 maxY;
 static f32 maxX;
 AEGfxTexture* Player::playerTex{ nullptr };
+AEGfxTexture* Player::playerMovTex{ nullptr };
 float Player::gravityStrength = 20.0f;
 
-
-Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{ false },
+Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::PlayerCurr, width, height), lose{ false },
 active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL },
 hp(), direction{ SpriteDirection::Right }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL }, gravityMultiplier{ GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER },
 chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider()
@@ -68,6 +68,17 @@ hp(), direction{ SpriteDirection::Right }, gravityMultiplier{ GAMEPLAY_CONST::BA
 
 void Player::Reset(void)
 {
+	/*jump = false;
+	chargedjump = false;
+	win = false;
+	lose = false;
+	active = true;
+	sprite.pos = startingPos;
+	sprite.Set_Texture(playerTex);
+	jumpvel = player_jumpvel;
+	chargedjumpvel = player_chargedjumpvel;
+	chargedjump_counter = player_chargedjump_counter;*/
+	
 	Respawn();
 	hp.current = hp.max;
 	direction = SpriteDirection::Right;
@@ -82,7 +93,15 @@ void Player::Update() {
 }
 void Player::Render(void)
 {
-	sprite.Draw_Texture(255.0f);
+	if (Mesh::PlayerCurr == Mesh::Anim)
+	{
+		sprite.Set_Texture(playerTex);
+	}
+	else if (Mesh::PlayerCurr == Mesh::Anim2)
+	{
+		sprite.Set_Texture(playerMovTex);
+	}
+	sprite.Draw_Texture(20, PLAYER_CONST::PLAYER_IDLE_OFFSET_X, Mesh::PlayerCurr, 255.0f);
 	UI::DisplayLife(hp.current);
 
 	if (GAMEPLAY_MISC::DEBUG_MODE) {
@@ -90,15 +109,20 @@ void Player::Render(void)
 	}
 }
 void Player::LoadTex(void) {
-	playerTex = AEGfxTextureLoad(FP::PlayerSprite);
+	playerTex = AEGfxTextureLoad(FP::PlayerSpriteSheetIdle);
+	playerMovTex = AEGfxTextureLoad(FP::WaterSlimeSprite);
 	AE_ASSERT_MESG(playerTex, "Failed to create texture!");
+	AE_ASSERT_MESG(playerMovTex, "Failed to create texture!");
 }
 
 void Player::Unload(void) {
-	if (playerTex) {
-		AEGfxTextureUnload(playerTex);
-		playerTex = nullptr;
-	}
+	AEGfxTextureUnload(playerTex);
+	AEGfxTextureUnload(playerMovTex);
+
+	// if (playerTex) {
+	// 	AEGfxTextureUnload(playerTex);
+	// 	playerTex = nullptr;
+	// }
 }
 void Player::Update_Position(void)
 {
@@ -226,6 +250,7 @@ void Player::Respawn(void)
 	active = true;
 	sprite.rotation = 0;
 	sprite.pos = startingPos;
+	sprite.Set_Texture(playerTex);
 	jumpvel = PLAYER_CONST::JUMPVEL;
 	chargedjumpvel = PLAYER_CONST::CHARGED_JUMPVEL;
 	chargedjump_counter = PLAYER_CONST::CHARGEDJUMP_COUNTER;
@@ -312,7 +337,8 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 
 void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, const f32 height)
 {
-	player.sprite.Init(FP::PlayerSprite, width, height, pos);
+	player.sprite.Set(playerTex, width, height, pos, Mesh::PlayerCurr);
+
 	player.startingPos = pos;
 	player.sprite.pos = pos;
 

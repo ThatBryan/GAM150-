@@ -23,19 +23,32 @@ rights reserved.
 
 #include <iostream>
 
-Image::Image(const AEGfxTexture* pTex, const f32 width, const f32 height, const f32 dir) : rotation{dir}, 
-width{width}, height{height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color(), transformMtx{NULL}
+//float objtexX;
+int count = 0;
+
+Image::Image(const AEGfxTexture* pTex, AEGfxVertexList* Mesh, const f32 width, const f32 height, const f32 dir)
+	: rotation{dir}, width{width}, height{height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color(), transformMtx{NULL}
 {
 	this->pTex = const_cast<AEGfxTexture*>(pTex);
-	pMesh = Mesh::Rect;
+	this->pMesh = Mesh;
 }
 
 Image::Image() : rotation{0}, width{0}, height{0}, pTex{ nullptr }, 
 pMesh{ nullptr }, pos{ 0, 0 }, transformMtx{ NULL }{}
 
-void Image::Init(const char* pFile, const f32 Width, const f32 Height, const AEVec2 Pos,
-	const f32 Rotation, AEGfxVertexList* Mesh){
+void Image::Init(const char* pFile, const f32 Width, const f32 Height, const AEVec2 Pos, const f32 Rotation, AEGfxVertexList* Mesh){
 	pTex = AEGfxTextureLoad(pFile);
+	AE_ASSERT_MESG(pTex, "Failed to create texture!");
+	pMesh = const_cast<AEGfxVertexList*>(Mesh);
+	width = Width;
+	height = Height;
+	pos = Pos;
+	rotation = Rotation;
+}
+
+void Image::Set(const AEGfxTexture* texture, const f32 Width, const f32 Height, const AEVec2 Pos, 
+	AEGfxVertexList* Mesh, const f32 Rotation) {
+	pTex = const_cast<AEGfxTexture*>(texture);
 	AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	pMesh = const_cast<AEGfxVertexList*>(Mesh);
 	width = Width;
@@ -89,6 +102,63 @@ void Image::Draw_Texture(const f32 alpha, const f32 r, const f32 g, const f32 b,
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
+//
+void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const f32 alpha, const f32 r, const f32 g, const f32 b, const f32 a)
+{
+	SetMatrix();
+	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+	AEGfxTextureSet(pTex, 0, 0);
+	AEGfxSetTintColor(r / Color::RGBA_MAX, g / Color::RGBA_MAX, b / Color::RGBA_MAX, a / Color::RGBA_MAX);
+	AEGfxSetTransparency(alpha / Color::RGBA_MAX);
+	AEGfxSetTransform(transformMtx.m);
+	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	if (mesh == Mesh::PlayerCurr)
+	{
+		//pTex = texture;
+		++count;
+		if (count < counter)
+		{
+			AEGfxTextureSet(pTex, player_objtexX, 0);
+		}
+		else
+		{
+			player_objtexX += offset;
+			AEGfxTextureSet(pTex, player_objtexX, 0);
+			count = 0;
+		}
+		if (player_objtexX == 1.0f)
+		{
+			player_objtexX = 0.0f;
+		}
+	}
+	else if (mesh == Mesh::BatAnim)
+	{
+		++count;
+		if (count < counter)
+		{
+			AEGfxTextureSet(pTex, bat_objtexX, 0);
+		}
+		else
+		{
+			bat_objtexX += offset;
+			AEGfxTextureSet(pTex, bat_objtexX, 0);
+			count = 0;
+		}
+		if (bat_objtexX == 1.0f)
+		{
+			bat_objtexX = 0.0f;
+		}
+	}
+	/*}*/
+
+	/*if (Mesh::PlayerCurr == Mesh::Rect)
+	{
+		pTex = texture;
+		AEGfxTextureSet(pTex, objtexX, 0);
+	}*/
+	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
+}
+
 void Image::Draw_Texture(AEVec2 Pos, const f32 alpha, const f32 r, const f32 g, const f32 b, const f32 a)
 {
 	SetMatrix(Pos);
@@ -99,5 +169,10 @@ void Image::Draw_Texture(AEVec2 Pos, const f32 alpha, const f32 r, const f32 g, 
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
+}
+
+void Image::Set_Texture(AEGfxTexture* texture)
+{
+	this->pTex = texture;
 }
 

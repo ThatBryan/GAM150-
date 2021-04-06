@@ -52,7 +52,7 @@ private:
 	void DecrementAlpha(void);
 
 public:
-	Enemies(AEGfxTexture* filepath, const f32 width, const f32 height);
+	Enemies(AEGfxTexture* filepath, AEGfxVertexList* mesh, const f32 width, const f32 height);
 	Image sprite;
 	bool active;
 	void Update(void);

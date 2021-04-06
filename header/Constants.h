@@ -39,6 +39,8 @@ namespace FILE_PATHS {
 	extern const char* FlyingEnemySprite;
 	extern const char* SquirrelSprite;
 	extern const char* PlayerSprite;
+	extern const char* PlayerSpriteSheetIdle;
+	extern const char* BatSpriteSheet;
 	extern const char* GrassTile;
 	extern const char* GoalTile;
 	extern const char* GreyTile;
@@ -69,6 +71,7 @@ namespace PLAYER_CONST {
 	extern const short HP_MAX;
 	extern const float CHARGEDJUMP_COUNTER;
 	extern const float COLLIDER_OFFSET_X;
+	extern const float PLAYER_IDLE_OFFSET_X;
 }
 namespace TILE_CONST {
 	extern const float COLLAPSE_DELAY;
@@ -78,6 +81,10 @@ namespace GAMEPLAY_CONST {
 	extern const float BASE_GRAVITY_MULTIPLIER;
 }
 
+
+namespace Tex {
+	extern AEGfxTexture* PlayerCurr;
+}
 // Key bindings.
 #define PAUSE_KEY AEVK_TAB 
 #define DEBUG_KEY AEVK_F1

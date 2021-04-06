@@ -79,7 +79,7 @@ void Gameplay::Init(void)
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SLIME))
 			{	
 				Enemies::AddNew(enemies, EnemyType::Slime, AEVec2Set(j * grid_width, i * grid_height), 
-					EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].x, EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].y);
+				EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].x, EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].y);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::BAT))
 			{
@@ -112,6 +112,11 @@ void Gameplay::Update()
 			Utils::TogglePause();
 		}
 	}
+
+	if (AEInputCheckCurr(AEVK_LEFT) || AEInputCheckCurr(AEVK_RIGHT) || AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_D))
+		Mesh::PlayerCurr = Mesh::Anim2;
+	else
+		Mesh::PlayerCurr = Mesh::Anim;
 
 	if (AEInputCheckReleased(AEVK_R))
 	{
@@ -194,6 +199,9 @@ void Gameplay::Load()
 		default:
 			gamestateNext = GS_MAINMENU;
 	}
+	//Mesh::Anim = Graphics::Mesh_Animation(player_idle_anim_offset_x);
+	//assert(Map_Height > 0 && Map_Width > 0);
+	Mesh::PlayerCurr = Mesh::Anim;
 
 	assert(Map_Height > 0 && Map_Width > 0);
 
@@ -228,7 +236,6 @@ void Gameplay::Restart()
 	enemies.clear();
 	tileManager.clear();
 	Jumperman.Reset();
-	Jumperman.sprite.Free();
 	GAMEPLAY_MISC::app_time = 0;
 	GAMEPLAY_MISC::PAUSED = false;
 	UI::Unload();
