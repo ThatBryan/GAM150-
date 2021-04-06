@@ -1,12 +1,26 @@
+/******************************************************************************/
+/*!
+\file				Player.cpp
+\primary author: 	Bryan Koh Yan Wei
+\secondary author:	Seet Min Yi
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			February 28, 2021
+\brief
 
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+
+ */
+ /******************************************************************************/
 #include "Player.h"
 #include "Enemy.h"
-#include <array>
 #include "Utilities.h"
 #include "Graphics.h"
 #include "Particles.h"
 #include "UserInterface.h"
 #include "LevelSystem.h"
+
+#include <array>
 #include <iostream>
 
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;

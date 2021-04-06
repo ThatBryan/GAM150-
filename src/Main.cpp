@@ -1,5 +1,15 @@
-// ---------------------------------------------------------------------------
-// includes
+/******************************************************************************/
+/*!
+\file				Main.cpp
+\primary author: 	Team Only4
+
+\date   			February 28, 2021
+\brief
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 
 #include "AEEngine.h"
 #include <iostream>
