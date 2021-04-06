@@ -107,6 +107,7 @@ void MainMenu::Update(void)
 	static Color Destination{ Color::CreateRandomColor() };
 	
 	if (background == Destination) {
+		Color::Print(Destination);
 		Destination = Color::CreateRandomColor();
 		t = 0;
 	}

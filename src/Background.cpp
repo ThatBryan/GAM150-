@@ -36,13 +36,21 @@ rights reserved.
 enum BackgroundIndex{ Pause = 0, Victory, Defeat, MAX_IMAGE };
 
 static std::array <Image, BackgroundIndex::MAX_IMAGE> Images;
+
+enum BackgroundObj{Cloud = 0, MAX};
+static const int BgObjMax{ 5 };
+
+static std::array <Image, BgObjMax> BgObj;
 static std::vector<Button> MenuBtn;	
 static Graphics::Text text;
 
 static AEVec2 Midpt;
 static Color Scene;
 static float WindowWidth, WindowHeight;
+static Color LerpDestination;
 enum class SceneType { Day = 0, Noon, Night, Max};
+
+//static AEVec2 CloudPos{ Utils::GetRandomRangeVec(AEVec2{0, 50.0f}, (AEVec2{0, 100.0f})) };
 
 static Color SceneColors [static_cast<int>(SceneType::Max)];
 
@@ -60,6 +68,11 @@ void Background::Load()
 	Images[Pause].Init(FP::PauseOverlay, WindowWidth, WindowHeight, Midpt);
 	Images[Victory].Init(FP::VictoryOverlay, WindowWidth, WindowHeight, Midpt);
 	Images[Defeat].Init(FP::GameoverOverlay, WindowWidth, WindowHeight, Midpt);
+
+	for (int i = 0; i < BgObjMax; ++i) {
+		BgObj[i].Init("./Assets/Art/cloud.png", Utils::RandomRangeFloat(50.0f, 100.0f), 
+			Utils::RandomRangeFloat(20.0f, 40.0f), Utils::GetRandomRangeVec(AEVec2{ 0 + i * 100.0f, 10.0f }, (AEVec2{ 800.0f - i * 100.0f, 25.0f })));
+	}
 
 	SceneColors[static_cast<int>(SceneType::Day)] = Color{ 51.0f, 215.0f, 255.0f, 255.0f };
 	SceneColors[static_cast<int>(SceneType::Noon)] = Color{ 255.0f, 175.0f, 51.0f, 255.0f };
@@ -106,12 +119,27 @@ void Background::Init()
 
 void Background::Update()
 {
+	static AEVec2 CloudDir{ -1.0f, 0.0f };
+	static const float CloudSpeed{ 50.0f };
+
 	LerpBackgroundColor();
 	AEGfxSetBackgroundColor(Scene.r, Scene.g, Scene.b);
+
+	if (!GAMEPLAY_MISC::PAUSED) {
+		for (int i = 0; i < BgObjMax; ++i) {
+			AEVec2ScaleAdd(&BgObj[i].pos, &CloudDir, &BgObj[i].pos, g_dt * CloudSpeed);
+			BgObj[i].pos.x = AEWrap(BgObj[i].pos.x, - BgObj[i].width / 2.0f, WindowWidth + BgObj[i].width / 2.0f);
+		}
+	}
 }
 
 void Background::Render(Player& player)
 {
+	static const float CloudAlpha{ 100.0f };
+	for (size_t i = 0; i < BgObj.size(); ++i) {
+		BgObj[i].Draw_Texture(BgObj[i].pos, CloudAlpha);
+	}
+
 	if (!GAMEPLAY_MISC::DISPLAY_QUIT_UI && (GAMEPLAY_MISC::PAUSED && player.active && !player.GetWinStatus()))
 	{
 		Images[BackgroundIndex::Pause].Draw_Texture(100.0f);
@@ -165,6 +193,11 @@ void Background::Unload()
 	for (size_t i = 0; i < Images.size(); ++i) {
 		Images[i].Free();
 	}
+
+	for (size_t i = 0; i < BgObj.size(); ++i) {
+		BgObj[i].Free();
+	}
+
 	MenuBtn.clear();
 }
 void Background::LerpBackgroundColor(void)
@@ -172,14 +205,14 @@ void Background::LerpBackgroundColor(void)
 	static float t = 0;
 	static const float LerpFactor{ 0.000005f }; // per t increment
 	static SceneType Identifier = SceneType::Noon;
-	static Color Destination = SceneColors[static_cast<int>(Identifier)];
+	LerpDestination = SceneColors[static_cast<int>(Identifier)];
 
-	if (Scene == Destination) {
+	if (Scene == LerpDestination) {
 		++Identifier;
-		Destination = SceneColors[static_cast<int>(Identifier)];
+		LerpDestination = SceneColors[static_cast<int>(Identifier)];
 		t = 0;
 	}
-	Scene = Color::Lerp(Scene, Destination, t);
+	Scene = Color::Lerp(Scene, LerpDestination, t);
 	t += LerpFactor;
 }
 

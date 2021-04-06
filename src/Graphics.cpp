@@ -85,6 +85,11 @@ Color Color::Lerp(const Color& begin, const Color& end, const float t)
 	return temp;
 }
 
+void Color::Print(const Color& color)
+{
+	std::cout << "r: " << color.r << " g: " << color.g << " b: " << color.b << " a: " << color.alpha << std::endl;
+}
+
 
 void Graphics::Load_Meshes(void)
 {
