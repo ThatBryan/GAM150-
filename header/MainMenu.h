@@ -1,8 +1,21 @@
+/******************************************************************************/
+/*!
+\file				MainMenu.h
+\primary author: 	Bryan Koh Yan Wei
+\secondary author: 	Seet Min Yi
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Handles the GameState MainMenu 
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #pragma once
 #include "AudioManager.h"
 #include <iostream>
 
-extern AudioManager Audio;
+
 
 namespace MainMenu
 {

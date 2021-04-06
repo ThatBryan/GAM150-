@@ -1,3 +1,22 @@
+/******************************************************************************/
+/*!
+\file		Image.cpp
+\author 	Bryan Koh Yan Wei
+\par    	email: yanweibryan.koh@digipen.edu
+\date   	April 6, 2021
+\brief		Source file which contains the definition of an Image class used
+			to draw still images to screen.
+
+			Functionalities include:
+			Loading/Initializing of variables.
+			Freeing of the texture pointers.
+			Rendering of the images.
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+
+ */
+ /******************************************************************************/
 #include "Image.h"
 #include "Utilities.h"
 #include <iostream>
@@ -52,7 +71,6 @@ void Image::SetMatrix(AEVec2 Pos)
 }
 void Image::Free(void)
 {
-
 	if (pTex){
 		AEGfxTextureUnload(pTex); 
 		pTex = nullptr;
@@ -63,8 +81,8 @@ void Image::Draw_Texture(const f32 alpha, const f32 r, const f32 g, const f32 b,
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 	AEGfxTextureSet(pTex, 0, 0); 
-	AEGfxSetTintColor(r / Color::RGB_MAX, g / Color::RGB_MAX, b / Color::RGB_MAX, a / Color::RGB_MAX);
-	AEGfxSetTransparency(alpha / Color::RGB_MAX);
+	AEGfxSetTintColor(r / Color::RGBA_MAX, g / Color::RGBA_MAX, b / Color::RGBA_MAX, a / Color::RGBA_MAX);
+	AEGfxSetTransparency(alpha / Color::RGBA_MAX);
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
@@ -74,8 +92,8 @@ void Image::Draw_Texture(AEVec2 Pos, const f32 alpha, const f32 r, const f32 g, 
 	SetMatrix(Pos);
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 	AEGfxTextureSet(pTex, 0, 0);
-	AEGfxSetTintColor(r / Color::RGB_MAX, g / Color::RGB_MAX, b / Color::RGB_MAX, a / Color::RGB_MAX);
-	AEGfxSetTransparency(alpha / Color::RGB_MAX);
+	AEGfxSetTintColor(r / Color::RGBA_MAX, g / Color::RGBA_MAX, b / Color::RGBA_MAX, a / Color::RGBA_MAX);
+	AEGfxSetTransparency(alpha / Color::RGBA_MAX);
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);

@@ -1,3 +1,21 @@
+/******************************************************************************/
+/*!
+\file				Graphics.h
+\author:			Bryan Koh Yan Wei
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Contains type defintion for graphics related types
+					which includes:
+					
+					Colors
+					Rectangles
+					Circle
+					Text
+					
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #pragma once
 #include "AEEngine.h"
 #include "Constants.h"
@@ -9,7 +27,7 @@ struct Color
 {
 	public:
 	f32 r, g, b, alpha;
-	static const f32 RGB_MAX;
+	static const f32 RGBA_MAX;
 
 	Color(float r, float g, float b, float a);
 	Color();

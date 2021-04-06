@@ -1,12 +1,36 @@
+/******************************************************************************/
+/*!
+\file				Player.cpp
+\primary author: 	Bryan Koh Yan Wei
+\secondary author:	Seet Min Yi
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
 
+\brief				Function definition for the player type.
+	
+					Functionalities inclueds:
+
+					Initializing/Loading of player data members.
+					Update function.
+					Render function
+					Accessor/Modifiers.
+
+
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+
+ */
+ /******************************************************************************/
 #include "Player.h"
 #include "Enemy.h"
-#include <array>
 #include "Utilities.h"
 #include "Graphics.h"
 #include "Particles.h"
 #include "UserInterface.h"
 #include "LevelSystem.h"
+
+#include <array>
 #include <iostream>
 
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
@@ -250,6 +274,7 @@ void Player::SetPlayerWin(void)
 
 void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 {
+	static const float bounceVelocity{ PLAYER_CONST::JUMPVEL * 1.5f };
 	for (size_t i = 0; i < enemy.size(); i++)
 	{
 		if (!enemy[i].GetKilledStatus())
@@ -261,7 +286,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 					collider.bottom.pos, collider.bottom.width, collider.bottom.height)) {
 					if (!GAMEPLAY_MISC::DEBUG_MODE) {
 						jump = true;
-						jumpvel = PLAYER_CONST::JUMPVEL * 1.2f;
+						jumpvel = bounceVelocity;
 						gravityMultiplier = GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER;
 						enemy[i].KillEnemy();
 						continue;
@@ -294,6 +319,6 @@ void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, con
 	player.collider.SetWidthHeight(player.collider.top, PLAYER_CONST::WIDTH - 4.0f, 5.0f);
 	player.collider.SetWidthHeight(player.collider.left, 20.0f, PLAYER_CONST::HEIGHT - 10.0f);
 	player.collider.SetWidthHeight(player.collider.right, 20.0f, PLAYER_CONST::HEIGHT - 10.0f);
-	player.collider.SetWidthHeight(player.collider.bottom, PLAYER_CONST::WIDTH / 1.5f, 5.0f);
+	player.collider.SetWidthHeight(player.collider.bottom, PLAYER_CONST::WIDTH / 1.6f, 5.0f);
 	player.collider.SetMeshes();
 }
