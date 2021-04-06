@@ -17,7 +17,7 @@ static AEGfxTexture* enemyTex[static_cast<int>(EnemyType::Max)]{ nullptr };
 
 Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, Mesh::Rect, width, height), collider(), 
 spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, counter{ 0 }, jumpcounter{ 5 }, squirrelJump { false },
-velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }, alphaTimer{ 1.0f }, stepGravityMultiplier{ base_gravityMultiplier }{
+velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }, alphaTimer{ 1.0f }, stepGravityMultiplier{ GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER }{
 	ID = EnemyCount;
 	EnemyCount++;
 	collider.sprite.color.Set(Color{ 0, 0, 0, 100.0f });
@@ -151,7 +151,7 @@ void Enemies::Draw()
 			sprite.Draw_Texture(alpha);
 		else
 			sprite.Draw_Texture(20, bat_anim_offset_x, Mesh::BatAnim, alpha);
-		if (DebugMode) {
+		if (GAMEPLAY_MISC::DEBUG_MODE) {
 			collider.Draw();
 		}
 	}

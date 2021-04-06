@@ -15,7 +15,7 @@ enum GuideOverlay{Guide1 = 0, Guide2, Guide3, Guide4, Guide5, Guide6, MAX_IMAGE 
 std::array <Image, GuideOverlay::MAX_IMAGE> Images;
 
 Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, Mesh::Rect, width, height),
-active{ true }, isCollapsing{ false }, ID{ 0 }, collapseDelay{ TileCollapseDelay }, type{ TileType::Safe }, spawnPos{ 0, 0 },
+active{ true }, isCollapsing{ false }, ID{ 0 }, collapseDelay{ TILE_CONST::COLLAPSE_DELAY }, type{ TileType::Safe }, spawnPos{ 0, 0 },
 collider()
 {
 	collider.SetWidthHeight(collider.sprite, width, height);
@@ -31,7 +31,7 @@ void Tiles::Collapse(const Player& ThePlayer)
 	{
 		if (collapseDelay <= 0)
 		{
-			image.pos.y += TileCollapseSpeed * g_dt;
+			image.pos.y += TILE_CONST::COLLAPSE_SPEED * g_dt;
 		}
 	}
 	if (type == TileType::Special) {
@@ -110,7 +110,7 @@ void Tiles::CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer)
 				ThePlayer.jump = false;
 				ThePlayer.gravity = false;
 				ThePlayer.chargedjump = false;
-				ThePlayer.gravityMultiplier = base_gravityMultiplier;
+				ThePlayer.gravityMultiplier = GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER;
 				ThePlayer.sprite.pos.y = Tile.collider.top.pos.y - Tile.collider.top.height / 2.0f - ThePlayer.sprite.height / 2.0f;
 				return;
 			}
@@ -164,7 +164,7 @@ void Tiles::Reset(std::vector <Tiles>& tiles)
 		tiles[i].image.pos = tiles[i].spawnPos;
 		tiles[i].active = true;
 		tiles[i].isCollapsing = false;
-		tiles[i].collapseDelay = TileCollapseDelay;
+		tiles[i].collapseDelay = TILE_CONST::COLLAPSE_DELAY;
 	}
 }
 
@@ -182,7 +182,7 @@ void Tiles::Update(Player& ThePlayer)
 void Tiles::Render() {
 	if (active) {
 		image.Draw_Texture(255);
-		if (DebugMode)
+		if (GAMEPLAY_MISC::DEBUG_MODE)
 		{
 			collider.Draw();
 		}	
@@ -227,7 +227,7 @@ void Tiles::LoadTex() {
 		tileTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex);
 		AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	}
-	if (Level == 1 && (gamestateCurr == GS_GAMEPLAY || gamestateCurr == GS_GAMEPLAY2)) {
+	if (GAMEPLAY_MISC::Level == 1 && (gamestateCurr == GS_GAMEPLAY || gamestateCurr == GS_GAMEPLAY2)) {
 		std::cout << "Loaded Tutorial Textures\n";
 		isTutorialLevel = true;
 		LoadTutorialTexture();
@@ -324,7 +324,7 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 						CreateDialogue(TileManager[i]->at(j).ID, TheTile.collider.sprite.pos);
 					}
 			}
-			if (DisableCollision)
+			if (GAMEPLAY_MISC::DISABLE_COLLISION)
 				return;
 			if (Utils::ColliderAABB(TheTile.collider.bottom.pos, TheTile.collider.bottom.width, TheTile.collider.bottom.height,
 				ThePlayer.collider.top.pos, ThePlayer.collider.top.width, ThePlayer.collider.top.height)){
@@ -366,7 +366,7 @@ void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy)
 				Tile.collider.top.pos, Tile.collider.top.width, Tile.collider.top.height)) {
 
 				enemy.SetGravity(false);
-				enemy.stepGravityMultiplier = base_gravityMultiplier;
+				enemy.stepGravityMultiplier = GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER;
 				return;
 			}
 		}

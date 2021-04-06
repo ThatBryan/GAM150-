@@ -53,13 +53,13 @@ void Utils::CheckFullScreenKeyInput(void)
 
 void Utils::ToggleFullscreen()
 {
-	fullscreen = !fullscreen;
-	AEToogleFullScreen(fullscreen);
+	GAMEPLAY_MISC::FULLSCREEN = !GAMEPLAY_MISC::FULLSCREEN;
+	AEToogleFullScreen(GAMEPLAY_MISC::FULLSCREEN);
 }
 
 bool Utils::GetFullscreenStatus()
 {
-	return fullscreen;
+	return GAMEPLAY_MISC::FULLSCREEN;
 }
 
 f32 Utils::Get_HalfWindowWidth(void)
@@ -108,21 +108,45 @@ AEVec2 Utils::GetMousePos(void)
 
 void Utils::TogglePause(void)
 {
-	paused = !paused;
-	if (!paused)
-		DisplayQuitUI = false;
+	GAMEPLAY_MISC::PAUSED = !GAMEPLAY_MISC::PAUSED;
+	if (!GAMEPLAY_MISC::PAUSED) {
+		GAMEPLAY_MISC::DISPLAY_QUIT_UI = false;
+		ShowCursor(false);
+		std::cout << "Cursor disabled\n";
+	}
+	if (GAMEPLAY_MISC::PAUSED) {
+		ShowCursor(true);
+		std::cout << "Cursor enabled\n";
+	}
 }
 
-void Utils::CheckDebugMode(void)
+void Utils::ToggleDevMode(void)
 {
-	if (AEInputCheckTriggered(DEBUG_KEY))
-		DebugMode = !DebugMode;
-	if (DebugMode && AEInputCheckTriggered(COLLISION_OFF_KEY)) {
-		DisableCollision = !DisableCollision;
-		DisableCollision == false ? std::cout << "Collision turned on \n" : std::cout << "Collision turned off \n";
+	static bool isFirstTime{ false };
+	GAMEPLAY_MISC::DEV_MODE = !GAMEPLAY_MISC::DEV_MODE;
+	GAMEPLAY_MISC::DEV_MODE == true ? std::cout << "\nDeveloper mode turned on\n" : std::cout << "\nDeveloper mode turned off\n";
+
+	if (GAMEPLAY_MISC::DEV_MODE && !isFirstTime) { // Only ever print once
+		std::cout << "\nUse F1 to toggle Debug Mode\n";
+		std::cout << "While in Debug Mode, Use F2 to toggle player collision\n";
+		isFirstTime = true;
 	}
-	if (!DebugMode)
-		DisableCollision = false;
+}
+
+void Utils::ToggleDebugMode(void)
+{
+	//if (!GAMEPLAY_MISC::DEV_MODE) // Exit if dev mode is not enabled. disabled for now. 
+	//	return;
+
+	if (AEInputCheckTriggered(DEBUG_KEY))
+		GAMEPLAY_MISC::DEBUG_MODE = !GAMEPLAY_MISC::DEBUG_MODE;
+	if (GAMEPLAY_MISC::DEBUG_MODE && AEInputCheckTriggered(COLLISION_OFF_KEY)) {
+		GAMEPLAY_MISC::DISABLE_COLLISION = !GAMEPLAY_MISC::DISABLE_COLLISION;
+		GAMEPLAY_MISC::DISABLE_COLLISION == false ? std::cout << "Collision turned on \n" : std::cout << "Collision turned off \n";
+	}
+	if (!GAMEPLAY_MISC::DEBUG_MODE) {
+		GAMEPLAY_MISC::DISABLE_COLLISION = false;
+	}
 }
 
 void Utils::ReturnToMenu(void) {
@@ -141,7 +165,7 @@ void Utils::ExitGame(void)
 
 void Utils::ToggleQuitUI(void)
 {
-	DisplayQuitUI = !DisplayQuitUI;
+	GAMEPLAY_MISC::DISPLAY_QUIT_UI = !GAMEPLAY_MISC::DISPLAY_QUIT_UI;
 }
 
 float Utils::Lerp(const float start, const float end, const float t)

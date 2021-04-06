@@ -28,13 +28,13 @@ void LevelSystem::Init()
 	else {
 		File >> key;
 		File.close();
-		std::cout << "\nKey file opened successfully, key is: " << key << std::endl;
+		std::cout << "\nKey file opened successfully, key is: " << key << std::endl << std::endl;
 	}
 }
 
 void LevelSystem::UnlockNext()
 {	
-	if (key < LevelMax && Level == key) {
+	if (key < LevelMax && GAMEPLAY_MISC::Level == key) {
 		++key;
 		std::cout << "Level: " << key << " unlocked!\n";
 	}
@@ -42,7 +42,7 @@ void LevelSystem::UnlockNext()
 
 void LevelSystem::SetLevel(unsigned short new_level)
 {
-	Level = new_level;
+	GAMEPLAY_MISC::Level = new_level;
 	switch (gamestateCurr) {
 	case GS_GAMEPLAY:
 		gamestateNext = GS_GAMEPLAY2;
@@ -70,9 +70,9 @@ void LevelSystem::SaveKeyToFile(void)
 
 void LevelSystem::SetNextLevel(void)
 {
-	if (Level < LevelMax)
+	if (GAMEPLAY_MISC::Level < LevelMax)
 	{
-		gamestateNext = ++Level;
+		gamestateNext = ++GAMEPLAY_MISC::Level;
 
 		if (gamestateCurr == GS_GAMEPLAY)
 		{
