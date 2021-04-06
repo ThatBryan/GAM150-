@@ -253,7 +253,7 @@ void MainMenu::Buttons_Init() {
 
 	
 	UsernameBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));
-	UsernameBtn[0].Set_Position(AEVec2Set(AEGetWindowWidth() * 0.8, AEGetWindowHeight() * 0.2));
+	UsernameBtn[0].Set_Position(AEVec2Set(AEGetWindowWidth() * 0.8f, AEGetWindowHeight() * 0.2f));
 	UsernameBtn[0].Set_Text("Username");
 }
 
