@@ -510,16 +510,16 @@ void Credits::Render()
 			MainMenu::SwitchToMainMenu();
 			break;
 		case 0:
-			Pictures[CreditScreen1].Draw_Texture(255.0f);
+			Pictures[CreditScreen1].Draw_Texture(255.0f); 
 			break;
 		case 1:
-			Pictures[CreditScreen2].Draw_Texture(255.0f);
+			Pictures[CreditScreen2].Draw_Texture(255.0f); 
 			break;
 		case 2:
-			Pictures[CreditScreen3].Draw_Texture(255.0f);
+			Pictures[CreditScreen3].Draw_Texture(255.0f); 
 			break;
 		case 3:
-			Pictures[CreditScreen4].Draw_Texture(255.0f);
+			Pictures[CreditScreen4].Draw_Texture(255.0f); 
 			break;
 	}
 	if (count > 0)
