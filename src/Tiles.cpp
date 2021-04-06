@@ -80,7 +80,7 @@ void Tiles::DecreaseLifespan(void)
 	}
 }
 
-void Tiles::CheckEnemyStatus(std::vector<Enemies>& enemy)
+void Tiles::CheckEnemyDeath(std::vector<Enemies>& enemy)
 {
 	static const float tolerance{ 12.0f };
 	for (size_t i = 0; i < enemy.size(); i++){
@@ -195,7 +195,7 @@ void Tiles::UpdateManager(std::vector <Tiles>& tiles, Player& ThePlayer, std::ve
 		if (tiles[i].active == false)
 			continue;
 
-		tiles[i].CheckEnemyStatus(enemy);
+		tiles[i].CheckEnemyDeath(enemy);
 		tiles[i].CheckPlayerGoal(ThePlayer);
 		tiles[i].Update(ThePlayer);
 	}
@@ -335,7 +335,8 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 					//if(DebugMode)
 					//	printf("Collision Top\n");
 				}
-
+			if (TheTile.type == TileType::Goal)
+				continue;
 			if (Utils::ColliderAABB(TheTile.collider.right.pos, TheTile.collider.right.width, TheTile.collider.right.height,
 				ThePlayer.collider.left.pos, ThePlayer.collider.left.width, ThePlayer.collider.left.height)){
 				if (TheTile.type != TileType::Dialogue)

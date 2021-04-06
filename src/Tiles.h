@@ -30,7 +30,7 @@ private:
 	void Collapse(const Player& player);
 	void CheckPos(void);
 	void CheckPlayerGoal(Player& player);
-	void CheckEnemyStatus(std::vector <Enemies>& enemy);
+	void CheckEnemyDeath(std::vector <Enemies>& enemy);
 	void Update(Player& player);
 	void TileShake(void);
 	static void LoadTutorialTexture(void);

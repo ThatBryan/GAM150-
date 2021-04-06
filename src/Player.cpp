@@ -250,6 +250,7 @@ void Player::SetPlayerWin(void)
 
 void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 {
+	static const float bounceVelocity{ PLAYER_CONST::JUMPVEL * 1.5f };
 	for (size_t i = 0; i < enemy.size(); i++)
 	{
 		if (!enemy[i].GetKilledStatus())
@@ -261,7 +262,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 					collider.bottom.pos, collider.bottom.width, collider.bottom.height)) {
 					if (!GAMEPLAY_MISC::DEBUG_MODE) {
 						jump = true;
-						jumpvel = PLAYER_CONST::JUMPVEL * 1.2f;
+						jumpvel = bounceVelocity;
 						gravityMultiplier = GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER;
 						enemy[i].KillEnemy();
 						continue;
@@ -294,6 +295,6 @@ void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, con
 	player.collider.SetWidthHeight(player.collider.top, PLAYER_CONST::WIDTH - 4.0f, 5.0f);
 	player.collider.SetWidthHeight(player.collider.left, 20.0f, PLAYER_CONST::HEIGHT - 10.0f);
 	player.collider.SetWidthHeight(player.collider.right, 20.0f, PLAYER_CONST::HEIGHT - 10.0f);
-	player.collider.SetWidthHeight(player.collider.bottom, PLAYER_CONST::WIDTH / 1.5f, 5.0f);
+	player.collider.SetWidthHeight(player.collider.bottom, PLAYER_CONST::WIDTH / 1.6f, 5.0f);
 	player.collider.SetMeshes();
 }
