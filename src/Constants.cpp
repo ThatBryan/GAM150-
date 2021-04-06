@@ -44,11 +44,10 @@ namespace FILE_PATHS {
 	const char* Guide5 = "./Assets/Art/Guide5.png";
 	const char* Guide6 = "./Assets/Art/Guide6.png";
 	// Credits screen overlay.
-	const char* CreditScreen1 = "./Assets/Art/CreditScreen.png";
+	const char* CreditScreen1 = "./Assets/Art/CreditScreen1.jpg";
 	const char* CreditScreen2 = "./Assets/Art/CreditScreen2.jpg";
 	const char* CreditScreen3 = "./Assets/Art/CreditScreen3.jpg";
 	const char* CreditScreen4 = "./Assets/Art/CreditScreen4.jpg";
-	const char* CreditScreen5 = "./Assets/Art/CreditScreen5.jpg";
 	// Sounds
 	const char* jumpSFX = "./Assets/Audio/SFX/powerup.wav";
 	const char* GameplayBGM = "./Assets/Audio/BGM/gg.wav";

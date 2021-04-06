@@ -33,15 +33,17 @@ rights reserved.
 #include <array>
 #include <vector>
 
-enum ImageIndex{ Pause = 0, Victory, Defeat, MAX_IMAGE };
+enum BackgroundIndex{ Pause = 0, Victory, Defeat, MAX_IMAGE };
 
-static std::array <Image, MAX_IMAGE> Images;
-static std::vector<Button> MenuBtn;	Graphics::Text text;
+static std::array <Image, BackgroundIndex::MAX_IMAGE> Images;
+static std::vector<Button> MenuBtn;	
+static Graphics::Text text;
 
 static AEVec2 Midpt;
 static Color Scene;
-
+static float WindowWidth, WindowHeight;
 enum class SceneType { Day = 0, Noon, Night, Max};
+
 static Color SceneColors [static_cast<int>(SceneType::Max)];
 
 SceneType& operator++(SceneType& rhs) {
@@ -51,9 +53,13 @@ SceneType& operator++(SceneType& rhs) {
 
 void Background::Load()
 {
-	Images[Pause].Init(FP::PauseOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
-	Images[Victory].Init(FP::VictoryOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
-	Images[Defeat].Init(FP::GameoverOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+	Midpt = Utils::GetScreenMiddle();
+	WindowWidth = static_cast<f32>(AEGetWindowWidth());
+	WindowHeight = static_cast<f32>(AEGetWindowHeight());
+
+	Images[Pause].Init(FP::PauseOverlay, WindowWidth, WindowHeight, Midpt);
+	Images[Victory].Init(FP::VictoryOverlay, WindowWidth, WindowHeight, Midpt);
+	Images[Defeat].Init(FP::GameoverOverlay, WindowWidth, WindowHeight, Midpt);
 
 	SceneColors[static_cast<int>(SceneType::Day)] = Color{ 51.0f, 215.0f, 255.0f, 255.0f };
 	SceneColors[static_cast<int>(SceneType::Noon)] = Color{ 255.0f, 175.0f, 51.0f, 255.0f };
@@ -62,8 +68,11 @@ void Background::Load()
 
 void Background::Init()
 {
-	for (int i = 0; i < 4; ++i) {
-		MenuBtn.push_back(Button(ButtonType::Color, 150.0f, 75.0f, 0.8f));
+	const int BtnCount{ 4 };
+	const float BtnWidth{ 150.0f }, BtnHeight{ 75.0f }, BtnTextScale{ 0.8f };
+
+	for (int i = 0; i < BtnCount; ++i) {
+		MenuBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtnTextScale));
 	}
 
 	MenuBtn[0].Set_Callback(Utils::ReturnToMenu);
@@ -78,18 +87,19 @@ void Background::Init()
 	MenuBtn[3].Set_Text("Retry");
 	MenuBtn[3].Set_Callback(Utils::RestartLevel);
 
-	Midpt =  Utils::GetScreenMiddle();
-
 	for (int i = 0; i < MenuBtn.size(); ++i) {
 		if (i % 2 == 0)
-			MenuBtn[i].Set_Position(AEVec2{ Midpt.x + MenuBtn[i].GetWidth(), Midpt.y * 2 - MenuBtn[i].GetHeight() / 2.0f });
+			MenuBtn[i].Set_Position(AEVec2{ Midpt.x + BtnWidth, Midpt.y * 2 - BtnHeight / 2.0f });
 		else
-			MenuBtn[i].Set_Position(AEVec2{ Midpt.x - MenuBtn[i].GetWidth(), Midpt.y * 2 - MenuBtn[i].GetHeight() / 2.0f });
+			MenuBtn[i].Set_Position(AEVec2{ Midpt.x - BtnWidth, Midpt.y * 2 - BtnHeight / 2.0f });
 	}
+
+	if (GAMEPLAY_MISC::Level == 9)
+		MenuBtn[0].Set_Position(AEVec2Set(Midpt.x, WindowHeight - BtnHeight / 2.0f));
 
 	text.SetPos(AEVec2Set(Midpt.x, Midpt.y + 100.0f));
 	text.SetColor(Color{ 0, 0, 0, 255.0f });
-	text.SetScale(1.0f);
+	text.SetScale(0.9f);
 	text.SetFontType(fontID::Pixel_Digivolve);
 	Scene.Set(SceneColors[static_cast<int>(SceneType::Day)]);
 }
@@ -104,15 +114,16 @@ void Background::Render(Player& player)
 {
 	if (!GAMEPLAY_MISC::DISPLAY_QUIT_UI && (GAMEPLAY_MISC::PAUSED && player.active && !player.GetWinStatus()))
 	{
-		Images[Pause].Draw_Texture(100.0f);
+		Images[BackgroundIndex::Pause].Draw_Texture(100.0f);
 		text.SetText(const_cast<s8*>("PAUSED"));
 		text.Draw_Wrapped(text.pos);
 	}
-	if (player.GetLoseStatus())
+	else if (player.GetLoseStatus())
 	{
 		if(!GAMEPLAY_MISC::PAUSED)
 			Utils::TogglePause();
-		Images[Defeat].Draw_Texture(150.0f);
+
+		Images[BackgroundIndex::Defeat].Draw_Texture(150.0f);
 		text.SetText(const_cast<s8*>("YOU LOSE"));
 		text.Draw_Wrapped(text.pos);
 		for (int i = 2; i < MenuBtn.size(); ++i) {
@@ -120,14 +131,18 @@ void Background::Render(Player& player)
 			MenuBtn[i].Render();
 		}
 	}
-	if (player.GetWinStatus())
+	else if (player.GetWinStatus())
 	{	
 		if (!GAMEPLAY_MISC::PAUSED)
 			Utils::TogglePause();
-		Images[Victory].Draw_Texture(50.0f);
-		text.SetText(const_cast<s8*>("YOU WIN"));
+		Images[BackgroundIndex::Victory].Draw_Texture(50.0f);
 		text.Draw_Wrapped(text.pos);
-		for (int i = 0; i < 2; ++i) {
+		GAMEPLAY_MISC::Level == 9 ? text.SetText(const_cast<s8*>("Congratulations!!\n you beat the game!")) : text.SetText(const_cast<s8*>("YOU WIN"));
+
+		int btnNum; // Only update one button at level 9 since last level.
+		GAMEPLAY_MISC::Level == 9 ? btnNum = 1 : btnNum = 2;
+
+		for (int i = 0; i < btnNum; ++i) {
 			MenuBtn[i].Update();
 			MenuBtn[i].Render();
 		}
@@ -142,7 +157,7 @@ void Background::Render(Player& player)
 				spawnTimer = 1.0f;
 			}
 		}
-	}
+	} // end if player win
 }
 
 void Background::Unload()
@@ -155,6 +170,7 @@ void Background::Unload()
 void Background::LerpBackgroundColor(void)
 {
 	static float t = 0;
+	static const float LerpFactor{ 0.000005f }; // per t increment
 	static SceneType Identifier = SceneType::Noon;
 	static Color Destination = SceneColors[static_cast<int>(Identifier)];
 
@@ -164,7 +180,6 @@ void Background::LerpBackgroundColor(void)
 		t = 0;
 	}
 	Scene = Color::Lerp(Scene, Destination, t);
-	static const float LerpFactor{ 0.000005f };
 	t += LerpFactor;
 }
 

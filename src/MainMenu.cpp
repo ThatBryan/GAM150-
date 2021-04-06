@@ -60,7 +60,7 @@ static int count = 0; // For checking CreditScreen overlay.
 static Color background;
 extern LevelSystem LevelSys;
 
-enum CreditScreen { CreditScreen1 = 0, CreditScreen2, CreditScreen3, CreditScreen4, CreditScreen5, MAX_PICTURES };
+enum CreditScreen { CreditScreen1 = 0, CreditScreen2, CreditScreen3, CreditScreen4, MAX_PICTURES };
 std::array <Image, CreditScreen::MAX_PICTURES> Pictures;
 
 extern AudioManager Audio;
@@ -474,18 +474,20 @@ void Credits::Init()
 	Pictures[CreditScreen2].Init(FP::CreditScreen2, WindWidth, WindHeight, ScreenMid);
 	Pictures[CreditScreen3].Init(FP::CreditScreen3, WindWidth, WindHeight, ScreenMid);
 	Pictures[CreditScreen4].Init(FP::CreditScreen4, WindWidth, WindHeight, ScreenMid);
-	Pictures[CreditScreen5].Init(FP::CreditScreen5, WindWidth, WindHeight, ScreenMid);
 
-	for (int i = 0; i < 2; ++i) {
+	for (int i = 0; i < 3; ++i) {
 		CreditBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));
 	}
 
 	CreditBtn[0].Set_Position(AEVec2Set(WindWidth - 80.0f, WindHeight - 120.0f));
 	CreditBtn[0].Set_Text("Back");
 	CreditBtn[0].Set_Callback(Credits::DecrementOverlay);
-	CreditBtn[1].Set_Position(AEVec2Set(WindWidth - 80.0f, WindHeight - 50.0f));
+	CreditBtn[1].Set_Position(AEVec2Set(WindWidth - 80.0f, WindHeight - 60.0f));
 	CreditBtn[1].Set_Text("More");
 	CreditBtn[1].Set_Callback(Credits::IncrementOverlay);
+	CreditBtn[2].Set_Position(AEVec2Set(80.0f, WindHeight - 60.0f));
+	CreditBtn[2].Set_Text("Exit");
+	CreditBtn[2].Set_Callback(MainMenu::SwitchToMainMenu);
 }
 void Credits::Update()
 {
@@ -497,6 +499,7 @@ void Credits::Update()
 
 	if (count < CreditScreen::MAX_PICTURES - 1)
 		CreditBtn[1].Update();
+	CreditBtn[2].Update();
 }
 
 void Credits::Render()
@@ -518,15 +521,14 @@ void Credits::Render()
 		case 3:
 			Pictures[CreditScreen4].Draw_Texture(255.0f);
 			break;
-		case 4:
-			Pictures[CreditScreen5].Draw_Texture(255.0f);
-			break;
 	}
 	if (count > 0)
 		CreditBtn[0].Render();
 
 	if (count < CreditScreen::MAX_PICTURES - 1)
 		CreditBtn[1].Render();
+
+	CreditBtn[2].Render();
 }
 
 void Credits::Unload()
