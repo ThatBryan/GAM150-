@@ -147,7 +147,7 @@ void MainMenu::Render() {
 
 	player[0].sprite.Draw_Texture(255.0f);
 
-	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - AEGetWindowHeight() / 3));
+	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - AEGetWindowHeight() / 3.0f));
 	Particles::Render();
 
 	if (GAMEPLAY_MISC::DISPLAY_QUIT_UI)

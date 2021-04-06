@@ -21,6 +21,7 @@ namespace FILE_PATHS {
 	const char* PauseOverlay = "./Assets/Art/pause_temp.png";
 	const char* VictoryOverlay = "./Assets/Art/throwaway.png";
 	const char* GameoverOverlay = "./Assets/Art/throwaway2.png";
+	const char* Black = "./Assets/Art/Black.png";
 	const char* WaterSlimeSprite = "./Assets/Art/WaterSlime.png";
 	const char* FlyingEnemySprite = "./Assets/Art/bat.png";
 	const char* SquirrelSprite = "./Assets/Art/Squirrel.png";
