@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*!
 \file		Image.cpp
-\author 	Bryan Koh Yan Wei, yanweibryan.koh, 390001520
+\author 	Bryan Koh Yan Wei
 \par    	email: yanweibryan.koh@digipen.edu
 \date   	April 6, 2021
 \brief		Source file which contains the definition of an Image class used

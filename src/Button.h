@@ -1,11 +1,11 @@
 /******************************************************************************/
 /*!
-\file		Button.h
+\file				Button.h
 \primary author: 	Bryan Koh Yan Wei (95%)
 \Secondary author: 	Seet Min Yi	(5%)
-\par    	email: yanweibryan.koh@digipen.edu
-\date   	April 6, 2021
-\brief		Header file which contains Class definition for Buttons.
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Header file which contains Class definition for Buttons.
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.

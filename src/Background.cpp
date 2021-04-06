@@ -11,7 +11,7 @@
 
 			Spawning of particles on player victory.
 
-			Lerp of background color to simulate a morning to night cycle.
+			Lerping of background color to simulate a morning to night cycle.
 
 
 All content © 2021 DigiPen Institute of Technology Singapore. All

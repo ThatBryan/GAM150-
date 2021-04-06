@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*!
-\file				LeaderSystem.h
-\primary author: 	Bryan Koh Yan Wei
+\file				LevelSystem.h
+\author:			Bryan Koh Yan Wei
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Header file which contains the type definition of a

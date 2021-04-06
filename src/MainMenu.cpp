@@ -336,7 +336,12 @@ void MainMenu::SwitchToLevelSelection(void)
 
 	for (size_t i = 0; i < LevelSys.GetKey(); ++i) {
 			LevelBtn[i].Set_Callback(LevelSystem::SetLevel);
-			std::string tmp{ "Level " + std::to_string(i + 1) };
+			if (i == 0) {
+				LevelBtn[i].Set_Text("Tutorial");
+				continue;
+			}
+
+			std::string tmp{ "Level " + std::to_string(i) };
 			LevelBtn[i].Set_Text(tmp.c_str());
 	}	
 

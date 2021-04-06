@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*!
 \file				Splash.h
-\primary author: 	Bryan Koh Yan Wei
+\author: 			Bryan Koh Yan Wei
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Header file which contains the function declaration for
