@@ -2,7 +2,7 @@
 /*!
 \file				Player.cpp
 \primary author: 	Bryan Koh Yan Wei
-\secondary author:	Seet Min Yi
+\secondary author:	Seet Min Yi, Lim Wee Boon
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 
@@ -42,6 +42,7 @@ static f32 maxY;
 static f32 maxX;
 AEGfxTexture* Player::playerTex{ nullptr };
 AEGfxTexture* Player::playerMovTex{ nullptr };
+AEGfxTexture* Player::playerParticle{ nullptr };
 float Player::gravityStrength = 20.0f;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::PlayerCurr, width, height), lose{ false },
@@ -111,13 +112,16 @@ void Player::Render(void)
 void Player::LoadTex(void) {
 	playerTex = AEGfxTextureLoad(FP::PlayerSpriteSheetIdle);
 	playerMovTex = AEGfxTextureLoad(FP::WaterSlimeSprite);
+	playerParticle = AEGfxTextureLoad(FP::PlayerSprite);
 	AE_ASSERT_MESG(playerTex, "Failed to create texture!");
 	AE_ASSERT_MESG(playerMovTex, "Failed to create texture!");
+	AE_ASSERT_MESG(playerParticle, "Failed to create texture!");
 }
 
 void Player::Unload(void) {
 	AEGfxTextureUnload(playerTex);
 	AEGfxTextureUnload(playerMovTex);
+	AEGfxTextureUnload(playerParticle);
 
 	// if (playerTex) {
 	// 	AEGfxTextureUnload(playerTex);
@@ -265,7 +269,7 @@ void Player::Respawn(void)
 void Player::CheckOutOfBound() {
 	if ((sprite.pos.y - sprite.height / 2) > maxY) {
 		--hp.current;
-		Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerTex);
+		Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerParticle);
 		if(hp.current >= 1)
 			Respawn();
 	}
@@ -323,7 +327,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 				else {
 					if (!GAMEPLAY_MISC::DEBUG_MODE) {
 						--hp.current;
-						Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerTex);
+						Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerParticle);
 						if(hp.current >= 1)
 							Respawn();
 					}

@@ -1,7 +1,8 @@
 /******************************************************************************/
 /*!
 \file		Image.h
-\author 	Bryan Koh Yan Wei
+\primary author: 	Bryan Koh Yan Wei
+\secondary authors: Lim Wee Boon
 \par    	email: yanweibryan.koh@digipen.edu
 \date   	April 6, 2021
 \brief		Header file which contains the type definition of an Image class used

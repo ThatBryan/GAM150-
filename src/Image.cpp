@@ -1,7 +1,8 @@
 /******************************************************************************/
 /*!
 \file		Image.cpp
-\author 	Bryan Koh Yan Wei
+\primary author: 	Bryan Koh Yan Wei
+\secondary authors: Lim Wee Boon
 \par    	email: yanweibryan.koh@digipen.edu
 \date   	April 6, 2021
 \brief		Source file which contains the definition of an Image class used
@@ -11,6 +12,7 @@
 			Loading/Initializing of variables.
 			Freeing of the texture pointers.
 			Rendering of the images.
+			Animating the images and changing meshes and images.
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.
@@ -23,7 +25,6 @@ rights reserved.
 
 #include <iostream>
 
-//float objtexX;
 int count = 0;
 
 Image::Image(const AEGfxTexture* pTex, AEGfxVertexList* Mesh, const f32 width, const f32 height, const f32 dir)
@@ -149,13 +150,6 @@ void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const
 			bat_objtexX = 0.0f;
 		}
 	}
-	/*}*/
-
-	/*if (Mesh::PlayerCurr == Mesh::Rect)
-	{
-		pTex = texture;
-		AEGfxTextureSet(pTex, objtexX, 0);
-	}*/
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 

@@ -1,7 +1,8 @@
 /******************************************************************************/
 /*!
 \file				Graphics.cpp
-\author:		 	Bryan Koh Yan Wei
+\primary author: 	Bryan Koh Yan Wei
+\secondary authors: Lim Wee Boon
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Source file for the implementation of graphics related
