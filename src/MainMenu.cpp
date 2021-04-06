@@ -146,7 +146,7 @@ void MainMenu::Render() {
 
 	player[0].sprite.Draw_Texture(255.0f);
 
-	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - AEGetWindowHeight() / 3));
+	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - AEGetWindowHeight() / 3.0f));
 	Particles::Render();
 
 	if (GAMEPLAY_MISC::DISPLAY_QUIT_UI)
@@ -256,8 +256,8 @@ void MainMenu::Buttons_Init() {
 	}
 
 	// Username Button
-	UsernameBtn.push_back(Button(ButtonType::Color, BtnWidth * 0.5, BtnHeight, 0.5f));
-	UsernameBtn[0].Set_Position(AEVec2Set(AEGetWindowWidth() * 0.93, AEGetWindowHeight() * 0.05));
+	UsernameBtn.push_back(Button(ButtonType::Color, BtnWidth * 0.5f, BtnHeight, 0.5f));
+	UsernameBtn[0].Set_Position(AEVec2Set(AEGetWindowWidth() * 0.93f, AEGetWindowHeight() * 0.05f));
 	UsernameBtn[0].Set_Text("Username");
 	UsernameBtn[0].SetType(ButtonType::Texture);
 	UsernameBtn[0].Set_Texture("./Assets/Art/BtnTest.png");
