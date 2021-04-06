@@ -346,6 +346,7 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 						ThePlayer.collider.left.pos, ThePlayer.collider.left.width, ThePlayer.collider.left.height))
 					{
 						CreateDialogue(TileManager[i]->at(j).ID, TheTile.collider.sprite.pos);
+						printf("%i", TileManager[i]->at(j).ID);
 					}
 			}
 			if (GAMEPLAY_MISC::DISABLE_COLLISION)
@@ -445,7 +446,7 @@ void Tiles::CreateDialogue(const short ID, const AEVec2 tilePos)
 			Images[Guide4].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
 			break;
 		case 1:
-			Images[Guide2].Draw_Texture({ tilePos.x + 100.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
+			Images[Guide2].Draw_Texture({ tilePos.x - 70.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
 			break;
 		case 3:
 			Images[Guide5].Draw_Texture({ tilePos.x + 70.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
