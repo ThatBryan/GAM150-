@@ -32,6 +32,7 @@
     <ClCompile Include="src\Splash.cpp" />
     <ClCompile Include="src\Tiles.cpp" />
     <ClCompile Include="src\UserInterface.cpp" />
+    <ClCompile Include="src\Username.cpp" />
     <ClCompile Include="src\Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -56,6 +57,7 @@
     <ClInclude Include="src\Splash.h" />
     <ClInclude Include="src\Tiles.h" />
     <ClInclude Include="src\UserInterface.h" />
+    <ClInclude Include="src\Username.h" />
     <ClInclude Include="src\Utilities.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

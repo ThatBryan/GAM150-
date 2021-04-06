@@ -28,7 +28,7 @@ void Leaderboard::Update()
 {
 	if (AEInputCheckReleased(AEVK_ESCAPE))
 		MainMenu::SwitchToMainMenu();
-
+	Leaders::SortLeaders(L);
 	Leaderboard::Render();
 }
 
