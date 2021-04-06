@@ -33,12 +33,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	//int * pi = new int;
 	///////////////////////
-	// Variable declaration end
-	///////////////////////////
-
-	/////////////////
-	// Initialization
 	srand(static_cast<u32>(time(NULL)));
+
 	// Using custom window procedure
 	AESysInit(hInstance, nCmdShow, 800, 600, 1, 60, true, NULL);
 
@@ -47,17 +43,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// reset the system modules
 
-	/// Test init functions
-	font::ID = AEGfxCreateFont(FP::FontFile, 40);
+	//fontID::Strawberry_Muffins_Demo = AEGfxCreateFont(FP::Font_Strawberry_Muffins_Demo, 40);
+	//fontID::Roboto = AEGfxCreateFont(FP::Font_Roboto, 40);
+	//fontID::Courier = AEGfxCreateFont(FP::Font_Courier, 40);
+	Graphics::Load_Fonts();
 	Graphics::Load_Meshes();
 
-	//std::cout << "Window Width: " << AEGetWindowWidth() << "\tWindow Height: " << AEGetWindowHeight() << std::endl << std::endl;
-	//std::cout << "\nUse keys WASD to navigate around the game\n";
-	//std::cout << "\nKey F1 enables debug mode during gameplay\n";
-	//std::cout << "\nL ALT + Enter streches to full screen during gameplay\n";
 	// Initialises the GSM
 	GameStateManagerInit();
-	AEToogleFullScreen(fullscreen);
+	AEToogleFullScreen(GAMEPLAY_MISC::FULLSCREEN);
 
 	//Checks if game state isnt at quit status
 	while (gamestateCurr != GS_QUIT)

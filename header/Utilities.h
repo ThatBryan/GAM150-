@@ -19,7 +19,8 @@ namespace Utils
 	void ToggleFullscreen();
 	bool GetFullscreenStatus();
 	void TogglePause(void); 	// Press Tab to pause the game.
-	void CheckDebugMode(void);		// F1 to enter debug mode
+	void ToggleDevMode(void);
+	void ToggleDebugMode(void);		// F1 to enter debug mode
 	void ReturnToMenu(void);
 	void RestartLevel(void);
 	void ExitGame(void);

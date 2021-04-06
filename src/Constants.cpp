@@ -1,12 +1,17 @@
 #include "Constants.h"
 
-namespace FilePaths {
+namespace FILE_PATHS {
 	const char* Guide1 = "./Assets/Art/Guide1.png";
 	const char* Guide2 = "./Assets/Art/Guide2.png";
 	const char* Guide3 = "./Assets/Art/Guide3.png";
 	const char* Guide4 = "./Assets/Art/Guide4.png";
 	const char* Guide5 = "./Assets/Art/Guide5.png";
 	const char* Guide6 = "./Assets/Art/Guide6.png";
+	const char* CreditScreen1 = "./Assets/Art/CreditScreen.png";
+	const char* CreditScreen2 = "./Assets/Art/CreditScreen2.jpg";
+	const char* CreditScreen3 = "./Assets/Art/CreditScreen3.jpg";
+	const char* CreditScreen4 = "./Assets/Art/CreditScreen4.jpg";
+	const char* CreditScreen5 = "./Assets/Art/CreditScreen5.jpg";
 
 	const char* DigipenLogoRed = "./Assets/Logo/DigiPen_RED.png";
 	const char* DigipenLogoWhite = "./Assets/Logo/DigiPen_WHITE.png";
@@ -22,7 +27,6 @@ namespace FilePaths {
 	const char* SpecialTile = "./Assets/Art/Special_Tile.png";
 	const char* GreyTile = "./Assets/Art/Safe_Tile.png";
 	const char* DialogueTile = "./Assets/Art/Instruction.png";
-	const char* FontFile = "./Assets/Font/Roboto-Regular.ttf";
 	const char* ButtonTest = "./Assets/Art/ResumeButton.png";
 	const char* ButtonTest2 = "./Assets/Art/PlanetTexture.png";
 	const char* boi = "./Assets/Art/boi.png";
@@ -30,59 +34,54 @@ namespace FilePaths {
 
 	const char* jumpSFX = "./Assets/Audio/SFX/powerup.wav";
 	const char* GameplayBGM = "./Assets/Audio/BGM/gg.wav";
+
+	const char* Font_Roboto = "./Assets/Font/Roboto-Regular.ttf";
+	const char* Font_Strawberry_Muffins_Demo = "./Assets/Font/Strawberry_Muffins_Demo.ttf";
+	const char* Font_Courier = "./Assets/Font/COURIER.ttf";
+	const char* Font_Pixel_Digivolve = "./Assets/Font/Pixel Digivolve.otf";
+
 }
-
-// Level tracker
-unsigned short Level{ 0 };
-
-// Player constants
-const float player_speed = 150.0f;
-const float player_width = 45.0f;
-const float player_height = 50.0f;
-const float player_jumpvel = 3.5f;
-const float player_chargedjumpvel = 8.0f;
-const float player_chargedjump_counter = 1.0f;
-const float player_collider_offset_y = 24.0f;
-const float player_collider_offset_x = 6.0f;
-const short player_hp_max = 3U;
-const float base_gravityMultiplier = 2.0f;
-
-// Enemy constants
-const float enemy_width = 50.0f;
-const float enemy_height = 50.0f;
-const float squirrel_height = 43.0f;
-const float bat_height = 24.0f;
-
-// Tile constants
-const float TileCollapseDelay = 0.5f;
-const float TileCollapseSpeed = 250.0f;
-const float tile_aabb_rect_offset_x = 5.0f;
-const float tile_aabb_rect_offset_y = 1.0f;
-unsigned short DialogueID = 0;
-
-// Enemy stuff
-short EnemyCount = 1;
-
-//Color constants
-const float colorcodeMax = 255.0f;
-
-// Font
-namespace font {
-	char ID = 0;
+namespace PLAYER_CONST {
+	const float SPEED = 150.0f;
+	const float WIDTH = 45.0f;
+	const float HEIGHT = 50.0f;
+	const float JUMPVEL = 3.5f;
+	const float CHARGED_JUMPVEL = 8.0f;
+	const short HP_MAX = 3U;
+	const float CHARGEDJUMP_COUNTER = 1.0f;
+	const float COLLIDER_OFFSET_X = 6.0f;
 }
+namespace TILE_CONST {
+	const float COLLAPSE_DELAY = 0.5f;
+	const float COLLAPSE_SPEED = 250.0f;
 
-// Base meshes
+}
+namespace GAMEPLAY_MISC {
+	bool PAUSED = false;
+	bool DEV_MODE = false;
+	bool DEBUG_MODE = false;
+	bool FULLSCREEN = false;
+	bool DISPLAY_QUIT_UI = false;
+	bool DISABLE_COLLISION = false;
+
+	const float BASE_GRAVITY_MULTIPLIER = 2.0f;
+	float app_time = 0;
+
+	// Level tracker
+	unsigned short Level{ 0 };
+}
+namespace fontID {
+	char Roboto = 0;
+	char Strawberry_Muffins_Demo = 0;
+	char Courier = 0;
+	char Pixel_Digivolve = 0;
+}
 namespace Mesh {
 	AEGfxVertexList* Rect = nullptr;
 	AEGfxVertexList* Circle = nullptr;
 }
-
-
-// Miscallenous
-bool paused = false;
-bool DebugMode = false;
-bool fullscreen = false;
-bool DisplayQuitUI = false;
-bool DisableCollision = false;
+// Non const
+unsigned short DialogueID = 0;
+// Enemy stuff maybe not needed
+short EnemyCount = 1;
 float g_dt = 0;
-float app_time = 0;

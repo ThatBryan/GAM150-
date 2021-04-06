@@ -18,11 +18,11 @@ static std::vector<Button> MenuBtn;	Graphics::Text text;
 static AEVec2 Midpt;
 static Color Scene;
 
-enum class SceneType { Day = 0, Noon, Nightfall, Max};
+enum class SceneType { Day = 0, Noon, Night, Max};
 static Color SceneColors [static_cast<int>(SceneType::Max)];
 
 SceneType& operator++(SceneType& rhs) {
-	rhs = (rhs == SceneType::Nightfall) ? SceneType::Day : SceneType((int)rhs + 1);
+	rhs = (rhs == SceneType::Night) ? SceneType::Day : SceneType((int)rhs + 1);
 	return rhs;
 }
 
@@ -34,9 +34,7 @@ void Background::Load()
 
 	SceneColors[static_cast<int>(SceneType::Day)] = Color{ 51.0f, 215.0f, 255.0f, 255.0f };
 	SceneColors[static_cast<int>(SceneType::Noon)] = Color{ 255.0f, 175.0f, 51.0f, 255.0f };
-	SceneColors[static_cast<int>(SceneType::Nightfall)] = Color{ 100.0f, 149.0f, 237.0f, 255.0f };
-
-	Scene.Set(SceneColors[static_cast<int>(SceneType::Day)]);
+	SceneColors[static_cast<int>(SceneType::Night)] = Color{ 100.0f, 149.0f, 237.0f, 255.0f };
 }
 
 void Background::Init()
@@ -48,7 +46,7 @@ void Background::Init()
 	MenuBtn[0].Set_Callback(Utils::ReturnToMenu);
 	MenuBtn[0].Set_Text("Menu");
 
-	MenuBtn[1].Set_Text("Next Level");
+	GAMEPLAY_MISC::Level != 9 ? MenuBtn[1].Set_Text("Next Level") : MenuBtn[1].Set_Text("Menu");
 	MenuBtn[1].Set_Callback(LevelSystem::SetNextLevel);
 	
 	MenuBtn[2].Set_Callback(Utils::ReturnToMenu);
@@ -69,18 +67,19 @@ void Background::Init()
 	text.SetPos(AEVec2Set(Midpt.x, Midpt.y + 100.0f));
 	text.SetColor(Color{ 0, 0, 0, 255.0f });
 	text.SetScale(1.0f);
+	text.SetFontType(fontID::Pixel_Digivolve);
+	Scene.Set(SceneColors[static_cast<int>(SceneType::Day)]);
 }
 
 void Background::Update()
 {
 	LerpBackgroundColor();
 	AEGfxSetBackgroundColor(Scene.r, Scene.g, Scene.b);
-
 }
 
 void Background::Render(Player& player)
 {
-	if (!DisplayQuitUI && (paused && player.active && !player.GetWinStatus()))
+	if (!GAMEPLAY_MISC::DISPLAY_QUIT_UI && (GAMEPLAY_MISC::PAUSED && player.active && !player.GetWinStatus()))
 	{
 		Images[Pause].Draw_Texture(100.0f);
 		text.SetText(const_cast<s8*>("PAUSED"));
@@ -88,7 +87,8 @@ void Background::Render(Player& player)
 	}
 	if (player.GetLoseStatus())
 	{
-		paused = true;
+		if(!GAMEPLAY_MISC::PAUSED)
+			Utils::TogglePause();
 		Images[Defeat].Draw_Texture(150.0f);
 		text.SetText(const_cast<s8*>("YOU LOSE"));
 		text.Draw_Wrapped(text.pos);
@@ -98,8 +98,9 @@ void Background::Render(Player& player)
 		}
 	}
 	if (player.GetWinStatus())
-	{
-		paused = true;
+	{	
+		if (!GAMEPLAY_MISC::PAUSED)
+			Utils::TogglePause();
 		Images[Victory].Draw_Texture(50.0f);
 		text.SetText(const_cast<s8*>("YOU WIN"));
 		text.Draw_Wrapped(text.pos);
@@ -140,6 +141,7 @@ void Background::LerpBackgroundColor(void)
 		t = 0;
 	}
 	Scene = Color::Lerp(Scene, Destination, t);
-	t += 0.000005f;
+	static const float LerpFactor{ 0.000005f };
+	t += LerpFactor;
 }
 

@@ -21,6 +21,7 @@
     <ClCompile Include="src\GameStateManager.cpp" />
     <ClCompile Include="src\Graphics.cpp" />
     <ClCompile Include="src\Image.cpp" />
+    <ClCompile Include="src\Leaderboard.cpp" />
     <ClCompile Include="src\LevelSystem.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\MainMenu.cpp" />
@@ -53,6 +54,7 @@
     <ClInclude Include="header\Tiles.h" />
     <ClInclude Include="header\UserInterface.h" />
     <ClInclude Include="header\Utilities.h" />
+    
     <ClInclude Include="src\Background.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

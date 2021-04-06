@@ -6,14 +6,15 @@
 #include "Utilities.h"
 #include "Player.h"
 
-//extern Player Jumperman;
-
 Button::Button(ButtonType Type, const f32 width, const f32 height, const f32 scale) : button(width, height), text(std::string(), scale)
-, callback{ nullptr }, pTex{ nullptr }, type{ Type }, ID{ 0 }, TestCallback{ nullptr } {
+, callback_void{ nullptr }, pTex{ nullptr }, type{ Type }, ID{ 0 }, callback_short{ nullptr } {
 	buttonState[static_cast<int>(ButtonState::Idle)] = { 0, 255.0f, 0, 255.0f };
 	buttonState[static_cast<int>(ButtonState::Hovered)] = { 255.0f, 255.0f, 0, 255.0f };
 	buttonState[static_cast<int>(ButtonState::Clicked)] = { 0, 0, 255.0f, 255.0f };
 	text.color = { 0, 0, 0, 255.0f };
+	if (type == ButtonType::Texture) {
+		SetType(ButtonType::Texture);
+	}
 }
 
 Button::~Button()
@@ -39,12 +40,29 @@ void Button::SetStateColor(ButtonState state, Color color) {
 	buttonState[static_cast<int>(state)] = color;
 }
 
+void Button::Set_Texture(const char* pFile)
+{
+	// Incase there is a change of texture.
+	if (pTex) {
+		AEGfxTextureUnload(pTex);
+		pTex = nullptr;
+	}
+	pTex = AEGfxTextureLoad(pFile);
+}
+
+void Button::RandomizeAllStateColor()
+{
+	static const float maxAlpha{ 125.0f };
+	buttonState[static_cast<int>(ButtonState::Idle)] = Color::CreateRandomColor(maxAlpha);
+	buttonState[static_cast<int>(ButtonState::Hovered)] = Color::CreateRandomColor(maxAlpha);
+	buttonState[static_cast<int>(ButtonState::Clicked)] = Color::CreateRandomColor(maxAlpha);
+}
+
 void Button::SetType(ButtonType Type)
 {
 	type = Type;
 	if (type == ButtonType::Texture) {
 		SetStateColor(ButtonState::Idle, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
-		SetStateColor(ButtonState::Hovered, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
 		SetStateColor(ButtonState::Clicked, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
 	}
 }
@@ -59,13 +77,22 @@ void Button::Update(void) {
 	AEVec2 Mouse = Utils::GetMousePos();
 	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckReleased(AEVK_LBUTTON))
 	{
-		if (TestCallback)
-			TestCallback(ID);
+		if (callback_short)
+			callback_short(ID);
 
-		else if (callback) {
-			callback();
+		else if (callback_void) {
+			callback_void();
 		}
 	}
+}
+
+bool Button::OnClick(void) {
+	AEVec2 Mouse = Utils::GetMousePos();
+	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckReleased(AEVK_LBUTTON))
+	{
+		return true;
+	}
+	return false;
 }
 
 void Button::Render(void) {

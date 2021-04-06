@@ -1,7 +1,7 @@
 #pragma once
 #pragma warning(push)
-#include "fmod.hpp"
 #pragma warning(disable : 26812)
+#include "fmod.hpp"
 #pragma warning(pop)
 
 using AudioClass = FMOD::Sound*;

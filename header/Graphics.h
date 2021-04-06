@@ -9,13 +9,15 @@ struct Color
 {
 	public:
 	f32 r, g, b, alpha;
+	static const f32 RGB_MAX;
+
 	Color(float r, float g, float b, float a);
 	Color();
 	void Set(Color color);
 	void Decrement(float i = 0.1f);
 
 	// Returns a random color
-	static Color CreateRandomColor();
+	static Color CreateRandomColor(const float max_alpha = 255.0f);
 	static Color Lerp(const Color& begin, const Color& end, const float t);
 	bool operator ==(const Color& rhs);
 };
@@ -29,7 +31,7 @@ namespace Graphics
 	AEGfxVertexList* Mesh_Circle(void);
 	AEGfxVertexList* Mesh_Rectangle(void);
 	void Load_Meshes(void);
-
+	void Load_Fonts(void);
 	void Free();
 
 	class Rect
@@ -73,6 +75,9 @@ namespace Graphics
 			inline void SetPos(AEVec2 Pos) { pos = Pos; }
 			inline void SetColor(Color c) { color.Set(c); }
 			inline void SetScale(f32 Scale) { scale = Scale; }
+			inline void SetFontType(char FontID) { ID = FontID; }
+			inline size_t GetBufferLength() { return buffer.length(); }
+			inline void ClearBuffer() { buffer.clear(); }
 			Color color;
 			f32 width, height, scale;
 			AEVec2 pos;
@@ -84,6 +89,7 @@ namespace Graphics
 
 		private:
 			std::string buffer;
+			char ID;
 			// Calculates the X and Y offset
 			AEVec2 Calculate_Offset(AEVec2 pos);
 	};
