@@ -1,3 +1,25 @@
+/******************************************************************************/
+/*!
+\file				MainMenu.cpp
+\primary author: 	Bryan Koh Yan Wei
+\secondary author: 	Seet Min Yi
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Handles the GameState MainMenu 
+						
+					Functionalities include:
+
+					Switching between update and draw loops depending on 
+					button interface input
+
+					Loading/Initialize variables.
+
+
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #include "MainMenu.h"
 
 #include "Image.h"
@@ -15,6 +37,7 @@
 #include "Credits.h"
 #include "Leaderboard.h"
 #include "Gameplay.h"
+#include "Globals.h"
 
 #include <array>
 #include <vector>
@@ -33,13 +56,16 @@ static std::vector<Player> player;
 static Graphics::Text Title;
 static AEVec2 ScreenMid;
 
+static int count = 0; // For checking CreditScreen overlay.
+
 static Color background;
 extern LevelSystem LevelSys;
 
 enum CreditScreen { CreditScreen1 = 0, CreditScreen2, CreditScreen3, CreditScreen4, CreditScreen5, MAX_PICTURES };
 std::array <Image, CreditScreen::MAX_PICTURES> Pictures;
 
-static int count = 0;
+extern AudioManager Audio;
+
 
 void MainMenu::Init(void)
 {
@@ -134,6 +160,9 @@ void MainMenu::Render() {
 
 void MainMenu::Load(void)
 {
+	//Mesh::Anim = Graphics::Mesh_Animation(player_idle_anim_offset_x);
+	Mesh::PlayerCurr = Mesh::Anim;
+	//Tex::PlayerCurr = 
 	AudioManager::loadAsset();
 	AudioManager::SetVolume(AudioID::BGM, 0.5f);
 	AudioManager::SetVolume(AudioID::Jump, 0.2f);
@@ -145,6 +174,7 @@ void MainMenu::Load(void)
 
 void MainMenu::Unload(void)
 {
+	//AEGfxMeshFree(Mesh::Anim);
 	Enemies::Unload();
 	Tiles::Unload();
 	Player::Unload();
@@ -177,10 +207,9 @@ void MainMenu::QuitGame(void) {
 
 void MainMenu::Buttons_Init() {
 	
-	const float BtnWidth{ 200.0f }, BtnHeight{ 50.0f };
-	for (int i = 0; i < 6; ++i) {
-		MenuBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));
-		MenuBtn[i].RandomizeAllStateColor();
+	const float BtnCount{ 6 }, BtnWidth{ 200.0f }, BtnHeight{ 50.0f }, BtntextScale{ 0.7f };
+	for (int i = 0; i < BtnCount; ++i) {
+		MenuBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtntextScale));
 		
 		if(i % 2 == 0)
 			MenuBtn[i].Set_Position(AEVec2Set(ScreenMid.x - BtnWidth, ScreenMid.y / 1.3f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
@@ -188,7 +217,7 @@ void MainMenu::Buttons_Init() {
 			MenuBtn[i].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth, ScreenMid.y / 1.3f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
 
 	}
-	for (int i = 0; i < 6; ++i) {
+	for (int i = 0; i < MenuBtn.size(); ++i) {
 		if (i % 2 == 0) {
 			MenuBtn[i].SetType(ButtonType::Texture);
 			MenuBtn[i].Set_Texture("./Assets/Art/BtnTest.png");
@@ -267,7 +296,8 @@ void MainMenu::PlayerMovement() {
 
 void LevelSelection::Init(void)
 {
-	for (unsigned short i = 0; i < 10; ++i) {
+	const unsigned short LevelBtnCount{ 10 };
+	for (unsigned short i = 0; i < LevelBtnCount; ++i) {
 		if (i == 9) {
 			LevelBtn.push_back(Button(ButtonType::Texture, 150.0, 75.0f, 0.4f));
 			break;
@@ -275,7 +305,7 @@ void LevelSelection::Init(void)
 		LevelBtn.push_back(Button(ButtonType::Texture, 150.0, 75.0f, 0.5f));
 
 	}
-	for (unsigned short i = 0; i < 10; ++i) {
+	for (unsigned short i = 0; i < LevelBtnCount; ++i) {
 		LevelBtn[i].SetID(i + 1);
 		LevelBtn[i].Set_TextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 		LevelBtn[i].Set_Callback(MainMenu::LockedLevel);
@@ -311,8 +341,13 @@ void MainMenu::SwitchToLevelSelection(void)
 
 	for (size_t i = 0; i < LevelSys.GetKey(); ++i) {
 			LevelBtn[i].Set_Callback(LevelSystem::SetLevel);
-			std::string tmp{ "Level " + std::to_string(i + 1) };
-			LevelBtn[i].Set_Text(tmp.c_str());
+			if (i == 0) {
+				LevelBtn[i].Set_Text("Tutorial");
+				continue;
+			}
+
+			std::string LevelCount{ "Level " + std::to_string(i) };
+			LevelBtn[i].Set_Text(LevelCount.c_str());
 	}	
 
 	GameStateUpdate = LevelSelection::Update;

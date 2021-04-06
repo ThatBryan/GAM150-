@@ -1,3 +1,16 @@
+/******************************************************************************/
+/*!
+\file				Button.h
+\primary author: 	Bryan Koh Yan Wei (95%)
+\Secondary author: 	Seet Min Yi	(5%)
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Header file which contains Class definition for Buttons.
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #pragma once
 #include "AEEngine.h"
 #include "Graphics.h"
@@ -21,8 +34,8 @@ public:
 	void Set_TextColor(Color color);
 	void SetStateColor(ButtonState state, Color color);
 	void Set_Texture(const char* pFile);
+	void FreeTexture();
 	void RandomizeAllStateColor();
-
 	// ONLY CALL AFTER ALL PUSHBACKS. OTHERWISE THE VECTOR CONTAINER WILL CALL THE DTOR.
 	void SetType(ButtonType Type);
 
@@ -31,7 +44,6 @@ public:
 	inline void Set_Callback(void_fn_ptr_short ThePtr) { callback_short = ThePtr; }
 	inline void Set_Callback(void_fn_ptr_void ThePtr) { callback_void = ThePtr; }
 	inline void SetTextType(const char id) { text.SetFontType(id); }
-	void FreeTexture();
 	inline float GetHeight() const { return button.height; }
 	inline float GetWidth() const { return button.width; }
 	inline float GetPosY() const { return button.pos.y; }

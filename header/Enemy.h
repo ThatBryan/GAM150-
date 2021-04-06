@@ -1,3 +1,16 @@
+/******************************************************************************/
+/*!
+\file				Enemy.h
+\primary author: 	Bryan Koh Yan Wei
+\Secondary author:	Seet Min Yi
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Header file of an Enemy class implementation.
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #pragma once
 #include <vector>
 #include "AEEngine.h"
@@ -23,7 +36,6 @@ private:
 	bool isGravity, killed, squirrelJump;
 	float counter, velocity, jumpvelocity, alpha, alphaTimer;
 	float stepGravityMultiplier;
-	unsigned short ID; // Maybe unnecessary
 	int jumpcounter;
 
 	static float slime_counter, slime_speed, slimeBBOffset;
@@ -40,7 +52,7 @@ private:
 	void DecrementAlpha(void);
 
 public:
-	Enemies(AEGfxTexture* filepath, const f32 width, const f32 height);
+	Enemies(AEGfxTexture* filepath, AEGfxVertexList* mesh, const f32 width, const f32 height);
 	Image sprite;
 	bool active;
 	void Update(void);

@@ -76,7 +76,6 @@ Leaders::~Leaders()
 {
 	Leaders::WriteToFile(LeaderBoardFile);
 }
-
 void Leaders::ReadFromFile(const char* filePath)
 {
 	std::ifstream ifs(filePath);
@@ -202,7 +201,7 @@ void Leaders::PrintContainer()
 //		ifs.close();
 //	}
 //	Leaders::PrintContainer();
-//	Manually call sort for sanity check (incase previously not sorted).
+//	//Manually call sort for sanity check (incase previously not sorted).
 //	Leaders::SortLeaders(L);
 // Leaders::PrintContainer();
 //}

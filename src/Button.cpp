@@ -1,10 +1,33 @@
+/******************************************************************************/
+/*!
+\file				Button.cpp
+\primary author: 	Bryan Koh Yan Wei (95%)
+\Secondary author: 	Seet Min Yi	(5%)
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+
+\brief				Source file which contains the class definition for 
+					Buttons.
+
+					Functionalities include:
+
+					Construction of instances.
+					Access/Modifiers
+					Update loop
+					Render loop
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #include "Button.h"
-#include <cstring>
-#include <vector>
-#include <iostream>
 #include "Constants.h"
 #include "Utilities.h"
 #include "Player.h"
+
+#include <cstring>
+#include <vector>
+#include <iostream>
 
 Button::Button(ButtonType Type, const f32 width, const f32 height, const f32 scale) : button(width, height), text(std::string(), scale)
 , callback_void{ nullptr }, pTex{ nullptr }, type{ Type }, ID{ 0 }, callback_short{ nullptr } {
@@ -42,7 +65,7 @@ void Button::SetStateColor(ButtonState state, Color color) {
 
 void Button::Set_Texture(const char* pFile)
 {
-	// Incase there is a change of texture.
+	// Incase there of a change in texture pointer.
 	if (pTex) {
 		AEGfxTextureUnload(pTex);
 		pTex = nullptr;

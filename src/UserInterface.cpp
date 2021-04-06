@@ -1,16 +1,31 @@
+/******************************************************************************/
+/*!
+\file				UserInterface.cpp
+\author: 			Bryan Koh Yan Wei
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Source file for UI related code. (I.e player hp, time 
+					elapsed, etc.)
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #include "UserInterface.h"
-#include <fstream>
 #include "AEEngine.h"
 #include "Graphics.h"
 #include "Constants.h"
 #include "Utilities.h"
-#include <string>
-#include <vector>
-#include <array>
 #include "Button.h"
 #include "Image.h"
 #include "MainMenu.h"
 #include "Player.h"
+#include "Globals.h"
+
+#include <fstream>
+#include <string>
+#include <vector>
+#include <array>
 
 static char strBuffer[100];
 static char strBuffer1[100];
@@ -49,8 +64,11 @@ void UI::Init() {
 const size_t pauseButtonIdx{ 1 };
 void UI::Update() {
 
+	
+	GAMEPLAY_MISC::Level == 1 ? sprintf_s(strBuffer1, "Current Level: Tutorial") : 
+								sprintf_s(strBuffer1, "Current Level: %d", GAMEPLAY_MISC::Level - 1);
+
 	sprintf_s(strBuffer, "FPS: %.2f", AEFrameRateControllerGetFrameRate());
-	sprintf_s(strBuffer1, "Current Level: %d", GAMEPLAY_MISC::Level);
 	sprintf_s(strBuffer2, "Time Elapsed: %.2f", GAMEPLAY_MISC::app_time);
 
 	FPS_Display.SetText(strBuffer);
@@ -68,7 +86,6 @@ void UI::Update() {
 void UI::Draw() {
 	AEVec2 Pos0{ FPS_Display.GetBufferSize() };
 	FPS_Display.Draw_Wrapped(AEVec2Set(Pos0.x / 2.0f, 80.0f + Pos0.y / 2.0f) );
-	//if (DebugMode)
 	AEVec2 Pos{ LevelDisplay.GetBufferSize() };
 	AEVec2 Pos2{ TimerDisplay.GetBufferSize() };
 

@@ -1,10 +1,32 @@
+/******************************************************************************/
+/*!
+\file				Utilities.h
+\author: 			Bryan Koh Yan Wei
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Contains the definition of helper functions used 
+					throughout the game development process.
+
+					Some functionalities are:
+
+					Random number generators
+					Lerping of float.
+					Function overloading for AEVec2 type.
+					Toggling of pause/fullscreen.
+					etc.
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #include "Utilities.h"
 #include "GameStateManager.h"
 #include "Constants.h"
+#include "AudioManager.h"
+#include "Globals.h"
+
 #include <iostream>
 #include <fstream>
-#include "AudioManager.h"
-
 
 int Utils::RandomRangeInt(const s32 lowerBound, const s32 upperBound)
 {
@@ -183,6 +205,5 @@ bool Utils::ColliderAABB(AEVec2 A, f32 A_width, f32 A_height, AEVec2 B, f32 B_wi
 		A.y + A_height / 2.0f < B.y - B_height / 2.0f) {
 		return false;
 	}
-
 	return true;
 }

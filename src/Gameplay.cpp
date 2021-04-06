@@ -1,3 +1,18 @@
+/******************************************************************************/
+/*!
+\file				Gameplay.cpp
+\primary author: 	Bryan Koh Yan Wei
+\secondary authors: Dallas Cheong, Seet Min Yi
+
+\date   			April 6, 2021
+\brief				Source file which contains the Game loop for the
+					actual Jumperman gameplay.
+
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #include "AEEngine.h"
 #include "Gameplay.h"
 #include "BinaryMap.h"
@@ -10,8 +25,10 @@
 #include "Background.h"
 #include "GameStateManager.h"
 #include "Particles.h"
-#include <iostream>
 #include "MainMenu.h"
+#include "Globals.h"
+
+#include <iostream>
 #include <vector>
 #include <array>
 #include <cassert>
@@ -21,6 +38,7 @@ std::vector<Enemies> enemies;
 std::vector <std::vector <Tiles>*> tileManager;
 Player Jumperman;
 
+extern AudioManager Audio;
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
 extern AEVec2 EnemySizeArray[static_cast<int>(EnemySizes::MAX)];
@@ -61,7 +79,7 @@ void Gameplay::Init(void)
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SLIME))
 			{	
 				Enemies::AddNew(enemies, EnemyType::Slime, AEVec2Set(j * grid_width, i * grid_height), 
-					EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].x, EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].y);
+				EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].x, EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].y);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::BAT))
 			{
@@ -94,6 +112,11 @@ void Gameplay::Update()
 			Utils::TogglePause();
 		}
 	}
+
+	if (AEInputCheckCurr(AEVK_LEFT) || AEInputCheckCurr(AEVK_RIGHT) || AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_D))
+		Mesh::PlayerCurr = Mesh::Anim2;
+	else
+		Mesh::PlayerCurr = Mesh::Anim;
 
 	if (AEInputCheckReleased(AEVK_R))
 	{
@@ -176,6 +199,9 @@ void Gameplay::Load()
 		default:
 			gamestateNext = GS_MAINMENU;
 	}
+	//Mesh::Anim = Graphics::Mesh_Animation(player_idle_anim_offset_x);
+	//assert(Map_Height > 0 && Map_Width > 0);
+	Mesh::PlayerCurr = Mesh::Anim;
 
 	assert(Map_Height > 0 && Map_Width > 0);
 
@@ -210,7 +236,6 @@ void Gameplay::Restart()
 	enemies.clear();
 	tileManager.clear();
 	Jumperman.Reset();
-	Jumperman.sprite.Free();
 	GAMEPLAY_MISC::app_time = 0;
 	GAMEPLAY_MISC::PAUSED = false;
 	UI::Unload();

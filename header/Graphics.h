@@ -1,6 +1,25 @@
+/******************************************************************************/
+/*!
+\file				Graphics.h
+\author:			Bryan Koh Yan Wei
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Contains type defintion for graphics related types
+					which includes:
+					
+					Colors
+					Rectangles
+					Circle
+					Text
+					
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #pragma once
 #include "AEEngine.h"
 #include "Constants.h"
+#include "Globals.h"
 #include <string>
 
 //https://htmlcolorcodes.com/
@@ -9,7 +28,7 @@ struct Color
 {
 	public:
 	f32 r, g, b, alpha;
-	static const f32 RGB_MAX;
+	static const f32 RGBA_MAX;
 
 	Color(float r, float g, float b, float a);
 	Color();
@@ -27,9 +46,9 @@ namespace Graphics
 {
 	// Sets the mesh for a rectangle and returns a pointer to the AEGfxVertexList.
 	// Only call once at the start of application!!
-
 	AEGfxVertexList* Mesh_Circle(void);
 	AEGfxVertexList* Mesh_Rectangle(void);
+	AEGfxVertexList* Mesh_Animation(float offset_X);
 	void Load_Meshes(void);
 	void Load_Fonts(void);
 	void Free();

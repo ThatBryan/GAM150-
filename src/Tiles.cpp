@@ -1,12 +1,36 @@
+/******************************************************************************/
+/*!
+\file				Tiles.cpp
+\primary author: 	Bryan Koh Yan Wei
+\secondary author:	Seet Min Yi
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 6, 2021
+\brief				Contains the function definitions for the Tiles type.
+
+					Functionalities include:
+					Loading/Unloading of Variables.
+					Creating of Tiles during gameplay.
+					Update function
+					Render function
+					Collision checking between Tiles, player & enemy.
+
+					Creating dialogue during tutorial.
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #include "Tiles.h"
-#include <iostream>
 #include "Player.h"
 #include "Enemy.h"
 #include "Constants.h"
 #include "Image.h"
-#include <array>
 #include "Utilities.h"
 #include "GameStateManager.h"
+#include "Globals.h"
+
+#include <iostream>
+#include <array>
 
 static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
@@ -14,7 +38,7 @@ static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 enum GuideOverlay{Guide1 = 0, Guide2, Guide3, Guide4, Guide5, Guide6, MAX_IMAGE };
 std::array <Image, GuideOverlay::MAX_IMAGE> Images;
 
-Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
+Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, Mesh::Rect, width, height),
 active{ true }, isCollapsing{ false }, ID{ 0 }, collapseDelay{ TILE_CONST::COLLAPSE_DELAY }, type{ TileType::Safe }, spawnPos{ 0, 0 },
 collider()
 {
@@ -80,7 +104,7 @@ void Tiles::DecreaseLifespan(void)
 	}
 }
 
-void Tiles::CheckEnemyStatus(std::vector<Enemies>& enemy)
+void Tiles::CheckEnemyDeath(std::vector<Enemies>& enemy)
 {
 	static const float tolerance{ 12.0f };
 	for (size_t i = 0; i < enemy.size(); i++){
@@ -110,7 +134,7 @@ void Tiles::CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer)
 				ThePlayer.jump = false;
 				ThePlayer.gravity = false;
 				ThePlayer.chargedjump = false;
-				ThePlayer.gravityMultiplier = GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER;
+				ThePlayer.gravityMultiplier = GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER;
 				ThePlayer.sprite.pos.y = Tile.collider.top.pos.y - Tile.collider.top.height / 2.0f - ThePlayer.sprite.height / 2.0f;
 				return;
 			}
@@ -195,7 +219,7 @@ void Tiles::UpdateManager(std::vector <Tiles>& tiles, Player& ThePlayer, std::ve
 		if (tiles[i].active == false)
 			continue;
 
-		tiles[i].CheckEnemyStatus(enemy);
+		tiles[i].CheckEnemyDeath(enemy);
 		tiles[i].CheckPlayerGoal(ThePlayer);
 		tiles[i].Update(ThePlayer);
 	}
@@ -331,25 +355,19 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 					ThePlayer.gravity = true;
 					ThePlayer.jump = false;
 					ThePlayer.chargedjump = false;
-					
-					//if(DebugMode)
-					//	printf("Collision Top\n");
 				}
-
+			if (TheTile.type == TileType::Goal)
+				continue;
 			if (Utils::ColliderAABB(TheTile.collider.right.pos, TheTile.collider.right.width, TheTile.collider.right.height,
 				ThePlayer.collider.left.pos, ThePlayer.collider.left.width, ThePlayer.collider.left.height)){
 				if (TheTile.type != TileType::Dialogue)
 					ThePlayer.sprite.pos.x = TheTile.image.pos.x + TheTile.image.width / 2.0f + abs(ThePlayer.sprite.width) / 2.0f;			
-					//if (DebugMode)
-					//	printf("Left Collision\n");
 				}
 
 			if (Utils::ColliderAABB(TheTile.collider.left.pos, TheTile.collider.left.width, TheTile.collider.left.height,
 				ThePlayer.collider.right.pos, ThePlayer.collider.right.width, ThePlayer.collider.right.height)){
 				if (TheTile.type != TileType::Dialogue)
 					ThePlayer.sprite.pos.x = TheTile.image.pos.x - TheTile.image.width / 2.0f - abs(ThePlayer.sprite.width) / 2.0f;
-					//if (DebugMode)
-					//	printf("Right Collision\n");
 				}
 
 		}
@@ -366,7 +384,7 @@ void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy)
 				Tile.collider.top.pos, Tile.collider.top.width, Tile.collider.top.height)) {
 
 				enemy.SetGravity(false);
-				enemy.stepGravityMultiplier = GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER;
+				enemy.stepGravityMultiplier = GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER;
 				return;
 			}
 		}
@@ -388,26 +406,19 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 				continue;
 
 			if (Utils::ColliderAABB(enemy.collider.right.pos, enemy.collider.right.width, enemy.collider.right.height,
-				TheTile.collider.left.pos, TheTile.collider.left.width, TheTile.collider.left.height)){ // && enemy.isGravity
-
-				//enemy.counter = 1.0f;
-				//enemy.velocity = abs(enemy.velocity);
+				TheTile.collider.left.pos, TheTile.collider.left.width, TheTile.collider.left.height)){ 
 				enemy.velocity *= -1.0f;
 				enemy.sprite.pos.x = TheTile.image.pos.x - TheTile.image.width / 2.0f - abs(enemy.sprite.width) / 2.0f - 2.0f;
 				enemy.sprite.width *= -1.0f;
-				//if (DebugMode)
-					//printf("right\n");
+
 			}
 
 			if (Utils::ColliderAABB(enemy.collider.left.pos, enemy.collider.left.width, enemy.collider.left.height,
-				TheTile.collider.right.pos, TheTile.collider.right.width, TheTile.collider.right.height)){ // && !enemy.isGravity)
-				//if (enemy.velocity >= 0)
-				//enemy.counter = 0;
+				TheTile.collider.right.pos, TheTile.collider.right.width, TheTile.collider.right.height)){
+
 				enemy.velocity *= -1.0f;
 				enemy.sprite.pos.x = TheTile.image.pos.x + TheTile.image.width / 2.0f + abs(enemy.sprite.width) / 2.0f + 2.0f;
 				enemy.sprite.width *= -1.0f;
-				//if (DebugMode)
-					//printf("left\n");
 			}		
 
 			
@@ -417,9 +428,7 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 				if (enemy.type == EnemyType::Squirrel)
 					enemy.squirrelJump = true;
 				else
-					enemy.sprite.pos.y = TheTile.collider.top.pos.y - TheTile.collider.top.height / 2.0f - enemy.sprite.height / 2.0f;// +2.0f;
-				//if (DebugMode)
-					//printf("top");
+					enemy.sprite.pos.y = TheTile.collider.top.pos.y - TheTile.collider.top.height / 2.0f - enemy.sprite.height / 2.0f;
 		}
 		}
 	}
@@ -430,22 +439,22 @@ void Tiles::CreateDialogue(const short ID, const AEVec2 tilePos)
 	switch (ID)
 	{
 		case 0:
-			Images[Guide1].Draw_Texture({tilePos.x + 150.0f, tilePos.y - 60.0f}, 255.0f);
+			Images[Guide1].Draw_Texture({tilePos.x + 150.0f, tilePos.y - 60.0f}, Color::RGBA_MAX);
 			break;
 		case 2:
-			Images[Guide4].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 60.0f }, 255.0f);
+			Images[Guide4].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
 			break;
 		case 1:
-			Images[Guide2].Draw_Texture({ tilePos.x + 100.0f, tilePos.y - 60.0f }, 255.0f);
+			Images[Guide2].Draw_Texture({ tilePos.x + 100.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
 			break;
 		case 3:
-			Images[Guide5].Draw_Texture({ tilePos.x + 70.0f, tilePos.y - 60.0f }, 255.0f);
+			Images[Guide5].Draw_Texture({ tilePos.x + 70.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
 			break;
 		case 4:
-			Images[Guide6].Draw_Texture({ tilePos.x - 70.0f, tilePos.y - 60.0f }, 255.0f);
+			Images[Guide6].Draw_Texture({ tilePos.x - 70.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
 			break;
 		case 5:
-			Images[Guide3].Draw_Texture({ tilePos.x + 60.0f, tilePos.y - 80.0f }, 255.0f);
+			Images[Guide3].Draw_Texture({ tilePos.x + 60.0f, tilePos.y - 80.0f }, Color::RGBA_MAX);
 			break;
 
 	}
