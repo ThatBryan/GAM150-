@@ -15,7 +15,7 @@ int Enemies::jump_counter = 5;
 
 static AEGfxTexture* enemyTex[static_cast<int>(EnemyType::Max)]{ nullptr };
 
-Enemies::Enemies(AEGfxTexture* filepath, const f32 width, const f32 height) : sprite(filepath, Mesh::Rect, width, height), collider(), 
+Enemies::Enemies(AEGfxTexture* filepath, AEGfxVertexList* mesh, const f32 width, const f32 height) : sprite(filepath, mesh, width, height), collider(),
 spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, counter{ 0 }, jumpcounter{ 5 }, squirrelJump { false },
 velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }, alphaTimer{ 1.0f }, stepGravityMultiplier{ GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER }{
 	ID = EnemyCount;
@@ -162,11 +162,13 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 	float bbHeight{ height }, counter{ 0 }, vel{ 0 }, jumpvel{ 0 };
 	int jumpcounter{ 0 };
 	const float BatOffset{ 20.0f }, squirrelOffset{ 43.0f };
+	AEGfxVertexList* currMesh = nullptr;
 	switch (type) {
 	case EnemyType::Bat:
 		bbHeight = BatOffset;
 		counter = Enemies::bat_counter;
 		vel = Enemies::bat_speed;
+		currMesh = Mesh::BatAnim;
 		break;
 	case EnemyType::Squirrel:
 		bbHeight = squirrelOffset;
@@ -174,15 +176,17 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 		vel = Enemies::squirrel_speed;
 		jumpcounter = Enemies::jump_counter;
 		jumpvel = Enemies::squirrel_jumpspeed;
+		currMesh = Mesh::Rect;
 		break;
 	case EnemyType::Slime:
 		counter = Enemies::slime_counter;
 		vel = Enemies::slime_speed;
+		currMesh = Mesh::Rect;
 		break;
 	default:
 		break;
 	}
-	enemy.push_back(Enemies(enemyTex[static_cast<int>(type)], width, height));
+	enemy.push_back(Enemies(enemyTex[static_cast<int>(type)], currMesh, width, height));
 	Enemies& Enemy = enemy.back();
 	Enemy.sprite.pos = pos;
 	Enemy.type = type;

@@ -99,13 +99,11 @@ void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const
 		if (count < counter)
 		{
 			AEGfxTextureSet(pTex, player_objtexX, 0);
-			//printf("%.2f \n", objtexX);
-		}		// Same object, different texture
+		}
 		else
 		{
 			player_objtexX += offset;
-			AEGfxTextureSet(pTex, player_objtexX, 0);		// Same object, different texture
-			//printf("%.2f \n", objtexX);
+			AEGfxTextureSet(pTex, player_objtexX, 0);
 			count = 0;
 		}
 		if (player_objtexX == 1.0f)
@@ -123,6 +121,7 @@ void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const
 		else
 		{
 			bat_objtexX += offset;
+			printf("%f\n", bat_objtexX);
 			AEGfxTextureSet(pTex, bat_objtexX, 0);
 			count = 0;
 		}

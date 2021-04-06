@@ -76,7 +76,7 @@ void Graphics::Load_Meshes(void)
 	Mesh::Anim2 = Graphics::Mesh_Animation(1.0f);
 	AE_ASSERT_MESG(Mesh::Anim2, "fail to create object!!");
 
-	Mesh::BatAnim = Graphics::Mesh_Animation(0.5f);
+	Mesh::BatAnim = Graphics::Mesh_Animation(bat_anim_offset_x);
 	AE_ASSERT_MESG(Mesh::BatAnim, "fail to create object!!");
 
 	Mesh::Circle = Graphics::Mesh_Circle();
