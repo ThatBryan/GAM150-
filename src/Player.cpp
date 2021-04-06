@@ -77,7 +77,7 @@ void Player::Render(void)
 	{
 		sprite.Set_Texture(playerMovTex);
 	}
-	sprite.Draw_Texture(30, Mesh::PlayerCurr, 255.0f);
+	sprite.Draw_Texture(20, player_idle_anim_offset_x, Mesh::PlayerCurr, 255.0f);
 	UI::DisplayLife(hp.current);
 
 	if (DebugMode) {

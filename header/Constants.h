@@ -21,6 +21,7 @@ namespace FilePaths {
 	extern const char* SquirrelSprite;
 	extern const char* PlayerSprite;
 	extern const char* PlayerSpriteSheetIdle;
+	extern const char* BatSpriteSheet;
 	extern const char* GrassTile;
 	extern const char* GoalTile;
 	extern const char* GreyTile;
@@ -62,6 +63,10 @@ extern const float bat_height;
 
 // Animation Constants
 extern const float player_idle_anim_offset_x;
+extern float player_objtexX;
+
+extern const float bat_anim_offset_x;
+extern float bat_objtexX;
 
 // Tile constants
 extern const float TileCollapseDelay;
@@ -96,6 +101,8 @@ namespace Mesh {
 	extern AEGfxVertexList* Anim;
 	extern AEGfxVertexList* Anim2;
 	extern AEGfxVertexList* Circle;
+
+	extern AEGfxVertexList* BatAnim;
 
 	extern AEGfxVertexList* PlayerCurr;
 }

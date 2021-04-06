@@ -147,7 +147,10 @@ void Enemies::Draw()
 {
 	if (active)
 	{
-		sprite.Draw_Texture(alpha);
+		if (type != EnemyType::Bat)
+			sprite.Draw_Texture(alpha);
+		else
+			sprite.Draw_Texture(20, bat_anim_offset_x, Mesh::BatAnim, alpha);
 		if (DebugMode) {
 			collider.Draw();
 		}
@@ -236,7 +239,7 @@ void Enemies::LoadTex(void) {
 			pTex = FP::WaterSlimeSprite;
 			break;
 		case EnemyType::Bat:
-			pTex = FP::FlyingEnemySprite;
+			pTex = FP::BatSpriteSheet;
 			break;
 		case EnemyType::Squirrel:
 			pTex = FP::SquirrelSprite;

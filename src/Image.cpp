@@ -2,7 +2,7 @@
 #include "Utilities.h"
 #include <iostream>
 
-float objtexX = 0.0f;
+//float objtexX;
 int count = 0;
 
 Image::Image(const AEGfxTexture* pTex, AEGfxVertexList* Mesh, const f32 width, const f32 height, const f32 dir)
@@ -76,7 +76,7 @@ void Image::Draw_Texture(const f32 alpha, const f32 r, const f32 g, const f32 b,
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 //
-void Image::Draw_Texture(int counter, AEGfxVertexList* mesh, const f32 alpha, const f32 r, const f32 g, const f32 b, const f32 a)
+void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const f32 alpha, const f32 r, const f32 g, const f32 b, const f32 a)
 {
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
@@ -85,27 +85,43 @@ void Image::Draw_Texture(int counter, AEGfxVertexList* mesh, const f32 alpha, co
 	AEGfxSetTransparency(alpha / colorcodeMax);
 	AEGfxSetTransform(transformMtx.m);
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	/*if (Mesh::PlayerCurr == Mesh::Anim)
-	{*/
-	if (pTex)
+	if (mesh == Mesh::PlayerCurr)
 	{
 		//pTex = texture;
 		++count;
 		if (count < counter)
 		{
-			AEGfxTextureSet(pTex, objtexX, 0);
+			AEGfxTextureSet(pTex, player_objtexX, 0);
 			//printf("%.2f \n", objtexX);
 		}		// Same object, different texture
 		else
 		{
-			objtexX += 0.2f;
-			AEGfxTextureSet(pTex, objtexX, 0);		// Same object, different texture
+			player_objtexX += offset;
+			AEGfxTextureSet(pTex, player_objtexX, 0);		// Same object, different texture
 			//printf("%.2f \n", objtexX);
 			count = 0;
 		}
-		if (objtexX == 1.0f)
+		if (player_objtexX == 1.0f)
 		{
-			objtexX = 0.0f;
+			player_objtexX = 0.0f;
+		}
+	}
+	else if (mesh == Mesh::BatAnim)
+	{
+		++count;
+		if (count < counter)
+		{
+			AEGfxTextureSet(pTex, bat_objtexX, 0);
+		}
+		else
+		{
+			bat_objtexX += offset;
+			AEGfxTextureSet(pTex, bat_objtexX, 0);
+			count = 0;
+		}
+		if (bat_objtexX == 1.0f)
+		{
+			bat_objtexX = 0.0f;
 		}
 	}
 	/*}*/
