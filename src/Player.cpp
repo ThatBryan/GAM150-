@@ -34,7 +34,7 @@ rights reserved.
 #include <array>
 #include <iostream>
 
-extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
+extern std::array <AudioClass, static_cast<int>(AudioID::Max)> AudioArray;
 extern AudioManager Audio;
 extern LevelSystem LevelSys;
 
@@ -123,14 +123,21 @@ void Player::Unload(void) {
 }
 void Player::Update_Position(void)
 {
-
-	if (!jump && !gravity && (AEInputCheckReleased(AEVK_SPACE))){
+	if (!jump && !gravity && (AEInputCheckTriggered(AEVK_SPACE))){
 		if (!GAMEPLAY_MISC::DEBUG_MODE) {
 			jump = true;
-			Audio.playAudio(soundTest[static_cast<int>(AudioID::Jump)], AudioID::Jump);
+			Audio.playAudio(AudioArray[static_cast<int>(AudioID::Jump)], AudioID::Jump);
 		}
 	}
-	else if (AEInputCheckCurr(AEVK_SPACE) && !chargedjump && !gravity)
+	if (AEInputCheckReleased(AEVK_SPACE))
+	{
+		if (chargedjump_counter < 0) {
+			chargedjump = true;
+		}
+		chargedjump_counter = PLAYER_CONST::CHARGEDJUMP_COUNTER;
+	}
+
+	if (AEInputCheckCurr(AEVK_SPACE) && !chargedjump && !gravity && !jump)
 	{
 		chargedjump_counter -= g_dt;
 		AEVec2 Min = AEVec2Sub(collider.bottom.pos, AEVec2{ sprite.width, 25.0f });
@@ -139,11 +146,6 @@ void Player::Update_Position(void)
 		Particles::CreateReverseParticles(Destination, Min, Max, Color{ 255.0f, 255.0f, 0, 255.0f }, 1, Utils::RandomRangeFloat(10.0f, 100.0f), 50.0f, 3.0f, 1.0f);
 	}
 
-	if (AEInputCheckReleased(AEVK_SPACE) && chargedjump_counter < 0)
-	{
-		chargedjump = true;
-		chargedjump_counter = 1.0f;
-	}
 	if (chargedjump)
 	{
 		jump = false;
