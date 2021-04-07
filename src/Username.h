@@ -10,4 +10,6 @@ namespace Username {
 	void Render();
 	void Unload();
 	void DrawCursor(void);
+
+	void ReadUsernameInput(void);
 }
