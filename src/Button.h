@@ -32,18 +32,18 @@ public:
 	void Set_Position(const AEVec2 pos);
 	void Set_Text(std::string text);
 	void Set_TextColor(Color color);
-	void SetStateColor(ButtonState state, Color color);
-	void Set_Texture(const char* pFile);
+	void ChangeStateColor(ButtonState state, Color color);
+	void Load_Texture(const char* pFile);
 	void FreeTexture();
 	void RandomizeAllStateColor();
 	// ONLY CALL AFTER ALL PUSHBACKS. OTHERWISE THE VECTOR CONTAINER WILL CALL THE DTOR.
-	void SetType(ButtonType Type);
+	void SetBtnType(ButtonType Type);
 
 	inline int GetID() const { return ID; }
 	inline void SetID(unsigned short x) { ID = x; }
 	inline void Set_Callback(void_fn_ptr_short ThePtr) { callback_short = ThePtr; }
 	inline void Set_Callback(void_fn_ptr_void ThePtr) { callback_void = ThePtr; }
-	inline void SetTextType(const char id) { text.SetFontType(id); }
+	inline void SetFontID(const char id) { text.SetFontID(id); }
 	inline float GetHeight() const { return button.height; }
 	inline float GetWidth() const { return button.width; }
 	inline float GetPosY() const { return button.pos.y; }

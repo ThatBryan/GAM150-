@@ -200,7 +200,6 @@ void Gameplay::Load()
 			gamestateNext = GS_MAINMENU;
 	}
 	//Mesh::Anim = Graphics::Mesh_Animation(player_idle_anim_offset_x);
-	//assert(Map_Height > 0 && Map_Width > 0);
 	Mesh::PlayerCurr = Mesh::Anim;
 
 	assert(Map_Height > 0 && Map_Width > 0);

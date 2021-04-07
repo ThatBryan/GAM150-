@@ -118,9 +118,9 @@ void Background::Init()
 		MenuBtn[0].Set_Position(AEVec2Set(Midpt.x, WindowHeight - BtnHeight / 2.0f));
 
 	text.SetPos(AEVec2Set(Midpt.x, Midpt.y + 100.0f));
-	text.SetColor(Color{ 0, 0, 0, 255.0f });
-	text.SetScale(0.9f);
-	text.SetFontType(fontID::Pixel_Digivolve);
+	text.SetTextColor(Color{ 0, 0, 0, 255.0f });
+	text.SetTextScale(0.9f);
+	text.SetFontID(fontID::Pixel_Digivolve);
 	Scene.Set(SceneColors[static_cast<int>(SceneType::Day)]);
 
 	CurrentScene = SceneType::Day;

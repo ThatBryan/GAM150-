@@ -34,7 +34,7 @@ void Username::Init()
 	Images[CursorRect].Init(FP::Black, cursorWidth, cursorHeight, CursorPos);
 
 	InputBtn.push_back(Button(ButtonType::Color, width, height, 0.7f));
-	InputBtn[0].SetStateColor(ButtonState::Hovered, Color{ 255.0f, 0, 0, 255.0f });
+	InputBtn[0].ChangeStateColor(ButtonState::Hovered, Color{ 255.0f, 0, 0, 255.0f });
 	InputBtn[0].Set_Position(AEVec2Set(ScreenMid.x, 300.0f));
 }
 void Username::Update()
@@ -60,9 +60,9 @@ void Username::Render()
 {
 	// Draw Username Title
 	static Graphics::Text UsernameTxt;
-	UsernameTxt.SetScale(1.0f);
+	UsernameTxt.SetTextScale(1.0f);
 	UsernameTxt.SetText("Username");
-	UsernameTxt.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	UsernameTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	UsernameTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() * 0.3)));
 
 	// Draw Input Rect
@@ -70,10 +70,10 @@ void Username::Render()
 
 	// Draw Username text
 	static Graphics::Text UsernameInputTxt;
-	UsernameInputTxt.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
-	UsernameInputTxt.SetScale(1.0f);
+	UsernameInputTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	UsernameInputTxt.SetTextScale(1.0f);
 	UsernameInputTxt.SetText(username);
-	UsernameInputTxt.SetFontType(fontID::Courier);
+	UsernameInputTxt.SetFontID(fontID::Courier);
 	UsernameInputTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, 300.0f));
 
 	// If input box is clicked
