@@ -145,7 +145,7 @@ void Username::ReadUsernameInput(void)
 
 					if (AEInputCheckCurr(AEVK_LSHIFT) || AEInputCheckCurr(AEVK_RSHIFT)) {
 
-						username += static_cast<unsigned char>(std::toupper((int)i));
+						username += i;
 						continue;
 					}
 					username += static_cast<unsigned char>(std::tolower((int)i));
