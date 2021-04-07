@@ -6,6 +6,9 @@
 #include "Utilities.h"
 #include <array>
 #include <vector>
+#include <fstream>
+#include <sstream>   
+#include <cstring>
 #include "Button.h"
 
 static AEVec2 ScreenMid, CursorPos;
@@ -21,6 +24,8 @@ static bool clicked = false;
 
 static float width{ 500.0f }; static float height{ 50.0f }; static float cursorWidth{ 5.0f }; static float cursorHeight{ 35.0f };
 static float fontSize{ 13.0f };
+
+static const char* UsernameFile{ "./Assets/Username/username.txt" };
 
 void Username::Init()
 {
@@ -38,6 +43,7 @@ void Username::Update()
 	if (AEInputCheckReleased(AEVK_ESCAPE))
 	{
 		MainMenu::SwitchToMainMenu();
+		Username::WriteToFile(UsernameFile);
 		clicked = false;
 	}
 
@@ -47,35 +53,33 @@ void Username::Update()
 	if (clicked)
 	{
 		ReadUsernameInput();
-		Render();
 	}
-	
 }
 
 void Username::Render()
 {
-	std::cout << username << std::endl;
+	// Draw Username Title
 	static Graphics::Text UsernameTxt;
-	UsernameTxt.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	UsernameTxt.SetScale(1.0f);
-
 	UsernameTxt.SetText("Username");
-	UsernameTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() / 10)));
+	UsernameTxt.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	UsernameTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() * 0.3)));
 
 	// Draw Input Rect
 	InputBtn[0].Render();
 
+	// Draw Username text
+	static Graphics::Text UsernameInputTxt;
+	UsernameInputTxt.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	UsernameInputTxt.SetScale(1.0f);
+	UsernameInputTxt.SetText(username);
+	UsernameInputTxt.SetFontType(fontID::Courier);
+	UsernameInputTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, 300.0f));
+
+	// If input box is clicked
 	if (clicked)
 	{
 		Username::DrawCursor();
-
-		static Graphics::Text UsernameInputTxt;
-
-		UsernameInputTxt.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
-		UsernameInputTxt.SetScale(1.0f);
-		UsernameInputTxt.SetText(username);
-		UsernameInputTxt.SetFontType(fontID::Courier);
-		UsernameInputTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, 300.0f));
 	}
 }
 void Username::Unload()
@@ -86,7 +90,6 @@ void Username::Unload()
 
 void Username::DrawCursor(void)
 {
-	// Draw Cursor 
 	static float counter = 1.0f;
 	static float counter2 = 1.0f;
 	counter -= g_dt;
@@ -102,7 +105,6 @@ void Username::DrawCursor(void)
 	if (counter > 0)
 	{
 		Images[CursorRect].Draw_Texture({ CursorPos.x, CursorPos.y }, Color::RGBA_MAX);
-		std::cout << CursorPos.x << std::endl;
 	}
 }
 
@@ -326,5 +328,17 @@ void Username::ReadUsernameInput(void)
 				CursorPos.x -= fontSize;
 			}
 		}
+	}
+}
+
+
+
+void Username::WriteToFile(const char* filepath)
+{
+	std::ofstream ofs(filepath);
+
+	if (ofs.is_open()) {
+		ofs << username;
+		ofs.close();
 	}
 }

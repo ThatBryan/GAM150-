@@ -12,4 +12,5 @@ namespace Username {
 	void DrawCursor(void);
 
 	void ReadUsernameInput(void);
+	static void WriteToFile(const char* filepath);
 }
