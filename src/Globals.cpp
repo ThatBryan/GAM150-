@@ -21,6 +21,10 @@ namespace GAMEPLAY_MISC {
 	bool DISABLE_COLLISION = false;
 
 	float app_time = 0;
+	int app_max_time = 60;
+	int app_score = 50;
+	int player_score = 0;
+	int previous_player_score = 0;
 	// Level tracker
 	unsigned short Level{ 0 };
 }

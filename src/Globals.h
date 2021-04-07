@@ -23,6 +23,10 @@ namespace GAMEPLAY_MISC {
 	extern bool DISABLE_COLLISION;
 
 	extern float app_time;
+	extern int app_max_time;
+	extern int app_score;
+	extern int player_score;
+	extern int previous_player_score;
 	// Level tracker
 	extern unsigned short Level;
 }
