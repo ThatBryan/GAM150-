@@ -42,11 +42,12 @@ Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image
 active{ true }, isCollapsing{ false }, ID{ 0 }, collapseDelay{ TILE_CONST::COLLAPSE_DELAY }, type{ TileType::Safe }, spawnPos{ 0, 0 },
 collider()
 {
+	static const float ColliderAllowance{ 2.0f };
 	collider.SetWidthHeight(collider.sprite, width, height);
-	collider.SetWidthHeight(collider.top, width - 2.0f, 5.0f);
-	collider.SetWidthHeight(collider.left, 30, height);
-	collider.SetWidthHeight(collider.right, 30, height);
-	collider.SetWidthHeight(collider.bottom, width - 2.0f, 5.0f);
+	collider.SetWidthHeight(collider.top, width - ColliderAllowance, 5.0f);
+	collider.SetWidthHeight(collider.left, 30, height - ColliderAllowance);
+	collider.SetWidthHeight(collider.right, 30, height - ColliderAllowance);
+	collider.SetWidthHeight(collider.bottom, width - ColliderAllowance, 5.0f);
 }
 
 void Tiles::Collapse(const Player& ThePlayer)
@@ -88,7 +89,8 @@ void Tiles::CheckPos(void) {
 		collider.left.pos = AEVec2Set(image.pos.x - abs(image.width) / 2.0f + collider.left.width / 2.0f, image.pos.y);
 		
 		if (type == TileType::Grass) 
-			collider.top.pos = AEVec2Set(image.pos.x, image.pos.y - image.height / 2.0f + collider.top.height / 2.0f + (5.5f / 32.0f * image.height)); // Counted pixel counts for leaves..		
+			collider.top.pos = AEVec2Set(image.pos.x, 
+			image.pos.y - image.height / 2.0f + collider.top.height / 2.0f + (5.5f / TILE_CONST::GRASS_SPRITE_HEIGHT * image.height));	
 		else 
 			collider.top.pos = AEVec2Set(image.pos.x, image.pos.y - image.height / 2.0f + collider.top.height / 2.0f);
 
@@ -162,7 +164,7 @@ void Tiles::AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, co
 	float Height = height;
 
 	if (type == TileType::Grass) {
-		Height += (7.0f / 32.0f) * height;
+		Height += (7.0f / TILE_CONST::GRASS_SPRITE_HEIGHT) * height;
 	}
 	tile.push_back(Tiles(temp, width, Height));
 	Tiles& Tile = tile.back();
@@ -205,7 +207,7 @@ void Tiles::Update(Player& ThePlayer)
 
 void Tiles::Render() {
 	if (active) {
-		image.Draw_Texture(255);
+		image.Draw_Texture(255.0f);
 		if (GAMEPLAY_MISC::DEBUG_MODE)
 		{
 			collider.Draw();
@@ -429,7 +431,7 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 					enemy.squirrelJump = true;
 				else
 					enemy.sprite.pos.y = TheTile.collider.top.pos.y - TheTile.collider.top.height / 2.0f - enemy.sprite.height / 2.0f;
-		}
+			}
 		}
 	}
 }

@@ -76,6 +76,7 @@ namespace PLAYER_CONST {
 namespace TILE_CONST {
 	extern const float COLLAPSE_DELAY;
 	extern const float COLLAPSE_SPEED;
+	extern const float GRASS_SPRITE_HEIGHT;
 }
 namespace GAMEPLAY_CONST {
 	extern const float BASE_GRAVITY_MULTIPLIER;

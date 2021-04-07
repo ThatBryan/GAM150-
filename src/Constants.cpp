@@ -65,13 +65,14 @@ namespace PLAYER_CONST {
 	const float JUMPVEL = 3.5f;
 	const float CHARGED_JUMPVEL = 8.0f;
 	const short HP_MAX = 3U;
-	const float CHARGEDJUMP_COUNTER = 0.5f;
+	const float CHARGEDJUMP_COUNTER = 1.0f;
 	const float COLLIDER_OFFSET_X = 6.0f;
 	const float PLAYER_IDLE_OFFSET_X = 0.2f;
 }
 namespace TILE_CONST {
 	const float COLLAPSE_DELAY = 0.5f;
 	const float COLLAPSE_SPEED = 250.0f;
+	const float GRASS_SPRITE_HEIGHT = 32.0f;
 }
 namespace GAMEPLAY_CONST {
 	const float BASE_GRAVITY_MULTIPLIER = 2.0f;
