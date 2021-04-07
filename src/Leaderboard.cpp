@@ -39,15 +39,15 @@ void Leaderboard::Render()
 	static Graphics::Text NameTxt; static Graphics::Text ScoreTxt;
 	
 	// Leaderboard Title
-	LeaderboardTxt.SetScale(1.0f);
+	LeaderboardTxt.SetTextScale(1.0f);
 	LeaderboardTxt.SetText("Leaderboard");
-	LeaderboardTxt.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	LeaderboardTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	LeaderboardTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() / 10)));
 	
-	NameTxt.SetScale(1.0f);
-	NameTxt.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
-	ScoreTxt.SetScale(1.0f);
-	ScoreTxt.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	NameTxt.SetTextScale(1.0f);
+	NameTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	ScoreTxt.SetTextScale(1.0f);
+	ScoreTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 
 	for (size_t i = 0; i < Leaders::MaxLeaders; ++i)
 	{

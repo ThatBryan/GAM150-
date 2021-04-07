@@ -35,8 +35,9 @@ Button::Button(ButtonType Type, const f32 width, const f32 height, const f32 sca
 	buttonState[static_cast<int>(ButtonState::Hovered)] = { 255.0f, 255.0f, 0, 255.0f };
 	buttonState[static_cast<int>(ButtonState::Clicked)] = { 0, 0, 255.0f, 255.0f };
 	text.color = { 0, 0, 0, 255.0f };
+	text.SetText("");
 	if (type == ButtonType::Texture) {
-		SetType(ButtonType::Texture);
+		SetBtnType(ButtonType::Texture);
 	}
 }
 
@@ -59,11 +60,11 @@ void Button::Set_TextColor(Color color) {
 	text.color = color;
 }
 
-void Button::SetStateColor(ButtonState state, Color color) {
+void Button::ChangeStateColor(ButtonState state, Color color) {
 	buttonState[static_cast<int>(state)] = color;
 }
 
-void Button::Set_Texture(const char* pFile)
+void Button::Load_Texture(const char* pFile)
 {
 	// Incase there of a change in texture pointer.
 	if (pTex) {
@@ -81,12 +82,12 @@ void Button::RandomizeAllStateColor()
 	buttonState[static_cast<int>(ButtonState::Clicked)] = Color::CreateRandomColor(maxAlpha);
 }
 
-void Button::SetType(ButtonType Type)
+void Button::SetBtnType(ButtonType Type)
 {
 	type = Type;
 	if (type == ButtonType::Texture) {
-		SetStateColor(ButtonState::Idle, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
-		SetStateColor(ButtonState::Clicked, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
+		ChangeStateColor(ButtonState::Idle, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
+		ChangeStateColor(ButtonState::Clicked, Color{ 255.0f, 255.0f, 255.0f, 255.0f });
 	}
 }
 void Button::FreeTexture()

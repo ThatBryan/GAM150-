@@ -62,19 +62,6 @@ bool Color::operator==(const Color& rhs)
 	return false;
 }
 
-
-void Color::Decrement(float i) {
-	r -= i * g_dt;
-	b -= i * g_dt;
-	g -= i * g_dt;
-	if (r <= 0)
-		r *= -1.0f;
-	if (g <= 0)
-		g *= -1.0f;
-	if (b <= 0)
-		b *= -1.0f;
-}
-
 Color Color::Lerp(const Color& begin, const Color& end, const float t)
 {
 	Color temp;

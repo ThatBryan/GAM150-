@@ -48,12 +48,12 @@ void LevelSystem::Init()
 		File << 1 << std::endl;
 		key = 1;
 		File.close();
-		std::cout << "\nFailed to open key file, A new file with '1' will be created\n";
+		//std::cout << "\nFailed to open key file, A new file with '1' will be created\n";
 	}
 	else {
 		File >> key;
 		File.close();
-		std::cout << "\nKey file opened successfully, key is: " << key << std::endl << std::endl;
+		//std::cout << "\nKey file opened successfully, key is: " << key << std::endl << std::endl;
 	}
 }
 
@@ -89,7 +89,7 @@ void LevelSystem::SaveKeyToFile(void)
 	if (File.is_open()) {
 		File << key << std::endl;
 		File.close();
-		std::cout << "\nKey successfully saved\n";
+		//std::cout << "\nKey successfully saved\n";
 	}
 }
 

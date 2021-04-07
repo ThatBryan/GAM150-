@@ -34,9 +34,7 @@ struct Color
 	Color(float r, float g, float b, float a);
 	Color();
 	void Set(Color color);
-	void Decrement(float i = 0.1f);
 
-	// Returns a random color
 	static Color CreateRandomColor(const float max_alpha = 255.0f);
 	static Color Lerp(const Color& begin, const Color& end, const float t);
 	static void Print(const Color& color);
@@ -94,9 +92,9 @@ namespace Graphics
 			inline s8* GetText() { return const_cast<s8*>(buffer.c_str()); }
 			void SetText(std::string text);
 			inline void SetPos(AEVec2 Pos) { pos = Pos; }
-			inline void SetColor(Color c) { color.Set(c); }
-			inline void SetScale(f32 Scale) { scale = Scale; }
-			inline void SetFontType(char FontID) { ID = FontID; }
+			inline void SetTextColor(Color c) { color.Set(c); }
+			inline void SetTextScale(f32 Scale) { scale = Scale; }
+			inline void SetFontID(char FontID) { ID = FontID; }
 			inline size_t GetBufferLength() { return buffer.length(); }
 			inline void ClearBuffer() { buffer.clear(); }
 			Color color;

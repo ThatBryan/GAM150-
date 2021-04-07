@@ -252,7 +252,7 @@ void Tiles::LoadTex() {
 		AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	}
 	if (GAMEPLAY_MISC::Level == 1 && (gamestateCurr == GS_GAMEPLAY || gamestateCurr == GS_GAMEPLAY2)) {
-		std::cout << "Loaded Tutorial Textures\n";
+		//std::cout << "Loaded Tutorial Textures\n";
 		isTutorialLevel = true;
 		LoadTutorialTexture();
 	}
@@ -265,7 +265,7 @@ void Tiles::Unload()
 		AEGfxTextureUnload(tileTex[i]);
 	}
 	if (isTutorialLevel) {
-		std::cout << "Freed Tutorial Textures\n";
+		//std::cout << "Freed Tutorial Textures\n";
 		FreeTutorialTexture();
 	}
 }
