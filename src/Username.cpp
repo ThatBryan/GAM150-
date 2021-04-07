@@ -37,114 +37,144 @@ void Username::Update()
 		MainMenu::SwitchToMainMenu();
 		clicked = false;
 	}
+
+	static const size_t MaxStringSize{ 20 };
 	if (clicked)
 	{
-		if (AEInputCheckTriggered(AEVK_A))
-		{
-			username += 'A';
+		if (username.length()) {
+			if (AEInputCheckTriggered(AEVK_BACK)) {
+				std::cout << username << std::endl;	
+				username.erase(username.length() - 1, 1);
+			}
+
+			if (AEInputCheckTriggered(AEVK_SPACE))
+				username += " ";
 		}
-		if (AEInputCheckTriggered(AEVK_B))
-		{
-			username += 'B';
-		}
-		if (AEInputCheckTriggered(AEVK_C))
-		{
-			username += 'C';
-		}
-		if (AEInputCheckTriggered(AEVK_D))
-		{
-			username += 'D';
-		}
-		if (AEInputCheckTriggered(AEVK_E))
-		{
-			username += 'E';
-		}
-		if (AEInputCheckTriggered(AEVK_F))
-		{
-			username += 'F';
-		}
-		if (AEInputCheckTriggered(AEVK_G))
-		{
-			username += 'G';
-		}
-		if (AEInputCheckTriggered(AEVK_H))
-		{
-			username += 'H';
-		}
-		if (AEInputCheckTriggered(AEVK_I))
-		{
-			username += 'I';
-		}
-		if (AEInputCheckTriggered(AEVK_J))
-		{
-			username += 'J';
-		}
-		if (AEInputCheckTriggered(AEVK_K))
-		{
-			username += 'K';
-		}
-		if (AEInputCheckTriggered(AEVK_L))
-		{
-			username += 'L';
-		}
-		if (AEInputCheckTriggered(AEVK_M))
-		{
-			username += 'M';
-		}
-		if (AEInputCheckTriggered(AEVK_N))
-		{
-			username += 'N';
-		}
-		if (AEInputCheckTriggered(AEVK_O))
-		{
-			username += 'O';
-		}
-		if (AEInputCheckTriggered(AEVK_P))
-		{
-			username += 'P';
-		}
-		if (AEInputCheckTriggered(AEVK_Q))
-		{
-			username += 'Q';
-		}
-		if (AEInputCheckTriggered(AEVK_R))
-		{
-			username += 'R';
-		}
-		if (AEInputCheckTriggered(AEVK_S))
-		{
-			username += 'S';
-		}
-		if (AEInputCheckTriggered(AEVK_T))
-		{
-			username += 'T';
-		}
-		if (AEInputCheckTriggered(AEVK_U))
-		{
-			username += 'U';
-		}
-		if (AEInputCheckTriggered(AEVK_V))
-		{
-			username += 'V';
-		}
-		if (AEInputCheckTriggered(AEVK_W))
-		{
-			username += 'W';
-		}
-		if (AEInputCheckTriggered(AEVK_X))
-		{
-			username += 'X';
-		}
-		if (AEInputCheckTriggered(AEVK_Y))
-		{
-			username += 'Y';
-		}
-		if (AEInputCheckTriggered(AEVK_Z))
-		{
-			username += 'Z';
+
+		for (unsigned char i = AEVK_0; i < AEVK_Z; ++i) {
+			// Skip captial letters and weird symbols.
+			if (i > AEVK_9 && i < AEVK_A)
+				continue;
+
+			if (username.length() < MaxStringSize) {
+
+				if (AEInputCheckTriggered(i)) {
+
+					if (AEInputCheckCurr(AEVK_LSHIFT) || AEInputCheckCurr(AEVK_RSHIFT)) {
+
+						username += static_cast<unsigned char>(std::toupper((int)i));
+						continue;
+					}
+					username += static_cast<unsigned char>(std::tolower((int)i));
+				}
+
+			}
 		}
 	}
-	
+		//if (AEInputCheckTriggered(AEVK_A))
+		//{
+		//	username += 'A';
+		//}
+		//if (AEInputCheckTriggered(AEVK_B))
+		//{
+		//	username += 'B';
+		//}
+		//if (AEInputCheckTriggered(AEVK_C))
+		//{
+		//	username += 'C';
+		//}
+		//if (AEInputCheckTriggered(AEVK_D))
+		//{
+		//	username += 'D';
+		//}
+		//if (AEInputCheckTriggered(AEVK_E))
+		//{
+		//	username += 'E';
+		//}
+		//if (AEInputCheckTriggered(AEVK_F))
+		//{
+		//	username += 'F';
+		//}
+		//if (AEInputCheckTriggered(AEVK_G))
+		//{
+		//	username += 'G';
+		//}
+		//if (AEInputCheckTriggered(AEVK_H))
+		//{
+		//	username += 'H';
+		//}
+		//if (AEInputCheckTriggered(AEVK_I))
+		//{
+		//	username += 'I';
+		//}
+		//if (AEInputCheckTriggered(AEVK_J))
+		//{
+		//	username += 'J';
+		//}
+		//if (AEInputCheckTriggered(AEVK_K))
+		//{
+		//	username += 'K';
+		//}
+		//if (AEInputCheckTriggered(AEVK_L))
+		//{
+		//	username += 'L';
+		//}
+		//if (AEInputCheckTriggered(AEVK_M))
+		//{
+		//	username += 'M';
+		//}
+		//if (AEInputCheckTriggered(AEVK_N))
+		//{
+		//	username += 'N';
+		//}
+		//if (AEInputCheckTriggered(AEVK_O))
+		//{
+		//	username += 'O';
+		//}
+		//if (AEInputCheckTriggered(AEVK_P))
+		//{
+		//	username += 'P';
+		//}
+		//if (AEInputCheckTriggered(AEVK_Q))
+		//{
+		//	username += 'Q';
+		//}
+		//if (AEInputCheckTriggered(AEVK_R))
+		//{
+		//	username += 'R';
+		//}
+		//if (AEInputCheckTriggered(AEVK_S))
+		//{
+		//	username += 'S';
+		//}
+		//if (AEInputCheckTriggered(AEVK_T))
+		//{
+		//	username += 'T';
+		//}
+		//if (AEInputCheckTriggered(AEVK_U))
+		//{
+		//	username += 'U';
+		//}
+		//if (AEInputCheckTriggered(AEVK_V))
+		//{
+		//	username += 'V';
+		//}
+		//if (AEInputCheckTriggered(AEVK_W))
+		//{
+		//	username += 'W';
+		//}
+		//if (AEInputCheckTriggered(AEVK_X))
+		//{
+		//	username += 'X';
+		//}
+		//if (AEInputCheckTriggered(AEVK_Y))
+		//{
+		//	username += 'Y';
+		//}
+		//if (AEInputCheckTriggered(AEVK_Z))
+		//{
+		//	username += 'Z';
+		//}
 }
 
 void Username::Render()
@@ -164,7 +194,7 @@ void Username::Render()
 		clicked = true;
 
 	if (clicked)
-		Username::DrawCursor();	
+		Username::DrawCursor();
 }
 void Username::Unload()
 {

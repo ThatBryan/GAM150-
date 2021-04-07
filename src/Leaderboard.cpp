@@ -120,34 +120,6 @@ bool Leaders::Cmp_Scores(const Leaders& lhs, const Leaders& rhs)
 }
 
 
-void Leaders::DisplayBuffer()
-{
-	// Untested, not sure if works.
-
-	std::string String;
-	for (unsigned char i = AEVK_0; i < AEVK_Z; ++i) {
-
-		// Skip captial letters and weird symbols.
-		if (i > AEVK_9 && i < AEVK_A)
-			continue;
-
-		if (stringBuffer.GetBufferLength() < Leaders::MaxLength) {
-
-			if (AEInputCheckTriggered(i)) {
-				
-				if (AEInputCheckCurr(AEVK_LSHIFT) || AEInputCheckCurr(AEVK_RSHIFT)) {
-
-					String += std::to_string(std::toupper(i));
-					continue;
-				}
-
-				String += std::to_string(i);
-			}
-		}
-	}
-	stringBuffer.SetText(String);
-}
-
 void Leaders::InsertNewLeader(const Leaders& newLeader)
 {
 	// Since score is sorted from highest to lowest. Add new leader to the tail of the vector.
