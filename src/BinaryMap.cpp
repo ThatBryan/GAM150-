@@ -40,7 +40,7 @@ int Map_Height;
 when the "ImportMapDataFromFile" function is called*/
 int** MapData;
 
-AEVec2 EnemySizeArray[static_cast<int>(EnemySizes::MAX)];
+AEVec2 EntitySizeArray[static_cast<int>(EntitySizes::MAX)];
 
 /*This will contain the collision data of the binary map. It will be filled in the
 "ImportMapDataFromFile" after filling "MapData". Basically, if an array element
@@ -115,8 +115,8 @@ int ImportMapDataFromFile(const char* FileName)
 		else if (i == 1)     //loop 1 will read Map_Height
 			Map_Height = std::stoi(Map);
 	}
-	for (size_t i = 0; i < 3; ++i) {
-		ifs >> EnemySizeArray[i].x >> EnemySizeArray[i].y;
+	for (size_t i = 0; i < 4; ++i) {
+		ifs >> EntitySizeArray[i].x >> EntitySizeArray[i].y;
 	}
 
 

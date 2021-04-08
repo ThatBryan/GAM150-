@@ -1,0 +1,55 @@
+Name: Bryan Koh Yan Wei
+
+Role : Technical Director
+
+Main contributions:
+Code, Button & Background design
+
+Files worked on: 
+
+Headers:
+
+AudioManager.h
+Background.h
+Button.h
+Collider.h
+Constants.h
+Enemy.h
+Gameplay.h
+Globals.h
+Graphics.h
+Image.h
+LevelSystem.h
+MainMenu.h
+Particles.h
+Player.h
+PlayerHp.h
+Splash.h
+Tiles.h
+UserInterface.h
+Utilities.h
+
+Source files:
+Background.cpp
+Button.cpp
+Collider.cpp
+Constants.cpp
+Enemy.cpp
+Gameplay.cpp
+Globals.cpp
+Graphics.cpp
+Image.cpp
+LevelSystem.cpp
+MainMenu.cpp
+Particles.cpp
+Player.cpp
+PlayerHp.cpp
+Splash.cpp
+Tiles.cpp
+UserInterface.cpp
+Utilities.cpp
+
+Lines of code contributed:
+
+Total LOC: 
+
