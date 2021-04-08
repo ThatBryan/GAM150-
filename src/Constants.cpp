@@ -27,6 +27,7 @@ namespace FILE_PATHS {
 	const char* SquirrelSprite = "./Assets/Art/Squirrel.png";
 	const char* PlayerSprite = "./Assets/Art/Jumperman.png";
 	const char* PlayerSpriteSheetIdle = "./Assets/Art/Jumperman_Idle_Spritesheet.png";
+	const char* PlayerSpriteSheetRun = "./Assets/Art/Jumperman_Run_Spritesheet.png";
 	const char* BatSpriteSheet = "./Assets/Art/BatSprite.png";
 	const char* GrassTile = "./Assets/Art/Grass_Tile.png";
 	const char* GoalTile = "./Assets/Art/Goal.png";
@@ -68,6 +69,7 @@ namespace PLAYER_CONST {
 	const float CHARGEDJUMP_COUNTER = 1.0f;
 	const float COLLIDER_OFFSET_X = 6.0f;
 	const float PLAYER_IDLE_OFFSET_X = 0.2f;
+	const float PLAYER_RUN_OFFSET_X = 0.125f;
 }
 namespace TILE_CONST {
 	const float COLLAPSE_DELAY = 0.5f;

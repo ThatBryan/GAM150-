@@ -86,12 +86,13 @@ void Player::Render(void)
 	if (Mesh::PlayerCurr == Mesh::Anim)
 	{
 		sprite.Set_Texture(playerTex);
+		sprite.Draw_Texture(20, PLAYER_CONST::PLAYER_IDLE_OFFSET_X, Mesh::PlayerCurr, 255.0f);
 	}
 	else if (Mesh::PlayerCurr == Mesh::Anim2)
 	{
 		sprite.Set_Texture(playerMovTex);
+		sprite.Draw_Texture(20, PLAYER_CONST::PLAYER_RUN_OFFSET_X, Mesh::PlayerCurr, 255.0f);
 	}
-	sprite.Draw_Texture(20, PLAYER_CONST::PLAYER_IDLE_OFFSET_X, Mesh::PlayerCurr, 255.0f);
 	UI::DisplayLife(hp.current);
 
 	if (GAMEPLAY_MISC::DEBUG_MODE) {
@@ -100,7 +101,7 @@ void Player::Render(void)
 }
 void Player::LoadTex(void) {
 	playerTex = AEGfxTextureLoad(FP::PlayerSpriteSheetIdle);
-	playerMovTex = AEGfxTextureLoad(FP::WaterSlimeSprite);
+	playerMovTex = AEGfxTextureLoad(FP::PlayerSpriteSheetRun);
 	playerParticle = AEGfxTextureLoad(FP::PlayerSprite);
 	AE_ASSERT_MESG(playerTex, "Failed to create texture!");
 	AE_ASSERT_MESG(playerMovTex, "Failed to create texture!");

@@ -86,7 +86,7 @@ void Graphics::Load_Meshes(void)
 	Mesh::Anim = Graphics::Mesh_Animation(PLAYER_CONST::PLAYER_IDLE_OFFSET_X);
 	AE_ASSERT_MESG(Mesh::Anim, "fail to create object!!");
 
-	Mesh::Anim2 = Graphics::Mesh_Animation(1.0f);
+	Mesh::Anim2 = Graphics::Mesh_Animation(PLAYER_CONST::PLAYER_RUN_OFFSET_X);
 	AE_ASSERT_MESG(Mesh::Anim2, "fail to create object!!");
 
 	Mesh::BatAnim = Graphics::Mesh_Animation(bat_anim_offset_x);

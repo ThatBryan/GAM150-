@@ -115,6 +115,12 @@ void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	if (mesh == Mesh::PlayerCurr)
 	{
+		/*float compare = static_cast<int>(player_objtexX / offset);
+		float result = player_objtexX / offset;
+		if (player_objtexX != 0 && compare != result)
+		{
+			player_objtexX = 0;
+		}*/
 		//pTex = texture;
 		++count;
 		if (count < counter)
@@ -150,6 +156,7 @@ void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const
 			bat_objtexX = 0.0f;
 		}
 	}
+	pMesh = mesh;
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 

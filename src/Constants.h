@@ -40,6 +40,7 @@ namespace FILE_PATHS {
 	extern const char* SquirrelSprite;
 	extern const char* PlayerSprite;
 	extern const char* PlayerSpriteSheetIdle;
+	extern const char* PlayerSpriteSheetRun;
 	extern const char* BatSpriteSheet;
 	extern const char* GrassTile;
 	extern const char* GoalTile;
@@ -72,6 +73,7 @@ namespace PLAYER_CONST {
 	extern const float CHARGEDJUMP_COUNTER;
 	extern const float COLLIDER_OFFSET_X;
 	extern const float PLAYER_IDLE_OFFSET_X;
+	extern const float PLAYER_RUN_OFFSET_X;
 }
 namespace TILE_CONST {
 	extern const float COLLAPSE_DELAY;
