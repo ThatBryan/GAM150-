@@ -16,7 +16,6 @@
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.
-
  */
  /******************************************************************************/
 #include "Background.h"
@@ -33,26 +32,24 @@ rights reserved.
 #include <array>
 #include <vector>
 
-static float WindowWidth, WindowHeight;
-
-enum BackgroundIndex{ Pause = 0, Victory, Defeat, MAX_IMAGE };
-
-static std::array <Image, BackgroundIndex::MAX_IMAGE> Images;
-
+enum BackgroundOverlay{ Pause = 0, Victory, Defeat, Max_Overlay };
 enum BackgroundObj{Cloud = 0, MAX};
-static const int BgObjMax{ 7 };
-static const int LastCloudIdx{ 5 };
+
+static std::array <Image, BackgroundOverlay::Max_Overlay> Images;
+
+static const int BgObjMax{ 7 }, LastCloudIdx{ 5 };
 
 static std::array <Image, BgObjMax> BgObj;
 static std::vector<Button> MenuBtn;	
 static Graphics::Text text;
 
 static AEVec2 Midpt;
-static Color Scene, LerpDestination;
 
 enum class SceneType { Day = 0, SunSet, Night, Max};
 static SceneType CurrentScene;
-static float tLerp;
+
+static Color Scene, LerpDestination;
+static float  WindowWidth, WindowHeight, tLerp;
 
 static Color SceneColors [static_cast<int>(SceneType::Max)];
 
@@ -67,9 +64,9 @@ void Background::Load()
 	WindowWidth = static_cast<f32>(AEGetWindowWidth());
 	WindowHeight = static_cast<f32>(AEGetWindowHeight());
 
-	Images[BackgroundIndex::Pause].Init(FP::PauseOverlay, WindowWidth, WindowHeight, Midpt);
-	Images[BackgroundIndex::Victory].Init(FP::VictoryOverlay, WindowWidth, WindowHeight, Midpt);
-	Images[BackgroundIndex::Defeat].Init(FP::GameoverOverlay, WindowWidth, WindowHeight, Midpt);
+	Images[BackgroundOverlay::Pause].Init(FP::PauseOverlay, WindowWidth, WindowHeight, Midpt);
+	Images[BackgroundOverlay::Victory].Init(FP::VictoryOverlay, WindowWidth, WindowHeight, Midpt);
+	Images[BackgroundOverlay::Defeat].Init(FP::GameoverOverlay, WindowWidth, WindowHeight, Midpt);
 
 	for (int i = 0; i < LastCloudIdx; ++i) {
 		BgObj[i].Init("./Assets/Art/cloud.png", Utils::RandomRangeFloat(50.0f, 100.0f), Utils::RandomRangeFloat(20.0f, 40.0f),
@@ -155,7 +152,7 @@ void Background::Render(const Player& player)
 
 	if (!GAMEPLAY_MISC::DISPLAY_QUIT_UI && (GAMEPLAY_MISC::PAUSED && player.active && !player.GetWinStatus()))
 	{
-		Images[BackgroundIndex::Pause].Draw_Texture(100.0f);
+		Images[BackgroundOverlay::Pause].Draw_Texture(100.0f);
 		text.SetText(const_cast<s8*>("PAUSED"));
 		text.Draw_Wrapped(text.pos);
 	}
@@ -164,7 +161,7 @@ void Background::Render(const Player& player)
 		if(!GAMEPLAY_MISC::PAUSED)
 			Utils::TogglePause();
 
-		Images[BackgroundIndex::Defeat].Draw_Texture(150.0f);
+		Images[BackgroundOverlay::Defeat].Draw_Texture(150.0f);
 		text.SetText(const_cast<s8*>("YOU LOSE"));
 		text.Draw_Wrapped(text.pos);
 		for (int i = 2; i < MenuBtn.size(); ++i) {
@@ -176,7 +173,7 @@ void Background::Render(const Player& player)
 	{	
 		if (!GAMEPLAY_MISC::PAUSED)
 			Utils::TogglePause();
-		Images[BackgroundIndex::Victory].Draw_Texture(50.0f);
+		Images[BackgroundOverlay::Victory].Draw_Texture(50.0f);
 		text.Draw_Wrapped(text.pos);
 
 		GAMEPLAY_MISC::Level == 9 ? text.SetText(const_cast<s8*>("Congratulations!! you beat the game!")) 
