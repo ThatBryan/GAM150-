@@ -4,6 +4,7 @@
 #include "Constants.h"
 #include "Graphics.h"
 #include "Utilities.h"
+#include "Username.h"
 
 #include <iostream>
 #include <algorithm>
@@ -16,12 +17,17 @@ static AEVec2 ScreenMid;
 
 static std::vector<Leaders> L(Leaders::MaxLeaders);
 static const char* LeaderBoardFile{ "./Assets/Leaderboard/leaderboard.txt" };
+static const char* UsernameFile{ "./Assets/Username/username.txt" };
 static Graphics::Text stringBuffer;
+
+static std::string username;
 
 void Leaderboard::Init()
 {
 	ScreenMid = Utils::GetScreenMiddle();
 	Leaders::ReadFromFile(LeaderBoardFile);
+	Username::ReadFromFile(UsernameFile);
+	std::cout << username;
 }
 
 void Leaderboard::Update()
@@ -77,7 +83,6 @@ Leaders::~Leaders()
 void Leaders::ReadFromFile(const char* filePath)
 {
 	std::ifstream ifs(filePath);
-	std::string data;
 	std::string name;
 	float score;
 	int count = 0;
@@ -141,6 +146,19 @@ void Leaders::PrintContainer()
 }
 
 
+void Username::ReadFromFile(const char* filePath)
+{
+	std::ifstream ifs(filePath);
+	if (ifs.is_open()) {
+		// Read values from a text file into your struct. Sample code available below if you get stuck
+
+		while (!ifs.eof())
+		{
+			ifs >> username;
+		}
+		ifs.close();
+	}
+}
 
 
 
