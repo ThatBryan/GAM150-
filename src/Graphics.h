@@ -1,7 +1,8 @@
 /******************************************************************************/
 /*!
 \file				Graphics.h
-\author:			Bryan Koh Yan Wei
+\primary author: 	Bryan Koh Yan Wei
+\secondary authors: Lim Wee Boon
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Contains type defintion for graphics related types
@@ -19,6 +20,7 @@ rights reserved.
 #pragma once
 #include "AEEngine.h"
 #include "Constants.h"
+#include "Globals.h"
 #include <string>
 
 //https://htmlcolorcodes.com/
@@ -32,11 +34,10 @@ struct Color
 	Color(float r, float g, float b, float a);
 	Color();
 	void Set(Color color);
-	void Decrement(float i = 0.1f);
 
-	// Returns a random color
 	static Color CreateRandomColor(const float max_alpha = 255.0f);
 	static Color Lerp(const Color& begin, const Color& end, const float t);
+	static void Print(const Color& color);
 	bool operator ==(const Color& rhs);
 };
 
@@ -45,9 +46,9 @@ namespace Graphics
 {
 	// Sets the mesh for a rectangle and returns a pointer to the AEGfxVertexList.
 	// Only call once at the start of application!!
-
 	AEGfxVertexList* Mesh_Circle(void);
 	AEGfxVertexList* Mesh_Rectangle(void);
+	AEGfxVertexList* Mesh_Animation(float offset_X);
 	void Load_Meshes(void);
 	void Load_Fonts(void);
 	void Free();
@@ -91,9 +92,9 @@ namespace Graphics
 			inline s8* GetText() { return const_cast<s8*>(buffer.c_str()); }
 			void SetText(std::string text);
 			inline void SetPos(AEVec2 Pos) { pos = Pos; }
-			inline void SetColor(Color c) { color.Set(c); }
-			inline void SetScale(f32 Scale) { scale = Scale; }
-			inline void SetFontType(char FontID) { ID = FontID; }
+			inline void SetTextColor(Color c) { color.Set(c); }
+			inline void SetTextScale(f32 Scale) { scale = Scale; }
+			inline void SetFontID(char FontID) { ID = FontID; }
 			inline size_t GetBufferLength() { return buffer.length(); }
 			inline void ClearBuffer() { buffer.clear(); }
 			Color color;

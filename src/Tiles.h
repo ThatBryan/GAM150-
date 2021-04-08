@@ -37,6 +37,7 @@ private:
 	f64 collapseDelay;
 	bool active, isCollapsing;
 	static bool isTutorialLevel;
+
 	void DecreaseLifespan(void);
 	void Collapse(const Player& player);
 	void CheckPos(void);

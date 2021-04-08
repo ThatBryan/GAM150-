@@ -8,6 +8,11 @@
 #include <iostream>
 #include <algorithm>
 #include <fstream>
+#include <sstream>   
+#include <cstring>
+#include <cmath>
+
+static AEVec2 ScreenMid;
 
 static std::vector<Leaders> L(Leaders::MaxLeaders);
 static const char* LeaderBoardFile{ "./Assets/Leaderboard/leaderboard.txt" };
@@ -15,6 +20,7 @@ static Graphics::Text stringBuffer;
 
 void Leaderboard::Init()
 {
+	ScreenMid = Utils::GetScreenMiddle();
 	Leaders::ReadFromFile(LeaderBoardFile);
 }
 
@@ -22,10 +28,37 @@ void Leaderboard::Update()
 {
 	if (AEInputCheckReleased(AEVK_ESCAPE))
 		MainMenu::SwitchToMainMenu();
+	Leaders::SortLeaders(L);
+	Leaderboard::Render();
 }
 
 void Leaderboard::Render()
 {
+	static std::string scoreStr;
+	static Graphics::Text LeaderboardTxt;
+	static Graphics::Text NameTxt; static Graphics::Text ScoreTxt;
+	
+	// Leaderboard Title
+	LeaderboardTxt.SetTextScale(1.0f);
+	LeaderboardTxt.SetText("Leaderboard");
+	LeaderboardTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	LeaderboardTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() / 10)));
+	
+	NameTxt.SetTextScale(1.0f);
+	NameTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	ScoreTxt.SetTextScale(1.0f);
+	ScoreTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+
+	for (size_t i = 0; i < Leaders::MaxLeaders; ++i)
+	{
+		NameTxt.SetText(L[i].name);
+		scoreStr = std::to_string(L[i].score);
+		scoreStr.resize(5);
+		
+		ScoreTxt.SetText(scoreStr);
+		NameTxt.Draw_Wrapped(AEVec2Set(300.0f, static_cast<f32>(AEGetWindowHeight() * 0.4) + i * 50.0f ));
+		ScoreTxt.Draw_Wrapped(AEVec2Set(500.0f, static_cast<f32>(AEGetWindowHeight() * 0.4) + i * 50.0f ));
+	}
 }
 
 void Leaderboard::Unload()
@@ -43,11 +76,24 @@ Leaders::~Leaders()
 }
 void Leaders::ReadFromFile(const char* filePath)
 {
-	std::ifstream ifs;
+	std::ifstream ifs(filePath);
+	std::string data;
+	std::string name;
+	float score;
+	int count = 0;
 
-	ifs.open(filePath);
 	if (ifs.is_open()) {
 		// Read values from a text file into your struct. Sample code available below if you get stuck
+
+		while (!ifs.eof())
+		{
+			ifs >> name >> score;
+	
+			L[count].name = name;
+			L[count].score = score;
+
+			count++;
+		}
 		ifs.close();
 	}
 }
@@ -73,34 +119,6 @@ bool Leaders::Cmp_Scores(const Leaders& lhs, const Leaders& rhs)
 	return lhs.score > rhs.score;
 }
 
-
-void Leaders::DisplayBuffer()
-{
-	// Untested, not sure if works.
-
-	std::string String;
-	for (unsigned char i = AEVK_0; i < AEVK_Z; ++i) {
-
-		// Skip captial letters and weird symbols.
-		if (i > AEVK_9 && i < AEVK_A)
-			continue;
-
-		if (stringBuffer.GetBufferLength() < Leaders::MaxLength) {
-
-			if (AEInputCheckTriggered(i)) {
-				
-				if (AEInputCheckCurr(AEVK_LSHIFT) || AEInputCheckCurr(AEVK_RSHIFT)) {
-
-					String += std::to_string(std::toupper(i));
-					continue;
-				}
-
-				String += std::to_string(i);
-			}
-		}
-	}
-	stringBuffer.SetText(String);
-}
 
 void Leaders::InsertNewLeader(const Leaders& newLeader)
 {

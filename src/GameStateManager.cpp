@@ -1,3 +1,21 @@
+/******************************************************************************/
+/*!
+\file				GameStateManager.cpp
+\author:		 	Lim Wee Boon
+\par    			email: l.weeboon@digipen.edu
+\date   			April 6, 2021
+\brief				Handles the Game States
+
+					Functionalities include:
+
+					Initialising the game states and level system.
+					Updating the game state functions.
+					Switches game states when conditions are fulfilled.
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #include "GameStateManager.h"
 #include "MainMenu.h"
 #include "Splash.h"
@@ -42,7 +60,7 @@ void GameStateManagerUpdate()
 		GameStateInit = Splash::Init;
 		GameStateUpdate = Splash::Update;
 		GameStateDraw = Splash::Render;
-		GameStateFree = GameStatePlaceholder;
+		GameStateFree = EmptyFunction;
 		GameStateUnload = Splash::Unload;
 		break;
 
@@ -51,7 +69,7 @@ void GameStateManagerUpdate()
 		GameStateInit = MainMenu::Init;
 		GameStateUpdate = MainMenu::Update;
 		GameStateDraw = MainMenu::Render;
-		GameStateFree = GameStatePlaceholder;
+		GameStateFree = EmptyFunction;
 		GameStateUnload = MainMenu::Unload;
 		break;
 
@@ -77,7 +95,7 @@ void GameStateManagerUpdate()
 		GameStateInit = MainMenu::Init;
 		GameStateUpdate = MainMenu::Update;
 		GameStateDraw = MainMenu::Render;
-		GameStateFree = GameStatePlaceholder;
+		GameStateFree = EmptyFunction;
 		GameStateUnload = MainMenu::Unload;
 		printf("FATAL ERROR! Game state will be set to Main menu\n");
 	}

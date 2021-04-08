@@ -26,6 +26,7 @@ rights reserved.
 #include "GameStateManager.h"
 #include "Particles.h"
 #include "MainMenu.h"
+#include "Globals.h"
 
 #include <iostream>
 #include <vector>
@@ -39,7 +40,7 @@ Player Jumperman;
 
 extern AudioManager Audio;
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
-extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
+extern std::array <AudioClass, static_cast<int>(AudioID::Max)> AudioArray;
 extern AEVec2 EnemySizeArray[static_cast<int>(EnemySizes::MAX)];
 
 
@@ -78,7 +79,7 @@ void Gameplay::Init(void)
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SLIME))
 			{	
 				Enemies::AddNew(enemies, EnemyType::Slime, AEVec2Set(j * grid_width, i * grid_height), 
-					EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].x, EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].y);
+				EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].x, EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].y);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::BAT))
 			{
@@ -106,11 +107,16 @@ void Gameplay::Update()
 	Background::Update();
 	if (!GAMEPLAY_MISC::PAUSED) {
 		GAMEPLAY_MISC::app_time += g_dt;
+
 		if (IsIconic(AESysGetWindowHandle())) {
-			std::cout << "Minimized\n";
 			Utils::TogglePause();
 		}
 	}
+
+	if (AEInputCheckCurr(AEVK_LEFT) || AEInputCheckCurr(AEVK_RIGHT) || AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_D))
+		Mesh::PlayerCurr = Mesh::Anim2;
+	else
+		Mesh::PlayerCurr = Mesh::Anim;
 
 	if (AEInputCheckReleased(AEVK_R))
 	{
@@ -193,6 +199,8 @@ void Gameplay::Load()
 		default:
 			gamestateNext = GS_MAINMENU;
 	}
+	//Mesh::Anim = Graphics::Mesh_Animation(player_idle_anim_offset_x);
+	Mesh::PlayerCurr = Mesh::Anim;
 
 	assert(Map_Height > 0 && Map_Width > 0);
 
@@ -203,7 +211,7 @@ void Gameplay::Load()
 	AudioManager::loadAsset();
 	AudioManager::SetVolume(AudioID::Jump, 0.2f);
 	AudioManager::SetVolume(AudioID::BGM, 0.2f);
-	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
+	Audio.playAudio(AudioArray[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 	Background::Load();
 	Background::Init();
 }
@@ -227,7 +235,6 @@ void Gameplay::Restart()
 	enemies.clear();
 	tileManager.clear();
 	Jumperman.Reset();
-	Jumperman.sprite.Free();
 	GAMEPLAY_MISC::app_time = 0;
 	GAMEPLAY_MISC::PAUSED = false;
 	UI::Unload();

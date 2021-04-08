@@ -5,11 +5,11 @@
 \secondary author: 	Seet Min Yi
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
-\brief				Handles the GameState MainMenu 
-						
+\brief				Handles the GameState MainMenu
+
 					Functionalities include:
 
-					Switching between update and draw loops depending on 
+					Switching between update and draw loops depending on
 					button interface input
 
 					Loading/Initialize variables.
@@ -34,9 +34,10 @@ rights reserved.
 #include "Player.h"
 #include "Particles.h"
 #include "LevelSystem.h"
-#include "Credits.h"
 #include "Leaderboard.h"
 #include "Gameplay.h"
+#include "Globals.h"
+#include "Username.h"
 
 #include <array>
 #include <vector>
@@ -45,10 +46,10 @@ rights reserved.
 #include <array>
 
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
-extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
+extern std::array <AudioClass, static_cast<int>(AudioID::Max)> AudioArray;
 
 static std::vector <Image> Images;
-static std::vector<Button> MenuBtn, LevelBtn, CreditBtn, SettingsBtn;
+static std::vector<Button> MenuBtn, LevelBtn, CreditBtn, SettingsBtn, UsernameBtn;
 static std::vector<Enemies> enemy;
 static std::vector<Tiles> tiles;
 static std::vector<Player> player;
@@ -56,11 +57,11 @@ static Graphics::Text Title;
 static AEVec2 ScreenMid;
 
 static int count = 0; // For checking CreditScreen overlay.
-
+static float WindowWidth, WindowHeight;
 static Color background;
 extern LevelSystem LevelSys;
 
-enum CreditScreen { CreditScreen1 = 0, CreditScreen2, CreditScreen3, CreditScreen4, CreditScreen5, MAX_PICTURES };
+enum CreditScreen { CreditScreen1 = 0, CreditScreen2, CreditScreen3, CreditScreen4, MAX_PICTURES };
 std::array <Image, CreditScreen::MAX_PICTURES> Pictures;
 
 extern AudioManager Audio;
@@ -68,34 +69,36 @@ extern AudioManager Audio;
 
 void MainMenu::Init(void)
 {
-
 	ScreenMid = Utils::GetScreenMiddle();
 	MainMenu::Buttons_Init();
 	LevelSelection::Init();
 	Options::Init();
 	UI::QuitInit();
 	Credits::Init();
+	Username::Init();
+	Leaderboard::Init();
 
 	count = 0;
 
-	const float width = 80.0f, height = 100.0f;
-	int size = static_cast<int>(AEGetWindowWidth() / width);
-	Tiles::AddTileRow(tiles, TileType::Grass, size + 1, width, height, AEVec2{width / 2.0f, AEGetWindowHeight() - height });
-	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2{260.0f, tiles[0].image.pos.y - height / 2.0f }, 60.0f, 60.0f);
-	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2{520.0f, tiles[0].image.pos.y - height / 2.0f }, 60.0f, 60.0f);
-	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2{710.0f, tiles[0].image.pos.y - height / 2.0f}, 60.0f, 60.0f);
-	
+	const float TileWidth{ 80.0f }, TileHeight{ 100.0f },
+				EnemyWidth{ 60.0f }, EnemyHeight{ 60.0f };
+
+	const int TilesNum = static_cast<int>(WindowWidth / TileWidth);
+
+	Tiles::AddTileRow(tiles, TileType::Grass, TilesNum + 1, TileWidth, TileHeight, AEVec2{ TileWidth / 2.0f, WindowHeight - TileHeight });
+	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2{ 260.0f, tiles[0].image.pos.y - TileHeight / 2.0f }, EnemyWidth, EnemyHeight);
+	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2{ 520.0f, tiles[0].image.pos.y - TileHeight / 2.0f }, EnemyWidth, EnemyHeight);
+	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2{ 710.0f, tiles[0].image.pos.y - TileHeight / 2.0f }, EnemyWidth, EnemyHeight);
+
 	player.push_back(Player(Player::playerTex, PLAYER_CONST::WIDTH, PLAYER_CONST::HEIGHT));
-	player[0].SetPos(AEVec2Set(PLAYER_CONST::WIDTH / 2.0f, tiles[0].image.pos.y - height - 10.0f));
+	player[0].SetPos(AEVec2Set(PLAYER_CONST::WIDTH / 2.0f, tiles[0].image.pos.y - TileHeight - 10.0f));
 
 	background.Set(Color{ 51.0f, 215.0f, 255.0f, 255.0f });
-	
-	Title.SetText("JUMPERMAN");
-	Title.SetFontType(fontID::Courier);
-	Title.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
-	Title.SetScale(1.0f);
 
-	Leaderboard::Init();
+	Title.SetText("JUMPERMAN");
+	Title.SetFontID(fontID::Courier);
+	Title.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	Title.SetTextScale(1.0f);
 }
 
 void MainMenu::Update(void)
@@ -104,14 +107,14 @@ void MainMenu::Update(void)
 		gamestateNext = GS_QUIT;
 
 	static float t = 0;
+	static const float lerpFactor{ 0.00001f };
 	static Color Destination{ Color::CreateRandomColor() };
-	
+
 	if (background == Destination) {
 		Destination = Color::CreateRandomColor();
 		t = 0;
 	}
 	background = Color::Lerp(background, Destination, t);
-	static const float lerpFactor{ 0.00001f };
 	t += lerpFactor;
 
 	AEGfxSetBackgroundColor(background.r, background.g, background.b);
@@ -127,9 +130,10 @@ void MainMenu::Update(void)
 	for (int i = 0; i < MenuBtn.size(); ++i) {
 		MenuBtn[i].Update();
 	}
-	player[0].sprite.rotation += 100.0f * g_dt;
+	static const float RotationRate{ 100.0f };
+	player[0].sprite.rotation += RotationRate * g_dt;
 	Particles::Update();
-
+	UsernameBtn[0].Update();
 }
 
 void MainMenu::Render() {
@@ -137,7 +141,7 @@ void MainMenu::Render() {
 	for (int i = 0; i < tiles.size(); ++i) {
 		tiles[i].image.Draw_Texture(255.0f);
 	}
-	
+
 	for (int i = 0; i < enemy.size(); ++i) {
 		enemy[i].sprite.Draw_Texture(255.0f);
 	}
@@ -145,7 +149,7 @@ void MainMenu::Render() {
 
 	player[0].sprite.Draw_Texture(255.0f);
 
-	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - AEGetWindowHeight() / 3));
+	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - WindowHeight / 3.0f));
 	Particles::Render();
 
 	if (GAMEPLAY_MISC::DISPLAY_QUIT_UI)
@@ -154,22 +158,30 @@ void MainMenu::Render() {
 		for (size_t i = 0; i < MenuBtn.size(); ++i) {
 			MenuBtn[i].Render();
 		}
+		UsernameBtn[0].Render();
 	}
 }
 
 void MainMenu::Load(void)
 {
+	//Mesh::Anim = Graphics::Mesh_Animation(player_idle_anim_offset_x);
+	Mesh::PlayerCurr = Mesh::Anim;
+	//Tex::PlayerCurr = 
 	AudioManager::loadAsset();
 	AudioManager::SetVolume(AudioID::BGM, 0.5f);
 	AudioManager::SetVolume(AudioID::Jump, 0.2f);
-	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
+	Audio.playAudio(AudioArray[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 	Tiles::LoadTex();
 	Enemies::LoadTex();
 	Player::LoadTex();
+
+	WindowWidth = static_cast<float>(AEGetWindowWidth());
+	WindowHeight = static_cast<float>(AEGetWindowHeight());
 }
 
 void MainMenu::Unload(void)
 {
+	//AEGfxMeshFree(Mesh::Anim);
 	Enemies::Unload();
 	Tiles::Unload();
 	Player::Unload();
@@ -186,6 +198,8 @@ void MainMenu::Unload(void)
 	Options::Unload();
 	Credits::Unload();
 	LevelSelection::Unload();
+	UsernameBtn.clear();
+	Username::Unload();
 	UI::QuitUnload();
 	Credits::Unload();
 	EnemyCount = 0;
@@ -201,28 +215,27 @@ void MainMenu::QuitGame(void) {
 }
 
 void MainMenu::Buttons_Init() {
-	
-	const float BtnWidth{ 200.0f }, BtnHeight{ 50.0f };
-	for (int i = 0; i < 6; ++i) {
-		MenuBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));
-		MenuBtn[i].RandomizeAllStateColor();
-		
-		if(i % 2 == 0)
+
+	const float BtnCount{ 6 }, BtnWidth{ 200.0f }, BtnHeight{ 50.0f }, BtntextScale{ 0.7f };
+	for (int i = 0; i < BtnCount; ++i) {
+		MenuBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtntextScale));
+
+		if (i % 2 == 0)
 			MenuBtn[i].Set_Position(AEVec2Set(ScreenMid.x - BtnWidth, ScreenMid.y / 1.3f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
 		else
 			MenuBtn[i].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth, ScreenMid.y / 1.3f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
 
 	}
-	for (int i = 0; i < 6; ++i) {
+	for (int i = 0; i < MenuBtn.size(); ++i) {
 		if (i % 2 == 0) {
-			MenuBtn[i].SetType(ButtonType::Texture);
-			MenuBtn[i].Set_Texture("./Assets/Art/BtnTest.png");
-			MenuBtn[i].SetStateColor(ButtonState::Hovered, Color{0.0f, 255.0f, 255.0f, 255.0f });
+			MenuBtn[i].SetBtnType(ButtonType::Texture);
+			MenuBtn[i].Load_Texture("./Assets/Art/BtnTest.png");
+			MenuBtn[i].ChangeStateColor(ButtonState::Hovered, Color{ 0.0f, 255.0f, 255.0f, 255.0f });
 		}
-		else{
-			MenuBtn[i].SetType(ButtonType::Texture);
-			MenuBtn[i].Set_Texture("./Assets/Art/BtnTest2.png");
-			MenuBtn[i].SetStateColor(ButtonState::Hovered, Color{ 255.0f, 255.0f, 0.0f, 255.0f });
+		else {
+			MenuBtn[i].SetBtnType(ButtonType::Texture);
+			MenuBtn[i].Load_Texture("./Assets/Art/BtnTest2.png");
+			MenuBtn[i].ChangeStateColor(ButtonState::Hovered, Color{ 255.0f, 255.0f, 0.0f, 255.0f });
 		}
 
 	}
@@ -245,15 +258,23 @@ void MainMenu::Buttons_Init() {
 	MenuBtn[5].Set_Text("Quit Game");
 	MenuBtn[5].Set_Callback(QuitGame);
 	for (int i = 0; i < MenuBtn.size(); ++i) {
-		MenuBtn[i].SetTextType(fontID::Strawberry_Muffins_Demo);
+		MenuBtn[i].SetFontID(fontID::Strawberry_Muffins_Demo);
 	}
+
+	// Username Button
+	UsernameBtn.push_back(Button(ButtonType::Color, BtnWidth * 0.5f, BtnHeight, 0.5f));
+	UsernameBtn[0].Set_Position(AEVec2Set(WindowWidth * 0.93f, WindowHeight * 0.05f));
+	UsernameBtn[0].Set_Text("Username");
+	UsernameBtn[0].SetBtnType(ButtonType::Texture);
+	UsernameBtn[0].Load_Texture("./Assets/Art/BtnTest.png");
+	UsernameBtn[0].ChangeStateColor(ButtonState::Hovered, Color{ 0.0f, 255.0f, 255.0f, 255.0f });
+	UsernameBtn[0].Set_Callback(MainMenu::SwitchToUsername);
+	UsernameBtn[0].SetFontID(fontID::Strawberry_Muffins_Demo);
 }
 
 const float baseSpeed = 50.0f;
-static float WindowWidth = 0;
 
 void MainMenu::EnemyMovement() {
-	WindowWidth = static_cast<f32>(AEGetWindowWidth());
 
 	static float SquirrelPos{ enemy[2].sprite.pos.x };
 	static float BatPos{ enemy[1].sprite.pos.x };
@@ -274,7 +295,7 @@ void MainMenu::EnemyMovement() {
 
 		case EnemyType::Squirrel:
 			enemy[i].sprite.pos.x += 2.0f * baseSpeed * g_dt;
-			SquirrelPos +=  baseSpeed * g_dt;
+			SquirrelPos += baseSpeed * g_dt;
 			enemy[i].sprite.pos.y += 2 * std::sin(SquirrelPos / 10.0f);
 			continue;
 		}
@@ -292,7 +313,8 @@ void MainMenu::PlayerMovement() {
 
 void LevelSelection::Init(void)
 {
-	for (unsigned short i = 0; i < 10; ++i) {
+	const unsigned short LevelBtnCount{ 10 };
+	for (unsigned short i = 0; i < LevelBtnCount; ++i) {
 		if (i == 9) {
 			LevelBtn.push_back(Button(ButtonType::Texture, 150.0, 75.0f, 0.4f));
 			break;
@@ -300,50 +322,47 @@ void LevelSelection::Init(void)
 		LevelBtn.push_back(Button(ButtonType::Texture, 150.0, 75.0f, 0.5f));
 
 	}
-	for (unsigned short i = 0; i < 10; ++i) {
+	for (unsigned short i = 0; i < LevelBtnCount; ++i) {
 		LevelBtn[i].SetID(i + 1);
 		LevelBtn[i].Set_TextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 		LevelBtn[i].Set_Callback(MainMenu::LockedLevel);
-		LevelBtn[i].SetTextType(fontID::Strawberry_Muffins_Demo);
-		LevelBtn[i].Set_Texture("./Assets/Art/BtnTest3.png");
-		LevelBtn[i].SetStateColor(ButtonState::Hovered, Color{ 247.0f, 161.0f, 187.0f, 255.0f });
+		LevelBtn[i].SetFontID(fontID::Strawberry_Muffins_Demo);
+		LevelBtn[i].Load_Texture("./Assets/Art/BtnTest3.png");
+		LevelBtn[i].ChangeStateColor(ButtonState::Hovered, Color{ 247.0f, 161.0f, 187.0f, 255.0f });
 	}
 
 
 	for (size_t i = 0; i < 3; ++i) {
 		for (size_t j = 0; j < 3; ++j) {
-			LevelBtn[(i * 3) + j].Set_Position(AEVec2Set(175.0f + 225.0f * j, 162.5f + 150.0f * i));// Mid = 400. 400 - 75, 325. 325 - 150 175.0f // 600 / 3, 200 - 37.5 = 162.5f
 
-			if (LevelBtn[i * 3 + j].GetID() > LevelSys.GetKey()) {
-				LevelBtn[i * 3 + j].SetStateColor(ButtonState::Idle, Color(255.0f, 255.0f, 255.0f, 175.0f));
+			size_t BtnIndex{ i * 3 + j };
+
+			LevelBtn[BtnIndex].Set_Position(AEVec2Set(175.0f + 225.0f * j, 162.5f + 150.0f * i));// Mid = 400. 400 - 75, 325. 325 - 150 175.0f // 600 / 3, 200 - 37.5 = 162.5f
+
+			if (LevelBtn[BtnIndex].GetID() > LevelSys.GetKey()) {
+				LevelBtn[BtnIndex].ChangeStateColor(ButtonState::Idle, Color(255.0f, 255.0f, 255.0f, 150.0f));
 			}
 		}
 	}
-
-	for (unsigned short i = LevelSys.GetKey(); i < 9; ++i) {
-		LevelBtn[i].Set_Texture("./Assets/Art/Locked.png");
-		LevelBtn[i].Set_Text("");
+	for (unsigned short i = LevelSys.GetKey(); i < LevelBtnCount - 1; ++i) {
+		LevelBtn[i].Load_Texture("./Assets/Art/Locked.png");
 	}
 
-	LevelBtn[9].Set_Position(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() - LevelBtn[9].GetHeight() / 2.0f)));
+	LevelBtn[9].Set_Position(AEVec2Set(ScreenMid.x, WindowHeight - LevelBtn[9].GetHeight() / 2.0f));
 	LevelBtn[9].Set_Text("Exit to Main Menu");
 	LevelBtn[9].Set_Callback(MainMenu::SwitchToMainMenu);
 }
 
 void MainMenu::SwitchToLevelSelection(void)
 {
-	std::cout << "Level Key: " << LevelSys.GetKey() << std::endl;
-
 	for (size_t i = 0; i < LevelSys.GetKey(); ++i) {
-			LevelBtn[i].Set_Callback(LevelSystem::SetLevel);
-			if (i == 0) {
-				LevelBtn[i].Set_Text("Tutorial");
-				continue;
-			}
+		LevelBtn[i].Set_Callback(LevelSystem::SetLevel);
+		
+		std::string LevelCount{ "Level " + std::to_string(i) };
 
-			std::string tmp{ "Level " + std::to_string(i) };
-			LevelBtn[i].Set_Text(tmp.c_str());
-	}	
+		i == 0 ? LevelBtn[i].Set_Text("Tutorial")
+			   : LevelBtn[i].Set_Text(LevelCount.c_str());
+	}
 
 	GameStateUpdate = LevelSelection::Update;
 	GameStateDraw = LevelSelection::Render;
@@ -367,6 +386,12 @@ void MainMenu::SwitchToLeaderboard(void)
 	GameStateDraw = Leaderboard::Render;
 }
 
+void MainMenu::SwitchToUsername(void)
+{
+	GameStateUpdate = Username::Update;
+	GameStateDraw = Username::Render;
+}
+
 
 void MainMenu::SwitchToMainMenu(void)
 {
@@ -388,15 +413,15 @@ void LevelSelection::Update(void)
 
 void LevelSelection::Render(void)
 {
-	static Graphics::Text LevelSelection;
-	LevelSelection.SetText("Level Selection");
-	LevelSelection.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
-	LevelSelection.SetScale(1.0f);
+	static Graphics::Text LevelSelectionText;
+	LevelSelectionText.SetText("Level Selection");
+	LevelSelectionText.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	LevelSelectionText.SetTextScale(1.0f);
 
 	for (int i = 0; i < LevelBtn.size(); ++i) {
 		LevelBtn[i].Render();
 	}
-	LevelSelection.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() / 10)));
+	LevelSelectionText.Draw_Wrapped(AEVec2Set(ScreenMid.x, WindowHeight / 10.0f));
 }
 
 void LevelSelection::Unload(void)
@@ -407,16 +432,16 @@ void LevelSelection::Unload(void)
 void Options::Init()
 {
 	const size_t btnCount{ 4 };
+	const float BtnWidth{ 200.0f }, BtnHeight{ 50.0f }, BtnTextScale{ 0.6f };
+	const float BtnYOffset{ 150.0f };
 	for (size_t i = 0; i < btnCount; ++i) {
-		SettingsBtn.push_back(Button(ButtonType::Color, 200.0f, 50.0f, 0.6f));
-		SettingsBtn[i].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y / 2.0f - 25.0f + i * 150.0f));
-		SettingsBtn[i].SetTextType(fontID::Strawberry_Muffins_Demo);
+		SettingsBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtnTextScale));
+		SettingsBtn[i].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y / 2.0f - BtnHeight / 2.0f + i * BtnYOffset));
+		SettingsBtn[i].SetFontID(fontID::Strawberry_Muffins_Demo);
 		SettingsBtn[i].RandomizeAllStateColor();
 	}
-	SettingsBtn[0].Set_Text("Fullscreen");
 	SettingsBtn[0].Set_Callback(Utils::ToggleFullscreen);
 
-	SettingsBtn[1].Set_Text("Mute");
 	SettingsBtn[1].Set_Callback(AudioManager::ToggleMuteAll);
 
 	SettingsBtn[2].Set_Callback(Utils::ToggleDevMode);
@@ -427,9 +452,14 @@ void Options::Init()
 
 void Options::Update()
 {
-	Utils::GetFullscreenStatus() == true ? SettingsBtn[0].Set_Text("Windows Mode") : SettingsBtn[0].Set_Text("Fullscreen");
-	AudioManager::GetGlobalMute() == true ? SettingsBtn[1].Set_Text("Unmute") : SettingsBtn[1].Set_Text("Mute");
-	GAMEPLAY_MISC::DEV_MODE == true ? SettingsBtn[2].Set_Text("Dev Mode Off") : SettingsBtn[2].Set_Text("Dev Mode On");
+	Utils::GetFullscreenStatus() == true ? SettingsBtn[0].Set_Text("Windows Mode") 
+										 : SettingsBtn[0].Set_Text("Fullscreen");
+
+	AudioManager::GetGlobalMute() == true ? SettingsBtn[1].Set_Text("Unmute") 
+										  : SettingsBtn[1].Set_Text("Mute");
+
+	GAMEPLAY_MISC::DEV_MODE == true ? SettingsBtn[2].Set_Text("Dev Mode Off") 
+									: SettingsBtn[2].Set_Text("Dev Mode On");
 
 	for (size_t i = 0; i < SettingsBtn.size(); ++i) {
 		SettingsBtn[i].Update();
@@ -440,15 +470,15 @@ void Options::Update()
 
 void Options::Render()
 {
-	static Graphics::Text SettingsPage;
-	SettingsPage.SetText("Settings");
-	SettingsPage.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
-	SettingsPage.SetScale(1.0f);
+	static Graphics::Text SettingsPageText;
+	SettingsPageText.SetText("Settings");
+	SettingsPageText.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	SettingsPageText.SetTextScale(1.0f);
 
 	for (size_t i = 0; i < SettingsBtn.size(); ++i) {
 		SettingsBtn[i].Render();
 	}
-	SettingsPage.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() / 10)));
+	SettingsPageText.Draw_Wrapped(AEVec2Set(ScreenMid.x, WindowHeight / 10.0f));
 }
 
 void Options::Unload()
@@ -459,64 +489,66 @@ void Options::Unload()
 void Credits::Init()
 {
 	const float BtnWidth{ 100.0f }, BtnHeight{ 50.0f };
-	static const float WindWidth{ static_cast<f32>(AEGetWindowWidth()) }, WindHeight{ static_cast<f32>(AEGetWindowHeight()) };
 
-	Pictures[CreditScreen1].Init(FP::CreditScreen1, WindWidth, WindHeight, ScreenMid);
-	Pictures[CreditScreen2].Init(FP::CreditScreen2, WindWidth, WindHeight, ScreenMid);
-	Pictures[CreditScreen3].Init(FP::CreditScreen3, WindWidth, WindHeight, ScreenMid);
-	Pictures[CreditScreen4].Init(FP::CreditScreen4, WindWidth, WindHeight, ScreenMid);
-	Pictures[CreditScreen5].Init(FP::CreditScreen5, WindWidth, WindHeight, ScreenMid);
+	Pictures[CreditScreen1].Init(FP::CreditScreen1, WindowWidth, WindowHeight, ScreenMid);
+	Pictures[CreditScreen2].Init(FP::CreditScreen2, WindowWidth, WindowHeight, ScreenMid);
+	Pictures[CreditScreen3].Init(FP::CreditScreen3, WindowWidth, WindowHeight, ScreenMid);
+	Pictures[CreditScreen4].Init(FP::CreditScreen4, WindowWidth, WindowHeight, ScreenMid);
 
-	for (int i = 0; i < 2; ++i) {
+	for (int i = 0; i < 3; ++i) {
 		CreditBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));
 	}
 
-	CreditBtn[0].Set_Position(AEVec2Set(WindWidth - 80.0f, WindHeight - 120.0f));
+	CreditBtn[0].Set_Position(AEVec2Set(WindowWidth - 80.0f, WindowHeight - 120.0f));
 	CreditBtn[0].Set_Text("Back");
-	CreditBtn[1].Set_Position(AEVec2Set(WindWidth - 80.0f, WindHeight - 50.0f));
+	CreditBtn[0].Set_Callback(Credits::DecrementOverlay);
+	CreditBtn[1].Set_Position(AEVec2Set(WindowWidth - 80.0f, WindowHeight - 60.0f));
 	CreditBtn[1].Set_Text("More");
+	CreditBtn[1].Set_Callback(Credits::IncrementOverlay);
+	CreditBtn[2].Set_Position(AEVec2Set(80.0f, WindowWidth - 60.0f));
+	CreditBtn[2].Set_Text("Exit");
+	CreditBtn[2].Set_Callback(MainMenu::SwitchToMainMenu);
 }
 void Credits::Update()
 {
 	if (AEInputCheckReleased(AEVK_ESCAPE))
 		MainMenu::SwitchToMainMenu();
 
+	if (count > 0)
+		CreditBtn[0].Update();
 
-	if (CreditBtn[0].OnClick())
-	{
-		if (count > 0)
-			count--;
-	}
-	if (CreditBtn[1].OnClick())
-	{
-		if (count < MAX_PICTURES-1)
-			count++;
-	}
+	if (count < CreditScreen::MAX_PICTURES - 1)
+		CreditBtn[1].Update();
+	CreditBtn[2].Update();
 }
 
 void Credits::Render()
 {
 	switch (count)
 	{
+		case -1:
+			MainMenu::SwitchToMainMenu();
+			break;
 		case 0:
-			Pictures[CreditScreen1].Draw_Texture(255.0f);
+			Pictures[CreditScreen1].Draw_Texture(255.0f); 
 			break;
 		case 1:
-			Pictures[CreditScreen2].Draw_Texture(255.0f);
+			Pictures[CreditScreen2].Draw_Texture(255.0f); 
 			break;
 		case 2:
-			Pictures[CreditScreen3].Draw_Texture(255.0f);
+			Pictures[CreditScreen3].Draw_Texture(255.0f); 
 			break;
 		case 3:
-			Pictures[CreditScreen4].Draw_Texture(255.0f);
-			break;
-		case 4:
-			Pictures[CreditScreen5].Draw_Texture(255.0f);
+			Pictures[CreditScreen4].Draw_Texture(255.0f); 
 			break;
 	}
-	for (size_t i = 0; i < CreditBtn.size(); ++i) {
-		CreditBtn[i].Render();
-	}
+	if (count > 0)
+		CreditBtn[0].Render();
+
+	if (count < CreditScreen::MAX_PICTURES - 1)
+		CreditBtn[1].Render();
+
+	CreditBtn[2].Render();
 }
 
 void Credits::Unload()
@@ -526,5 +558,17 @@ void Credits::Unload()
 		Pictures[i].Free();
 	}
 	CreditBtn.clear();
+}
+
+void Credits::IncrementOverlay()
+{
+	if (count < MAX_PICTURES - 1)
+		count++;
+}
+
+void Credits::DecrementOverlay()
+{
+	if (count >= 0)
+		count--;
 }
 

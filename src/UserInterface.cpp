@@ -20,6 +20,7 @@ rights reserved.
 #include "Image.h"
 #include "MainMenu.h"
 #include "Player.h"
+#include "Globals.h"
 
 #include <fstream>
 #include <string>
@@ -49,9 +50,9 @@ void UI::Init() {
 	LevelDisplay.color.Set(Color{0, 0, 0, 255});
 	TimerDisplay.color.Set(Color{ 0, 0, 0, 255 });
 
-	FPS_Display.SetFontType(fontID::Courier);
-	LevelDisplay.SetFontType(fontID::Courier);
-	TimerDisplay.SetFontType(fontID::Courier);
+	FPS_Display.SetFontID(fontID::Courier);
+	LevelDisplay.SetFontID(fontID::Courier);
+	TimerDisplay.SetFontID(fontID::Courier);
 
 	memset(strBuffer, 0, 100 * sizeof(char));
 	memset(strBuffer1, 0, 100 * sizeof(char));
@@ -63,8 +64,11 @@ void UI::Init() {
 const size_t pauseButtonIdx{ 1 };
 void UI::Update() {
 
+	
+	GAMEPLAY_MISC::Level == 1 ? sprintf_s(strBuffer1, "Current Level: Tutorial")
+							  : sprintf_s(strBuffer1, "Current Level: %d", GAMEPLAY_MISC::Level - 1);
+
 	sprintf_s(strBuffer, "FPS: %.2f", AEFrameRateControllerGetFrameRate());
-	sprintf_s(strBuffer1, "Current Level: %d", GAMEPLAY_MISC::Level);
 	sprintf_s(strBuffer2, "Time Elapsed: %.2f", GAMEPLAY_MISC::app_time);
 
 	FPS_Display.SetText(strBuffer);
@@ -82,7 +86,6 @@ void UI::Update() {
 void UI::Draw() {
 	AEVec2 Pos0{ FPS_Display.GetBufferSize() };
 	FPS_Display.Draw_Wrapped(AEVec2Set(Pos0.x / 2.0f, 80.0f + Pos0.y / 2.0f) );
-	//if (DebugMode)
 	AEVec2 Pos{ LevelDisplay.GetBufferSize() };
 	AEVec2 Pos2{ TimerDisplay.GetBufferSize() };
 
@@ -104,10 +107,11 @@ void UI::PausedInit()
 	ScreenMid = Utils::GetScreenMiddle();
 
 	const size_t btnCount{6};
-	const float BtnHeight{ 50.0f }, BtnWidth{ 150.0f };
+	const float BtnHeight{ 50.0f }, BtnWidth{ 150.0f }, BtnTextScale{ 0.45f };
 	static const float WindHeight{ static_cast<float>(AEGetWindowHeight()) };
 	for (size_t i = 0; i < btnCount; ++i) {
-		PausedBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.45f));
+		PausedBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtnTextScale));
+		PausedBtn[i].RandomizeAllStateColor();
 	}
 	PausedBtn[0].Set_Callback(Utils::TogglePause);
 	PausedBtn[0].Set_Text("Resume");
@@ -126,9 +130,10 @@ void UI::PausedInit()
 
 
 	const float PosY{ WindHeight - BtnHeight / 2.0f };
-
+	const float BtnPosXOffset{ 1.3f }, BtnPosYOffset{ 1.2f };
 	for (size_t i = 0; i < btnCount - 2; ++i) {
-		PausedBtn[i].Set_Position(AEVec2Set(BtnWidth / 4.0f + BtnWidth / 2.0f + BtnWidth * i * 1.3f, PosY - BtnHeight * 1.2f ));
+		PausedBtn[i].Set_Position(AEVec2Set(BtnWidth / 4.0f + BtnWidth / 2.0f + BtnWidth * i * BtnPosXOffset,
+			PosY - BtnHeight * BtnPosYOffset));
 	}
 
 	PausedBtn[4].Set_Position(AEVec2Set(PausedBtn[2].GetPosX(), PosY));
@@ -137,8 +142,11 @@ void UI::PausedInit()
 
 void UI::PausedUpdate()
 {
-	AudioManager::GetGlobalMute() == true ? PausedBtn[1].Set_Text("Unmute") : PausedBtn[1].Set_Text("Mute");
-	Utils::GetFullscreenStatus() == true ? PausedBtn[2].Set_Text("Windows Mode") : PausedBtn[2].Set_Text("Fullscreen");
+	AudioManager::GetGlobalMute() == true ? PausedBtn[1].Set_Text("Unmute") 
+										  : PausedBtn[1].Set_Text("Mute");
+
+	Utils::GetFullscreenStatus() == true ? PausedBtn[2].Set_Text("Windows Mode") 
+										 : PausedBtn[2].Set_Text("Fullscreen");
 
 	if (!GAMEPLAY_MISC::DISPLAY_QUIT_UI) {
 		for (size_t i = 0; i < PausedBtn.size(); ++i) {
@@ -170,22 +178,24 @@ void UI::QuitInit()
 {
 	ScreenMid = Utils::GetScreenMiddle();
 	const size_t QuitBtnCount{ 2 };
-	const float BtnHeight{ 50.0f }, BtnWidth{ 150.0f };
+	const float BtnHeight{ 50.0f }, BtnWidth{ 150.0f }, BtnTextScale{ 0.7f },
+		BtnYOffset{ 50.0f };
+
 	for (size_t i = 0; i < QuitBtnCount; ++i) {
-		QuitBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));
+		QuitBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtnTextScale));
 	}
 	QuitBtn[0].Set_Text("Cancel");
 	QuitBtn[0].Set_Callback(Utils::ToggleQuitUI);
-	QuitBtn[0].Set_Position(AEVec2Set(ScreenMid.x - BtnWidth, ScreenMid.y + 50.0f));
+	QuitBtn[0].Set_Position(AEVec2Set(ScreenMid.x - BtnWidth, ScreenMid.y + BtnYOffset));
 
 	QuitBtn[1].Set_Text("Quit");
 	QuitBtn[1].Set_Callback(Utils::ExitGame);
-	QuitBtn[1].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth, ScreenMid.y + 50.0f));
+	QuitBtn[1].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth, ScreenMid.y + BtnYOffset));
 
 	QuitText.SetText("Do you want to exit the game?");
-	QuitText.SetFontType(fontID::Roboto);
-	QuitText.SetColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
-	QuitText.SetScale(1.0f);
+	QuitText.SetFontID(fontID::Roboto);
+	QuitText.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	QuitText.SetTextScale(1.0f);
 }
 
 void UI::QuitUpdate()

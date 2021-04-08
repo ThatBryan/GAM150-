@@ -12,13 +12,15 @@ All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.
  */
  /******************************************************************************/
-#include <vector>
+#include "Globals.h"
 #include "Splash.h"
 #include "Utilities.h"
 #include "Image.h"
 #include "Constants.h"
 #include "GameStateManager.h"
 #include "AEEngine.h"
+
+#include <vector>
 
 Image splash;
 
