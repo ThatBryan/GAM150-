@@ -20,7 +20,7 @@ namespace Background {
 	void Load();
 	void Init();
 	void Update();
-	void Render(Player& player);
+	void Render(const Player& player);
 	void Unload();
 	void LerpBackgroundColor(void);
 }

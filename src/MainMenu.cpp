@@ -46,7 +46,7 @@ rights reserved.
 #include <array>
 
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
-extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
+extern std::array <AudioClass, static_cast<int>(AudioID::Max)> AudioArray;
 
 static std::vector <Image> Images;
 static std::vector<Button> MenuBtn, LevelBtn, CreditBtn, SettingsBtn, UsernameBtn;
@@ -170,7 +170,7 @@ void MainMenu::Load(void)
 	AudioManager::loadAsset();
 	AudioManager::SetVolume(AudioID::BGM, 0.5f);
 	AudioManager::SetVolume(AudioID::Jump, 0.2f);
-	Audio.playAudio(soundTest[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
+	Audio.playAudio(AudioArray[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 	Tiles::LoadTex();
 	Enemies::LoadTex();
 	Player::LoadTex();

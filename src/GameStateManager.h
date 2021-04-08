@@ -27,7 +27,6 @@ enum
 	GS_QUIT
 };
 
-
 //Declaring type int game state statuses
 extern unsigned int gamestateInit;
 extern unsigned int gamestateCurr;
@@ -47,4 +46,4 @@ void GameStateManagerInit(unsigned int gamestateInit = GS_MAINMENU);
 void GameStateManagerUpdate();
 
 
-inline void GameStatePlaceholder() { ; }
+inline void EmptyFunction() { ; }
