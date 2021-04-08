@@ -60,8 +60,8 @@ namespace FILE_PATHS {
 }
 namespace PLAYER_CONST {
 	const float SPEED = 150.0f;
-	const float WIDTH = 35.0f;
-	const float HEIGHT = 40.0f;
+	const float WIDTH = 45.0f;
+	const float HEIGHT = 50.0f;
 	const float JUMPVEL = 3.5f;
 	const float CHARGED_JUMPVEL = 8.0f;
 	const short HP_MAX = 3U;

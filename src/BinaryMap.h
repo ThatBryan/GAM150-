@@ -15,10 +15,11 @@ enum class TYPE_OBJECT
 	DIALOGUE					//9
 };
 
-enum class EnemySizes {
+enum class EntitySizes {
 	SLIME = 0,
 	BAT,
 	SQUIRREL,
+	PLAYER,
 	MAX
 };
 

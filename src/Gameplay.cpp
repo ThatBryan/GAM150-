@@ -41,7 +41,7 @@ Player Jumperman;
 extern AudioManager Audio;
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> AudioArray;
-extern AEVec2 EnemySizeArray[static_cast<int>(EnemySizes::MAX)];
+extern AEVec2 EntitySizeArray[static_cast<int>(EntitySizes::MAX)];
 
 
 void Gameplay::Init(void)
@@ -74,22 +74,22 @@ void Gameplay::Init(void)
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::JUMPERMAN))
 			{
-				Player::CreatePlayer(Jumperman, AEVec2Set(j * grid_width, i * grid_height), PLAYER_CONST::WIDTH, PLAYER_CONST::HEIGHT);
+				Player::CreatePlayer(Jumperman, AEVec2Set(j * grid_width, i * grid_height), EntitySizeArray[static_cast<int>(EntitySizes::PLAYER)].x, EntitySizeArray[static_cast<int>(EntitySizes::PLAYER)].y);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SLIME))
 			{	
 				Enemies::AddNew(enemies, EnemyType::Slime, AEVec2Set(j * grid_width, i * grid_height), 
-				EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].x, EnemySizeArray[static_cast<int>(EnemySizes::SLIME)].y);
+				EntitySizeArray[static_cast<int>(EntitySizes::SLIME)].x, EntitySizeArray[static_cast<int>(EntitySizes::SLIME)].y);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::BAT))
 			{
 				Enemies::AddNew(enemies, EnemyType::Bat, AEVec2Set(j * grid_width, i * grid_height),
-					EnemySizeArray[static_cast<int>(EnemySizes::BAT)].x, EnemySizeArray[static_cast<int>(EnemySizes::BAT)].y);
+					EntitySizeArray[static_cast<int>(EntitySizes::BAT)].x, EntitySizeArray[static_cast<int>(EntitySizes::BAT)].y);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SQUIRREL))
 			{
 				Enemies::AddNew(enemies, EnemyType::Squirrel, AEVec2Set(j * grid_width, i * grid_height),
-					EnemySizeArray[static_cast<int>(EnemySizes::SQUIRREL)].x, EnemySizeArray[static_cast<int>(EnemySizes::SQUIRREL)].y);
+					EntitySizeArray[static_cast<int>(EntitySizes::SQUIRREL)].x, EntitySizeArray[static_cast<int>(EntitySizes::SQUIRREL)].y);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::DIALOGUE))
 			{
