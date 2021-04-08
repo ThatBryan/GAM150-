@@ -34,6 +34,7 @@ namespace Utils
 	void TogglePause(void); 	// Press Tab to pause the game.
 	void ToggleDevMode(void);
 	void ToggleDebugMode(void);		// F1 to enter debug mode
+	void CursorManager();
 	void ReturnToMenu(void);
 	void RestartLevel(void);
 	void ExitGame(void);

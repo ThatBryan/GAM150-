@@ -32,11 +32,11 @@ rights reserved.
 #include <array>
 #include <vector>
 
-enum BackgroundOverlay{ Pause = 0, Victory, Defeat, Max_Overlay };
+enum BackgroundIndex{ Pause = 0, Victory, Defeat, Overlay_Max };
+
+static std::array <Image, BackgroundIndex::Overlay_Max> BgOverlayArr;
+
 enum BackgroundObj{Cloud = 0, MAX};
-
-static std::array <Image, BackgroundOverlay::Max_Overlay> Images;
-
 static const int BgObjMax{ 7 }, LastCloudIdx{ 5 };
 
 static std::array <Image, BgObjMax> BgObj;
@@ -46,12 +46,11 @@ static Graphics::Text text;
 static AEVec2 Midpt;
 
 enum class SceneType { Day = 0, SunSet, Night, Max};
+static Color SceneColors [static_cast<int>(SceneType::Max)];
+static Color Scene, LerpDestination;
 static SceneType CurrentScene;
 
-static Color Scene, LerpDestination;
 static float  WindowWidth, WindowHeight, tLerp;
-
-static Color SceneColors [static_cast<int>(SceneType::Max)];
 
 SceneType& operator++(SceneType& rhs) {
 	rhs = (rhs == SceneType::Night) ? SceneType::Day : SceneType((int)rhs + 1);
@@ -64,9 +63,9 @@ void Background::Load()
 	WindowWidth = static_cast<f32>(AEGetWindowWidth());
 	WindowHeight = static_cast<f32>(AEGetWindowHeight());
 
-	Images[BackgroundOverlay::Pause].Init(FP::PauseOverlay, WindowWidth, WindowHeight, Midpt);
-	Images[BackgroundOverlay::Victory].Init(FP::VictoryOverlay, WindowWidth, WindowHeight, Midpt);
-	Images[BackgroundOverlay::Defeat].Init(FP::GameoverOverlay, WindowWidth, WindowHeight, Midpt);
+	BgOverlayArr[BackgroundIndex::Pause].Init(FP::PauseOverlay, WindowWidth, WindowHeight, Midpt);
+	BgOverlayArr[BackgroundIndex::Victory].Init(FP::VictoryOverlay, WindowWidth, WindowHeight, Midpt);
+	BgOverlayArr[BackgroundIndex::Defeat].Init(FP::GameoverOverlay, WindowWidth, WindowHeight, Midpt);
 
 	for (int i = 0; i < LastCloudIdx; ++i) {
 		BgObj[i].Init("./Assets/Art/cloud.png", Utils::RandomRangeFloat(50.0f, 100.0f), Utils::RandomRangeFloat(20.0f, 40.0f),
@@ -93,7 +92,9 @@ void Background::Init()
 	MenuBtn[0].Set_Callback(Utils::ReturnToMenu);
 	MenuBtn[0].Set_Text("Menu");
 
-	GAMEPLAY_MISC::Level != 9 ? MenuBtn[1].Set_Text("Next Level") : MenuBtn[1].Set_Text("Menu");
+	GAMEPLAY_MISC::Level != 9 ? MenuBtn[1].Set_Text("Next Level") 
+							  : MenuBtn[1].Set_Text("Menu");
+
 	MenuBtn[1].Set_Callback(LevelSystem::SetNextLevel);
 	
 	MenuBtn[2].Set_Callback(Utils::ReturnToMenu);
@@ -111,10 +112,12 @@ void Background::Init()
 
 	if (GAMEPLAY_MISC::Level == 9)
 		MenuBtn[0].Set_Position(AEVec2Set(Midpt.x, WindowHeight - BtnHeight / 2.0f));
+	
+	const float TextPosYOffset{ 100.0f }, TitleTextScale{ 0.9f };
 
-	text.SetPos(AEVec2Set(Midpt.x, Midpt.y + 100.0f));
-	text.SetTextColor(Color{ 0, 0, 0, 255.0f });
-	text.SetTextScale(0.9f);
+	text.SetPos(AEVec2Set(Midpt.x, Midpt.y + TextPosYOffset));
+	text.SetTextColor(Color{ 0, 0, 0, Color::RGBA_MAX});
+	text.SetTextScale(TitleTextScale);
 	text.SetFontID(fontID::Pixel_Digivolve);
 	Scene.Set(SceneColors[static_cast<int>(SceneType::Day)]);
 
@@ -152,7 +155,7 @@ void Background::Render(const Player& player)
 
 	if (!GAMEPLAY_MISC::DISPLAY_QUIT_UI && (GAMEPLAY_MISC::PAUSED && player.active && !player.GetWinStatus()))
 	{
-		Images[BackgroundOverlay::Pause].Draw_Texture(100.0f);
+		BgOverlayArr[BackgroundIndex::Pause].Draw_Texture(100.0f);
 		text.SetText(const_cast<s8*>("PAUSED"));
 		text.Draw_Wrapped(text.pos);
 	}
@@ -161,7 +164,7 @@ void Background::Render(const Player& player)
 		if(!GAMEPLAY_MISC::PAUSED)
 			Utils::TogglePause();
 
-		Images[BackgroundOverlay::Defeat].Draw_Texture(150.0f);
+		BgOverlayArr[BackgroundIndex::Defeat].Draw_Texture(150.0f);
 		text.SetText(const_cast<s8*>("YOU LOSE"));
 		text.Draw_Wrapped(text.pos);
 		for (int i = 2; i < MenuBtn.size(); ++i) {
@@ -173,7 +176,7 @@ void Background::Render(const Player& player)
 	{	
 		if (!GAMEPLAY_MISC::PAUSED)
 			Utils::TogglePause();
-		Images[BackgroundOverlay::Victory].Draw_Texture(50.0f);
+		BgOverlayArr[BackgroundIndex::Victory].Draw_Texture(50.0f);
 		text.Draw_Wrapped(text.pos);
 
 		GAMEPLAY_MISC::Level == 9 ? text.SetText(const_cast<s8*>("Congratulations!! you beat the game!")) 
@@ -209,8 +212,8 @@ void Background::Render(const Player& player)
 
 void Background::Unload()
 {
-	for (size_t i = 0; i < Images.size(); ++i) {
-		Images[i].Free();
+	for (size_t i = 0; i < BgOverlayArr.size(); ++i) {
+		BgOverlayArr[i].Free();
 	}
 
 	for (size_t i = 0; i < BgObj.size(); ++i) {
@@ -236,4 +239,3 @@ void Background::LerpBackgroundColor(void)
 	Scene = Color::Lerp(Scene, LerpDestination, tLerp);
 	tLerp += LerpFactor;
 }
-

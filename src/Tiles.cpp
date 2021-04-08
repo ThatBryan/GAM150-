@@ -36,7 +36,7 @@ static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
 
 enum GuideOverlay{Guide1 = 0, Guide2, Guide3, Guide4, Guide5, Guide6, MAX_IMAGE };
-std::array <Image, GuideOverlay::MAX_IMAGE> Images;
+std::array <Image, GuideOverlay::MAX_IMAGE> BgOverlayArr;
 
 Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, Mesh::Rect, width, height),
 active{ true }, isCollapsing{ false }, ID{ 0 }, collapseDelay{ TILE_CONST::COLLAPSE_DELAY }, type{ TileType::Safe }, spawnPos{ 0, 0 },
@@ -284,18 +284,18 @@ void Tiles::TileShake(void) {
 
 void Tiles::LoadTutorialTexture(void)
 {
-	Images[Guide1].Init(FP::Guide1, 200.0f, 150.0f, { 0.0f, 0.0f });
-	Images[Guide2].Init(FP::Guide2, 200.0f, 150.0f, { 0.0f, 0.0f });
-	Images[Guide3].Init(FP::Guide3, 200.0f, 150.0f, { 0.0f, 0.0f });
-	Images[Guide4].Init(FP::Guide4, 200.0f, 100.0f, { 0.0f, 0.0f });
-	Images[Guide5].Init(FP::Guide5, 200.0f, 150.0f, { 0.0f, 0.0f });
-	Images[Guide6].Init(FP::Guide6, 150.0f, 125.0f, { 0.0f, 0.0f });
+	BgOverlayArr[Guide1].Init(FP::Guide1, 200.0f, 150.0f, { 0.0f, 0.0f });
+	BgOverlayArr[Guide2].Init(FP::Guide2, 200.0f, 150.0f, { 0.0f, 0.0f });
+	BgOverlayArr[Guide3].Init(FP::Guide3, 200.0f, 150.0f, { 0.0f, 0.0f });
+	BgOverlayArr[Guide4].Init(FP::Guide4, 200.0f, 100.0f, { 0.0f, 0.0f });
+	BgOverlayArr[Guide5].Init(FP::Guide5, 200.0f, 150.0f, { 0.0f, 0.0f });
+	BgOverlayArr[Guide6].Init(FP::Guide6, 150.0f, 125.0f, { 0.0f, 0.0f });
 }
 
 void Tiles::FreeTutorialTexture(void)
 {
-	for (size_t i = 0; i < Images.size(); ++i) {
-		Images[i].Free();
+	for (size_t i = 0; i < BgOverlayArr.size(); ++i) {
+		BgOverlayArr[i].Free();
 	}
 }
 
@@ -441,22 +441,22 @@ void Tiles::CreateDialogue(const short ID, const AEVec2 tilePos)
 	switch (ID)
 	{
 		case 0:
-			Images[Guide1].Draw_Texture({tilePos.x + 150.0f, tilePos.y - 60.0f}, Color::RGBA_MAX);
+			BgOverlayArr[Guide1].Draw_Texture({tilePos.x + 150.0f, tilePos.y - 60.0f}, Color::RGBA_MAX);
 			break;
 		case 2:
-			Images[Guide4].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
+			BgOverlayArr[Guide4].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
 			break;
 		case 1:
-			Images[Guide2].Draw_Texture({ tilePos.x - 70.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
+			BgOverlayArr[Guide2].Draw_Texture({ tilePos.x - 70.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
 			break;
 		case 3:
-			Images[Guide5].Draw_Texture({ tilePos.x + 70.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
+			BgOverlayArr[Guide5].Draw_Texture({ tilePos.x + 70.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
 			break;
 		case 4:
-			Images[Guide6].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 40.0f }, Color::RGBA_MAX);
+			BgOverlayArr[Guide6].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 40.0f }, Color::RGBA_MAX);
 			break;
 		case 5:
-			Images[Guide3].Draw_Texture({ tilePos.x + 60.0f, tilePos.y - 80.0f }, Color::RGBA_MAX);
+			BgOverlayArr[Guide3].Draw_Texture({ tilePos.x + 60.0f, tilePos.y - 80.0f }, Color::RGBA_MAX);
 			break;
 
 	}

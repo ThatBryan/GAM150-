@@ -16,7 +16,7 @@ static Graphics::Text stringBuffer;
 static std::vector<Button> InputBtn;
 
 enum BgImage { CursorRect = 0, MAX_IMAGES };
-std::array <Image, BgImage::MAX_IMAGES> Images;
+std::array <Image, BgImage::MAX_IMAGES> BgOverlayArr;
 
 static int MAX_USERNAMELEN{ 10 };
 static std::string username{};
@@ -31,7 +31,7 @@ void Username::Init()
 {
 	ScreenMid = Utils::GetScreenMiddle();
 	CursorPos = ScreenMid;
-	Images[CursorRect].Init(FP::Black, cursorWidth, cursorHeight, CursorPos);
+	BgOverlayArr[CursorRect].Init(FP::Black, cursorWidth, cursorHeight, CursorPos);
 
 	InputBtn.push_back(Button(ButtonType::Color, width, height, 0.7f));
 	InputBtn[0].ChangeStateColor(ButtonState::Hovered, Color{ 255.0f, 0, 0, 255.0f });
@@ -84,7 +84,7 @@ void Username::Render()
 }
 void Username::Unload()
 {
-	Images[0].Free();
+	BgOverlayArr[0].Free();
 	InputBtn.clear();
 }
 
@@ -104,7 +104,7 @@ void Username::DrawCursor(void)
 	}
 	if (counter > 0)
 	{
-		Images[CursorRect].Draw_Texture({ CursorPos.x, CursorPos.y }, Color::RGBA_MAX);
+		BgOverlayArr[CursorRect].Draw_Texture({ CursorPos.x, CursorPos.y }, Color::RGBA_MAX);
 	}
 }
 
