@@ -52,7 +52,7 @@ static Color Scene, LerpDestination;
 
 enum class SceneType { Day = 0, SunSet, Night, Max};
 static SceneType CurrentScene;
-
+static float tLerp;
 
 static Color SceneColors [static_cast<int>(SceneType::Max)];
 
@@ -82,7 +82,6 @@ void Background::Load()
 	SceneColors[static_cast<int>(SceneType::Day)] = Color{ 51.0f, 215.0f, 255.0f, 255.0f };
 	SceneColors[static_cast<int>(SceneType::SunSet)] = Color{ 255.0f, 175.0f, 51.0f, 255.0f };
 	SceneColors[static_cast<int>(SceneType::Night)] = Color{ 100.0f, 149.0f, 237.0f, 255.0f };
-
 }
 
 void Background::Init()
@@ -123,6 +122,7 @@ void Background::Init()
 	Scene.Set(SceneColors[static_cast<int>(SceneType::Day)]);
 
 	CurrentScene = SceneType::Day;
+	tLerp = 0.0f;
 }
 
 void Background::Update()
@@ -224,7 +224,7 @@ void Background::Unload()
 }
 void Background::LerpBackgroundColor(void)
 {
-	static float t = 0;
+	
 	static const float LerpFactor{ 0.000005f }; // per t increment
 	static SceneType nextScene = SceneType::SunSet;
 	LerpDestination = SceneColors[static_cast<int>(nextScene)];
@@ -234,9 +234,9 @@ void Background::LerpBackgroundColor(void)
 		++CurrentScene;
 
 		LerpDestination = SceneColors[static_cast<int>(nextScene)];
-		t = 0;
+		tLerp = 0;
 	}
-	Scene = Color::Lerp(Scene, LerpDestination, t);
-	t += LerpFactor;
+	Scene = Color::Lerp(Scene, LerpDestination, tLerp);
+	tLerp += LerpFactor;
 }
 

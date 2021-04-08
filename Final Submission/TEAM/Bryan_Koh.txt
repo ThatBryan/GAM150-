@@ -1,14 +1,13 @@
-Include the following:
-
-
 Name: Bryan Koh Yan Wei
+
 Role : Technical Director
 
 Main contributions:
 Code, Button & Background design
+
 Files worked on: 
 
-Header files:
+Headers:
 
 AudioManager.h
 Background.h
