@@ -295,7 +295,8 @@ void Player::SetPlayerWin(void)
 		LevelSys.UnlockNext();
 		win = true;
 
-		playerscore = (GAMEPLAY_MISC::app_max_time - GAMEPLAY_MISC::app_time) * GAMEPLAY_MISC::app_score;
+		GAMEPLAY_MISC::player_score = (GAMEPLAY_MISC::app_max_time - GAMEPLAY_MISC::app_time) * GAMEPLAY_MISC::app_score;
+		playerscore = GAMEPLAY_MISC::player_score;
 
 
 		std::ifstream ifs(UsernameFile);

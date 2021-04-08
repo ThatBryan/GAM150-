@@ -33,17 +33,20 @@ rights reserved.
 #include <vector>
 #include <array>
 #include <cassert>
+#include <fstream>
+#include <sstream>   
+#include <cstring>
 
 std::vector<Tiles> tilemap;
 std::vector<Enemies> enemies;
 std::vector <std::vector <Tiles>*> tileManager;
 Player Jumperman;
-
+static std::string name;
 extern AudioManager Audio;
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> AudioArray;
 extern AEVec2 EntitySizeArray[static_cast<int>(EntitySizes::MAX)];
-
+static const char* UsernameFile{ "./Assets/Username/username.txt" };
 
 void Gameplay::Init(void)
 {
@@ -147,6 +150,7 @@ void Gameplay::Render()
 	UI::Draw();
 	Particles::Render();
 	UI::Update();
+	Leaderboard::GetUserInfo(Jumperman);
 }
 
 void Gameplay::Load()

@@ -13,6 +13,7 @@
 #include <cstring>
 #include <cmath>
 
+Player jumperman;
 static AEVec2 ScreenMid;
 
 static std::vector<Leaders> L(Leaders::MaxLeaders);
@@ -20,14 +21,14 @@ static const char* LeaderBoardFile{ "./Assets/Leaderboard/leaderboard.txt" };
 static const char* UsernameFile{ "./Assets/Username/username.txt" };
 static Graphics::Text stringBuffer;
 
-static std::string username;
+static std::string username; static std::string userscore;
 Leaders(user);
 
 void Leaderboard::Init()
 {
 	ScreenMid = Utils::GetScreenMiddle();
 	Leaders::ReadFromFile(LeaderBoardFile);
-	Leaderboard::GetUserInfo();
+	//Leaderboard::GetUserInfo();
 	//Username::ReadFromFile(UsernameFile);
 	
 }
@@ -77,33 +78,41 @@ void Leaderboard::Unload()
 	stringBuffer.ClearBuffer();
 }
 
-void Leaderboard::GetUserInfo(void)
+void Leaderboard::GetUserInfo(const Player& player)
 {
 	
 	std::ifstream ifs(UsernameFile);
 	static std::string line;
 	static std::string data;
-	std::string word = "username:";
-	size_t pos = 0;
+	std::string word = "username:"; std::string word2 = "score:";
+	size_t pos = 0; size_t pos2 = 0;
 	
 
 	if (ifs.is_open()) {
 
-
 		getline(ifs, line);
 
 		pos = line.find(word);
+		pos2 = line.find(word2);
 		if (pos != std::string::npos)
 		{
 			pos += word.length();
-			username = line.substr(pos, line.size() - 1);
-			std::cout << "username:    " << username << std::endl;
-			
+			pos2 += word2.length();
+			username = line.substr(pos, line.size() - 1);		
+			userscore = line.substr(pos2, 4);
 		}
 
 		ifs.close();
-	}
 
+		user.score = stoi(userscore);
+		user.name = userscore;
+
+
+
+		std::cout << "username:    " << username << std::endl;
+		std::cout << "score:    " << user.score << std::endl;
+	}
+	
 	//std::ifstream ifs("./Assets/Username/username.txt");
 	//std::string line;
 	//std::string word = "score:" ;
@@ -126,6 +135,8 @@ void Leaderboard::GetUserInfo(void)
 	//	ifs.close();
 	//}
 }
+//
+
 
 Leaders::Leaders() : score{0.0f}, name()
 {

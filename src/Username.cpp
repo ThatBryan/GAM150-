@@ -115,7 +115,6 @@ void Username::ReadUsernameInput(void)
 	{
 		if (username.length()) {
 			if (AEInputCheckTriggered(AEVK_BACK)) {
-				std::cout << username << std::endl;
 				username.erase(username.length() - 1, 1);
 				CursorPos.x -= fontSize;
 			}
@@ -127,7 +126,7 @@ void Username::ReadUsernameInput(void)
 			}
 				
 		}
-
+		
 		for (unsigned char i = AEVK_0; i < AEVK_Z; ++i) {
 			// Skip captial letters and weird symbols.
 			if (i > AEVK_9 && i < AEVK_A)
