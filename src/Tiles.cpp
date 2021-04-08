@@ -21,16 +21,14 @@ rights reserved.
  */
  /******************************************************************************/
 #include "Tiles.h"
+#include <iostream>
 #include "Player.h"
 #include "Enemy.h"
 #include "Constants.h"
 #include "Image.h"
+#include <array>
 #include "Utilities.h"
 #include "GameStateManager.h"
-#include "Globals.h"
-
-#include <iostream>
-#include <array>
 
 static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
@@ -38,16 +36,15 @@ static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 enum GuideOverlay{Guide1 = 0, Guide2, Guide3, Guide4, Guide5, Guide6, MAX_IMAGE };
 std::array <Image, GuideOverlay::MAX_IMAGE> Images;
 
-Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, Mesh::Rect, width, height),
+Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, width, height),
 active{ true }, isCollapsing{ false }, ID{ 0 }, collapseDelay{ TILE_CONST::COLLAPSE_DELAY }, type{ TileType::Safe }, spawnPos{ 0, 0 },
 collider()
 {
-	static const float ColliderAllowance{ 2.0f };
 	collider.SetWidthHeight(collider.sprite, width, height);
-	collider.SetWidthHeight(collider.top, width - ColliderAllowance, 5.0f);
-	collider.SetWidthHeight(collider.left, 30, height - ColliderAllowance);
-	collider.SetWidthHeight(collider.right, 30, height - ColliderAllowance);
-	collider.SetWidthHeight(collider.bottom, width - ColliderAllowance, 5.0f);
+	collider.SetWidthHeight(collider.top, width - 2.0f, 5.0f);
+	collider.SetWidthHeight(collider.left, 30, height);
+	collider.SetWidthHeight(collider.right, 30, height);
+	collider.SetWidthHeight(collider.bottom, width - 2.0f, 5.0f);
 }
 
 void Tiles::Collapse(const Player& ThePlayer)
@@ -89,8 +86,7 @@ void Tiles::CheckPos(void) {
 		collider.left.pos = AEVec2Set(image.pos.x - abs(image.width) / 2.0f + collider.left.width / 2.0f, image.pos.y);
 		
 		if (type == TileType::Grass) 
-			collider.top.pos = AEVec2Set(image.pos.x, 
-			image.pos.y - image.height / 2.0f + collider.top.height / 2.0f + (5.5f / TILE_CONST::GRASS_SPRITE_HEIGHT * image.height));	
+			collider.top.pos = AEVec2Set(image.pos.x, image.pos.y - image.height / 2.0f + collider.top.height / 2.0f + (5.5f / 32.0f * image.height)); // Counted pixel counts for leaves..		
 		else 
 			collider.top.pos = AEVec2Set(image.pos.x, image.pos.y - image.height / 2.0f + collider.top.height / 2.0f);
 
@@ -136,7 +132,7 @@ void Tiles::CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer)
 				ThePlayer.jump = false;
 				ThePlayer.gravity = false;
 				ThePlayer.chargedjump = false;
-				ThePlayer.gravityMultiplier = GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER;
+				ThePlayer.gravityMultiplier = GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER;
 				ThePlayer.sprite.pos.y = Tile.collider.top.pos.y - Tile.collider.top.height / 2.0f - ThePlayer.sprite.height / 2.0f;
 				return;
 			}
@@ -164,7 +160,7 @@ void Tiles::AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, co
 	float Height = height;
 
 	if (type == TileType::Grass) {
-		Height += (7.0f / TILE_CONST::GRASS_SPRITE_HEIGHT) * height;
+		Height += (7.0f / 32.0f) * height;
 	}
 	tile.push_back(Tiles(temp, width, Height));
 	Tiles& Tile = tile.back();
@@ -207,7 +203,7 @@ void Tiles::Update(Player& ThePlayer)
 
 void Tiles::Render() {
 	if (active) {
-		image.Draw_Texture(255.0f);
+		image.Draw_Texture(255);
 		if (GAMEPLAY_MISC::DEBUG_MODE)
 		{
 			collider.Draw();
@@ -254,7 +250,7 @@ void Tiles::LoadTex() {
 		AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	}
 	if (GAMEPLAY_MISC::Level == 1 && (gamestateCurr == GS_GAMEPLAY || gamestateCurr == GS_GAMEPLAY2)) {
-		//std::cout << "Loaded Tutorial Textures\n";
+		std::cout << "Loaded Tutorial Textures\n";
 		isTutorialLevel = true;
 		LoadTutorialTexture();
 	}
@@ -267,7 +263,7 @@ void Tiles::Unload()
 		AEGfxTextureUnload(tileTex[i]);
 	}
 	if (isTutorialLevel) {
-		//std::cout << "Freed Tutorial Textures\n";
+		std::cout << "Freed Tutorial Textures\n";
 		FreeTutorialTexture();
 	}
 }
@@ -289,7 +285,7 @@ void Tiles::LoadTutorialTexture(void)
 	Images[Guide3].Init(FP::Guide3, 200.0f, 150.0f, { 0.0f, 0.0f });
 	Images[Guide4].Init(FP::Guide4, 200.0f, 100.0f, { 0.0f, 0.0f });
 	Images[Guide5].Init(FP::Guide5, 200.0f, 150.0f, { 0.0f, 0.0f });
-	Images[Guide6].Init(FP::Guide6, 150.0f, 125.0f, { 0.0f, 0.0f });
+	Images[Guide6].Init(FP::Guide6, 100.0f, 75.0f, { 0.0f, 0.0f });
 }
 
 void Tiles::FreeTutorialTexture(void)
@@ -386,7 +382,7 @@ void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy)
 				Tile.collider.top.pos, Tile.collider.top.width, Tile.collider.top.height)) {
 
 				enemy.SetGravity(false);
-				enemy.stepGravityMultiplier = GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER;
+				enemy.stepGravityMultiplier = GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER;
 				return;
 			}
 		}
@@ -431,7 +427,7 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 					enemy.squirrelJump = true;
 				else
 					enemy.sprite.pos.y = TheTile.collider.top.pos.y - TheTile.collider.top.height / 2.0f - enemy.sprite.height / 2.0f;
-			}
+		}
 		}
 	}
 }
@@ -447,13 +443,13 @@ void Tiles::CreateDialogue(const short ID, const AEVec2 tilePos)
 			Images[Guide4].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
 			break;
 		case 1:
-			Images[Guide2].Draw_Texture({ tilePos.x - 70.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
+			Images[Guide2].Draw_Texture({ tilePos.x + 100.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
 			break;
 		case 3:
 			Images[Guide5].Draw_Texture({ tilePos.x + 70.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
 			break;
 		case 4:
-			Images[Guide6].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 40.0f }, Color::RGBA_MAX);
+			Images[Guide6].Draw_Texture({ tilePos.x - 70.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
 			break;
 		case 5:
 			Images[Guide3].Draw_Texture({ tilePos.x + 60.0f, tilePos.y - 80.0f }, Color::RGBA_MAX);

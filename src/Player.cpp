@@ -2,7 +2,7 @@
 /*!
 \file				Player.cpp
 \primary author: 	Bryan Koh Yan Wei
-\secondary author:	Seet Min Yi, Lim Wee Boon
+\secondary author:	Seet Min Yi
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 
@@ -29,25 +29,23 @@ rights reserved.
 #include "Particles.h"
 #include "UserInterface.h"
 #include "LevelSystem.h"
-#include "Globals.h"
 
 #include <array>
 #include <iostream>
 
-extern std::array <AudioClass, static_cast<int>(AudioID::Max)> AudioArray;
+extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
 extern AudioManager Audio;
 extern LevelSystem LevelSys;
 
 static f32 maxY;
 static f32 maxX;
 AEGfxTexture* Player::playerTex{ nullptr };
-AEGfxTexture* Player::playerMovTex{ nullptr };
-AEGfxTexture* Player::playerParticle{ nullptr };
 float Player::gravityStrength = 20.0f;
 
-Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::PlayerCurr, width, height), lose{ false },
+
+Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, width, height), lose{ false },
 active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL },
-hp(), direction{ SpriteDirection::Right }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL }, gravityMultiplier{ GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER },
+hp(), direction{ SpriteDirection::Right }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL }, gravityMultiplier{ GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER },
 chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider()
 {
 	maxY = static_cast<f32>(AEGetWindowHeight());
@@ -58,7 +56,7 @@ chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider()
 
 Player::Player() : lose{ false }, active{ true }, gravity{ false }, jump{ false }, chargedjump{ false },
 win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL },
-hp(), direction{ SpriteDirection::Right }, gravityMultiplier{ GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER }, chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }
+hp(), direction{ SpriteDirection::Right }, gravityMultiplier{ GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER }, chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }
 , collider(){
 
 	maxY = static_cast<f32>(AEGetWindowHeight());
@@ -83,15 +81,7 @@ void Player::Update() {
 }
 void Player::Render(void)
 {
-	if (Mesh::PlayerCurr == Mesh::Anim)
-	{
-		sprite.Set_Texture(playerTex);
-	}
-	else if (Mesh::PlayerCurr == Mesh::Anim2)
-	{
-		sprite.Set_Texture(playerMovTex);
-	}
-	sprite.Draw_Texture(20, PLAYER_CONST::PLAYER_IDLE_OFFSET_X, Mesh::PlayerCurr, 255.0f);
+	sprite.Draw_Texture(255.0f);
 	UI::DisplayLife(hp.current);
 
 	if (GAMEPLAY_MISC::DEBUG_MODE) {
@@ -99,12 +89,8 @@ void Player::Render(void)
 	}
 }
 void Player::LoadTex(void) {
-	playerTex = AEGfxTextureLoad(FP::PlayerSpriteSheetIdle);
-	playerMovTex = AEGfxTextureLoad(FP::WaterSlimeSprite);
-	playerParticle = AEGfxTextureLoad(FP::PlayerSprite);
+	playerTex = AEGfxTextureLoad(FP::PlayerSprite);
 	AE_ASSERT_MESG(playerTex, "Failed to create texture!");
-	AE_ASSERT_MESG(playerMovTex, "Failed to create texture!");
-	AE_ASSERT_MESG(playerParticle, "Failed to create texture!");
 }
 
 void Player::Unload(void) {
@@ -112,55 +98,19 @@ void Player::Unload(void) {
 		AEGfxTextureUnload(playerTex);
 		playerTex = nullptr;
 	}
-	if (playerMovTex) {
-		AEGfxTextureUnload(playerMovTex);
-		playerMovTex = nullptr;
-	}
-	if (playerParticle) {
-		AEGfxTextureUnload(playerParticle);
-		playerParticle = nullptr;
-	}
 }
 void Player::Update_Position(void)
 {
-	if (!jump && !gravity){
-		if (AEInputCheckCurr(AEVK_SPACE)){
-			chargedjump_counter -= g_dt;
-			// Prevent the particles from spawning when doing a regular jump
-			if (chargedjump_counter < (0.8f * PLAYER_CONST::CHARGEDJUMP_COUNTER)) {
-				AEVec2 Min = AEVec2Sub(collider.bottom.pos, AEVec2{ sprite.width, 25.0f });
-				AEVec2 Max = AEVec2Add(collider.bottom.pos, AEVec2{ sprite.width, 25.0f });
-				AEVec2 Destination = AEVec2Add(sprite.pos, AEVec2{ 0, sprite.height / 2.0f });
-				Particles::CreateReverseParticles(Destination, Min, Max, Color{ 255.0f, 255.0f, 0, 255.0f }, 1, Utils::RandomRangeFloat(10.0f, 100.0f), 50.0f, 3.0f, 1.0f);
-			}
-		}
-		else if (AEInputCheckReleased(AEVK_SPACE)){
-			jump = true;
-			Audio.playAudio(AudioArray[static_cast<int>(AudioID::Jump)], AudioID::Jump);
-		}
-		if (chargedjump_counter < 0.0f) {
-			chargedjump = true;
-			chargedjump_counter = PLAYER_CONST::CHARGEDJUMP_COUNTER;
-		}
-	} // end if !jump && !gravity
-	if (chargedjump)
-	{
-		jump = false;
-		if (sprite.pos.y + sprite.height / 2 <= maxY)
-		{
-			sprite.pos.y -= chargedjumpvel;
 
-			chargedjumpvel -= 0.2f; // velocity decrease as y increases
-			if (chargedjumpvel < 0.0f)
-			{
-				chargedjump = false;
-				chargedjumpvel = PLAYER_CONST::CHARGED_JUMPVEL;
-			}
+	if (!jump && !gravity && (AEInputCheckTriggered(AEVK_W) || AEInputCheckTriggered(AEVK_UP)))
+	{
+		if (!GAMEPLAY_MISC::DEBUG_MODE) {
+			jump = true;
+			Audio.playAudio(soundTest[static_cast<int>(AudioID::Jump)], AudioID::Jump);
 		}
 	}
 	if (jump)
 	{
-		chargedjump_counter = PLAYER_CONST::CHARGEDJUMP_COUNTER;
 		if (sprite.pos.y + sprite.height / 2 <= maxY)
 		{
 			sprite.pos.y -= jumpvel;
@@ -173,11 +123,41 @@ void Player::Update_Position(void)
 		}
 	}
 
+	if (AEInputCheckCurr(AEVK_SPACE) && !chargedjump && !gravity)
+	{
+		chargedjump_counter -= g_dt;
+		AEVec2 Min = AEVec2Sub(collider.bottom.pos, AEVec2{ sprite.width, 25.0f});
+		AEVec2 Max = AEVec2Add(collider.bottom.pos, AEVec2{ sprite.width, 25.0f});
+		AEVec2 Destination = AEVec2Add(sprite.pos, AEVec2{ 0, sprite.height / 2.0f });
+		Particles::CreateReverseParticles(Destination, Min, Max, Color{ 255.0f, 255.0f, 0, 255.0f}, 1, Utils::RandomRangeFloat(10.0f, 100.0f), 50.0f, 3.0f, 1.0f);
+	}
+
+	if (AEInputCheckReleased(AEVK_SPACE) && chargedjump_counter < 0)
+	{
+		chargedjump = true;
+		chargedjump_counter = 1.0f;
+	}
+	if (chargedjump)
+	{
+		if (sprite.pos.y + sprite.height / 2 <= maxY)
+		{
+			sprite.pos.y -= chargedjumpvel;
+
+			chargedjumpvel -= 0.2f; // velocity decrease as y increases
+			if (chargedjumpvel < 0.0f)
+			{
+				chargedjump = false;
+				chargedjumpvel = PLAYER_CONST::CHARGED_JUMPVEL;
+			}
+		}
+	}
+
 	if (!gravity) // reset counter if player's feet touches the ground
 	{
 		jumpvel = PLAYER_CONST::JUMPVEL;
 		chargedjumpvel = PLAYER_CONST::CHARGED_JUMPVEL;
 	}
+
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
 	{
 		if (sprite.pos.x + sprite.width / 2 <= maxX)
@@ -187,7 +167,9 @@ void Player::Update_Position(void)
 			sprite.ReflectAboutYAxis();
 			direction = SpriteDirection::Right;
 		}
+
 	}
+
 	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
 	{
 		if (sprite.pos.x >= 0 - sprite.width / 2.0f)
@@ -200,7 +182,6 @@ void Player::Update_Position(void)
 
 	}
 
-	// Debug movements
 	if (GAMEPLAY_MISC::DEBUG_MODE) {
 		AEVec2 Mouse = Utils::GetMousePos();
 		if (AETestPointToRect(&Mouse, &sprite.pos, sprite.width, sprite.height))
@@ -244,11 +225,10 @@ void Player::Respawn(void)
 	active = true;
 	sprite.rotation = 0;
 	sprite.pos = startingPos;
-	sprite.Set_Texture(playerTex);
 	jumpvel = PLAYER_CONST::JUMPVEL;
 	chargedjumpvel = PLAYER_CONST::CHARGED_JUMPVEL;
 	chargedjump_counter = PLAYER_CONST::CHARGEDJUMP_COUNTER;
-	gravityMultiplier = GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER;
+	gravityMultiplier = GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER;
 
 	static const float spriteWidth{ fabsf(sprite.width) };
 	if (sprite.pos.x - (spriteWidth / 2.0f) <= 0) {
@@ -259,7 +239,7 @@ void Player::Respawn(void)
 void Player::CheckOutOfBound() {
 	if ((sprite.pos.y - sprite.height / 2) > maxY) {
 		--hp.current;
-		Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerParticle);
+		Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerTex);
 		if(hp.current >= 1)
 			Respawn();
 	}
@@ -307,22 +287,22 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 					if (!GAMEPLAY_MISC::DEBUG_MODE) {
 						jump = true;
 						jumpvel = bounceVelocity;
-						gravityMultiplier = GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER;
+						gravityMultiplier = GAMEPLAY_MISC::BASE_GRAVITY_MULTIPLIER;
 						enemy[i].KillEnemy();
 						continue;
 					}
-					//if (GAMEPLAY_MISC::DEBUG_MODE)
-					//	printf("enemy dies\n");
+					if (GAMEPLAY_MISC::DEBUG_MODE)
+						printf("enemy dies\n");
 				}
 				else {
 					if (!GAMEPLAY_MISC::DEBUG_MODE) {
 						--hp.current;
-						Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerParticle);
+						Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerTex);
 						if(hp.current >= 1)
 							Respawn();
 					}
-					//if (GAMEPLAY_MISC::DEBUG_MODE)
-					//	printf("player dies\n");
+					if (GAMEPLAY_MISC::DEBUG_MODE)
+						printf("player dies\n");
 				}
 			}
 		}
@@ -331,8 +311,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 
 void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, const f32 height)
 {
-	player.sprite.Set(playerTex, width, height, pos, Mesh::PlayerCurr);
-
+	player.sprite.Init(FP::PlayerSprite, width, height, pos);
 	player.startingPos = pos;
 	player.sprite.pos = pos;
 

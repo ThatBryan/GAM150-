@@ -36,6 +36,7 @@ private:
 	bool isGravity, killed, squirrelJump;
 	float counter, velocity, jumpvelocity, alpha, alphaTimer;
 	float stepGravityMultiplier;
+	unsigned short ID; // Maybe unnecessary
 	int jumpcounter;
 
 	static float slime_counter, slime_speed, slimeBBOffset;
@@ -49,10 +50,10 @@ private:
 	void Bat_Movement(f32 maxX);
 	void Squirrel_Movement(f32 maxX);
 	void Slime_Movement(f32 maxX);
-	void DecreaseAlpha(void);
+	void DecrementAlpha(void);
 
 public:
-	Enemies(AEGfxTexture* filepath, AEGfxVertexList* mesh, const f32 width, const f32 height);
+	Enemies(AEGfxTexture* filepath, const f32 width, const f32 height);
 	Image sprite;
 	bool active;
 	void Update(void);

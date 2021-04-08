@@ -1,17 +1,3 @@
-/******************************************************************************/
-/*!
-\file				GameStateManager.h
-\author:		 	Lim Wee Boon
-\par    			email: l.weeboon@digipen.edu
-\date   			April 6, 2021
-\brief				Declaration of game state enums, game states and function pointers
-					to individual game state functions. Declares game state initialisation
-					and game state update functions.
-
-All content © 2021 DigiPen Institute of Technology Singapore. All
-rights reserved.
- */
- /******************************************************************************/
 #pragma once
 
 #include "AEEngine.h"
@@ -26,6 +12,7 @@ enum
 	GS_GAMEPLAY2,		
 	GS_QUIT
 };
+
 
 //Declaring type int game state statuses
 extern unsigned int gamestateInit;
@@ -46,4 +33,4 @@ void GameStateManagerInit(unsigned int gamestateInit = GS_MAINMENU);
 void GameStateManagerUpdate();
 
 
-inline void EmptyFunction() { ; }
+inline void GameStatePlaceholder() { ; }

@@ -15,6 +15,12 @@ written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 #include "BinaryMap.h"
 
+#include <iostream>
+#include <cstdio>
+#include <fstream>
+#include <vector>
+#include <array>
+#include <stdlib.h>
 #include "Utilities.h"
 #include "Graphics.h"
 #include "Player.h"
@@ -22,13 +28,6 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "Constants.h"
 #include "Tiles.h"
 #include "Enemy.h"
-
-#include <iostream>
-#include <cstdio>
-#include <fstream>
-#include <vector>
-#include <array>
-#include <stdlib.h>
 
 /*The number of horizontal elements*/
 int Map_Width;
@@ -115,8 +114,10 @@ int ImportMapDataFromFile(const char* FileName)
 		else if (i == 1)     //loop 1 will read Map_Height
 			Map_Height = std::stoi(Map);
 	}
+	//std::cout << "EnemySizes: \n";
 	for (size_t i = 0; i < 3; ++i) {
 		ifs >> EnemySizeArray[i].x >> EnemySizeArray[i].y;
+		//std::cout << "X: " << EnemySizeArray[i].x << "\t" << "Y: " << EnemySizeArray[i].y << std::endl;
 	}
 
 

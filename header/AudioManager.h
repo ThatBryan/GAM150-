@@ -35,7 +35,6 @@ struct AudioData {
 class AudioManager
 {
 	// Pointer to the FMOD instance
-	static bool globalMute;
 	FMOD::System* m_pSystem;
 public:
 	AudioManager();

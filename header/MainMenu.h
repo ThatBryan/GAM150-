@@ -5,14 +5,17 @@
 \secondary author: 	Seet Min Yi
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
-\brief				Handles the GameState MainMenu
+\brief				Handles the GameState MainMenu 
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.
  */
  /******************************************************************************/
 #pragma once
+#include "AudioManager.h"
 #include <iostream>
+
+
 
 namespace MainMenu
 {
@@ -27,6 +30,7 @@ namespace MainMenu
 	void StartGame();
 	void QuitGame();
 
+	inline void placeholder(void) { std::cout << "Feature comming soon!" << std::endl; };
 	inline void LockedLevel(void) { std::cout << "Level is locked!\n"; }
 
 	void EnemyMovement(void);
@@ -37,10 +41,9 @@ namespace MainMenu
 	void SwitchToCreditScreen(void);
 	void SwitchToSettings();
 	void SwitchToLeaderboard(void);
-	void SwitchToUsername(void);
 }
 
-namespace LevelSelection {
+namespace LevelSelection{
 	void Init(void);
 	void Update(void);
 	void Render(void);
@@ -59,7 +62,4 @@ namespace Credits {
 	void Update();
 	void Render();
 	void Unload();
-
-	void IncrementOverlay();
-	void DecrementOverlay();
 }

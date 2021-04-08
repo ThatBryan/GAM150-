@@ -20,9 +20,7 @@ rights reserved.
  /******************************************************************************/
 #include "Particles.h"
 #include "Utilities.h"
-#include "Globals.h"
 #include "Constants.h"
-
 #include <iostream>
 #include <vector>
 

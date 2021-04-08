@@ -23,7 +23,6 @@ enum class ParticlesType {
 class Particles{
 	public:
 		Particles();
-
 		static void Create(AEVec2 Pos, AEVec2 Direction, Color color, int count, float speed, 
 		float rotation_rate, float radius, float lifespan, AEGfxTexture* Texture = nullptr);
 
@@ -34,8 +33,6 @@ class Particles{
 		static void Update();
 		static void Render();
 		static void Unload();
-		
-		// Accessors
 		static size_t GetContainerCapacity();
 		static size_t GetContainerSize();
 

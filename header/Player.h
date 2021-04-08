@@ -2,7 +2,7 @@
 /*!
 \file				Player.h
 \primary author: 	Bryan Koh Yan Wei
-\secondary author:	Seet Min Yi, Lim Wee Boon
+\secondary author:	Seet Min Yi
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Type definition for player object.
@@ -44,8 +44,6 @@ private:
 
 public:
 	static AEGfxTexture* playerTex;
-	static AEGfxTexture* playerMovTex;
-	static AEGfxTexture* playerParticle;
 	Player(AEGfxTexture*, const f32 width, const f32 height);
 	Player();
 	Image sprite;

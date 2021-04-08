@@ -1,8 +1,7 @@
 /******************************************************************************/
 /*!
 \file				Graphics.cpp
-\primary author: 	Bryan Koh Yan Wei
-\secondary authors: Lim Wee Boon
+\author:		 	Bryan Koh Yan Wei
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Source file for the implementation of graphics related
@@ -19,10 +18,8 @@ rights reserved.
  /******************************************************************************/
 #include "Graphics.h"
 #include "Image.h"
-#include "Utilities.h"
-#include "Globals.h"
-
 #include <iostream>
+#include "Utilities.h"
 
 const f32 Color::RGBA_MAX{ 255.0f };
 
@@ -62,6 +59,19 @@ bool Color::operator==(const Color& rhs)
 	return false;
 }
 
+
+void Color::Decrement(float i) {
+	r -= i * g_dt;
+	b -= i * g_dt;
+	g -= i * g_dt;
+	if (r <= 0)
+		r *= -1.0f;
+	if (g <= 0)
+		g *= -1.0f;
+	if (b <= 0)
+		b *= -1.0f;
+}
+
 Color Color::Lerp(const Color& begin, const Color& end, const float t)
 {
 	Color temp;
@@ -72,25 +82,11 @@ Color Color::Lerp(const Color& begin, const Color& end, const float t)
 	return temp;
 }
 
-void Color::Print(const Color& color)
-{
-	std::cout << "r: " << color.r << " g: " << color.g << " b: " << color.b << " a: " << color.alpha << std::endl;
-}
-
 
 void Graphics::Load_Meshes(void)
 {
 	Mesh::Rect = Graphics::Mesh_Rectangle();
 	AE_ASSERT_MESG(Mesh::Rect, "fail to create object!!");
-
-	Mesh::Anim = Graphics::Mesh_Animation(PLAYER_CONST::PLAYER_IDLE_OFFSET_X);
-	AE_ASSERT_MESG(Mesh::Anim, "fail to create object!!");
-
-	Mesh::Anim2 = Graphics::Mesh_Animation(1.0f);
-	AE_ASSERT_MESG(Mesh::Anim2, "fail to create object!!");
-
-	Mesh::BatAnim = Graphics::Mesh_Animation(bat_anim_offset_x);
-	AE_ASSERT_MESG(Mesh::BatAnim, "fail to create object!!");
 
 	Mesh::Circle = Graphics::Mesh_Circle();
 	AE_ASSERT_MESG(Mesh::Circle, "fail to create object!!");
@@ -111,10 +107,6 @@ void Graphics::Free() {
 	AEGfxDestroyFont(fontID::Pixel_Digivolve);
 	AEGfxMeshFree(Mesh::Rect);
 	AEGfxMeshFree(Mesh::Circle);
-	AEGfxMeshFree(Mesh::Anim);
-	AEGfxMeshFree(Mesh::Anim2);
-	AEGfxMeshFree(Mesh::BatAnim);
-	//AEGfxMeshFree(Mesh::PlayerCurr);
 }
 
 AEGfxVertexList* Graphics::Mesh_Rectangle(void)
@@ -128,21 +120,6 @@ AEGfxVertexList* Graphics::Mesh_Rectangle(void)
 	AEGfxTriAdd(
 		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f, //	Bottom R
 		0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 0.0f,	 //	Top Righ
-		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);//	Top Left
-	return AEGfxMeshEnd();
-}
-
-AEGfxVertexList* Graphics::Mesh_Animation(float offset_X)
-{
-	AEGfxMeshStart();
-	AEGfxTriAdd(
-		-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 1.0f,// Bottom Left
-		0.5f, -0.5f, 0xFFFFFFFF, offset_X, 1.0f, // Bottom Right
-		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f); // Top vertex
-
-	AEGfxTriAdd(
-		0.5f, -0.5f, 0xFFFFFFFF, offset_X, 1.0f, //	Bottom R
-		0.5f, 0.5f, 0xFFFFFFFF, offset_X, 0.0f,	 //	Top Righ
 		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);//	Top Left
 	return AEGfxMeshEnd();
 }

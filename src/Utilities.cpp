@@ -22,11 +22,10 @@ rights reserved.
 #include "Utilities.h"
 #include "GameStateManager.h"
 #include "Constants.h"
-#include "AudioManager.h"
-#include "Globals.h"
-
 #include <iostream>
 #include <fstream>
+#include "AudioManager.h"
+
 
 int Utils::RandomRangeInt(const s32 lowerBound, const s32 upperBound)
 {
@@ -131,7 +130,6 @@ AEVec2 Utils::GetMousePos(void)
 void Utils::TogglePause(void)
 {
 	GAMEPLAY_MISC::PAUSED = !GAMEPLAY_MISC::PAUSED;
-
 	if (!GAMEPLAY_MISC::PAUSED) {
 		GAMEPLAY_MISC::DISPLAY_QUIT_UI = false;
 		ShowCursor(false);
@@ -163,7 +161,6 @@ void Utils::ToggleDebugMode(void)
 
 	if (AEInputCheckTriggered(DEBUG_KEY))
 		GAMEPLAY_MISC::DEBUG_MODE = !GAMEPLAY_MISC::DEBUG_MODE;
-
 	if (GAMEPLAY_MISC::DEBUG_MODE && AEInputCheckTriggered(COLLISION_OFF_KEY)) {
 		GAMEPLAY_MISC::DISABLE_COLLISION = !GAMEPLAY_MISC::DISABLE_COLLISION;
 		GAMEPLAY_MISC::DISABLE_COLLISION == false ? std::cout << "Collision turned on \n" : std::cout << "Collision turned off \n";
@@ -207,5 +204,6 @@ bool Utils::ColliderAABB(AEVec2 A, f32 A_width, f32 A_height, AEVec2 B, f32 B_wi
 		A.y + A_height / 2.0f < B.y - B_height / 2.0f) {
 		return false;
 	}
+
 	return true;
 }

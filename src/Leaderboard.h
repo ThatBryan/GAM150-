@@ -16,6 +16,8 @@ struct Leaders {
 	static void SortLeaders(std::vector<Leaders>& leaders);
 	static bool Cmp_Scores(const Leaders& lhs, const Leaders& rhs);
 
+	// Real time new display to draw on screen the leader's name.
+	static void DisplayBuffer();
 	// Add a new leader into the vector
 	static void InsertNewLeader(const Leaders& newLeader);
 	// For debugging to check the container.

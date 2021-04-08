@@ -20,42 +20,26 @@ rights reserved.
  */
  /******************************************************************************/
 #include "Background.h"
-#include "Globals.h"
+#include <array>
 #include "Image.h"
 #include "Button.h"
 #include "Utilities.h"
 #include "Player.h"
+#include <vector>
 #include "MainMenu.h"
 #include "AEEngine.h"
 #include "LevelSystem.h"
 #include "Particles.h"
 
-#include <array>
-#include <vector>
+enum ImageIndex{ Pause = 0, Victory, Defeat, MAX_IMAGE };
 
-static float WindowWidth, WindowHeight;
-
-enum BackgroundIndex{ Pause = 0, Victory, Defeat, MAX_IMAGE };
-
-static std::array <Image, BackgroundIndex::MAX_IMAGE> Images;
-
-enum BackgroundObj{Cloud = 0, MAX};
-static const int BgObjMax{ 7 };
-static const int LastCloudIdx{ 5 };
-
-static std::array <Image, BgObjMax> BgObj;
-static std::vector<Button> MenuBtn;	
-static Graphics::Text text;
+static std::array <Image, MAX_IMAGE> Images;
+static std::vector<Button> MenuBtn;	Graphics::Text text;
 
 static AEVec2 Midpt;
-static Color Scene, LerpDestination;
+static Color Scene;
 
-static std::string ScoreStr;
-
-enum class SceneType { Day = 0, SunSet, Night, Max};
-static SceneType CurrentScene;
-
-
+enum class SceneType { Day = 0, Noon, Night, Max};
 static Color SceneColors [static_cast<int>(SceneType::Max)];
 
 SceneType& operator++(SceneType& rhs) {
@@ -65,35 +49,19 @@ SceneType& operator++(SceneType& rhs) {
 
 void Background::Load()
 {
-	Midpt = Utils::GetScreenMiddle();
-	WindowWidth = static_cast<f32>(AEGetWindowWidth());
-	WindowHeight = static_cast<f32>(AEGetWindowHeight());
-
-	Images[BackgroundIndex::Pause].Init(FP::PauseOverlay, WindowWidth, WindowHeight, Midpt);
-	Images[BackgroundIndex::Victory].Init(FP::VictoryOverlay, WindowWidth, WindowHeight, Midpt);
-	Images[BackgroundIndex::Defeat].Init(FP::GameoverOverlay, WindowWidth, WindowHeight, Midpt);
-
-	for (int i = 0; i < LastCloudIdx; ++i) {
-		BgObj[i].Init("./Assets/Art/cloud.png", Utils::RandomRangeFloat(50.0f, 100.0f), Utils::RandomRangeFloat(20.0f, 40.0f),
-			AEVec2Set(i * 100.0f + Utils::RandomRangeFloat(-50.0f, 50.0f), Utils::RandomRangeFloat(25.0f, 50.0f)));
-	}
-	BgObj[5].Init("./Assets/Art/moon.png", 50.0f, 50.0f, AEVec2{ 40, 30.0f });
-	BgObj[6].Init("./Assets/Art/moon.png", 50.0f, 50.0f, AEVec2{ 760, 30.0f });
-	BgObj[6].ReflectAboutYAxis();
+	Images[Pause].Init(FP::PauseOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+	Images[Victory].Init(FP::VictoryOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
+	Images[Defeat].Init(FP::GameoverOverlay, static_cast<f32>(AEGetWindowWidth()), static_cast<f32>(AEGetWindowHeight()), Utils::GetScreenMiddle());
 
 	SceneColors[static_cast<int>(SceneType::Day)] = Color{ 51.0f, 215.0f, 255.0f, 255.0f };
-	SceneColors[static_cast<int>(SceneType::SunSet)] = Color{ 255.0f, 175.0f, 51.0f, 255.0f };
+	SceneColors[static_cast<int>(SceneType::Noon)] = Color{ 255.0f, 175.0f, 51.0f, 255.0f };
 	SceneColors[static_cast<int>(SceneType::Night)] = Color{ 100.0f, 149.0f, 237.0f, 255.0f };
-
 }
 
 void Background::Init()
 {
-	const int BtnCount{ 4 };
-	const float BtnWidth{ 150.0f }, BtnHeight{ 75.0f }, BtnTextScale{ 0.8f };
-
-	for (int i = 0; i < BtnCount; ++i) {
-		MenuBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtnTextScale));
+	for (int i = 0; i < 4; ++i) {
+		MenuBtn.push_back(Button(ButtonType::Color, 150.0f, 75.0f, 0.8f));
 	}
 
 	MenuBtn[0].Set_Callback(Utils::ReturnToMenu);
@@ -108,65 +76,41 @@ void Background::Init()
 	MenuBtn[3].Set_Text("Retry");
 	MenuBtn[3].Set_Callback(Utils::RestartLevel);
 
+	Midpt =  Utils::GetScreenMiddle();
+
 	for (int i = 0; i < MenuBtn.size(); ++i) {
 		if (i % 2 == 0)
-			MenuBtn[i].Set_Position(AEVec2{ Midpt.x + BtnWidth, Midpt.y * 2 - BtnHeight / 2.0f });
+			MenuBtn[i].Set_Position(AEVec2{ Midpt.x + MenuBtn[i].GetWidth(), Midpt.y * 2 - MenuBtn[i].GetHeight() / 2.0f });
 		else
-			MenuBtn[i].Set_Position(AEVec2{ Midpt.x - BtnWidth, Midpt.y * 2 - BtnHeight / 2.0f });
+			MenuBtn[i].Set_Position(AEVec2{ Midpt.x - MenuBtn[i].GetWidth(), Midpt.y * 2 - MenuBtn[i].GetHeight() / 2.0f });
 	}
 
-	if (GAMEPLAY_MISC::Level == 9)
-		MenuBtn[0].Set_Position(AEVec2Set(Midpt.x, WindowHeight - BtnHeight / 2.0f));
-
 	text.SetPos(AEVec2Set(Midpt.x, Midpt.y + 100.0f));
-	text.SetTextColor(Color{ 0, 0, 0, 255.0f });
-	text.SetTextScale(0.9f);
-	text.SetFontID(fontID::Pixel_Digivolve);
+	text.SetColor(Color{ 0, 0, 0, 255.0f });
+	text.SetScale(1.0f);
+	text.SetFontType(fontID::Pixel_Digivolve);
 	Scene.Set(SceneColors[static_cast<int>(SceneType::Day)]);
-
-	CurrentScene = SceneType::Day;
 }
 
 void Background::Update()
 {
-	static AEVec2 CloudDir{ -1.0f, 0.0f };
-	static const float CloudSpeed{ 50.0f };
-
 	LerpBackgroundColor();
 	AEGfxSetBackgroundColor(Scene.r, Scene.g, Scene.b);
-
-	if (!GAMEPLAY_MISC::PAUSED) {
-		for (int i = 0; i < LastCloudIdx; ++i) {
-			AEVec2ScaleAdd(&BgObj[i].pos, &CloudDir, &BgObj[i].pos, g_dt * CloudSpeed);
-			BgObj[i].pos.x = AEWrap(BgObj[i].pos.x, - BgObj[i].width / 2.0f, WindowWidth + BgObj[i].width / 2.0f);
-		}
-	}
 }
 
-void Background::Render(const Player& player)
+void Background::Render(Player& player)
 {
-	static const float CloudAlpha{ 100.0f };
-	for (size_t i = 0; i < LastCloudIdx; ++i) {
-		BgObj[i].Draw_Texture(BgObj[i].pos, CloudAlpha);
-	}
-	if (CurrentScene != SceneType::Day) {
-		for (size_t i = LastCloudIdx; i < BgObj.size(); ++i) {
-			BgObj[i].Draw_Texture(BgObj[i].pos, CloudAlpha);
-		}
-	}
-
 	if (!GAMEPLAY_MISC::DISPLAY_QUIT_UI && (GAMEPLAY_MISC::PAUSED && player.active && !player.GetWinStatus()))
 	{
-		Images[BackgroundIndex::Pause].Draw_Texture(100.0f);
+		Images[Pause].Draw_Texture(100.0f);
 		text.SetText(const_cast<s8*>("PAUSED"));
 		text.Draw_Wrapped(text.pos);
 	}
-	else if (player.GetLoseStatus())
+	if (player.GetLoseStatus())
 	{
 		if(!GAMEPLAY_MISC::PAUSED)
 			Utils::TogglePause();
-
-		Images[BackgroundIndex::Defeat].Draw_Texture(150.0f);
+		Images[Defeat].Draw_Texture(150.0f);
 		text.SetText(const_cast<s8*>("YOU LOSE"));
 		text.Draw_Wrapped(text.pos);
 		for (int i = 2; i < MenuBtn.size(); ++i) {
@@ -174,32 +118,14 @@ void Background::Render(const Player& player)
 			MenuBtn[i].Render();
 		}
 	}
-	else if (player.GetWinStatus())
+	if (player.GetWinStatus())
 	{	
 		if (!GAMEPLAY_MISC::PAUSED)
 			Utils::TogglePause();
-		Images[BackgroundIndex::Victory].Draw_Texture(50.0f);
+		Images[Victory].Draw_Texture(50.0f);
+		text.SetText(const_cast<s8*>("YOU WIN"));
 		text.Draw_Wrapped(text.pos);
-
-		GAMEPLAY_MISC::Level == 9 ? text.SetText(const_cast<s8*>("Congratulations!! you beat the game!")) 
-								  : text.SetText(const_cast<s8*>("YOU WIN"));
-		
-		text.Draw_Wrapped({ text.pos.x, text.pos.y - 50.0f });
-		text.SetText("YOUR SCORE: ");
-		text.Draw_Wrapped({ text.pos.x, text.pos.y - 100.0f });
-		
-		GAMEPLAY_MISC::player_score = (GAMEPLAY_MISC::app_max_time - GAMEPLAY_MISC::app_time) * GAMEPLAY_MISC::app_score; /////////////////////////////////////
-		
-		ScoreStr = std::to_string(GAMEPLAY_MISC::player_score);
-		ScoreStr.resize(5);
-		text.SetText(ScoreStr);
-
-		int btnNum; // Only update one button at level 9 since last level.
-
-		GAMEPLAY_MISC::Level == 9 ? btnNum = 1 
-								  : btnNum = 2;
-
-		for (int i = 0; i < btnNum; ++i) {
+		for (int i = 0; i < 2; ++i) {
 			MenuBtn[i].Update();
 			MenuBtn[i].Render();
 		}
@@ -214,7 +140,7 @@ void Background::Render(const Player& player)
 				spawnTimer = 1.0f;
 			}
 		}
-	} // end if player win
+	}
 }
 
 void Background::Unload()
@@ -222,28 +148,21 @@ void Background::Unload()
 	for (size_t i = 0; i < Images.size(); ++i) {
 		Images[i].Free();
 	}
-
-	for (size_t i = 0; i < BgObj.size(); ++i) {
-		BgObj[i].Free();
-	}
-
 	MenuBtn.clear();
 }
 void Background::LerpBackgroundColor(void)
 {
 	static float t = 0;
-	static const float LerpFactor{ 0.000005f }; // per t increment
-	static SceneType nextScene = SceneType::SunSet;
-	LerpDestination = SceneColors[static_cast<int>(nextScene)];
+	static SceneType Identifier = SceneType::Noon;
+	static Color Destination = SceneColors[static_cast<int>(Identifier)];
 
-	if (Scene == LerpDestination) {
-		++nextScene;
-		++CurrentScene;
-
-		LerpDestination = SceneColors[static_cast<int>(nextScene)];
+	if (Scene == Destination) {
+		++Identifier;
+		Destination = SceneColors[static_cast<int>(Identifier)];
 		t = 0;
 	}
-	Scene = Color::Lerp(Scene, LerpDestination, t);
+	Scene = Color::Lerp(Scene, Destination, t);
+	static const float LerpFactor{ 0.000005f };
 	t += LerpFactor;
 }
 

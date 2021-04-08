@@ -22,12 +22,10 @@ rights reserved.
  */
  /******************************************************************************/
 #include "LevelSystem.h"
-#include "Constants.h"
-#include "GameStateManager.h"
-#include "Globals.h"
-
 #include <iostream>
+#include "Constants.h"
 #include <fstream>
+#include "GameStateManager.h"
 
 const int LevelMax{ 9 };
 LevelSystem::LevelSystem() : maxLevel{LevelMax}, key{ 1 }{
@@ -48,12 +46,12 @@ void LevelSystem::Init()
 		File << 1 << std::endl;
 		key = 1;
 		File.close();
-		//std::cout << "\nFailed to open key file, A new file with '1' will be created\n";
+		std::cout << "\nFailed to open key file, A new file with '1' will be created\n";
 	}
 	else {
 		File >> key;
 		File.close();
-		//std::cout << "\nKey file opened successfully, key is: " << key << std::endl << std::endl;
+		std::cout << "\nKey file opened successfully, key is: " << key << std::endl << std::endl;
 	}
 }
 
@@ -61,7 +59,7 @@ void LevelSystem::UnlockNext()
 {	
 	if (key < LevelMax && GAMEPLAY_MISC::Level == key) {
 		++key;
-		//std::cout << "Level: " << key << " unlocked!\n";
+		std::cout << "Level: " << key << " unlocked!\n";
 	}
 }
 
@@ -89,7 +87,7 @@ void LevelSystem::SaveKeyToFile(void)
 	if (File.is_open()) {
 		File << key << std::endl;
 		File.close();
-		//std::cout << "\nKey successfully saved\n";
+		std::cout << "\nKey successfully saved\n";
 	}
 }
 

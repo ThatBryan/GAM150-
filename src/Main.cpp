@@ -12,17 +12,16 @@ rights reserved.
  /******************************************************************************/
 
 #include "AEEngine.h"
+#include <iostream>
 #include "Image.h"
+#include <ctime>
 #include "Utilities.h"
 #include "Graphics.h"
 #include "Tiles.h"
 #include "Constants.h"
 #include "GameStateManager.h"
 #include "MainMenu.h"
-#include "Globals.h"
 #define _CRTDBG_MAP_ALLOC
-#include <iostream>
-#include <ctime>
 #include <cstdlib>
 #include <crtdbg.h>
 // ---------------------------------------------------------------------------
