@@ -27,7 +27,6 @@ namespace MainMenu
 	void StartGame();
 	void QuitGame();
 
-	inline void placeholder(void) { std::cout << "Feature comming soon!" << std::endl; };
 	inline void LockedLevel(void) { std::cout << "Level is locked!\n"; }
 
 	void EnemyMovement(void);

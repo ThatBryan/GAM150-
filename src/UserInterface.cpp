@@ -107,10 +107,11 @@ void UI::PausedInit()
 	ScreenMid = Utils::GetScreenMiddle();
 
 	const size_t btnCount{6};
-	const float BtnHeight{ 50.0f }, BtnWidth{ 150.0f };
+	const float BtnHeight{ 50.0f }, BtnWidth{ 150.0f }, BtnTextScale{ 0.45f };
 	static const float WindHeight{ static_cast<float>(AEGetWindowHeight()) };
 	for (size_t i = 0; i < btnCount; ++i) {
-		PausedBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.45f));
+		PausedBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtnTextScale));
+		PausedBtn[i].RandomizeAllStateColor();
 	}
 	PausedBtn[0].Set_Callback(Utils::TogglePause);
 	PausedBtn[0].Set_Text("Resume");

@@ -60,7 +60,7 @@ void GameStateManagerUpdate()
 		GameStateInit = Splash::Init;
 		GameStateUpdate = Splash::Update;
 		GameStateDraw = Splash::Render;
-		GameStateFree = GameStatePlaceholder;
+		GameStateFree = EmptyFunction;
 		GameStateUnload = Splash::Unload;
 		break;
 
@@ -69,7 +69,7 @@ void GameStateManagerUpdate()
 		GameStateInit = MainMenu::Init;
 		GameStateUpdate = MainMenu::Update;
 		GameStateDraw = MainMenu::Render;
-		GameStateFree = GameStatePlaceholder;
+		GameStateFree = EmptyFunction;
 		GameStateUnload = MainMenu::Unload;
 		break;
 
@@ -95,7 +95,7 @@ void GameStateManagerUpdate()
 		GameStateInit = MainMenu::Init;
 		GameStateUpdate = MainMenu::Update;
 		GameStateDraw = MainMenu::Render;
-		GameStateFree = GameStatePlaceholder;
+		GameStateFree = EmptyFunction;
 		GameStateUnload = MainMenu::Unload;
 		printf("FATAL ERROR! Game state will be set to Main menu\n");
 	}

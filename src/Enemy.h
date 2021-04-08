@@ -49,7 +49,7 @@ private:
 	void Bat_Movement(f32 maxX);
 	void Squirrel_Movement(f32 maxX);
 	void Slime_Movement(f32 maxX);
-	void DecrementAlpha(void);
+	void DecreaseAlpha(void);
 
 public:
 	Enemies(AEGfxTexture* filepath, AEGfxVertexList* mesh, const f32 width, const f32 height);

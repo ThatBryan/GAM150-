@@ -143,7 +143,7 @@ void Background::Update()
 	}
 }
 
-void Background::Render(Player& player)
+void Background::Render(const Player& player)
 {
 	static const float CloudAlpha{ 100.0f };
 	for (size_t i = 0; i < LastCloudIdx; ++i) {
@@ -180,19 +180,24 @@ void Background::Render(Player& player)
 			Utils::TogglePause();
 		Images[BackgroundIndex::Victory].Draw_Texture(50.0f);
 		text.Draw_Wrapped(text.pos);
-		GAMEPLAY_MISC::Level == 9 ? text.SetText(const_cast<s8*>("Congratulations!!\n you beat the game!")) : text.SetText(const_cast<s8*>("YOU WIN"));
+
+		GAMEPLAY_MISC::Level == 9 ? text.SetText(const_cast<s8*>("Congratulations!! you beat the game!")) 
+								  : text.SetText(const_cast<s8*>("YOU WIN"));
+		
 		text.Draw_Wrapped({ text.pos.x, text.pos.y - 50.0f });
 		text.SetText("YOUR SCORE: ");
 		text.Draw_Wrapped({ text.pos.x, text.pos.y - 100.0f });
 		
-		GAMEPLAY_MISC::player_score = (GAMEPLAY_MISC::app_max_time - GAMEPLAY_MISC::app_time) * GAMEPLAY_MISC::app_score;
+		GAMEPLAY_MISC::player_score = (GAMEPLAY_MISC::app_max_time - GAMEPLAY_MISC::app_time) * GAMEPLAY_MISC::app_score; /////////////////////////////////////
 		
 		ScoreStr = std::to_string(GAMEPLAY_MISC::player_score);
 		ScoreStr.resize(5);
 		text.SetText(ScoreStr);
 
 		int btnNum; // Only update one button at level 9 since last level.
-		GAMEPLAY_MISC::Level == 9 ? btnNum = 1 : btnNum = 2;
+
+		GAMEPLAY_MISC::Level == 9 ? btnNum = 1 
+								  : btnNum = 2;
 
 		for (int i = 0; i < btnNum; ++i) {
 			MenuBtn[i].Update();

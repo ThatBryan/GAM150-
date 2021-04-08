@@ -145,7 +145,7 @@ void Enemies::Slime_Movement(f32 maxX)
 		counter = Enemies::slime_counter;
 	}
 }
-void Enemies::DecrementAlpha(void)
+void Enemies::DecreaseAlpha(void)
 {
 	static const float Timer{ alphaTimer };
 	static const float Alpha{ 255.0f };
@@ -163,7 +163,7 @@ void Enemies::Update()
 	Update_Position();
 	if(type != EnemyType::Bat)
 		ApplyGravity();
-	DecrementAlpha();
+	DecreaseAlpha();
 }
 
 void Enemies::Draw()

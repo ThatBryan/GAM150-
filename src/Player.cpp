@@ -34,7 +34,7 @@ rights reserved.
 #include <array>
 #include <iostream>
 
-extern std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest;
+extern std::array <AudioClass, static_cast<int>(AudioID::Max)> AudioArray;
 extern AudioManager Audio;
 extern LevelSystem LevelSys;
 
@@ -123,27 +123,26 @@ void Player::Unload(void) {
 }
 void Player::Update_Position(void)
 {
-
-	if (!jump && !gravity && (AEInputCheckReleased(AEVK_SPACE))){
-		if (!GAMEPLAY_MISC::DEBUG_MODE) {
-			jump = true;
-			Audio.playAudio(soundTest[static_cast<int>(AudioID::Jump)], AudioID::Jump);
+	if (!jump && !gravity){
+		if (AEInputCheckCurr(AEVK_SPACE)){
+			chargedjump_counter -= g_dt;
+			// Prevent the particles from spawning when doing a regular jump
+			if (chargedjump_counter < (0.8f * PLAYER_CONST::CHARGEDJUMP_COUNTER)) {
+				AEVec2 Min = AEVec2Sub(collider.bottom.pos, AEVec2{ sprite.width, 25.0f });
+				AEVec2 Max = AEVec2Add(collider.bottom.pos, AEVec2{ sprite.width, 25.0f });
+				AEVec2 Destination = AEVec2Add(sprite.pos, AEVec2{ 0, sprite.height / 2.0f });
+				Particles::CreateReverseParticles(Destination, Min, Max, Color{ 255.0f, 255.0f, 0, 255.0f }, 1, Utils::RandomRangeFloat(10.0f, 100.0f), 50.0f, 3.0f, 1.0f);
+			}
 		}
-	}
-	else if (AEInputCheckCurr(AEVK_SPACE) && !chargedjump && !gravity)
-	{
-		chargedjump_counter -= g_dt;
-		AEVec2 Min = AEVec2Sub(collider.bottom.pos, AEVec2{ sprite.width, 25.0f });
-		AEVec2 Max = AEVec2Add(collider.bottom.pos, AEVec2{ sprite.width, 25.0f });
-		AEVec2 Destination = AEVec2Add(sprite.pos, AEVec2{ 0, sprite.height / 2.0f });
-		Particles::CreateReverseParticles(Destination, Min, Max, Color{ 255.0f, 255.0f, 0, 255.0f }, 1, Utils::RandomRangeFloat(10.0f, 100.0f), 50.0f, 3.0f, 1.0f);
-	}
-
-	if (AEInputCheckReleased(AEVK_SPACE) && chargedjump_counter < 0)
-	{
-		chargedjump = true;
-		chargedjump_counter = 1.0f;
-	}
+		else if (AEInputCheckReleased(AEVK_SPACE)){
+			jump = true;
+			Audio.playAudio(AudioArray[static_cast<int>(AudioID::Jump)], AudioID::Jump);
+		}
+		if (chargedjump_counter < 0.0f) {
+			chargedjump = true;
+			chargedjump_counter = PLAYER_CONST::CHARGEDJUMP_COUNTER;
+		}
+	} // end if !jump && !gravity
 	if (chargedjump)
 	{
 		jump = false;
@@ -161,6 +160,7 @@ void Player::Update_Position(void)
 	}
 	if (jump)
 	{
+		chargedjump_counter = PLAYER_CONST::CHARGEDJUMP_COUNTER;
 		if (sprite.pos.y + sprite.height / 2 <= maxY)
 		{
 			sprite.pos.y -= jumpvel;
@@ -178,7 +178,6 @@ void Player::Update_Position(void)
 		jumpvel = PLAYER_CONST::JUMPVEL;
 		chargedjumpvel = PLAYER_CONST::CHARGED_JUMPVEL;
 	}
-
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
 	{
 		if (sprite.pos.x + sprite.width / 2 <= maxX)
@@ -188,9 +187,7 @@ void Player::Update_Position(void)
 			sprite.ReflectAboutYAxis();
 			direction = SpriteDirection::Right;
 		}
-
 	}
-
 	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
 	{
 		if (sprite.pos.x >= 0 - sprite.width / 2.0f)
@@ -203,6 +200,7 @@ void Player::Update_Position(void)
 
 	}
 
+	// Debug movements
 	if (GAMEPLAY_MISC::DEBUG_MODE) {
 		AEVec2 Mouse = Utils::GetMousePos();
 		if (AETestPointToRect(&Mouse, &sprite.pos, sprite.width, sprite.height))

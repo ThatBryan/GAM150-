@@ -72,6 +72,7 @@ namespace PLAYER_CONST {
 namespace TILE_CONST {
 	const float COLLAPSE_DELAY = 0.5f;
 	const float COLLAPSE_SPEED = 250.0f;
+	const float GRASS_SPRITE_HEIGHT = 32.0f;
 }
 namespace GAMEPLAY_CONST {
 	const float BASE_GRAVITY_MULTIPLIER = 2.0f;

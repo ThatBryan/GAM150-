@@ -27,12 +27,12 @@ rights reserved.
 #include <iostream>
 
 AudioManager Audio;
-std::array <AudioClass, static_cast<int>(AudioID::Max)> soundTest{ NULL };
+std::array <AudioClass, static_cast<int>(AudioID::Max)> AudioArray{ NULL };
 AudioData soundData[static_cast<int>(AudioID::Max)];
-static bool globalMute;
-// Default ctor.
+bool AudioManager::globalMute = false;
+
 AudioData::AudioData() : ID{ AudioID::None }, channel{ nullptr }, volume{ 1.0f }, mute{ false } {
-	globalMute = false;
+	
 }
 
 AudioManager::AudioManager() {
@@ -75,12 +75,12 @@ void AudioManager::update() {
 }
 
 void AudioManager::loadAsset(void) {
-	Audio.createAudio(&soundTest[static_cast<int>(AudioID::Jump)], FP::jumpSFX);
-	Audio.createAudio(&soundTest[static_cast<int>(AudioID::BGM)], FP::GameplayBGM);
+	Audio.createAudio(&AudioArray[static_cast<int>(AudioID::Jump)], FP::jumpSFX);
+	Audio.createAudio(&AudioArray[static_cast<int>(AudioID::BGM)], FP::GameplayBGM);
 }
 void AudioManager::unloadAsset(void) {
-	for (int i = 0; i < soundTest.size(); i++) {
-		soundTest[i]->release();
+	for (int i = 0; i < AudioArray.size(); i++) {
+		AudioArray[i]->release();
 	}
 }
 void AudioManager::SetVolume(AudioID ID, float volume) {
