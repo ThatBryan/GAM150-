@@ -4,6 +4,7 @@
 #include "Constants.h"
 #include "Graphics.h"
 #include "Utilities.h"
+#include "Username.h"
 
 #include <iostream>
 #include <algorithm>
@@ -16,12 +17,21 @@ static AEVec2 ScreenMid;
 
 static std::vector<Leaders> L(Leaders::MaxLeaders);
 static const char* LeaderBoardFile{ "./Assets/Leaderboard/leaderboard.txt" };
+static const char* UsernameFile{ "./Assets/Username/username.txt" };
 static Graphics::Text stringBuffer;
+
+static std::string username;
+Leaders(user);
 
 void Leaderboard::Init()
 {
 	ScreenMid = Utils::GetScreenMiddle();
 	Leaders::ReadFromFile(LeaderBoardFile);
+	Username::ReadFromFile(UsernameFile);
+
+
+	
+	
 }
 
 void Leaderboard::Update()
@@ -30,6 +40,14 @@ void Leaderboard::Update()
 		MainMenu::SwitchToMainMenu();
 	Leaders::SortLeaders(L);
 	Leaderboard::Render();
+
+	/*user.name = username;
+	user.score = GAMEPLAY_MISC::player_score;
+	std::cout << user.name << std::endl << GAMEPLAY_MISC::player_score;*/
+
+
+
+	
 }
 
 void Leaderboard::Render()
@@ -77,7 +95,6 @@ Leaders::~Leaders()
 void Leaders::ReadFromFile(const char* filePath)
 {
 	std::ifstream ifs(filePath);
-	std::string data;
 	std::string name;
 	float score;
 	int count = 0;
@@ -140,7 +157,28 @@ void Leaders::PrintContainer()
 	}
 }
 
+void Leaders::GetUserInfo(Player& player)
+{
+	if (player.GetLoseStatus())
+	{
+		std::cout << player.GetScore();
+	}
+}
 
+
+void Username::ReadFromFile(const char* filePath)
+{
+	std::ifstream ifs(filePath);
+	if (ifs.is_open()) {
+		// Read values from a text file into your struct. Sample code available below if you get stuck
+
+		while (!ifs.eof())
+		{
+			ifs >> username;
+		}
+		ifs.close();
+	}
+}
 
 
 

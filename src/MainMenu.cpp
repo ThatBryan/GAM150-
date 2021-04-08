@@ -48,7 +48,7 @@ rights reserved.
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> AudioArray;
 
-static std::vector <Image> Images;
+static std::vector <Image> BgOverlayArr;
 static std::vector<Button> MenuBtn, LevelBtn, CreditBtn, SettingsBtn, UsernameBtn;
 static std::vector<Enemies> enemy;
 static std::vector<Tiles> tiles;
@@ -187,10 +187,10 @@ void MainMenu::Unload(void)
 	Player::Unload();
 	AudioManager::unloadAsset();
 	Particles::Unload();
-	for (size_t i = 0; i < Images.size(); ++i) {
-		Images[i].Free();
+	for (size_t i = 0; i < BgOverlayArr.size(); ++i) {
+		BgOverlayArr[i].Free();
 	}
-	Images.clear();
+	BgOverlayArr.clear();
 	enemy.clear();
 	MenuBtn.clear();
 	player.clear();

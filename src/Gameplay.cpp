@@ -99,11 +99,12 @@ void Gameplay::Init(void)
 	}
 	tileManager.push_back(&tilemap);
 	UI::Init();
-	ShowCursor(false);
+	//ShowCursor(false);
 }
 
 void Gameplay::Update()
 {
+	Utils::CursorManager();
 	Background::Update();
 	if (!GAMEPLAY_MISC::PAUSED) {
 		GAMEPLAY_MISC::app_time += g_dt;
