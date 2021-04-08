@@ -13,4 +13,5 @@ namespace Username {
 
 	void ReadUsernameInput(void);
 	static void WriteToFile(const char* filepath);
+	static void ReadFromFile(const char* filepath);
 }
