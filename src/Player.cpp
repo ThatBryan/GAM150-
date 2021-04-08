@@ -91,7 +91,7 @@ void Player::Render(void)
 	else if (Mesh::PlayerCurr == Mesh::Anim2)
 	{
 		sprite.Set_Texture(playerMovTex);
-		sprite.Draw_Texture(20, PLAYER_CONST::PLAYER_RUN_OFFSET_X, Mesh::PlayerCurr, 255.0f);
+		sprite.Draw_Texture(5, PLAYER_CONST::PLAYER_RUN_OFFSET_X, Mesh::PlayerCurr, 255.0f);
 	}
 	UI::DisplayLife(hp.current);
 
