@@ -50,8 +50,6 @@ static Graphics::Text text;
 static AEVec2 Midpt;
 static Color Scene, LerpDestination;
 
-static std::string ScoreStr;
-
 enum class SceneType { Day = 0, SunSet, Night, Max};
 static SceneType CurrentScene;
 
@@ -187,12 +185,7 @@ void Background::Render(const Player& player)
 		text.Draw_Wrapped({ text.pos.x, text.pos.y - 50.0f });
 		text.SetText("YOUR SCORE: ");
 		text.Draw_Wrapped({ text.pos.x, text.pos.y - 100.0f });
-		
-		GAMEPLAY_MISC::player_score = (GAMEPLAY_MISC::app_max_time - GAMEPLAY_MISC::app_time) * GAMEPLAY_MISC::app_score; /////////////////////////////////////
-		
-		ScoreStr = std::to_string(GAMEPLAY_MISC::player_score);
-		ScoreStr.resize(5);
-		text.SetText(ScoreStr);
+		text.SetText(std::to_string(player.GetScore()));
 
 		int btnNum; // Only update one button at level 9 since last level.
 

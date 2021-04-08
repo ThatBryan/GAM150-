@@ -21,13 +21,17 @@ static const char* UsernameFile{ "./Assets/Username/username.txt" };
 static Graphics::Text stringBuffer;
 
 static std::string username;
+Leaders(user);
 
 void Leaderboard::Init()
 {
 	ScreenMid = Utils::GetScreenMiddle();
 	Leaders::ReadFromFile(LeaderBoardFile);
 	Username::ReadFromFile(UsernameFile);
-	std::cout << username;
+
+
+	
+	
 }
 
 void Leaderboard::Update()
@@ -36,6 +40,14 @@ void Leaderboard::Update()
 		MainMenu::SwitchToMainMenu();
 	Leaders::SortLeaders(L);
 	Leaderboard::Render();
+
+	/*user.name = username;
+	user.score = GAMEPLAY_MISC::player_score;
+	std::cout << user.name << std::endl << GAMEPLAY_MISC::player_score;*/
+
+
+
+	
 }
 
 void Leaderboard::Render()
@@ -142,6 +154,14 @@ void Leaders::PrintContainer()
 
 	for (int i = 0; i < Leaders::MaxLeaders; ++i) {
 		std::cout << "name: " << L[i].name << " Score: " << L[i].score << std::endl;
+	}
+}
+
+void Leaders::GetUserInfo(Player& player)
+{
+	if (player.GetLoseStatus())
+	{
+		std::cout << player.GetScore();
 	}
 }
 
