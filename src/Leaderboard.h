@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "Player.h"
 
 struct Leaders {
 	static const int MaxLength{ 20 };
@@ -20,6 +21,7 @@ struct Leaders {
 	static void InsertNewLeader(const Leaders& newLeader);
 	// For debugging to check the container.
 	static void PrintContainer();
+	void GetUserInfo(Player& player);
 };
 
 

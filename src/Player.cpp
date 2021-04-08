@@ -48,7 +48,7 @@ float Player::gravityStrength = 20.0f;
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::PlayerCurr, width, height), lose{ false },
 active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL },
 hp(), direction{ SpriteDirection::Right }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL }, gravityMultiplier{ GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER },
-chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider()
+chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider(), playerscore { 0 }
 {
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
@@ -289,6 +289,7 @@ void Player::SetPlayerWin(void)
 	if (!win) {
 		LevelSys.UnlockNext();
 		win = true;
+		playerscore = (GAMEPLAY_MISC::app_max_time - GAMEPLAY_MISC::app_time)* GAMEPLAY_MISC::app_score;
 	}
 }
 
