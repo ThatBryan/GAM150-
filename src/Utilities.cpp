@@ -27,6 +27,7 @@ rights reserved.
 
 #include <iostream>
 #include <fstream>
+#include "Utilities.h"
 
 int Utils::RandomRangeInt(const s32 lowerBound, const s32 upperBound)
 {
@@ -134,12 +135,6 @@ void Utils::TogglePause(void)
 
 	if (!GAMEPLAY_MISC::PAUSED) {
 		GAMEPLAY_MISC::DISPLAY_QUIT_UI = false;
-		ShowCursor(false);
-		std::cout << "Cursor disabled\n";
-	}
-	if (GAMEPLAY_MISC::PAUSED) {
-		ShowCursor(true);
-		std::cout << "Cursor enabled\n";
 	}
 }
 
@@ -170,6 +165,23 @@ void Utils::ToggleDebugMode(void)
 	}
 	if (!GAMEPLAY_MISC::DEBUG_MODE) {
 		GAMEPLAY_MISC::DISABLE_COLLISION = false;
+	}
+}
+
+void Utils::CursorManager()
+{
+	static bool CursorDisplay{ true };
+
+	if (GAMEPLAY_MISC::PAUSED && CursorDisplay == false) {
+			std::cout << "Show cursor\n";
+			ShowCursor(true);
+			CursorDisplay = true;
+	}
+
+	if (!GAMEPLAY_MISC::PAUSED && CursorDisplay == true) {
+		std::cout << "Hide cursor \n";
+		ShowCursor(false);
+		CursorDisplay = false;
 	}
 }
 
