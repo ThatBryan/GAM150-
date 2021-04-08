@@ -151,6 +151,8 @@ void Gameplay::Render()
 	Particles::Render();
 	UI::Update();
 	Leaderboard::GetUserInfo(Jumperman);
+	Leaders::PrintContainer();
+
 }
 
 void Gameplay::Load()

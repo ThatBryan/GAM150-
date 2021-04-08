@@ -28,6 +28,7 @@ void Leaderboard::Init()
 {
 	ScreenMid = Utils::GetScreenMiddle();
 	Leaders::ReadFromFile(LeaderBoardFile);
+	
 	//Leaderboard::GetUserInfo();
 	//Username::ReadFromFile(UsernameFile);
 	
@@ -40,6 +41,7 @@ void Leaderboard::Update()
 	Leaders::SortLeaders(L);
 	Leaderboard::Render();
 
+	Leaders::InsertNewLeader(user);
 	
 	
 }
@@ -107,10 +109,8 @@ void Leaderboard::GetUserInfo(const Player& player)
 		user.score = stoi(userscore);
 		user.name = userscore;
 
-
-
-		std::cout << "username:    " << username << std::endl;
-		std::cout << "score:    " << user.score << std::endl;
+		/*std::cout << "username:    " << username << std::endl;
+		std::cout << "score:    " << user.score << std::endl;*/
 	}
 	
 	//std::ifstream ifs("./Assets/Username/username.txt");
@@ -135,7 +135,6 @@ void Leaderboard::GetUserInfo(const Player& player)
 	//	ifs.close();
 	//}
 }
-//
 
 
 Leaders::Leaders() : score{0.0f}, name()
@@ -198,6 +197,16 @@ void Leaders::InsertNewLeader(const Leaders& newLeader)
 	UNREFERENCED_PARAMETER(board);
 	UNREFERENCED_PARAMETER(newLeader);
 
+
+	for (int i = 0; i < Leaders::MaxLeaders; ++i)
+	{
+		if (user.score > L[i].score)
+		{
+			L.push_back(user);
+		}
+
+	}
+	
 	// Call SortLeaders after modifying to reorganize the container from new highest to lowest.
 	// Might want to call PrintContainer to check.
 }
