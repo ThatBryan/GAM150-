@@ -27,10 +27,8 @@ void Leaderboard::Init()
 {
 	ScreenMid = Utils::GetScreenMiddle();
 	Leaders::ReadFromFile(LeaderBoardFile);
-	Username::ReadFromFile(UsernameFile);
-
-
-	
+	Leaderboard::GetUserInfo();
+	//Username::ReadFromFile(UsernameFile);
 	
 }
 
@@ -41,12 +39,7 @@ void Leaderboard::Update()
 	Leaders::SortLeaders(L);
 	Leaderboard::Render();
 
-	/*user.name = username;
-	user.score = GAMEPLAY_MISC::player_score;
-	std::cout << user.name << std::endl << GAMEPLAY_MISC::player_score;*/
-
-
-
+	
 	
 }
 
@@ -82,6 +75,56 @@ void Leaderboard::Render()
 void Leaderboard::Unload()
 {
 	stringBuffer.ClearBuffer();
+}
+
+void Leaderboard::GetUserInfo(void)
+{
+	
+	std::ifstream ifs(UsernameFile);
+	static std::string line;
+	static std::string data;
+	std::string word = "username:";
+	size_t pos = 0;
+	
+
+	if (ifs.is_open()) {
+
+
+		getline(ifs, line);
+
+		pos = line.find(word);
+		if (pos != std::string::npos)
+		{
+			pos += word.length();
+			username = line.substr(pos, line.size() - 1);
+			std::cout << "username:    " << username << std::endl;
+			
+		}
+
+		ifs.close();
+	}
+
+	//std::ifstream ifs("./Assets/Username/username.txt");
+	//std::string line;
+	//std::string word = "score:" ;
+	//size_t pos;
+
+	//if (ifs.is_open()) {
+	//	// Read values from a text file into your struct. Sample code available below if you get stuck
+
+	//	while (!ifs.eof())
+	//	{
+	//		ifs >> line;
+	//	}
+	//	if (line.find(word) != std::string::npos)
+	//	{
+	//		pos = line.find(word);
+	//		std::cout << "pos" << pos;
+	//	}
+	//	
+	//	
+	//	ifs.close();
+	//}
 }
 
 Leaders::Leaders() : score{0.0f}, name()
@@ -157,28 +200,22 @@ void Leaders::PrintContainer()
 	}
 }
 
-void Leaders::GetUserInfo(Player& player)
-{
-	if (player.GetLoseStatus())
-	{
-		std::cout << player.GetScore();
-	}
-}
 
 
-void Username::ReadFromFile(const char* filePath)
-{
-	std::ifstream ifs(filePath);
-	if (ifs.is_open()) {
-		// Read values from a text file into your struct. Sample code available below if you get stuck
 
-		while (!ifs.eof())
-		{
-			ifs >> username;
-		}
-		ifs.close();
-	}
-}
+//void Username::ReadFromFile(const char* filePath)
+//{
+//	std::ifstream ifs(filePath);
+//	if (ifs.is_open()) {
+//		// Read values from a text file into your struct. Sample code available below if you get stuck
+//
+//		while (!ifs.eof())
+//		{
+//			ifs >> username;
+//		}
+//		ifs.close();
+//	}
+//}
 
 
 

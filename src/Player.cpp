@@ -33,6 +33,9 @@ rights reserved.
 
 #include <array>
 #include <iostream>
+#include <fstream>
+#include <sstream>   
+#include <cstring>
 
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> AudioArray;
 extern AudioManager Audio;
@@ -44,6 +47,7 @@ AEGfxTexture* Player::playerTex{ nullptr };
 AEGfxTexture* Player::playerMovTex{ nullptr };
 AEGfxTexture* Player::playerParticle{ nullptr };
 float Player::gravityStrength = 20.0f;
+static const char* UsernameFile{ "./Assets/Username/username.txt" };
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::PlayerCurr, width, height), lose{ false },
 active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL },
@@ -59,7 +63,7 @@ chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider(), playerscor
 Player::Player() : lose{ false }, active{ true }, gravity{ false }, jump{ false }, chargedjump{ false },
 win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL },
 hp(), direction{ SpriteDirection::Right }, gravityMultiplier{ GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER }, chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }
-, collider(){
+, collider(), playerscore{ 0 }{
 
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
@@ -286,10 +290,51 @@ void Player::GravityManager(void)
 
 void Player::SetPlayerWin(void)
 {
+	static std::string str;
 	if (!win) {
 		LevelSys.UnlockNext();
 		win = true;
-		playerscore = (GAMEPLAY_MISC::app_max_time - GAMEPLAY_MISC::app_time)* GAMEPLAY_MISC::app_score;
+
+		playerscore = (GAMEPLAY_MISC::app_max_time - GAMEPLAY_MISC::app_time) * GAMEPLAY_MISC::app_score;
+
+
+		std::ifstream ifs(UsernameFile);
+		static std::string line;
+		static std::string data;
+		std::string word = "score:";
+		size_t pos = 0;
+		std::string replace = std::to_string(playerscore);
+
+		if (ifs.is_open()) {
+
+
+			getline(ifs, line);
+
+			pos = line.find(word);
+			if (pos != std::string::npos)
+			{
+				pos += word.length();
+				line.replace(pos, replace.length(), std::to_string(playerscore));
+			}
+			ifs.close();
+		}
+
+		std::ofstream ofs(UsernameFile);
+
+		if (ofs.is_open())
+		{
+			ofs << line;
+			ofs.close();
+		}
+
+		/*std::ofstream ofs;
+		ofs.open(UsernameFile, std::ios_base::app);
+
+		if (ofs.is_open()) {
+			ofs << "score:" << playerscore;
+			ofs.close();
+		}*/
+		
 	}
 }
 

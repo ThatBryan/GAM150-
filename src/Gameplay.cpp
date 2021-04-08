@@ -27,6 +27,7 @@ rights reserved.
 #include "Particles.h"
 #include "MainMenu.h"
 #include "Globals.h"
+#include "Leaderboard.h"
 
 #include <iostream>
 #include <vector>
@@ -259,5 +260,4 @@ void Gameplay::UpdateManager()
 		Jumperman.CheckEnemyCollision(enemies);
 	}
 	Particles::Update();
-
 }
