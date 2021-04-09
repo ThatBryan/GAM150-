@@ -170,10 +170,12 @@ void Enemies::Draw()
 {
 	if (active)
 	{
-		if (type != EnemyType::Bat)
-			sprite.Draw_Texture(alpha);
-		else
+		if (type == EnemyType::Bat)
 			sprite.Draw_Texture(20, bat_anim_offset_x, Mesh::BatAnim, alpha);
+		else if(type == EnemyType::Slime)
+			sprite.Draw_Texture(10, slime_anim_offset_x, Mesh::SlimeAnim, alpha);
+		else
+			sprite.Draw_Texture(alpha);
 		if (GAMEPLAY_MISC::DEBUG_MODE) {
 			collider.Draw();
 		}
@@ -204,7 +206,7 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 	case EnemyType::Slime:
 		counter = Enemies::slime_counter;
 		vel = Enemies::slime_speed;
-		currMesh = Mesh::Rect;
+		currMesh = Mesh::SlimeAnim;
 		break;
 	default:
 		std::cout << "Invalid enemy type!\n";
@@ -264,7 +266,7 @@ void Enemies::LoadTex(void) {
 		const char* pTex = nullptr;
 		switch (i) {
 		case EnemyType::Slime:
-			pTex = FP::WaterSlimeSprite;
+			pTex = FP::SlimeSpriteSheet;
 			break;
 		case EnemyType::Bat:
 			pTex = FP::BatSpriteSheet;
