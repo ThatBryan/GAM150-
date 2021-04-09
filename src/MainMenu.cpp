@@ -352,7 +352,7 @@ void LevelSelection::Init(void)
 
 void MainMenu::SwitchToLevelSelection(void)
 {
-	for (unsigned short i = 0; i < LevelSys.GetKey() + 1; ++i) { //eg: Key = 3. so Level 3 is unlocked. 3 + 1 = Loop Indexing up to 3
+	for (unsigned short i = 0; i < LevelSys.GetMaxLevel(); ++i) { //eg: Key = 3. so Level 3 is unlocked. 3 + 1 = Loop Indexing up to 3
 		LevelBtn[i].Set_Callback(LevelSystem::SetLevel);
 		
 		std::string LevelCount{ "Level " + std::to_string(i) };
