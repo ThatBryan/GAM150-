@@ -7,10 +7,9 @@ struct Leaders {
 	static const int MaxLength{ 20 };
 	static const int MaxLeaders{ 5 };
 	std::string name;
-	float score;
+	int score;
 
 	Leaders();
-	~Leaders();
 	// Call during init.
 	static void ReadFromFile(const char* filePath );
 	static void WriteToFile(const char* filePath);
@@ -26,8 +25,10 @@ struct Leaders {
 class Player;
 namespace Leaderboard{
 	void Init();
+	void Load();
 	void Update();
+	void Save();
 	void Render();
-	void Unload();
 	void GetUserInfo(const Player& player);
+	Leaders& GetLastPlacement();
 }

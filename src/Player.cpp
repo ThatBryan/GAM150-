@@ -52,7 +52,7 @@ static const char* UsernameFile{ "./Assets/Username/username.txt" };
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::PlayerCurr, width, height), lose{ false },
 active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL },
 hp(), direction{ SpriteDirection::Right }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL }, gravityMultiplier{ GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER },
-chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider(), playerscore { 0 }
+chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider(), playerscore { 0 }, playername{}
 {
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
@@ -296,26 +296,27 @@ void Player::SetPlayerWin(void)
 		LevelSys.UnlockNext();
 		win = true;
 
-		GAMEPLAY_MISC::player_score = (GAMEPLAY_MISC::app_max_time - GAMEPLAY_MISC::app_time) * GAMEPLAY_MISC::app_score;
+		GAMEPLAY_MISC::player_score = static_cast<int>((GAMEPLAY_MISC::app_max_time - GAMEPLAY_MISC::app_time) * GAMEPLAY_MISC::app_score);
 		playerscore = GAMEPLAY_MISC::player_score;
 
 
 		std::ifstream ifs(UsernameFile);
 		static std::string line;
 		static std::string data;
-		std::string word = "score:";
-		size_t pos = 0;
+		std::string word = "score:"; std::string word2 = "username:";
+		size_t pos = 0; size_t pos2 = 0;
 		std::string replace = std::to_string(playerscore);
 
 		if (ifs.is_open()) {
-
-
 			getline(ifs, line);
 
 			pos = line.find(word);
+			pos2 = line.find(word2);
 			if (pos != std::string::npos)
 			{
 				pos += word.length();
+				pos2 += word2.length();
+				playername = line.substr(pos2, line.size() - 1);
 				line.replace(pos, replace.length(), std::to_string(playerscore));
 			}
 			ifs.close();
@@ -328,15 +329,6 @@ void Player::SetPlayerWin(void)
 			ofs << line;
 			ofs.close();
 		}
-
-		/*std::ofstream ofs;
-		ofs.open(UsernameFile, std::ios_base::app);
-
-		if (ofs.is_open()) {
-			ofs << "score:" << playerscore;
-			ofs.close();
-		}*/
-		
 	}
 }
 

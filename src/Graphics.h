@@ -25,9 +25,10 @@ rights reserved.
 
 //https://htmlcolorcodes.com/
 
+
 struct Color
 {
-	public:
+
 	f32 r, g, b, alpha;
 	static const f32 RGBA_MAX;
 

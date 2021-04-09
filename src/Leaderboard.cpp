@@ -20,30 +20,30 @@ static std::vector<Leaders> L(Leaders::MaxLeaders);
 static const char* LeaderBoardFile{ "./Assets/Leaderboard/leaderboard.txt" };
 static const char* UsernameFile{ "./Assets/Username/username.txt" };
 static Graphics::Text stringBuffer;
-
-static std::string username; static std::string userscore;
+std::string username; static std::string userscore;
 Leaders(user);
 
 void Leaderboard::Init()
 {
 	ScreenMid = Utils::GetScreenMiddle();
+}
+
+void Leaderboard::Load()
+{
 	Leaders::ReadFromFile(LeaderBoardFile);
-	
-	//Leaderboard::GetUserInfo();
-	//Username::ReadFromFile(UsernameFile);
-	
+	Leaders::SortLeaders(L);
 }
 
 void Leaderboard::Update()
 {
 	if (AEInputCheckReleased(AEVK_ESCAPE))
 		MainMenu::SwitchToMainMenu();
-	Leaders::SortLeaders(L);
-	Leaderboard::Render();
+	Leaderboard::Render();	
+}
 
-	Leaders::InsertNewLeader(user);
-	
-	
+void Leaderboard::Save()
+{
+	Leaders::WriteToFile(LeaderBoardFile);
 }
 
 void Leaderboard::Render()
@@ -63,7 +63,7 @@ void Leaderboard::Render()
 	ScoreTxt.SetTextScale(1.0f);
 	ScoreTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 
-	for (size_t i = 0; i < Leaders::MaxLeaders; ++i)
+	for (size_t i = 0; i < L.size(); ++i)
 	{
 		NameTxt.SetText(L[i].name);
 		scoreStr = std::to_string(L[i].score);
@@ -75,14 +75,10 @@ void Leaderboard::Render()
 	}
 }
 
-void Leaderboard::Unload()
-{
-	stringBuffer.ClearBuffer();
-}
 
 void Leaderboard::GetUserInfo(const Player& player)
 {
-	
+	UNREFERENCED_PARAMETER(player);
 	std::ifstream ifs(UsernameFile);
 	static std::string line;
 	static std::string data;
@@ -107,49 +103,25 @@ void Leaderboard::GetUserInfo(const Player& player)
 		ifs.close();
 
 		user.score = stoi(userscore);
-		user.name = userscore;
+		user.name = username;
 
-		/*std::cout << "username:    " << username << std::endl;
-		std::cout << "score:    " << user.score << std::endl;*/
 	}
-	
-	//std::ifstream ifs("./Assets/Username/username.txt");
-	//std::string line;
-	//std::string word = "score:" ;
-	//size_t pos;
+}
 
-	//if (ifs.is_open()) {
-	//	// Read values from a text file into your struct. Sample code available below if you get stuck
-
-	//	while (!ifs.eof())
-	//	{
-	//		ifs >> line;
-	//	}
-	//	if (line.find(word) != std::string::npos)
-	//	{
-	//		pos = line.find(word);
-	//		std::cout << "pos" << pos;
-	//	}
-	//	
-	//	
-	//	ifs.close();
-	//}
+Leaders& Leaderboard::GetLastPlacement()
+{
+	return L.back();
 }
 
 
-Leaders::Leaders() : score{0.0f}, name()
+Leaders::Leaders() : score{0}, name()
 {
-}
 
-Leaders::~Leaders()
-{
-	Leaders::WriteToFile(LeaderBoardFile);
 }
 void Leaders::ReadFromFile(const char* filePath)
 {
 	std::ifstream ifs(filePath);
 	std::string name;
-	float score;
 	int count = 0;
 
 	if (ifs.is_open()) {
@@ -157,25 +129,32 @@ void Leaders::ReadFromFile(const char* filePath)
 
 		while (!ifs.eof())
 		{
-			ifs >> name >> score;
-	
-			L[count].name = name;
-			L[count].score = score;
-
+			if (count >= Leaders::MaxLeaders)
+				break;
+			ifs >> L[count].name >> L[count].score;
 			count++;
 		}
 		ifs.close();
 	}
+
+	Leaders::PrintContainer();
 }
 
 void Leaders::WriteToFile(const char* filePath)
 {
-	std::ifstream ifs;
-	ifs.open(filePath);
+	std::ofstream ofs;
+	
 
-	if (ifs.is_open()) {
+	ofs.open(filePath);
+
+	if (ofs.is_open()) {
 		// Write the values into text file.
-		ifs.close();
+		for (size_t i = 0; i < L.size(); ++i)
+		{
+			ofs << L[i].name << " " << L[i].score << std::endl;
+		}
+		
+		ofs.close();
 	}
 }
 
@@ -193,20 +172,12 @@ bool Leaders::Cmp_Scores(const Leaders& lhs, const Leaders& rhs)
 void Leaders::InsertNewLeader(const Leaders& newLeader)
 {
 	// Since score is sorted from highest to lowest. Add new leader to the tail of the vector.
-	Leaders& board = L.back();
-	UNREFERENCED_PARAMETER(board);
-	UNREFERENCED_PARAMETER(newLeader);
+	Leaders& kickout = L.back();
+	kickout = newLeader;
+	SortLeaders(L);
 
+	//Leaders::PrintContainer();
 
-	for (int i = 0; i < Leaders::MaxLeaders; ++i)
-	{
-		if (user.score > L[i].score)
-		{
-			L.push_back(user);
-		}
-
-	}
-	
 	// Call SortLeaders after modifying to reorganize the container from new highest to lowest.
 	// Might want to call PrintContainer to check.
 }
@@ -219,52 +190,3 @@ void Leaders::PrintContainer()
 		std::cout << "name: " << L[i].name << " Score: " << L[i].score << std::endl;
 	}
 }
-
-
-
-
-//void Username::ReadFromFile(const char* filePath)
-//{
-//	std::ifstream ifs(filePath);
-//	if (ifs.is_open()) {
-//		// Read values from a text file into your struct. Sample code available below if you get stuck
-//
-//		while (!ifs.eof())
-//		{
-//			ifs >> username;
-//		}
-//		ifs.close();
-//	}
-//}
-
-
-
-
-
-
-
-
-
-
-
-//void Leaders::ReadFromFile(const char* filePath)
-//{
-//	std::ifstream ifs;
-//
-//	ifs.open(filePath);
-//	if (ifs.is_open()) {
-//		unsigned int count = 0;
-//		while (!ifs.eof()) {
-//
-//			if (count > Leaders::MaxLeaders - 1)
-//				break;
-//			ifs >> L[count].name >> L[count].score;
-//			++count;
-//		}
-//		ifs.close();
-//	}
-//	Leaders::PrintContainer();
-//	//Manually call sort for sanity check (incase previously not sorted).
-//	Leaders::SortLeaders(L);
-// Leaders::PrintContainer();
-//}

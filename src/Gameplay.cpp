@@ -41,6 +41,7 @@ std::vector<Tiles> tilemap;
 std::vector<Enemies> enemies;
 std::vector <std::vector <Tiles>*> tileManager;
 Player Jumperman;
+Leaders Leader;
 static std::string name;
 extern AudioManager Audio;
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
@@ -150,13 +151,14 @@ void Gameplay::Render()
 	UI::Draw();
 	Particles::Render();
 	UI::Update();
-	Leaderboard::GetUserInfo(Jumperman);
-	Leaders::PrintContainer();
+	/*Leaderboard::GetUserInfo(Jumperman);*/
+	//Leaders::PrintContainer();
 
 }
 
 void Gameplay::Load()
 {
+	Leaderboard::GetUserInfo(Jumperman);
 	switch (GAMEPLAY_MISC::Level)
 	{
 		case 1:

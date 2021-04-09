@@ -111,22 +111,30 @@ void UI::PausedInit()
 	static const float WindHeight{ static_cast<float>(AEGetWindowHeight()) };
 	for (size_t i = 0; i < btnCount; ++i) {
 		PausedBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtnTextScale));
-		PausedBtn[i].RandomizeAllStateColor();
+
+		//PausedBtn[i].RandomizeAllStateColor();
 	}
 	PausedBtn[0].Set_Callback(Utils::TogglePause);
 	PausedBtn[0].Set_Text("Resume");
+	PausedBtn[0].ChangeStateColor(ButtonState::Idle, Color{ 229.0f, 145.0f, 255.0f, 255.0f });
 
 	PausedBtn[1].Set_Callback(AudioManager::ToggleMuteAll);
+	PausedBtn[1].ChangeStateColor(ButtonState::Idle, Color{ 229.0f, 145.0f, 255.0f, 255.0f });
+
 	PausedBtn[2].Set_Callback(Utils::ToggleFullscreen);
+	PausedBtn[2].ChangeStateColor(ButtonState::Idle, Color{ 229.0f, 145.0f, 255.0f, 255.0f });
 
 	PausedBtn[3].Set_Text("Exit to Main Menu");
 	PausedBtn[3].Set_Callback(Utils::ReturnToMenu);
+	PausedBtn[3].ChangeStateColor(ButtonState::Idle, Color{ 229.0f, 145.0f, 255.0f, 255.0f });
 
 	PausedBtn[4].Set_Text("Quit Game");
 	PausedBtn[4].Set_Callback(Utils::ToggleQuitUI);
+	PausedBtn[4].ChangeStateColor(ButtonState::Idle, Color{ 229.0f, 145.0f, 255.0f, 255.0f });
 
 	PausedBtn[5].Set_Text("Restart Level");
 	PausedBtn[5].Set_Callback(Utils::RestartLevel);
+	PausedBtn[5].ChangeStateColor(ButtonState::Idle, Color{ 229.0f, 145.0f, 255.0f, 255.0f });
 
 
 	const float PosY{ WindHeight - BtnHeight / 2.0f };
