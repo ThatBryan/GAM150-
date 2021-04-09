@@ -42,6 +42,7 @@ namespace FILE_PATHS {
 	extern const char* PlayerSpriteSheetIdle;
 	extern const char* PlayerSpriteSheetRun;
 	extern const char* BatSpriteSheet;
+	extern const char* SlimeSpriteSheet;
 	extern const char* GrassTile;
 	extern const char* GoalTile;
 	extern const char* GreyTile;
