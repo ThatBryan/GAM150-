@@ -27,9 +27,11 @@ rights reserved.
 #include <iostream>
 #include <fstream>
 
+extern LevelSystem LevelSys;
+
 // 1 Tutorial + 8 Levels				
 const unsigned short LevelMax{ 9 };
-LevelSystem::LevelSystem() : maxLevel{LevelMax}, key{ 1 }{
+LevelSystem::LevelSystem() : maxLevel{LevelMax}, key{ 0 }{
 }
 
 LevelSystem::~LevelSystem()
@@ -44,10 +46,9 @@ void LevelSystem::Init()
 
 	if (!File.is_open()) {
 		File.open("./Assets/Level_System/Key.txt", std::fstream::in | std::fstream::out | std::fstream::trunc);
-		File << 1 << std::endl;
-		key = 1;
+		File << 0 << std::endl;
 		File.close();
-		//std::cout << "\nFailed to open key file, A new file with '1' will be created\n";
+		//std::cout << "\nFailed to open key file, A new file with '0' will be created\n";
 	}
 	else {
 		File >> key;
@@ -67,6 +68,7 @@ void LevelSystem::UnlockNext()
 void LevelSystem::SetLevel(unsigned short new_level)
 {
 	GAMEPLAY_MISC::Level = new_level;
+
 	switch (gamestateCurr) {
 	case GS_GAMEPLAY:
 		gamestateNext = GS_GAMEPLAY2;
@@ -94,9 +96,12 @@ void LevelSystem::SaveKeyToFile(void)
 
 void LevelSystem::SetNextLevel(void)
 {
-	if (GAMEPLAY_MISC::Level < LevelMax)
+	if (GAMEPLAY_MISC::Level < LevelMax - 1)
 	{
 		gamestateNext = ++GAMEPLAY_MISC::Level;
+
+		LevelSys.UpdateKey(GAMEPLAY_MISC::Level);
+		std::cout << "KEY: " << LevelSys.GetKey() << std::endl;
 
 		if (gamestateCurr == GS_GAMEPLAY)
 		{

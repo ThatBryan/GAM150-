@@ -29,6 +29,7 @@ rights reserved.
 #include "LevelSystem.h"
 #include "Particles.h"
 #include "Leaderboard.h"
+#include "LevelSystem.h"
 
 #include <array>
 #include <vector>
@@ -55,6 +56,8 @@ static SceneType CurrentScene, NextScene;
 
 static float  WindowWidth, WindowHeight, tLerp;
 static bool isScoreInserted;
+
+extern LevelSystem LevelSys;
 
 SceneType& operator++(SceneType& rhs) {
 	rhs = (rhs == SceneType::Night) ? SceneType::Day : SceneType((int)rhs + 1);
@@ -93,7 +96,7 @@ void Background::Load()
 			MenuBtn[i].Set_Position(AEVec2{ Midpt.x - BtnWidth, Midpt.y * 2 - BtnHeight / 2.0f });
 	}
 
-	if (GAMEPLAY_MISC::Level == 9)
+	if (GAMEPLAY_MISC::Level == LevelSys.GetMaxLevel() - 1)
 		MenuBtn[0].Set_Position(AEVec2Set(Midpt.x, WindowHeight - BtnHeight / 2.0f));
 
 	const float TextPosYOffset{ 100.0f }, TitleTextScale{ 0.9f };
@@ -106,7 +109,6 @@ void Background::Load()
 	BgOverlayArr[BackgroundIndex::Pause].Init(FP::PauseOverlay, WindowWidth, WindowHeight, Midpt);
 	BgOverlayArr[BackgroundIndex::Victory].Init(FP::VictoryOverlay, WindowWidth, WindowHeight, Midpt);
 	BgOverlayArr[BackgroundIndex::Defeat].Init(FP::GameoverOverlay, WindowWidth, WindowHeight, Midpt);
-
 }
 
 void Background::Init()
@@ -150,8 +152,9 @@ void Background::Render(const Player& player)//, const Leaders& leader)
 		BgOverlayArr[BackgroundIndex::Victory].Draw_Texture(50.0f);
 		text.Draw_Wrapped(text.pos);
 
-		GAMEPLAY_MISC::Level == 9 ? text.SetText(const_cast<s8*>("Congratulations!! you beat the game!")) 
-								  : text.SetText(const_cast<s8*>("YOU WIN"));
+		GAMEPLAY_MISC::Level == LevelSys.GetMaxLevel() - 1 ? 
+			text.SetText(const_cast<s8*>("Congratulations!! you beat the game!"))
+		  : text.SetText(const_cast<s8*>("YOU WIN"));
 		
 		text.Draw_Wrapped({ text.pos.x, text.pos.y - 50.0f });
 		text.SetText("YOUR SCORE: ");
@@ -171,9 +174,9 @@ void Background::Render(const Player& player)//, const Leaders& leader)
 			isScoreInserted = true;
 			std::cout << player.GetName();
 		}
-		int btnNum; // Only update one button at level 9 since last level.
+		int btnNum; // Only update one button at level 8 since last level.
 
-		GAMEPLAY_MISC::Level == 9 ? btnNum = 1 
+		GAMEPLAY_MISC::Level == LevelSys.GetMaxLevel() - 1 ? btnNum = 1 
 								  : btnNum = 2;
 
 		for (int i = 0; i < btnNum; ++i) {

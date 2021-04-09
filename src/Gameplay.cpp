@@ -157,47 +157,47 @@ void Gameplay::Load()
 	Leaderboard::GetUserInfo(Jumperman);
 	switch (GAMEPLAY_MISC::Level)
 	{
-		case 1:
+	case GameLevel::TUTORIAL:
 		{
 			ImportMapDataFromFile("./Assets/Levels/Tutorial.txt");
 			break;
 		}
-		case 2:
+	case GameLevel::LEVEL1:
 		{
 			ImportMapDataFromFile("./Assets/Levels/Level1.txt");
 			break;
 		}
-		case 3:
+	case GameLevel::LEVEL2:
 		{
 			ImportMapDataFromFile("./Assets/Levels/Level2.txt");
 			break;
 		}
-		case 4:
+	case GameLevel::LEVEL3:
 		{
 			ImportMapDataFromFile("./Assets/Levels/Level3.txt");
 			break;
 		}
-		case 5:
+	case GameLevel::LEVEL4:
 		{
 			ImportMapDataFromFile("./Assets/Levels/Level4.txt");
 			break;
 		}
-		case 6:
+	case GameLevel::LEVEL5:
 		{
 			ImportMapDataFromFile("./Assets/Levels/Level5.txt");
 			break;
 		}
-		case 7:
+	case GameLevel::LEVEL6:
 		{
 			ImportMapDataFromFile("./Assets/Levels/Level6.txt");
 			break;
 		}
-		case 8:
+	case GameLevel::LEVEL7:
 		{
 			ImportMapDataFromFile("./Assets/Levels/Level7.txt");
 			break;
 		}
-		case 9:
+	case GameLevel::LEVEL8:
 		{
 			ImportMapDataFromFile("./Assets/Levels/Level8.txt");
 			break;

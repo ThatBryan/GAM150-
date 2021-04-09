@@ -65,6 +65,7 @@ namespace FP = FILE_PATHS; // Short hand
 
 namespace PLAYER_CONST {
 	extern const float SPEED;
+	extern const float DEBUGSPEED;
 	extern const float WIDTH;
 	extern const float HEIGHT;
 	extern const float JUMPVEL;

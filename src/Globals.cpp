@@ -20,7 +20,7 @@ namespace GAMEPLAY_MISC {
 	bool DISPLAY_QUIT_UI = false;
 	bool DISABLE_COLLISION = false;
 
-	float app_time = 0;
+	float app_time = 0, TimeAttack_remaining = 0;
 	int app_max_time = 60;
 	int app_score = 50;
 	int player_score = 0;

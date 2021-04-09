@@ -22,7 +22,7 @@ namespace GAMEPLAY_MISC {
 	extern bool DISPLAY_QUIT_UI;
 	extern bool DISABLE_COLLISION;
 
-	extern float app_time;
+	extern float app_time, TimeAttack_remaining;
 	extern int app_max_time;
 	extern int app_score;
 	extern int player_score;

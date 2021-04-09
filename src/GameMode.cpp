@@ -14,6 +14,7 @@ extern LevelSystem LevelSys;
 
 enum TextIndex {Title = 0, Casual, TimeAttack, Max};
 static std::array <Graphics::Text, TextIndex::Max> GameModeText;
+static GameMode Mode;
 
 void GameModeSetting::Load()
 {
@@ -108,18 +109,17 @@ void GameModeSetting::Unload()
 void GameModeSetting::SetModeCasual()
 {
 	Mode = GameMode::Casual;
-	
 	MainMenu::SwitchToLevelSelection();
 }
 
 void GameModeSetting::SetModeTimeAttack()
 {
-	if(LevelSys.GetKey() == LevelSys.GetMaxLevel())
+	if (LevelSys.GetKey() == LevelSys.GetMaxLevel()) {
 		Mode = GameMode::TimeAttack;
+		GAMEPLAY_MISC::TimeAttack_remaining = TimeAttackTimer;
+		LevelSys.SetLevel(1);
+	}
 
-	//else {
-	//	// Todo, prevent unlocking of TimeAttack Mode
-	//}
 }
 
 void GameModeSetting::SwitchModeSetting()
@@ -128,7 +128,7 @@ void GameModeSetting::SwitchModeSetting()
 	GameStateDraw = GameModeSetting::Render;
 }
 
-GameMode GameModeSetting::GetSetting()
+GameMode GameModeSetting::GetGameMode()
 {
 	return Mode;
 }

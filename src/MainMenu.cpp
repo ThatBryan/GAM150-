@@ -237,7 +237,6 @@ void MainMenu::Buttons_Init() {
 
 	}
 	LevelSys.GetKey() == 1 ? MenuBtn[0].Set_Text("Start") : MenuBtn[0].Set_Text("Play");
-	//MenuBtn[0].Set_Callback(StartGame);
 	MenuBtn[0].Set_Callback(GameModeSetting::SwitchModeSetting);
 
 	MenuBtn[1].Set_Text("Credits");
@@ -321,7 +320,7 @@ void LevelSelection::Init(void)
 
 	}
 	for (unsigned short i = 0; i < LevelBtnCount; ++i) {
-		LevelBtn[i].SetID(i + 1);
+		LevelBtn[i].SetID(i);
 		LevelBtn[i].Set_TextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 		LevelBtn[i].Set_Callback(MainMenu::LockedLevel);
 		LevelBtn[i].SetFontID(fontID::Strawberry_Muffins_Demo);
@@ -342,7 +341,7 @@ void LevelSelection::Init(void)
 			}
 		}
 	}
-	for (unsigned short i = LevelSys.GetKey(); i < LevelBtnCount - 1; ++i) {
+	for (unsigned short i = LevelSys.GetKey() + 1; i < LevelBtnCount - 1; ++i) {
 		LevelBtn[i].Load_Texture("./Assets/Art/Locked.png");
 	}
 
@@ -353,7 +352,7 @@ void LevelSelection::Init(void)
 
 void MainMenu::SwitchToLevelSelection(void)
 {
-	for (size_t i = 0; i < LevelSys.GetKey(); ++i) {
+	for (unsigned short i = 0; i < LevelSys.GetKey() + 1; ++i) { //eg: Key = 3. so Level 3 is unlocked. 3 + 1 = Loop Indexing up to 3
 		LevelBtn[i].Set_Callback(LevelSystem::SetLevel);
 		
 		std::string LevelCount{ "Level " + std::to_string(i) };

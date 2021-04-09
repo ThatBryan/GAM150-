@@ -185,8 +185,13 @@ void Player::Update_Position(void)
 	}
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
 	{
-		if (sprite.pos.x + sprite.width / 2 <= maxX)
-			sprite.pos.x += PLAYER_CONST::SPEED * g_dt;
+		if (sprite.pos.x + sprite.width / 2 <= maxX || GAMEPLAY_MISC::DEBUG_MODE) {
+
+			if(GAMEPLAY_MISC::DEBUG_MODE)
+				sprite.pos.x += PLAYER_CONST::DEBUGSPEED * g_dt;
+			else
+				sprite.pos.x += PLAYER_CONST::SPEED * g_dt;
+		}
 
 		if (direction != SpriteDirection::Right) {
 			sprite.ReflectAboutYAxis();
@@ -195,8 +200,13 @@ void Player::Update_Position(void)
 	}
 	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
 	{
-		if (sprite.pos.x >= 0 - sprite.width / 2.0f)
-			sprite.pos.x -= PLAYER_CONST::SPEED * g_dt;
+		if (sprite.pos.x >= 0 - sprite.width / 2.0f || GAMEPLAY_MISC::DEBUG_MODE) {
+
+			if (GAMEPLAY_MISC::DEBUG_MODE)
+				sprite.pos.x -= PLAYER_CONST::DEBUGSPEED * g_dt;
+			else
+				sprite.pos.x -= PLAYER_CONST::SPEED * g_dt;
+		}
 
 		if (direction != SpriteDirection::Left) {
 			sprite.ReflectAboutYAxis();
@@ -215,12 +225,12 @@ void Player::Update_Position(void)
 		}
 		if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN)) {
 			if (sprite.pos.y + sprite.height / 2 <= maxY) {
-				sprite.pos.y += PLAYER_CONST::SPEED * g_dt;
+				sprite.pos.y += PLAYER_CONST::DEBUGSPEED  *  g_dt;
 			}
 		}
 		if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP)) {
 			if (sprite.pos.y - sprite.height / 2 >= 0) {
-				sprite.pos.y -= PLAYER_CONST::SPEED * g_dt;
+				sprite.pos.y -= PLAYER_CONST::DEBUGSPEED * g_dt;
 			}
 		}
 	}
