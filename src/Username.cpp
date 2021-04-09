@@ -66,6 +66,14 @@ void Username::Render()
 	UsernameTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	UsernameTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() * 0.3)));
 
+	// Warning Text
+	static Graphics::Text WarningTxt;
+	WarningTxt.SetTextScale(0.5f);
+	WarningTxt.SetText("Restrict using weird symbols eg. % & : + = !");
+	WarningTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	WarningTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() * 0.4)));
+
+
 	// Draw Input Rect
 	InputBtn[0].Render();
 
@@ -138,7 +146,7 @@ void Username::ReadUsernameInput(void)
 
 					if (AEInputCheckCurr(AEVK_LSHIFT) || AEInputCheckCurr(AEVK_RSHIFT)) {
 
-						username += static_cast<unsigned char>(std::toupper((int)i));
+						username += i;
 						continue;
 					}
 					username += static_cast<unsigned char>(std::tolower((int)i));

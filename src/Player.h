@@ -54,6 +54,7 @@ public:
 	bool active, jump, gravity, chargedjump;
 	float gravityMultiplier;
 	int playerscore;
+	std::string playername;
 
 	void Update(void);
 	void Render(void);
@@ -75,4 +76,5 @@ public:
 
 	// testing
 	inline int GetScore(void) const { return playerscore; };
+	inline std::string GetName(void)  const { return playername; };
 };

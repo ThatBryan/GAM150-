@@ -24,6 +24,7 @@ rights reserved.
 #include "Constants.h"
 #include "Utilities.h"
 #include "Player.h"
+#include "Username.h"
 
 #include <cstring>
 #include <vector>

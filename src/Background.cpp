@@ -28,9 +28,12 @@ rights reserved.
 #include "AEEngine.h"
 #include "LevelSystem.h"
 #include "Particles.h"
+#include "Leaderboard.h"
 
 #include <array>
 #include <vector>
+
+
 
 enum BackgroundIndex{ Pause = 0, Victory, Defeat, Overlay_Max };
 
@@ -51,6 +54,7 @@ static Color Scene, LerpDestination;
 static SceneType CurrentScene;
 
 static float  WindowWidth, WindowHeight, tLerp;
+static bool isScoreInserted;
 
 SceneType& operator++(SceneType& rhs) {
 	rhs = (rhs == SceneType::Night) ? SceneType::Day : SceneType((int)rhs + 1);
@@ -123,6 +127,7 @@ void Background::Init()
 
 	CurrentScene = SceneType::Day;
 	tLerp = 0.0f;
+	isScoreInserted = false;
 }
 
 void Background::Update()
@@ -141,7 +146,7 @@ void Background::Update()
 	}
 }
 
-void Background::Render(const Player& player)
+void Background::Render(const Player& player)//, const Leaders& leader)
 {
 	static const float CloudAlpha{ 100.0f };
 	for (size_t i = 0; i < LastCloudIdx; ++i) {
@@ -187,6 +192,19 @@ void Background::Render(const Player& player)
 		text.Draw_Wrapped({ text.pos.x, text.pos.y - 100.0f });
 		text.SetText(std::to_string(player.GetScore()));
 
+
+		Leaders L = Leaderboard::GetLastPlacement();
+		
+
+		if (!isScoreInserted && L.score < player.playerscore)
+		{
+			Leaders newleader;
+			newleader.name = player.GetName();
+			newleader.score = player.GetScore();
+			L.InsertNewLeader(newleader);
+			isScoreInserted = true;
+			std::cout << player.GetName();
+		}
 		int btnNum; // Only update one button at level 9 since last level.
 
 		GAMEPLAY_MISC::Level == 9 ? btnNum = 1 
