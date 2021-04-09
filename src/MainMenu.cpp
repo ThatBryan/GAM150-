@@ -322,16 +322,13 @@ void LevelSelection::Init(void)
 	for (unsigned short i = 0; i < LevelBtnCount; ++i) {
 		LevelBtn[i].SetID(i);
 		LevelBtn[i].Set_TextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
-		LevelBtn[i].Set_Callback(MainMenu::LockedLevel);
 		LevelBtn[i].SetFontID(fontID::Strawberry_Muffins_Demo);
 		LevelBtn[i].Load_Texture("./Assets/Art/BtnTest3.png");
 		LevelBtn[i].ChangeStateColor(ButtonState::Hovered, Color{ 247.0f, 161.0f, 187.0f, 255.0f });
 	}
 
-
 	for (size_t i = 0; i < 3; ++i) {
 		for (size_t j = 0; j < 3; ++j) {
-
 			size_t BtnIndex{ i * 3 + j };
 
 			LevelBtn[BtnIndex].Set_Position(AEVec2Set(175.0f + 225.0f * j, 162.5f + 150.0f * i));// Mid = 400. 400 - 75, 325. 325 - 150 175.0f // 600 / 3, 200 - 37.5 = 162.5f
@@ -352,7 +349,7 @@ void LevelSelection::Init(void)
 
 void MainMenu::SwitchToLevelSelection(void)
 {
-	for (unsigned short i = 0; i < LevelSys.GetMaxLevel(); ++i) { //eg: Key = 3. so Level 3 is unlocked. 3 + 1 = Loop Indexing up to 3
+	for (unsigned short i = 0; i < LevelSys.GetUnlockedLevels(); ++i) { //eg: Key = 3. so Level 3 is unlocked. 3 + 1 = Loop Indexing up to 3
 		LevelBtn[i].Set_Callback(LevelSystem::SetLevel);
 		
 		std::string LevelCount{ "Level " + std::to_string(i) };

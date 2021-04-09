@@ -65,6 +65,11 @@ void LevelSystem::UnlockNext()
 	}
 }
 
+unsigned short LevelSystem::GetUnlockedLevels()
+{
+	return key == maxLevel ? key : key + 1;
+}
+
 void LevelSystem::SetLevel(unsigned short new_level)
 {
 	GAMEPLAY_MISC::Level = new_level;

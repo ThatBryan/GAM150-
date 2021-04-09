@@ -29,6 +29,7 @@ public:
 	inline void UpdateKey(unsigned short newKey) { key = newKey; }
 	inline unsigned short GetMaxLevel() { return maxLevel; }
 	void UnlockNext();
+	unsigned short GetUnlockedLevels();
 
 	// Saves the key to a file before exiting the program.
 	void SaveKeyToFile(void);
