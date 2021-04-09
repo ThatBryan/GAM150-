@@ -25,14 +25,14 @@ public:
 	LevelSystem();
 	~LevelSystem();
 	void Init();
-	inline unsigned short GetKey() const { return key; }
-	inline void UpdateKey(unsigned short newKey) { key = newKey; }
-	inline unsigned short GetMaxLevel() { return maxLevel; }
 	void UnlockNext();
+	void SaveKeyToFile(void);
 	unsigned short GetUnlockedLevels();
 
-	// Saves the key to a file before exiting the program.
-	void SaveKeyToFile(void);
+	inline void UpdateKey(unsigned short newKey) { key = newKey; }
+	inline unsigned short GetKey() const { return key; }
+	inline unsigned short GetMaxLevel() { return maxLevel; }
+
 	static void SetLevel(unsigned short level);
 	static void SetNextLevel();
 };

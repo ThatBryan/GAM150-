@@ -16,7 +16,7 @@ namespace GameModeSetting {
 
 	void SetModeCasual();
 	void SetModeTimeAttack();
-	void SwitchModeSetting();
+	void SwitchToModeSetting();
 	GameMode GetGameMode();
 
 }

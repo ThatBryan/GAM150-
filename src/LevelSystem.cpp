@@ -61,7 +61,6 @@ void LevelSystem::UnlockNext()
 {	
 	if (key < LevelMax && GAMEPLAY_MISC::Level == key) {
 		++key;
-		//std::cout << "Level: " << key << " unlocked!\n";
 	}
 }
 

@@ -52,18 +52,19 @@ static const char* UsernameFile{ "./Assets/Username/username.txt" };
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::PlayerCurr, width, height), lose{ false },
 active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL },
 hp(), direction{ SpriteDirection::Right }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL }, gravityMultiplier{ GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER },
-chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider(), playerscore { 0 }, playername{}
+chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider(), playerscore { 0 }, playername{"Jumperman"}
 {
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
 	hp.max = PLAYER_CONST::HP_MAX;
 	hp.current = PLAYER_CONST::HP_MAX;
+
 }
 
 Player::Player() : lose{ false }, active{ true }, gravity{ false }, jump{ false }, chargedjump{ false },
 win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL },
 hp(), direction{ SpriteDirection::Right }, gravityMultiplier{ GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER }, chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }
-, collider(), playerscore{ 0 }{
+, collider(), playerscore{ 0 }, playername{ "Jumperman" }{
 
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());

@@ -22,23 +22,26 @@ extern Player Jumperman;
 void GameModeSetting::Load()
 {
 	
-	const size_t btnCount{ 2 };
+	const size_t btnCount{ 3 };
 	const float BtnWidth{ 200.0f }, BtnHeight{ 100.0f }, BtnTextWidth{ 0.7f };
 
 	AEVec2 ScreenMid = Utils::GetScreenMiddle();
 
 	for (size_t i = 0; i < btnCount; ++i) {
-		Btn.push_back(Button(ButtonType::Texture, BtnWidth, BtnHeight, BtnTextWidth));
+		if(i == 2)
+			Btn.push_back(Button(ButtonType::Texture, BtnWidth, BtnHeight, BtnTextWidth - 0.1f));
+		else
+			Btn.push_back(Button(ButtonType::Texture, BtnWidth, BtnHeight, BtnTextWidth));
 	}
 
 	Btn[0].Set_Text("Casual");
 	Btn[0].Set_Callback(GameModeSetting::SetModeCasual);
-	Btn[0].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y - BtnHeight));
+	Btn[0].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y - BtnHeight * 1.5f));
 	Btn[0].Load_Texture("./Assets/Art/BtnTest.png");
 	Btn[0].SetFontID(fontID::Strawberry_Muffins_Demo);
 
 	Btn[1].Set_Callback(GameModeSetting::SetModeTimeAttack);
-	Btn[1].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y + BtnHeight));
+	Btn[1].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y + BtnHeight / 2.0f));
 	Btn[1].SetFontID(fontID::Strawberry_Muffins_Demo);
 
 	if (LevelSys.GetKey() == LevelSys.GetMaxLevel()) {
@@ -48,7 +51,11 @@ void GameModeSetting::Load()
 	else 
 		Btn[1].Load_Texture("./Assets/Art/Locked.png");
 	
-
+	Btn[2].Set_Text("Exit to Main Menu");
+	Btn[2].Set_Callback(MainMenu::SwitchToMainMenu);
+	Btn[2].Set_Position(AEVec2Set(ScreenMid.x, static_cast<float>(AEGetWindowHeight()) - BtnHeight / 2.0f));
+	Btn[2].Load_Texture("./Assets/Art/BtnTest.png");
+	Btn[2].SetFontID(fontID::Strawberry_Muffins_Demo);
 
 	for (unsigned int i = 0; i < TextIndex::Max; i++) {
 		GameModeText[i].SetTextColor(Color{ 255.0f, 0.0f, 0.0f, 255.0f });
@@ -91,6 +98,9 @@ void GameModeSetting::Update()
 
 void GameModeSetting::Render()
 {
+	for (size_t i = 0; i < Btn.size(); ++i) {
+		Btn[i].Render();
+	}
 	GameModeText[TextIndex::Title].Draw_Wrapped(GameModeText[TextIndex::Title].pos);
 
 	if (Btn[0].GetHoveredStatus())
@@ -99,9 +109,6 @@ void GameModeSetting::Render()
 	if (Btn[1].GetHoveredStatus())
 		GameModeText[TextIndex::TimeAttack].Draw_Wrapped(GameModeText[TextIndex::TimeAttack].pos);
 
-	for (size_t i = 0; i < Btn.size(); ++i) {
-		Btn[i].Render();
-	}
 }
 
 void GameModeSetting::Unload()
@@ -124,7 +131,7 @@ void GameModeSetting::SetModeTimeAttack()
 	}
 }
 
-void GameModeSetting::SwitchModeSetting()
+void GameModeSetting::SwitchToModeSetting()
 {
 	GameStateUpdate = GameModeSetting::Update;
 	GameStateDraw = GameModeSetting::Render;
