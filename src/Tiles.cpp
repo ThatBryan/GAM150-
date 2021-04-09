@@ -42,7 +42,7 @@ Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image
 active{ true }, isCollapsing{ false }, ID{ 0 }, collapseDelay{ TILE_CONST::COLLAPSE_DELAY }, type{ TileType::Safe }, spawnPos{ 0, 0 },
 collider()
 {
-	static const float ColliderAllowance{ 2.0f };
+	static const float ColliderAllowance{ 4.0f };
 	collider.SetWidthHeight(collider.sprite, width, height);
 	collider.SetWidthHeight(collider.top, width - ColliderAllowance, 5.0f);
 	collider.SetWidthHeight(collider.left, 30, height - ColliderAllowance);

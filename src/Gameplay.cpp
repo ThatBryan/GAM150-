@@ -150,8 +150,8 @@ void Gameplay::Render()
 	UI::Draw();
 	Particles::Render();
 	UI::Update();
-	Leaderboard::GetUserInfo(Jumperman);
-	Leaders::PrintContainer();
+	//Leaderboard::GetUserInfo(Jumperman);
+	//Leaders::PrintContainer();
 
 }
 

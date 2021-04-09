@@ -184,11 +184,11 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 {
 	float bbHeight{ height }, counter{ 0 }, vel{ 0 }, jumpvel{ 0 };
 	int jumpcounter{ 0 };
-	const float BatOffset{ 20.0f }, squirrelOffset{ 43.0f };
+	const float squirrelOffset{ 43.0f };
 	AEGfxVertexList* currMesh = nullptr;
 	switch (type) {
 	case EnemyType::Bat:
-		bbHeight = BatOffset;
+		bbHeight = height;
 		counter = Enemies::bat_counter;
 		vel = Enemies::bat_speed;
 		currMesh = Mesh::BatAnim;
@@ -221,7 +221,7 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 	Enemy.jumpvelocity = jumpvel;
 
 	Enemy.collider.SetWidthHeight(Enemy.collider.sprite, width, bbHeight);
-	Enemy.collider.SetWidthHeight(Enemy.collider.top, Enemy.sprite.width, 5.0f);
+	Enemy.collider.SetWidthHeight(Enemy.collider.top, Enemy.sprite.width, Enemy.sprite.height / 10.0f);
 	Enemy.collider.SetWidthHeight(Enemy.collider.left, 20.0f, Enemy.sprite.height * 0.7f);
 	Enemy.collider.SetWidthHeight(Enemy.collider.right, 20.0f, Enemy.sprite.height * 0.7f);
 	Enemy.collider.SetWidthHeight(Enemy.collider.bottom, Enemy.sprite.width, 5.0f);
@@ -247,7 +247,7 @@ void Enemies::Reset(std::vector <Enemies>& enemy)
 		enemy[i].active = true;
 		enemy[i].killed = false;
 		enemy[i].sprite.rotation = 0;
-		enemy[i].alpha = 255.0f;
+		enemy[i].alpha = Color::RGBA_MAX;
 		enemy[i].alphaTimer = 1.0f;
 	}
 }

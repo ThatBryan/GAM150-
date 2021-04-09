@@ -350,6 +350,8 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 			if (Utils::ColliderAABB(enemy[i].collider.sprite.pos, enemy[i].collider.sprite.width, enemy[i].collider.sprite.height, 
 				collider.sprite.pos, collider.sprite.width, collider.sprite.height))
 			{
+			std::cout << enemy[i].collider.top.pos.x << "\t" << enemy[i].collider.top.pos.y << std::endl;
+			std::cout << collider.bottom.pos.x << "\t" << collider.bottom.pos.y << std::endl;
 				if (Utils::ColliderAABB(enemy[i].collider.top.pos, enemy[i].collider.top.width, enemy[i].collider.top.height, 
 					collider.bottom.pos, collider.bottom.width, collider.bottom.height)) {
 					if (!GAMEPLAY_MISC::DEBUG_MODE) {
@@ -359,8 +361,8 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 						enemy[i].KillEnemy();
 						continue;
 					}
-					//if (GAMEPLAY_MISC::DEBUG_MODE)
-					//	printf("enemy dies\n");
+					if (GAMEPLAY_MISC::DEBUG_MODE)
+						printf("enemy dies\n");
 				}
 				else {
 					if (!GAMEPLAY_MISC::DEBUG_MODE) {
@@ -369,8 +371,8 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 						if(hp.current >= 1)
 							Respawn();
 					}
-					//if (GAMEPLAY_MISC::DEBUG_MODE)
-					//	printf("player dies\n");
+					if (GAMEPLAY_MISC::DEBUG_MODE)
+						printf("player dies\n");
 				}
 			}
 		}
@@ -385,9 +387,9 @@ void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, con
 	player.sprite.pos = pos;
 
 	player.collider.SetWidthHeight(player.collider.sprite, width, height);
-	player.collider.SetWidthHeight(player.collider.top, PLAYER_CONST::WIDTH - 4.0f, 5.0f);
-	player.collider.SetWidthHeight(player.collider.left, 20.0f, PLAYER_CONST::HEIGHT - 10.0f);
-	player.collider.SetWidthHeight(player.collider.right, 20.0f, PLAYER_CONST::HEIGHT - 10.0f);
-	player.collider.SetWidthHeight(player.collider.bottom, PLAYER_CONST::WIDTH / 1.6f, 5.0f);
+	player.collider.SetWidthHeight(player.collider.top, width - 4.0f, 5.0f);
+	player.collider.SetWidthHeight(player.collider.left, width / 2.0f, height - 10.0f);
+	player.collider.SetWidthHeight(player.collider.right, width / 2.0f, height - 10.0f);
+	player.collider.SetWidthHeight(player.collider.bottom, width /2.0f, 5.0f);
 	player.collider.SetMeshes();
 }
