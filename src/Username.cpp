@@ -69,7 +69,7 @@ void Username::Render()
 	// Warning Text
 	static Graphics::Text WarningTxt;
 	WarningTxt.SetTextScale(0.5f);
-	WarningTxt.SetText("Restrict using weird symbols eg. % & : + = !");
+	WarningTxt.SetText("Avoid using weird symbols eg. % & : + = !");
 	WarningTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	WarningTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() * 0.4)));
 
