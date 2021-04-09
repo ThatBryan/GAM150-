@@ -83,6 +83,15 @@ void Button::RandomizeAllStateColor()
 	buttonState[static_cast<int>(ButtonState::Clicked)] = Color::CreateRandomColor(maxAlpha);
 }
 
+bool Button::GetHoveredStatus()
+{
+	AEVec2 Mouse = Utils::GetMousePos();
+	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height))
+		return true;
+
+	return false;
+}
+
 void Button::SetBtnType(ButtonType Type)
 {
 	type = Type;

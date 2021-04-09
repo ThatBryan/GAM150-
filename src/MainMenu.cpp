@@ -38,6 +38,8 @@ rights reserved.
 #include "Gameplay.h"
 #include "Globals.h"
 #include "Username.h"
+#include "GameMode.h"
+#include "Background.h"
 
 #include <array>
 #include <vector>
@@ -77,7 +79,8 @@ void MainMenu::Init(void)
 	Credits::Init();
 	Username::Init();
 	Leaderboard::Init();
-
+	GameModeSetting::Init();
+	Background::ObjectsInit();
 	count = 0;
 
 	const float TileWidth{ 80.0f }, TileHeight{ 100.0f },
@@ -106,18 +109,8 @@ void MainMenu::Update(void)
 	if (AEInputCheckTriggered(AEVK_ESCAPE))
 		gamestateNext = GS_QUIT;
 
-	static float t = 0;
-	static const float lerpFactor{ 0.00001f };
-	static Color Destination{ Color::CreateRandomColor() };
-
-	if (background == Destination) {
-		Destination = Color::CreateRandomColor();
-		t = 0;
-	}
-	background = Color::Lerp(background, Destination, t);
-	t += lerpFactor;
-
-	AEGfxSetBackgroundColor(background.r, background.g, background.b);
+	Background::ObjectsUpdate();
+	Background::LerpBackgroundColor();
 	Audio.update();
 
 	if (GAMEPLAY_MISC::DISPLAY_QUIT_UI) {
@@ -137,7 +130,7 @@ void MainMenu::Update(void)
 }
 
 void MainMenu::Render() {
-
+	Background::ObjectsRender();
 	for (int i = 0; i < tiles.size(); ++i) {
 		tiles[i].image.Draw_Texture(255.0f);
 	}
@@ -174,6 +167,8 @@ void MainMenu::Load(void)
 	Tiles::LoadTex();
 	Enemies::LoadTex();
 	Player::LoadTex();
+	GameModeSetting::Load();
+	Background::ObjectsLoad();
 
 	WindowWidth = static_cast<float>(AEGetWindowWidth());
 	WindowHeight = static_cast<float>(AEGetWindowHeight());
@@ -203,6 +198,8 @@ void MainMenu::Unload(void)
 	UI::QuitUnload();
 	Credits::Unload();
 	EnemyCount = 0;
+	GameModeSetting::Unload();
+	Background::ObjectsUnload();
 }
 
 void MainMenu::StartGame(void) {
@@ -239,8 +236,9 @@ void MainMenu::Buttons_Init() {
 		}
 
 	}
-	LevelSys.GetKey() == 1 ? MenuBtn[0].Set_Text("Start Game") : MenuBtn[0].Set_Text("Continue");
-	MenuBtn[0].Set_Callback(StartGame);
+	LevelSys.GetKey() == 1 ? MenuBtn[0].Set_Text("Start") : MenuBtn[0].Set_Text("Play");
+	//MenuBtn[0].Set_Callback(StartGame);
+	MenuBtn[0].Set_Callback(GameModeSetting::SwitchModeSetting);
 
 	MenuBtn[1].Set_Text("Credits");
 	MenuBtn[1].Set_Callback(MainMenu::SwitchToCreditScreen);

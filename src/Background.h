@@ -23,4 +23,10 @@ namespace Background {
 	void Render(const Player& player);// , const Leaders& leader);
 	void Unload();
 	void LerpBackgroundColor(void);
+
+	void ObjectsInit();
+	void ObjectsLoad();
+	void ObjectsUpdate();
+	void ObjectsRender();
+	void ObjectsUnload();
 }

@@ -50,8 +50,8 @@ static AEVec2 Midpt;
 
 enum class SceneType { Day = 0, SunSet, Night, Max};
 static Color SceneColors [static_cast<int>(SceneType::Max)];
-static Color Scene, LerpDestination;
-static SceneType CurrentScene;
+static Color SceneColor, LerpColorDestination;
+static SceneType CurrentScene, NextScene;
 
 static float  WindowWidth, WindowHeight, tLerp;
 static bool isScoreInserted;
@@ -63,29 +63,8 @@ SceneType& operator++(SceneType& rhs) {
 
 void Background::Load()
 {
-	Midpt = Utils::GetScreenMiddle();
-	WindowWidth = static_cast<f32>(AEGetWindowWidth());
-	WindowHeight = static_cast<f32>(AEGetWindowHeight());
+	ObjectsLoad();
 
-	BgOverlayArr[BackgroundIndex::Pause].Init(FP::PauseOverlay, WindowWidth, WindowHeight, Midpt);
-	BgOverlayArr[BackgroundIndex::Victory].Init(FP::VictoryOverlay, WindowWidth, WindowHeight, Midpt);
-	BgOverlayArr[BackgroundIndex::Defeat].Init(FP::GameoverOverlay, WindowWidth, WindowHeight, Midpt);
-
-	for (int i = 0; i < LastCloudIdx; ++i) {
-		BgObj[i].Init("./Assets/Art/cloud.png", Utils::RandomRangeFloat(50.0f, 100.0f), Utils::RandomRangeFloat(20.0f, 40.0f),
-			AEVec2Set(i * 100.0f + Utils::RandomRangeFloat(-50.0f, 50.0f), Utils::RandomRangeFloat(25.0f, 50.0f)));
-	}
-	BgObj[5].Init("./Assets/Art/moon.png", 50.0f, 50.0f, AEVec2{ 40, 30.0f });
-	BgObj[6].Init("./Assets/Art/moon.png", 50.0f, 50.0f, AEVec2{ 760, 30.0f });
-	BgObj[6].ReflectAboutYAxis();
-
-	SceneColors[static_cast<int>(SceneType::Day)] = Color{ 51.0f, 215.0f, 255.0f, 255.0f };
-	SceneColors[static_cast<int>(SceneType::SunSet)] = Color{ 255.0f, 175.0f, 51.0f, 255.0f };
-	SceneColors[static_cast<int>(SceneType::Night)] = Color{ 100.0f, 149.0f, 237.0f, 255.0f };
-}
-
-void Background::Init()
-{
 	const int BtnCount{ 4 };
 	const float BtnWidth{ 150.0f }, BtnHeight{ 75.0f }, BtnTextScale{ 0.8f };
 
@@ -96,14 +75,14 @@ void Background::Init()
 	MenuBtn[0].Set_Callback(Utils::ReturnToMenu);
 	MenuBtn[0].Set_Text("Menu");
 
-	GAMEPLAY_MISC::Level != 9 ? MenuBtn[1].Set_Text("Next Level") 
-							  : MenuBtn[1].Set_Text("Menu");
+	GAMEPLAY_MISC::Level != 9 ? MenuBtn[1].Set_Text("Next Level")
+		: MenuBtn[1].Set_Text("Menu");
 
 	MenuBtn[1].Set_Callback(LevelSystem::SetNextLevel);
-	
+
 	MenuBtn[2].Set_Callback(Utils::ReturnToMenu);
 	MenuBtn[2].Set_Text("Menu");
-	
+
 	MenuBtn[3].Set_Text("Retry");
 	MenuBtn[3].Set_Callback(Utils::RestartLevel);
 
@@ -116,48 +95,35 @@ void Background::Init()
 
 	if (GAMEPLAY_MISC::Level == 9)
 		MenuBtn[0].Set_Position(AEVec2Set(Midpt.x, WindowHeight - BtnHeight / 2.0f));
-	
+
 	const float TextPosYOffset{ 100.0f }, TitleTextScale{ 0.9f };
 
 	text.SetPos(AEVec2Set(Midpt.x, Midpt.y + TextPosYOffset));
-	text.SetTextColor(Color{ 0, 0, 0, Color::RGBA_MAX});
+	text.SetTextColor(Color{ 0, 0, 0, Color::RGBA_MAX });
 	text.SetTextScale(TitleTextScale);
 	text.SetFontID(fontID::Pixel_Digivolve);
-	Scene.Set(SceneColors[static_cast<int>(SceneType::Day)]);
 
-	CurrentScene = SceneType::Day;
-	tLerp = 0.0f;
+	BgOverlayArr[BackgroundIndex::Pause].Init(FP::PauseOverlay, WindowWidth, WindowHeight, Midpt);
+	BgOverlayArr[BackgroundIndex::Victory].Init(FP::VictoryOverlay, WindowWidth, WindowHeight, Midpt);
+	BgOverlayArr[BackgroundIndex::Defeat].Init(FP::GameoverOverlay, WindowWidth, WindowHeight, Midpt);
+
+}
+
+void Background::Init()
+{
+	ObjectsInit();
 	isScoreInserted = false;
 }
 
 void Background::Update()
 {
-	static AEVec2 CloudDir{ -1.0f, 0.0f };
-	static const float CloudSpeed{ 50.0f };
-
 	LerpBackgroundColor();
-	AEGfxSetBackgroundColor(Scene.r, Scene.g, Scene.b);
-
-	if (!GAMEPLAY_MISC::PAUSED) {
-		for (int i = 0; i < LastCloudIdx; ++i) {
-			AEVec2ScaleAdd(&BgObj[i].pos, &CloudDir, &BgObj[i].pos, g_dt * CloudSpeed);
-			BgObj[i].pos.x = AEWrap(BgObj[i].pos.x, - BgObj[i].width / 2.0f, WindowWidth + BgObj[i].width / 2.0f);
-		}
-	}
+	ObjectsUpdate();
 }
 
 void Background::Render(const Player& player)//, const Leaders& leader)
 {
-	static const float CloudAlpha{ 100.0f };
-	for (size_t i = 0; i < LastCloudIdx; ++i) {
-		BgObj[i].Draw_Texture(BgObj[i].pos, CloudAlpha);
-	}
-	if (CurrentScene != SceneType::Day) {
-		for (size_t i = LastCloudIdx; i < BgObj.size(); ++i) {
-			BgObj[i].Draw_Texture(BgObj[i].pos, CloudAlpha);
-		}
-	}
-
+	ObjectsRender();
 	if (!GAMEPLAY_MISC::DISPLAY_QUIT_UI && (GAMEPLAY_MISC::PAUSED && player.active && !player.GetWinStatus()))
 	{
 		BgOverlayArr[BackgroundIndex::Pause].Draw_Texture(100.0f);
@@ -233,27 +199,83 @@ void Background::Unload()
 	for (size_t i = 0; i < BgOverlayArr.size(); ++i) {
 		BgOverlayArr[i].Free();
 	}
-
-	for (size_t i = 0; i < BgObj.size(); ++i) {
-		BgObj[i].Free();
-	}
-
+	ObjectsUnload();
 	MenuBtn.clear();
 }
 void Background::LerpBackgroundColor(void)
 {
-	
 	static const float LerpFactor{ 0.000005f }; // per t increment
-	static SceneType nextScene = SceneType::SunSet;
-	LerpDestination = SceneColors[static_cast<int>(nextScene)];
+	LerpColorDestination = SceneColors[static_cast<int>(NextScene)];
 
-	if (Scene == LerpDestination) {
-		++nextScene;
+	if (SceneColor == LerpColorDestination) {
+		++NextScene;
 		++CurrentScene;
 
-		LerpDestination = SceneColors[static_cast<int>(nextScene)];
+		LerpColorDestination = SceneColors[static_cast<int>(NextScene)];
 		tLerp = 0;
 	}
-	Scene = Color::Lerp(Scene, LerpDestination, tLerp);
+	SceneColor = Color::Lerp(SceneColor, LerpColorDestination, tLerp);
 	tLerp += LerpFactor;
+
+	AEGfxSetBackgroundColor(SceneColor.r, SceneColor.g, SceneColor.b);
+}
+
+void Background::ObjectsInit()
+{
+	SceneColor.Set(SceneColors[static_cast<int>(SceneType::Day)]);
+	tLerp = 0.0f;
+	CurrentScene = SceneType::Day;
+	NextScene = SceneType::SunSet;
+}
+
+void Background::ObjectsLoad()
+{
+	Midpt = Utils::GetScreenMiddle();
+	WindowWidth = static_cast<f32>(AEGetWindowWidth());
+	WindowHeight = static_cast<f32>(AEGetWindowHeight());
+
+	for (int i = 0; i < LastCloudIdx; ++i) {
+		BgObj[i].Init("./Assets/Art/cloud.png", Utils::RandomRangeFloat(50.0f, 100.0f), Utils::RandomRangeFloat(20.0f, 40.0f),
+			AEVec2Set(i * 100.0f + Utils::RandomRangeFloat(-50.0f, 50.0f), Utils::RandomRangeFloat(25.0f, 50.0f)));
+	}
+	BgObj[5].Init("./Assets/Art/moon.png", 50.0f, 50.0f, AEVec2{ 40, 30.0f });
+	BgObj[6].Init("./Assets/Art/moon.png", 50.0f, 50.0f, AEVec2{ 760, 30.0f });
+	BgObj[6].ReflectAboutYAxis();
+
+	SceneColors[static_cast<int>(SceneType::Day)] = Color{ 51.0f, 215.0f, 255.0f, 255.0f };
+	SceneColors[static_cast<int>(SceneType::SunSet)] = Color{ 255.0f, 175.0f, 51.0f, 255.0f };
+	SceneColors[static_cast<int>(SceneType::Night)] = Color{ 100.0f, 149.0f, 237.0f, 255.0f };
+}
+
+void Background::ObjectsUpdate()
+{
+	static AEVec2 CloudDir{ -1.0f, 0.0f };
+	static const float CloudSpeed{ 50.0f };
+
+	if (!GAMEPLAY_MISC::PAUSED) {
+		for (int i = 0; i < LastCloudIdx; ++i) {
+			AEVec2ScaleAdd(&BgObj[i].pos, &CloudDir, &BgObj[i].pos, g_dt * CloudSpeed);
+			BgObj[i].pos.x = AEWrap(BgObj[i].pos.x, -BgObj[i].width / 2.0f, WindowWidth + BgObj[i].width / 2.0f);
+		}
+	}
+}
+
+void Background::ObjectsRender()
+{
+	static const float CloudAlpha{ 100.0f };
+	for (size_t i = 0; i < LastCloudIdx; ++i) {
+		BgObj[i].Draw_Texture(BgObj[i].pos, CloudAlpha);
+	}
+	if (CurrentScene != SceneType::Day) {
+		for (size_t i = LastCloudIdx; i < BgObj.size(); ++i) {
+			BgObj[i].Draw_Texture(BgObj[i].pos, CloudAlpha);
+		}
+	}
+}
+
+void Background::ObjectsUnload()
+{
+	for (size_t i = 0; i < BgObj.size(); ++i) {
+		BgObj[i].Free();
+	}
 }

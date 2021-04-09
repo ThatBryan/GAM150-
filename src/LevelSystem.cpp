@@ -27,7 +27,8 @@ rights reserved.
 #include <iostream>
 #include <fstream>
 
-const int LevelMax{ 9 };
+// 1 Tutorial + 8 Levels				
+const unsigned short LevelMax{ 9 };
 LevelSystem::LevelSystem() : maxLevel{LevelMax}, key{ 1 }{
 }
 

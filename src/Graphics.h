@@ -104,7 +104,6 @@ namespace Graphics
 
 			void Draw();
 			void Draw_Wrapped(const AEVec2 pos);
-			inline void Set_Pos(AEVec2 Pos) {pos = Pos; }
 			AEVec2 GetBufferSize();
 
 		private:

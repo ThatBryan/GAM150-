@@ -36,6 +36,7 @@ public:
 	void Load_Texture(const char* pFile);
 	void FreeTexture();
 	void RandomizeAllStateColor();
+	bool GetHoveredStatus();
 	// ONLY CALL AFTER ALL PUSHBACKS. OTHERWISE THE VECTOR CONTAINER WILL CALL THE DTOR.
 	void SetBtnType(ButtonType Type);
 
@@ -48,6 +49,7 @@ public:
 	inline float GetWidth() const { return button.width; }
 	inline float GetPosY() const { return button.pos.y; }
 	inline float GetPosX() const { return button.pos.x; }
+	inline AEVec2 GetPos() const { return button.pos; }
 private:
 	Graphics::Rect button;
 	Graphics::Text text;

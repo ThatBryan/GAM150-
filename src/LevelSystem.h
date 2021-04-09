@@ -19,8 +19,7 @@ class LevelSystem {
 
 private:
 	const char* keyPath{ "./Assets/Level_System/Key.txt" };
-	const int maxLevel;
-	unsigned short key;
+	unsigned short key, maxLevel;
 
 public:
 	LevelSystem();
@@ -28,6 +27,7 @@ public:
 	void Init();
 	inline unsigned short GetKey() const { return key; }
 	inline void UpdateKey(unsigned short newKey) { key = newKey; }
+	inline unsigned short GetMaxLevel() { return maxLevel; }
 	void UnlockNext();
 
 	// Saves the key to a file before exiting the program.

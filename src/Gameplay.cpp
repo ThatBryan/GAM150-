@@ -104,7 +104,6 @@ void Gameplay::Init(void)
 	}
 	tileManager.push_back(&tilemap);
 	UI::Init();
-	//ShowCursor(false);
 }
 
 void Gameplay::Update()
@@ -151,9 +150,6 @@ void Gameplay::Render()
 	UI::Draw();
 	Particles::Render();
 	UI::Update();
-	/*Leaderboard::GetUserInfo(Jumperman);*/
-	//Leaders::PrintContainer();
-
 }
 
 void Gameplay::Load()
