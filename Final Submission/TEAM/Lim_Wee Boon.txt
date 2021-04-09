@@ -1,0 +1,25 @@
+Name: Lim Wee Boon
+Role: Lead Designer
+Main Contributions:
+- Art Assets
+- Animation Assets
+- Game State Manager
+- Animation System
+
+Files:
+- GameStateManager.h
+- Globals.h
+- Constants.h
+- Graphics.h
+- Image.h
+- Player.h
+- GameStateManager.cpp
+- Main.cpp
+- Globals.cpp
+- Constants.cpp
+- Graphics.cpp
+- Image.cpp
+- Player.cpp
+- Enemy.cpp
+- Gameplay.cpp
+- MainMenu.cpp
