@@ -161,10 +161,13 @@ void Background::Render(const Player& player)//, const Leaders& leader)
 			text.SetText(const_cast<s8*>("Congratulations!! you beat the game!"))
 		  : text.SetText(const_cast<s8*>("YOU WIN"));
 		
-		text.Draw_Wrapped({ text.pos.x, text.pos.y - 50.0f });
+		
+		text.Draw_Wrapped({ text.pos.x, text.pos.y - 120.0f });
 		text.SetText("YOUR SCORE: ");
-		text.Draw_Wrapped({ text.pos.x, text.pos.y - 100.0f });
+		
+		text.Draw_Wrapped({ text.pos.x, text.pos.y - 50.0f });
 		text.SetText(std::to_string(player.GetScore()));
+		
 
 
 		Leaders L = Leaderboard::GetLastPlacement();
