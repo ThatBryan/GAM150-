@@ -21,13 +21,13 @@ struct Leaders {
 	static void InsertNewLeader(const Leaders& newLeader);
 	// For debugging to check the container.
 	static void PrintContainer();
-	void GetUserInfo(Player& player);
 };
 
-
+class Player;
 namespace Leaderboard{
 	void Init();
 	void Update();
 	void Render();
 	void Unload();
+	void GetUserInfo(const Player& player);
 }

@@ -10,6 +10,7 @@
 #include <sstream>   
 #include <cstring>
 #include "Button.h"
+#include "Leaderboard.h"
 
 static AEVec2 ScreenMid, CursorPos;
 static Graphics::Text stringBuffer;
@@ -110,20 +111,12 @@ void Username::DrawCursor(void)
 
 void Username::ReadUsernameInput(void)
 {
-	static const float DeleteTimer{ 0.15f } ;
-	static float DeleteTimerCurrent = DeleteTimer;
 	if (clicked)
 	{
-		if (username.length()) { // if there is something to delete
-			
-			if (AEInputCheckCurr(AEVK_BACK)) 
-				DeleteTimerCurrent -= g_dt;
-			
-			if (DeleteTimerCurrent <= 0.0f || AEInputCheckReleased(AEVK_BACK)) {
-				std::cout << username << std::endl;
+		if (username.length()) {
+			if (AEInputCheckTriggered(AEVK_BACK)) {
 				username.erase(username.length() - 1, 1);
 				CursorPos.x -= fontSize;
-				DeleteTimerCurrent = DeleteTimer;
 			}
 
 			if (AEInputCheckTriggered(AEVK_SPACE))
@@ -133,7 +126,7 @@ void Username::ReadUsernameInput(void)
 			}
 				
 		}
-
+		
 		for (unsigned char i = AEVK_0; i < AEVK_Z; ++i) {
 			// Skip captial letters and weird symbols.
 			if (i > AEVK_9 && i < AEVK_A)
@@ -145,7 +138,7 @@ void Username::ReadUsernameInput(void)
 
 					if (AEInputCheckCurr(AEVK_LSHIFT) || AEInputCheckCurr(AEVK_RSHIFT)) {
 
-						username += i;
+						username += static_cast<unsigned char>(std::toupper((int)i));
 						continue;
 					}
 					username += static_cast<unsigned char>(std::tolower((int)i));
@@ -160,10 +153,33 @@ void Username::ReadUsernameInput(void)
 
 void Username::WriteToFile(const char* filepath)
 {
+	std::ifstream ifs(filepath);
+	static std::string line;
+	static std::string data;
+	std::string word = "username:";
+	size_t pos = 0;
+	std::string replace = username;
+
+	if (ifs.is_open()) {
+
+	
+		getline(ifs, line);
+
+		pos = line.find(word);
+		if (pos != std::string::npos)
+		{
+			pos += word.length();
+			line.replace(pos, word.length(), username);
+		}
+		
+		ifs.close();
+	}
+	
 	std::ofstream ofs(filepath);
 
-	if (ofs.is_open()) {
-		ofs << username;
+	if (ofs.is_open()) 
+	{
+		ofs << line;
 		ofs.close();
 	}
 }

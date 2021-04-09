@@ -13,6 +13,7 @@
 #include <cstring>
 #include <cmath>
 
+Player jumperman;
 static AEVec2 ScreenMid;
 
 static std::vector<Leaders> L(Leaders::MaxLeaders);
@@ -20,17 +21,16 @@ static const char* LeaderBoardFile{ "./Assets/Leaderboard/leaderboard.txt" };
 static const char* UsernameFile{ "./Assets/Username/username.txt" };
 static Graphics::Text stringBuffer;
 
-static std::string username;
+static std::string username; static std::string userscore;
 Leaders(user);
 
 void Leaderboard::Init()
 {
 	ScreenMid = Utils::GetScreenMiddle();
 	Leaders::ReadFromFile(LeaderBoardFile);
-	Username::ReadFromFile(UsernameFile);
-
-
 	
+	//Leaderboard::GetUserInfo();
+	//Username::ReadFromFile(UsernameFile);
 	
 }
 
@@ -41,12 +41,8 @@ void Leaderboard::Update()
 	Leaders::SortLeaders(L);
 	Leaderboard::Render();
 
-	/*user.name = username;
-	user.score = GAMEPLAY_MISC::player_score;
-	std::cout << user.name << std::endl << GAMEPLAY_MISC::player_score;*/
-
-
-
+	Leaders::InsertNewLeader(user);
+	
 	
 }
 
@@ -83,6 +79,63 @@ void Leaderboard::Unload()
 {
 	stringBuffer.ClearBuffer();
 }
+
+void Leaderboard::GetUserInfo(const Player& player)
+{
+	
+	std::ifstream ifs(UsernameFile);
+	static std::string line;
+	static std::string data;
+	std::string word = "username:"; std::string word2 = "score:";
+	size_t pos = 0; size_t pos2 = 0;
+	
+
+	if (ifs.is_open()) {
+
+		getline(ifs, line);
+
+		pos = line.find(word);
+		pos2 = line.find(word2);
+		if (pos != std::string::npos)
+		{
+			pos += word.length();
+			pos2 += word2.length();
+			username = line.substr(pos, line.size() - 1);		
+			userscore = line.substr(pos2, 4);
+		}
+
+		ifs.close();
+
+		user.score = stoi(userscore);
+		user.name = userscore;
+
+		/*std::cout << "username:    " << username << std::endl;
+		std::cout << "score:    " << user.score << std::endl;*/
+	}
+	
+	//std::ifstream ifs("./Assets/Username/username.txt");
+	//std::string line;
+	//std::string word = "score:" ;
+	//size_t pos;
+
+	//if (ifs.is_open()) {
+	//	// Read values from a text file into your struct. Sample code available below if you get stuck
+
+	//	while (!ifs.eof())
+	//	{
+	//		ifs >> line;
+	//	}
+	//	if (line.find(word) != std::string::npos)
+	//	{
+	//		pos = line.find(word);
+	//		std::cout << "pos" << pos;
+	//	}
+	//	
+	//	
+	//	ifs.close();
+	//}
+}
+
 
 Leaders::Leaders() : score{0.0f}, name()
 {
@@ -144,6 +197,16 @@ void Leaders::InsertNewLeader(const Leaders& newLeader)
 	UNREFERENCED_PARAMETER(board);
 	UNREFERENCED_PARAMETER(newLeader);
 
+
+	for (int i = 0; i < Leaders::MaxLeaders; ++i)
+	{
+		if (user.score > L[i].score)
+		{
+			L.push_back(user);
+		}
+
+	}
+	
 	// Call SortLeaders after modifying to reorganize the container from new highest to lowest.
 	// Might want to call PrintContainer to check.
 }
@@ -157,28 +220,22 @@ void Leaders::PrintContainer()
 	}
 }
 
-void Leaders::GetUserInfo(Player& player)
-{
-	if (player.GetLoseStatus())
-	{
-		std::cout << player.GetScore();
-	}
-}
 
 
-void Username::ReadFromFile(const char* filePath)
-{
-	std::ifstream ifs(filePath);
-	if (ifs.is_open()) {
-		// Read values from a text file into your struct. Sample code available below if you get stuck
 
-		while (!ifs.eof())
-		{
-			ifs >> username;
-		}
-		ifs.close();
-	}
-}
+//void Username::ReadFromFile(const char* filePath)
+//{
+//	std::ifstream ifs(filePath);
+//	if (ifs.is_open()) {
+//		// Read values from a text file into your struct. Sample code available below if you get stuck
+//
+//		while (!ifs.eof())
+//		{
+//			ifs >> username;
+//		}
+//		ifs.close();
+//	}
+//}
 
 
 
