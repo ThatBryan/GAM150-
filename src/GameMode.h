@@ -6,7 +6,7 @@ enum class GameMode{Casual = 0,
 namespace GameModeSetting {
 
 	// Complete TimeAttack within a certain time frame?
-	static const float TimeAttackTimer{ 5.0f }; // 10 Mins?
+	static const float TimeAttackTimer{ 600.0f }; // 10 Mins?
 
 	void Load();
 	void Init();

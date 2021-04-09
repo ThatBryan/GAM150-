@@ -119,14 +119,21 @@ void Username::DrawCursor(void)
 
 void Username::ReadUsernameInput(void)
 {
+	static const float DeleteTimerMax{ 0.1f };
+	static float DeleteTimer = DeleteTimerMax;
 	if (clicked)
 	{
 		if (username.length()) {
-			if (AEInputCheckTriggered(AEVK_BACK)) {
+
+			if (AEInputCheckCurr(AEVK_BACK)) 
+				DeleteTimer -= g_dt;
+			
+			if (DeleteTimer <= 0.0f || AEInputCheckReleased(AEVK_BACK)) {
 				username.erase(username.length() - 1, 1);
 				CursorPos.x -= fontSize;
+				DeleteTimer = DeleteTimerMax;
 			}
-
+			
 			if (AEInputCheckTriggered(AEVK_SPACE))
 			{
 				username += " ";
@@ -147,6 +154,7 @@ void Username::ReadUsernameInput(void)
 					if (AEInputCheckCurr(AEVK_LSHIFT) || AEInputCheckCurr(AEVK_RSHIFT)) {
 
 						username += i;
+						CursorPos.x += fontSize;
 						continue;
 					}
 					username += static_cast<unsigned char>(std::tolower((int)i));

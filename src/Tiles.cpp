@@ -252,10 +252,10 @@ void Tiles::LoadTex() {
 			return;
 		}
 		tileTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex);
-		AE_ASSERT_MESG(pTex, "Failed to create texture!");
+		//AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	}
 	if (GAMEPLAY_MISC::Level == Gameplay::GameLevel::TUTORIAL) {
-		std::cout << "Loaded Tutorial Textures\n";
+		//std::cout << "Loaded Tutorial Textures\n";
 		isTutorialLevel = true;
 		LoadTutorialTexture();
 	}
