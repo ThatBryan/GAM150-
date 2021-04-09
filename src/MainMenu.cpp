@@ -312,36 +312,44 @@ void LevelSelection::Init(void)
 {
 	const unsigned short LevelBtnCount{ 10 };
 	for (unsigned short i = 0; i < LevelBtnCount; ++i) {
-		if (i == 9) {
-			LevelBtn.push_back(Button(ButtonType::Texture, 150.0, 75.0f, 0.4f));
-			break;
-		}
-		LevelBtn.push_back(Button(ButtonType::Texture, 150.0, 75.0f, 0.5f));
 
-	}
-	for (unsigned short i = 0; i < LevelBtnCount; ++i) {
+		if (i == LevelBtnCount - 1)
+			LevelBtn.push_back(Button(ButtonType::Texture, 150.0, 75.0f, 0.4f));
+		else
+			LevelBtn.push_back(Button(ButtonType::Texture, 150.0, 75.0f, 0.5f));
+
 		LevelBtn[i].SetID(i);
 		LevelBtn[i].Set_TextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 		LevelBtn[i].SetFontID(fontID::Strawberry_Muffins_Demo);
-		LevelBtn[i].Load_Texture("./Assets/Art/BtnTest3.png");
 		LevelBtn[i].ChangeStateColor(ButtonState::Hovered, Color{ 247.0f, 161.0f, 187.0f, 255.0f });
 	}
+	// For Unlocked levels
+	for (unsigned short i = 0; i < LevelSys.GetUnlockedLevels(); ++i) {
+		LevelBtn[i].Load_Texture("./Assets/Art/BtnTest3.png");
+		LevelBtn[i].Set_Callback(LevelSystem::SetLevel);
 
-	for (size_t i = 0; i < 3; ++i) {
-		for (size_t j = 0; j < 3; ++j) {
-			size_t BtnIndex{ i * 3 + j };
+		std::string LevelCount{ "Level " + std::to_string(i) };
+		i == 0 ? LevelBtn[i].Set_Text("Tutorial")
+			   : LevelBtn[i].Set_Text(LevelCount.c_str());
+	}
+	// For locked levels
+	for (unsigned short i = LevelSys.GetUnlockedLevels(); i < LevelBtnCount - 1; ++i) {
+		LevelBtn[i].Load_Texture("./Assets/Art/Locked.png");
+		LevelBtn[i].ChangeStateColor(ButtonState::Idle, Color(255.0f, 255.0f, 255.0f, 150.0f));
+	}
 
-			LevelBtn[BtnIndex].Set_Position(AEVec2Set(175.0f + 225.0f * j, 162.5f + 150.0f * i));// Mid = 400. 400 - 75, 325. 325 - 150 175.0f // 600 / 3, 200 - 37.5 = 162.5f
+	for (unsigned short i = 0; i < 3; ++i) {
+		for (unsigned short j = 0; j < 3; ++j) {
+			unsigned short BtnIndex{ i * 3U + j };
 
-			if (LevelBtn[BtnIndex].GetID() > LevelSys.GetKey()) {
-				LevelBtn[BtnIndex].ChangeStateColor(ButtonState::Idle, Color(255.0f, 255.0f, 255.0f, 150.0f));
-			}
+			// x = 400(mid) - 75 - 150 = 175.0f // y = 600(height) / 3 - btnheight / 2 = 162.5f
+			static const float BtnPosX{ 175.0f }, PerOffsetX{ 225.0f }, BtnPosY{ 162.5f }, PerOffsetY{ 150.0f };
+
+			LevelBtn[BtnIndex].Set_Position(AEVec2Set(BtnPosX + PerOffsetX * j,
+													  BtnPosY + PerOffsetY * i));
 		}
 	}
-	for (unsigned short i = LevelSys.GetKey() + 1; i < LevelBtnCount - 1; ++i) {
-		LevelBtn[i].Load_Texture("./Assets/Art/Locked.png");
-	}
-
+	LevelBtn[9].Load_Texture("./Assets/Art/BtnTest3.png");
 	LevelBtn[9].Set_Position(AEVec2Set(ScreenMid.x, WindowHeight - LevelBtn[9].GetHeight() / 2.0f));
 	LevelBtn[9].Set_Text("Exit to Main Menu");
 	LevelBtn[9].Set_Callback(MainMenu::SwitchToMainMenu);
@@ -349,14 +357,6 @@ void LevelSelection::Init(void)
 
 void MainMenu::SwitchToLevelSelection(void)
 {
-	for (unsigned short i = 0; i < LevelSys.GetUnlockedLevels(); ++i) { //eg: Key = 3. so Level 3 is unlocked. 3 + 1 = Loop Indexing up to 3
-		LevelBtn[i].Set_Callback(LevelSystem::SetLevel);
-		
-		std::string LevelCount{ "Level " + std::to_string(i) };
-
-		i == 0 ? LevelBtn[i].Set_Text("Tutorial")
-			   : LevelBtn[i].Set_Text(LevelCount.c_str());
-	}
 
 	GameStateUpdate = LevelSelection::Update;
 	GameStateDraw = LevelSelection::Render;
@@ -399,7 +399,6 @@ void LevelSelection::Update(void)
 	for (int i = 0; i < LevelBtn.size(); ++i) {
 		LevelBtn[i].Update();
 	}
-
 	if (AEInputCheckReleased(AEVK_ESCAPE))
 		MainMenu::SwitchToMainMenu();
 }

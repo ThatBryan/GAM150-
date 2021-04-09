@@ -6,6 +6,7 @@
 #include "Utilities.h"
 #include "MainMenu.h"
 #include "Graphics.h"
+#include "Player.h"
 
 #include <vector>
 #include <array>
@@ -15,6 +16,8 @@ extern LevelSystem LevelSys;
 enum TextIndex {Title = 0, Casual, TimeAttack, Max};
 static std::array <Graphics::Text, TextIndex::Max> GameModeText;
 static GameMode Mode;
+
+extern Player Jumperman;
 
 void GameModeSetting::Load()
 {
@@ -119,7 +122,6 @@ void GameModeSetting::SetModeTimeAttack()
 		GAMEPLAY_MISC::TimeAttack_remaining = TimeAttackTimer;
 		LevelSys.SetLevel(1);
 	}
-
 }
 
 void GameModeSetting::SwitchModeSetting()
@@ -131,4 +133,11 @@ void GameModeSetting::SwitchModeSetting()
 GameMode GameModeSetting::GetGameMode()
 {
 	return Mode;
+}
+
+void TimeAttackGameMode::CheckTimer()
+{
+	if (GAMEPLAY_MISC::TimeAttack_remaining < 0.0f) {
+		Jumperman.SetPlayerLose();
+	}
 }

@@ -352,8 +352,6 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 			if (Utils::ColliderAABB(enemy[i].collider.sprite.pos, enemy[i].collider.sprite.width, enemy[i].collider.sprite.height, 
 				collider.sprite.pos, collider.sprite.width, collider.sprite.height))
 			{
-			std::cout << enemy[i].collider.top.pos.x << "\t" << enemy[i].collider.top.pos.y << std::endl;
-			std::cout << collider.bottom.pos.x << "\t" << collider.bottom.pos.y << std::endl;
 				if (Utils::ColliderAABB(enemy[i].collider.top.pos, enemy[i].collider.top.width, enemy[i].collider.top.height, 
 					collider.bottom.pos, collider.bottom.width, collider.bottom.height)) {
 					if (!GAMEPLAY_MISC::DEBUG_MODE) {
@@ -363,8 +361,8 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 						enemy[i].KillEnemy();
 						continue;
 					}
-					if (GAMEPLAY_MISC::DEBUG_MODE)
-						printf("enemy dies\n");
+					//if (GAMEPLAY_MISC::DEBUG_MODE)
+					//	printf("enemy dies\n");
 				}
 				else {
 					if (!GAMEPLAY_MISC::DEBUG_MODE) {
@@ -373,8 +371,8 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 						if(hp.current >= 1)
 							Respawn();
 					}
-					if (GAMEPLAY_MISC::DEBUG_MODE)
-						printf("player dies\n");
+					//if (GAMEPLAY_MISC::DEBUG_MODE)
+					//	printf("player dies\n");
 				}
 			}
 		}

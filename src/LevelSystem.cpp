@@ -87,7 +87,6 @@ void LevelSystem::SetLevel(unsigned short new_level)
 	}
 }
 
-
 void LevelSystem::SaveKeyToFile(void)
 {
 	std::ofstream File;
@@ -105,9 +104,6 @@ void LevelSystem::SetNextLevel(void)
 	{
 		gamestateNext = ++GAMEPLAY_MISC::Level;
 
-		LevelSys.UpdateKey(GAMEPLAY_MISC::Level);
-		std::cout << "KEY: " << LevelSys.GetKey() << std::endl;
-
 		if (gamestateCurr == GS_GAMEPLAY)
 		{
 			gamestateNext = GS_GAMEPLAY2;
@@ -119,8 +115,6 @@ void LevelSystem::SetNextLevel(void)
 	}
 
 	else
-	{
 		gamestateNext = GS_MAINMENU;
-	}
 }
 
