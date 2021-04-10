@@ -232,6 +232,7 @@ void Gameplay::Unload()
 	AudioManager::unloadAsset();
 	FreeMapData();
 	Background::Unload();
+	GAMEPLAY_MISC::DEBUG_MODE = false;
 }
 
 void Gameplay::Restart()

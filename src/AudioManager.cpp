@@ -130,7 +130,6 @@ bool AudioManager::GetGlobalMute()
 	return globalMute;
 }
 
-
 AudioID& operator++(AudioID& rhs)
 {
 	rhs = static_cast<AudioID>((static_cast<int>(rhs) + 1));

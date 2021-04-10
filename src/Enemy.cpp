@@ -81,6 +81,8 @@ void Enemies::Update()
 	if(type != EnemyType::Bat)
 		ApplyGravity();
 	DecreaseAlpha();
+	if(!killed)
+		CheckOutOfBound();
 }
 
 void Enemies::Draw()
@@ -229,6 +231,12 @@ void Enemies::PlayDeathSFX()
 		Audio.playAudio(AudioArray[static_cast<int>(AudioID::SquirrelDeath)], AudioID::SquirrelDeath);
 		return;
 	}
+}
+void Enemies::CheckOutOfBound()
+{
+	static const float LimitY{ static_cast<float>(AEGetWindowHeight()) };
+	if (sprite.pos.y - sprite.height / 2.0f >= LimitY)
+		KillEnemy();
 }
 void Enemies::KillEnemy(bool status) {
 	killed = status;

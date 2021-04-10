@@ -385,6 +385,9 @@ void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy)
 		for (size_t j = 0; j < TileManager[i]->size(); ++j) {
 
 			Tiles& Tile{ TileManager[i]->at(j) };
+			if (!Tile.active)
+				continue;
+
 			if (Utils::ColliderAABB(enemy.collider.sprite.pos, enemy.collider.sprite.width, enemy.collider.sprite.height,
 				Tile.collider.top.pos, Tile.collider.top.width, Tile.collider.top.height)) {
 
