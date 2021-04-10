@@ -141,8 +141,6 @@ void Gameplay::Render()
 	{
 		tilemap[i].Render();
 	}
-
-	//Tiles::CheckPlayerCollision(tileManager, Jumperman);
 	for (size_t j = 0; j < enemies.size(); ++j)
 	{
 		enemies[j].Draw();

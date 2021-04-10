@@ -29,9 +29,9 @@ enum ImageIdx { DigiPen = 0,
 				Max    = 2};
 
 std::array <Image, ImageIdx::Max> Splashes;
-
+Image copyright;
 static float splashDurationCurr, alpha;
-static const float splashDurationDesired = 3.0f;
+static const float splashDurationDesired = 4.0f;
 static int splashFrame;
 static bool FlipAlpha; // For fade in and out effect
 
@@ -67,21 +67,25 @@ void Splash::Update() {
 }
 void Splash::Render() {
 	Splashes[splashFrame].Draw_Texture(alpha);
+	copyright.Draw_Texture(255.0f);
 }
 void Splash::Load() {
 	AEVec2 ScreenMid{ Utils::GetScreenMiddle() };
-	const float splashWidth{ 800.0f }, splashHeight{ 194.0f }; // After applying aspect ratio to original image. 
+	const float splashWidth{ 800.0f }, FModHeight{ 194.0f }, DigipenHeight{ 312.0f }; // After applying aspect ratio to original image. 
 
 	if (Utils::RandomRangeInt(0, 1))
-		Splashes[ImageIdx::DigiPen].Load(FP::LOGOS::DigipenRed, splashWidth, splashHeight, ScreenMid);
+		Splashes[ImageIdx::DigiPen].Load(FP::LOGOS::DigipenRed, splashWidth, DigipenHeight, ScreenMid);
 	else
-		Splashes[ImageIdx::DigiPen].Load(FP::LOGOS::DigipenWhite, splashWidth, splashHeight, ScreenMid);
+		Splashes[ImageIdx::DigiPen].Load(FP::LOGOS::DigipenWhite, splashWidth, DigipenHeight, ScreenMid);
 
-	Splashes[ImageIdx::FMod].Load(FP::LOGOS::FMod, splashWidth, splashHeight, ScreenMid);
+	Splashes[ImageIdx::FMod].Load(FP::LOGOS::FMod, splashWidth, FModHeight, ScreenMid);
+
+	copyright.Load("./Assets/Logo/Copyright.png", splashWidth, 50.0f, AEVec2Set(ScreenMid.x, 800.0f - 50.0f));
 }
 void Splash::Unload() {
 	splash.Free();
 	for (size_t i = 0; i < Splashes.size(); ++i) {
 		Splashes[i].Free();
 	}
+	copyright.Free();
 }
