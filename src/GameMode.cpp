@@ -1,3 +1,23 @@
+/******************************************************************************/
+/*!
+\file				GameMode.cpp
+\primary author: 	Bryan Koh Yan Wei
+\par    			email: yanweibryan.koh@digipen.edu
+\date   			April 10, 2021
+
+\brief				Source file which contains the definitions for Game Mode
+					related logics. This GameMode interface is accessible
+					from the Play button under Main Menu.
+
+					Functionalities offered here include:
+					Switching of GameMode
+					Some brief explaination of the GameMode at the UI page.
+					Acessor for the GameMode that the game is currently running on.
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #include "GameMode.h"
 #include "Button.h"
 #include "Globals.h"

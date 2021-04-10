@@ -117,14 +117,6 @@ void Button::Update(void) {
 	}
 }
 
-bool Button::OnClick(void) {
-	AEVec2 Mouse = Utils::GetMousePos();
-	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckReleased(AEVK_LBUTTON))
-	{
-		return true;
-	}
-	return false;
-}
 
 void Button::Render(void) {
 	switch (type) {
@@ -147,3 +139,12 @@ ButtonState Button::Check_State() {
 	return ButtonState::Idle;
 }
 
+// Author: Min Yi
+bool Button::OnClick(void) {
+	AEVec2 Mouse = Utils::GetMousePos();
+	if (AETestPointToRect(&Mouse, &button.pos, button.width, button.height) && AEInputCheckReleased(AEVK_LBUTTON))
+	{
+		return true;
+	}
+	return false;
+}

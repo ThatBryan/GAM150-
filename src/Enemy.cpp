@@ -47,34 +47,6 @@ velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }, alphaTimer{ 
 	collider.sprite.color.Set(Color{ 0, 0, 0, 100.0f });
 }
 
-void Enemies::Update_Position(void)
-{
-	f32 maxX{ static_cast<f32>(AEGetWindowWidth()) };
-
-	if (active && !killed) {
-
-	collider.sprite.pos = sprite.pos;
-	collider.top.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0f);
-	collider.bottom.pos = AEVec2Set(sprite.pos.x, sprite.pos.y + sprite.height / 2.0f);
-	collider.right.pos = AEVec2Set(sprite.pos.x + abs(sprite.width) / 2.0f - collider.right.width / 2.0f, sprite.pos.y);
-	collider.left.pos = AEVec2Set(sprite.pos.x - abs(sprite.width) / 2.0f + collider.left.width / 2.0f, sprite.pos.y);
-
-		switch (type) {
-		case EnemyType::Slime:
-			Slime_Movement(maxX);
-			return;
-		case EnemyType::Bat:
-			Bat_Movement(maxX);
-			break;
-			return;
-		case EnemyType::Squirrel:
-			Squirrel_Movement(maxX);
-			return;
-		}
-	}
-}
-
-
 void Enemies::ApplyGravity(void) {
 
 	const float GravityStep{ 10.0f };
@@ -85,67 +57,6 @@ void Enemies::ApplyGravity(void) {
 	}
 }
 
-void Enemies::Bat_Movement(f32 maxX)
-{
-	// Sine-Wave
-	sprite.pos.x += velocity * g_dt;
-	sprite.pos.y = spawnPos.y + 10.0f * sinf(static_cast<f32>(sprite.pos.x) * 2.0f * PI / 180.0f); // y = amplitude * sin(x * period * pi / 180)
-
-	counter -= g_dt;
-
-	if (counter < 0.0f || sprite.pos.x + sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
-	{
-		velocity *= -1;
-		sprite.ReflectAboutYAxis();
-		counter = Enemies::bat_counter;
-	}
-}
-
-void Enemies::Squirrel_Movement(f32 maxX)
-{
-	sprite.pos.x += velocity * g_dt;
-	counter -= g_dt;
-
-	if (squirrelJump)
-	{
-		sprite.pos.y -= static_cast<f32>(jumpvelocity) * g_dt;
-	}
-
-	const float halfWidth{ fabsf(sprite.width / 2.0f) };
-	if (!isGravity && counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + halfWidth >= maxX)
-	{
-		if (sprite.pos.x + halfWidth >= maxX)
-			sprite.pos.x = maxX - halfWidth;
-
-		sprite.ReflectAboutYAxis();
-		velocity *= -1.0f;
-		counter = Enemies::squirrel_counter;
-	}
-
-	if (velocity < 0)
-		collider.bottom.pos.x = sprite.pos.x - squirrel_offset_x;
-	else
-		collider.bottom.pos.x = sprite.pos.x + squirrel_offset_x;
-}
-
-void Enemies::Slime_Movement(f32 maxX)
-{
-	if (!isGravity)
-	{
-		sprite.pos.x -= velocity * g_dt;
-		counter -= g_dt;
-	}
-	const float halfWidth {fabsf(sprite.width / 2.0f)};
-	if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + halfWidth >= maxX)
-	{
-		if(sprite.pos.x + halfWidth >= maxX)
-			sprite.pos.x = maxX - halfWidth;
-
-		sprite.ReflectAboutYAxis();
-		velocity *= -1.0f;
-		counter = Enemies::slime_counter;
-	}
-}
 void Enemies::DecreaseAlpha(void)
 {
 	static const float Timer{ alphaTimer };
@@ -291,8 +202,8 @@ void Enemies::LoadTex(void) {
 		}
 		enemyTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex);
 		enemyParticleTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex2);
-		AE_ASSERT_MESG(pTex, "Failed to create texture!");
-		AE_ASSERT_MESG(pTex2, "Failed to create texture!");
+		AE_ASSERT_MESG(pTex, "Failed to create enemy texture!");
+		AE_ASSERT_MESG(pTex2, "Failed to create enemy sprite sheet texture!");
 	}
 }
 
@@ -308,5 +219,94 @@ void Enemies::KillEnemy(bool status) {
 		for (int i = 0; i < particleCount; ++i) {
 			Particles::Create(sprite.pos, Utils::GetRandomVecVel(), Color::CreateRandomColor(), 1, 75.0f, Utils::RandomRangeFloat(100.0f, 250.0f), sprite.width / 3.0f, 3.0f, enemyParticleTex[static_cast<int>(type)]);
 		}
+	}
+}
+//Author: Seet Min Yi
+void Enemies::Update_Position(void)
+{
+	f32 maxX{ static_cast<f32>(AEGetWindowWidth()) };
+
+	if (active && !killed) {
+
+		collider.sprite.pos = sprite.pos;
+		collider.top.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0f);
+		collider.bottom.pos = AEVec2Set(sprite.pos.x, sprite.pos.y + sprite.height / 2.0f);
+		collider.right.pos = AEVec2Set(sprite.pos.x + abs(sprite.width) / 2.0f - collider.right.width / 2.0f, sprite.pos.y);
+		collider.left.pos = AEVec2Set(sprite.pos.x - abs(sprite.width) / 2.0f + collider.left.width / 2.0f, sprite.pos.y);
+
+		switch (type) {
+		case EnemyType::Slime:
+			Slime_Movement(maxX);
+			return;
+		case EnemyType::Bat:
+			Bat_Movement(maxX);
+			break;
+			return;
+		case EnemyType::Squirrel:
+			Squirrel_Movement(maxX);
+			return;
+		}
+	}
+}
+
+void Enemies::Bat_Movement(f32 maxX)
+{
+	// Sine-Wave
+	sprite.pos.x += velocity * g_dt;
+	sprite.pos.y = spawnPos.y + 10.0f * sinf(static_cast<f32>(sprite.pos.x) * 2.0f * PI / 180.0f); // y = amplitude * sin(x * period * pi / 180)
+
+	counter -= g_dt;
+
+	if (counter < 0.0f || sprite.pos.x + sprite.width / 2.0f < 0 || sprite.pos.x + sprite.width / 2 >= maxX)
+	{
+		velocity *= -1;
+		sprite.ReflectAboutYAxis();
+		counter = Enemies::bat_counter;
+	}
+}
+
+void Enemies::Squirrel_Movement(f32 maxX)
+{
+	sprite.pos.x += velocity * g_dt;
+	counter -= g_dt;
+
+	if (squirrelJump)
+	{
+		sprite.pos.y -= static_cast<f32>(jumpvelocity) * g_dt;
+	}
+
+	const float halfWidth{ fabsf(sprite.width / 2.0f) };
+	if (!isGravity && counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + halfWidth >= maxX)
+	{
+		if (sprite.pos.x + halfWidth >= maxX)
+			sprite.pos.x = maxX - halfWidth;
+
+		sprite.ReflectAboutYAxis();
+		velocity *= -1.0f;
+		counter = Enemies::squirrel_counter;
+	}
+
+	if (velocity < 0)
+		collider.bottom.pos.x = sprite.pos.x - squirrel_offset_x;
+	else
+		collider.bottom.pos.x = sprite.pos.x + squirrel_offset_x;
+}
+
+void Enemies::Slime_Movement(f32 maxX)
+{
+	if (!isGravity)
+	{
+		sprite.pos.x -= velocity * g_dt;
+		counter -= g_dt;
+	}
+	const float halfWidth {fabsf(sprite.width / 2.0f)};
+	if (counter < 0.0f || sprite.pos.x - sprite.width / 2.0f < 0 || sprite.pos.x + halfWidth >= maxX)
+	{
+		if(sprite.pos.x + halfWidth >= maxX)
+			sprite.pos.x = maxX - halfWidth;
+
+		sprite.ReflectAboutYAxis();
+		velocity *= -1.0f;
+		counter = Enemies::slime_counter;
 	}
 }

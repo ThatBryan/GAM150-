@@ -31,6 +31,7 @@ namespace FILE_PATHS {
 
 	extern const char* DigipenLogoRed;
 	extern const char* DigipenLogoWhite;
+	extern const char* FModLogo;
 	extern const char* PauseOverlay;
 	extern const char* VictoryOverlay;
 	extern const char* GameoverOverlay;

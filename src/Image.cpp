@@ -25,11 +25,7 @@ rights reserved.
 
 #include <iostream>
 
-int count = 0;
-int slimeCount = 0;
-int batCount = 0;
-int squirrelCount = 0;
-
+// Author: Bryan
 Image::Image(const AEGfxTexture* pTex, AEGfxVertexList* Mesh, const f32 width, const f32 height, const f32 dir)
 	: rotation{dir}, width{width}, height{height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color(), transformMtx{NULL}
 {
@@ -106,12 +102,30 @@ void Image::Draw_Texture(const f32 alpha, const f32 r, const f32 g, const f32 b,
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
-//
+
+void Image::Draw_Texture(AEVec2 Pos, const f32 alpha, const f32 r, const f32 g, const f32 b, const f32 a)
+{
+	SetMatrix(Pos);
+	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+	AEGfxTextureSet(pTex, 0, 0);
+	AEGfxSetTintColor(r / Color::RGBA_MAX, g / Color::RGBA_MAX, b / Color::RGBA_MAX, a / Color::RGBA_MAX);
+	AEGfxSetTransparency(alpha / Color::RGBA_MAX);
+	AEGfxSetTransform(transformMtx.m);
+	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
+}
+
+// Author: Wee Boon
+
+int count = 0;
+int slimeCount = 0;
+int batCount = 0;
+int squirrelCount = 0;
+
 void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const f32 alpha, const f32 r, const f32 g, const f32 b, const f32 a)
 {
 	SetMatrix();
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-	AEGfxTextureSet(pTex, 0, 0);
 	AEGfxSetTintColor(r / Color::RGBA_MAX, g / Color::RGBA_MAX, b / Color::RGBA_MAX, a / Color::RGBA_MAX);
 	AEGfxSetTransparency(alpha / Color::RGBA_MAX);
 	AEGfxSetTransform(transformMtx.m);
@@ -124,7 +138,6 @@ void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const
 		{
 			player_objtexX = 0;
 		}
-		//pTex = texture;
 		++count;
 		if (count < counter)
 		{
@@ -191,26 +204,12 @@ void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const
 			squirrelCount = 0;
 		}
 		if (squirrel_objtexX == 1.0f)
-		{
 			squirrel_objtexX = 0.0f;
-		}
+		
 	}
 	pMesh = mesh;
 	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
-
-void Image::Draw_Texture(AEVec2 Pos, const f32 alpha, const f32 r, const f32 g, const f32 b, const f32 a)
-{
-	SetMatrix(Pos);
-	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-	AEGfxTextureSet(pTex, 0, 0);
-	AEGfxSetTintColor(r / Color::RGBA_MAX, g / Color::RGBA_MAX, b / Color::RGBA_MAX, a / Color::RGBA_MAX);
-	AEGfxSetTransparency(alpha / Color::RGBA_MAX);
-	AEGfxSetTransform(transformMtx.m);
-	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
-}
-
 void Image::Set_Texture(AEGfxTexture* texture)
 {
 	this->pTex = texture;

@@ -2,7 +2,7 @@
 /*!
 \file				Globals.h
 \primary author: 	Bryan Koh Yan Wei 
-\Secondary authors:	Lim Wee Boon, , Dallas Cheong
+\Secondary authors:	Lim Wee Boon , Dallas Cheong
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Contains declaration of global variables 

@@ -35,7 +35,7 @@ class Particles{
 		static void Render();
 		static void Unload();
 		
-		// Accessors
+		// Accessors to check container 
 		static size_t GetContainerCapacity();
 		static size_t GetContainerSize();
 

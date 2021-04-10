@@ -55,7 +55,7 @@ Color Color::CreateRandomColor(const float max_alpha)
 
 bool Color::operator==(const Color& rhs)
 {
-	const float Epsilon{ 0.01f };
+	static const float Epsilon{ 0.001f };
 	if (r - rhs.r < Epsilon && g - rhs.g < Epsilon && b - rhs.b < Epsilon && alpha - rhs.alpha < Epsilon)
 		return true;
 
@@ -122,7 +122,6 @@ void Graphics::Free() {
 	AEGfxMeshFree(Mesh::BatAnim);
 	AEGfxMeshFree(Mesh::SlimeAnim);
 	AEGfxMeshFree(Mesh::SquirrelAnim);
-	//AEGfxMeshFree(Mesh::PlayerCurr);
 }
 
 AEGfxVertexList* Graphics::Mesh_Rectangle(void)
