@@ -216,8 +216,8 @@ void Gameplay::Load()
 	Enemies::LoadTex();
 	Player::LoadTex();
 	AudioManager::loadAsset();
-	AudioManager::SetVolume(AudioID::Jump, 0.2f);
-	AudioManager::SetVolume(AudioID::BGM, 0.2f);
+	AudioManager::SetVolume(AudioID::BGM, 0.05f);
+	AudioManager::SetVolume(AudioID::Jump, 0.05f);
 	Audio.playAudio(AudioArray[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 	Background::Load();
 	Background::Init();

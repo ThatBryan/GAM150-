@@ -31,7 +31,7 @@ std::array <AudioClass, static_cast<int>(AudioID::Max)> AudioArray{ NULL };
 AudioData soundData[static_cast<int>(AudioID::Max)];
 bool AudioManager::globalMute = false;
 
-AudioData::AudioData() : ID{ static_cast<AudioID>(0) }, channel{ nullptr }, volume{ 0.5f }, mute{ false } {
+AudioData::AudioData() : ID{ static_cast<AudioID>(0) }, channel{ nullptr }, volume{ 0.1f }, mute{ false } {
 	
 }
 
