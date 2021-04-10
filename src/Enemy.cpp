@@ -38,6 +38,7 @@ Enemies::squirrel_jumpspeed = 100.0f;
 int Enemies::jump_counter = 5;
 
 static AEGfxTexture* enemyTex[static_cast<int>(EnemyType::Max)]{ nullptr };
+static AEGfxTexture* enemyParticleTex[static_cast<int>(EnemyType::Max)]{ nullptr };
 
 Enemies::Enemies(AEGfxTexture* filepath, AEGfxVertexList* mesh, const f32 width, const f32 height) : sprite(filepath, mesh, width, height), collider(),
 spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, counter{ 0 }, jumpcounter{ 5 }, squirrelJump { false },
@@ -264,27 +265,34 @@ void Enemies::Unload(void)
 	for (size_t i = 0; i < static_cast<int>(EnemyType::Max); i++)
 	{
 		AEGfxTextureUnload(enemyTex[i]);
+		AEGfxTextureUnload(enemyParticleTex[i]);
 	}
 }
 
 void Enemies::LoadTex(void) {
 	for (EnemyType i = EnemyType::Slime; i < EnemyType::Max; ++i) {
 		const char* pTex = nullptr;
+		const char* pTex2 = nullptr;
 		switch (i) {
 		case EnemyType::Slime:
 			pTex = FP::SlimeSpriteSheet;
+			pTex2 = FP::WaterSlimeSprite;
 			break;
 		case EnemyType::Bat:
 			pTex = FP::BatSpriteSheet;
+			pTex2 = FP::FlyingEnemySprite;
 			break;
 		case EnemyType::Squirrel:
 			pTex = FP::SquirrelSpriteSheet;
+			pTex2 = FP::SquirrelSprite;
 			break;
 		default:
 			return;
 		}
 		enemyTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex);
+		enemyParticleTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex2);
 		AE_ASSERT_MESG(pTex, "Failed to create texture!");
+		AE_ASSERT_MESG(pTex2, "Failed to create texture!");
 	}
 }
 
@@ -298,7 +306,7 @@ void Enemies::KillEnemy(bool status) {
 	const int particleCount{ 50 };
 	if (killed) {
 		for (int i = 0; i < particleCount; ++i) {
-			Particles::Create(sprite.pos, Utils::GetRandomVecVel(), Color::CreateRandomColor(), 1, 75.0f, Utils::RandomRangeFloat(100.0f, 250.0f), sprite.width / 3.0f, 3.0f, enemyTex[static_cast<int>(type)]);
+			Particles::Create(sprite.pos, Utils::GetRandomVecVel(), Color::CreateRandomColor(), 1, 75.0f, Utils::RandomRangeFloat(100.0f, 250.0f), sprite.width / 3.0f, 3.0f, enemyParticleTex[static_cast<int>(type)]);
 		}
 	}
 }
