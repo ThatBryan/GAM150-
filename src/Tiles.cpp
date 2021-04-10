@@ -255,7 +255,6 @@ void Tiles::LoadTex() {
 		AE_ASSERT_MESG(pTex, "Failed to create Tile texture!");
 	}
 	if (GAMEPLAY_MISC::Level == Gameplay::GameLevel::TUTORIAL) {
-		//std::cout << "Loaded Tutorial Textures\n";
 		isTutorialLevel = true;
 		LoadTutorialTexture();
 	}
@@ -268,7 +267,6 @@ void Tiles::Unload()
 		AEGfxTextureUnload(tileTex[i]);
 	}
 	if (isTutorialLevel) {
-		std::cout << "Freed Tutorial Textures\n";
 		FreeTutorialTexture();
 	}
 }
@@ -416,19 +414,18 @@ void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 			if (Utils::ColliderAABB(enemy.collider.right.pos, enemy.collider.right.width, enemy.collider.right.height,
 				TheTile.collider.left.pos, TheTile.collider.left.width, TheTile.collider.left.height)){ 
 				enemy.velocity *= -1.0f;
-				enemy.sprite.pos.x = TheTile.image.pos.x - TheTile.image.width / 2.0f - abs(enemy.sprite.width) / 2.0f - 2.0f;
+				enemy.sprite.pos.x = TheTile.image.pos.x - TheTile.image.width / 2.0f - abs(enemy.sprite.width) / 2.0f - 3.0f;
 				enemy.sprite.width *= -1.0f;
-
+				return;
 			}
-
 			if (Utils::ColliderAABB(enemy.collider.left.pos, enemy.collider.left.width, enemy.collider.left.height,
 				TheTile.collider.right.pos, TheTile.collider.right.width, TheTile.collider.right.height)){
 
 				enemy.velocity *= -1.0f;
 				enemy.sprite.pos.x = TheTile.image.pos.x + TheTile.image.width / 2.0f + abs(enemy.sprite.width) / 2.0f + 2.0f;
 				enemy.sprite.width *= -1.0f;
+				return;
 			}		
-
 			
 			if (Utils::ColliderAABB(enemy.collider.bottom.pos, enemy.collider.bottom.width, enemy.collider.bottom.height,
 				TheTile.collider.top.pos, TheTile.collider.top.width, TheTile.collider.top.height)) {

@@ -162,8 +162,7 @@ void MainMenu::Load(void)
 {
 	Mesh::PlayerCurr = Mesh::Anim;
 	AudioManager::loadAsset();
-	AudioManager::SetVolume(AudioID::BGM, 0.5f);
-	AudioManager::SetVolume(AudioID::Jump, 0.2f);
+	AudioManager::SetVolume(AudioID::BGM, 0.2f);
 	Audio.playAudio(AudioArray[static_cast<int>(AudioID::BGM)], AudioID::BGM, true);
 	Tiles::LoadTex();
 	Enemies::LoadTex();
