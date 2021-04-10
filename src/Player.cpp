@@ -391,6 +391,6 @@ void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, con
 	player.collider.SetWidthHeight(player.collider.top, width - 4.0f, 5.0f);
 	player.collider.SetWidthHeight(player.collider.left, width / 2.0f, height - 10.0f);
 	player.collider.SetWidthHeight(player.collider.right, width / 2.0f, height - 10.0f);
-	player.collider.SetWidthHeight(player.collider.bottom, width /2.0f, 5.0f);
+	player.collider.SetWidthHeight(player.collider.bottom, width / 2.0f, 5.0f);
 	player.collider.SetMeshes();
 }
