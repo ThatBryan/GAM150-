@@ -161,27 +161,27 @@ void Background::Render(const Player& player)//, const Leaders& leader)
 			text.SetText(const_cast<s8*>("Congratulations!! you beat the game!"))
 		  : text.SetText(const_cast<s8*>("YOU WIN"));
 		
-		
-		text.Draw_Wrapped({ text.pos.x, text.pos.y - 120.0f });
-		text.SetText("YOUR SCORE: ");
-		
-		text.Draw_Wrapped({ text.pos.x, text.pos.y - 50.0f });
-		text.SetText(std::to_string(player.GetScore()));
-		
-
-
-		Leaders L = Leaderboard::GetLastPlacement();
-		
-
-		if (!isScoreInserted && L.score < player.playerscore)
+		if (gameMode == GameMode::TimeAttack && GAMEPLAY_MISC::Level == 8)
 		{
-			Leaders newleader;
-			newleader.name = player.GetName();
-			newleader.score = player.GetScore();
-			L.InsertNewLeader(newleader);
-			isScoreInserted = true;
-			std::cout << player.GetName();
+			text.Draw_Wrapped({ text.pos.x, text.pos.y - 120.0f });
+			text.SetText("YOUR SCORE: ");
+			text.Draw_Wrapped({ text.pos.x, text.pos.y - 50.0f });
+			int time_remaining = static_cast<int>(GAMEPLAY_MISC::TimeAttack_remaining);
+			text.SetText(std::to_string(time_remaining));
+
+			Leaders L = Leaderboard::GetLastPlacement();
+
+			if (!isScoreInserted && L.score < GAMEPLAY_MISC::TimeAttack_remaining)
+			{
+				Leaders newleader;
+				newleader.name = player.GetName();
+				newleader.score = static_cast<int>(GAMEPLAY_MISC::TimeAttack_remaining);
+				L.InsertNewLeader(newleader);
+				isScoreInserted = true;
+			}
 		}
+		
+
 		int btnNum; // Only update one button at level 8 since last level.
 
 		GAMEPLAY_MISC::Level == LevelSys.GetMaxLevel() - 1 ? btnNum = 1 
