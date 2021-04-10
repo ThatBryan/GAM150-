@@ -55,7 +55,7 @@ Color Color::CreateRandomColor(const float max_alpha)
 
 bool Color::operator==(const Color& rhs)
 {
-	const float Epsilon{ 0.01f };
+	static const float Epsilon{ 0.001f };
 	if (r - rhs.r < Epsilon && g - rhs.g < Epsilon && b - rhs.b < Epsilon && alpha - rhs.alpha < Epsilon)
 		return true;
 
@@ -95,6 +95,9 @@ void Graphics::Load_Meshes(void)
 	Mesh::SlimeAnim = Graphics::Mesh_Animation(slime_anim_offset_x);
 	AE_ASSERT_MESG(Mesh::SlimeAnim, "fail to create object!!");
 
+	Mesh::SquirrelAnim = Graphics::Mesh_Animation(squirrel_anim_offset_x);
+	AE_ASSERT_MESG(Mesh::SquirrelAnim, "fail to create object!!");
+
 	Mesh::Circle = Graphics::Mesh_Circle();
 	AE_ASSERT_MESG(Mesh::Circle, "fail to create object!!");
 }
@@ -118,7 +121,7 @@ void Graphics::Free() {
 	AEGfxMeshFree(Mesh::Anim2);
 	AEGfxMeshFree(Mesh::BatAnim);
 	AEGfxMeshFree(Mesh::SlimeAnim);
-	//AEGfxMeshFree(Mesh::PlayerCurr);
+	AEGfxMeshFree(Mesh::SquirrelAnim);
 }
 
 AEGfxVertexList* Graphics::Mesh_Rectangle(void)

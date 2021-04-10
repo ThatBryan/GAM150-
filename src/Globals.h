@@ -2,7 +2,7 @@
 /*!
 \file				Globals.h
 \primary author: 	Bryan Koh Yan Wei 
-\Secondary authors:	Lim Wee Boon, , Dallas Cheong
+\Secondary authors:	Lim Wee Boon , Dallas Cheong
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Contains declaration of global variables 
@@ -43,6 +43,7 @@ namespace Mesh { // Base Meshes
 	extern AEGfxVertexList* Anim2;
 	extern AEGfxVertexList* BatAnim;
 	extern AEGfxVertexList* SlimeAnim;
+	extern AEGfxVertexList* SquirrelAnim;
 	extern AEGfxVertexList* PlayerCurr;
 }
 extern unsigned short DialogueID;
@@ -52,6 +53,8 @@ extern float g_dt;
 
 extern const float bat_anim_offset_x;
 extern const float slime_anim_offset_x;
+extern const float squirrel_anim_offset_x;
 extern float player_objtexX;
 extern float bat_objtexX;
 extern float slime_objtexX;
+extern float squirrel_objtexX;

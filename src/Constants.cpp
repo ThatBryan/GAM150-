@@ -18,6 +18,7 @@ namespace FILE_PATHS {
 	// Sprites & background overlays
 	const char* DigipenLogoRed = "./Assets/Logo/DigiPen_RED.png";
 	const char* DigipenLogoWhite = "./Assets/Logo/DigiPen_WHITE.png";
+	const char* FModLogo = "./Assets/Logo/FMOD_Logo.png";
 	const char* PauseOverlay = "./Assets/Art/pause_temp.png";
 	const char* VictoryOverlay = "./Assets/Art/throwaway.png";
 	const char* GameoverOverlay = "./Assets/Art/throwaway2.png";
@@ -30,6 +31,7 @@ namespace FILE_PATHS {
 	const char* PlayerSpriteSheetRun = "./Assets/Art/Jumperman_Run_Spritesheet.png";
 	const char* BatSpriteSheet = "./Assets/Art/BatSprite.png";
 	const char* SlimeSpriteSheet = "./Assets/Art/SlimeSpriteSheet.png";
+	const char* SquirrelSpriteSheet = "./Assets/Art/SquirrelSpriteSheet.png";
 	const char* GrassTile = "./Assets/Art/Grass_Tile.png";
 	const char* GoalTile = "./Assets/Art/Goal.png";
 	const char* SpecialTile = "./Assets/Art/Special_Tile.png";

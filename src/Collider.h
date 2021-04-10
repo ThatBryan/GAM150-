@@ -4,7 +4,8 @@
 \author 	Bryan Koh Yan Wei, yanweibryan.koh, 390001520
 \par    	email: yanweibryan.koh@digipen.edu
 \date   	February 28, 2021
-\brief		Header file for a user defined type which contains 5 rectangles.
+\brief		Header file for a user defined type which is made up using 
+			a class composition of 5 rectangles from the Graphics file.
 
 			Used for collision detection between game objects. 
 

@@ -26,19 +26,19 @@ public:
 
 	Button(ButtonType Type, const f32 width, const f32 height, const f32 textScale = 1.0f);
 	~Button();
+	// ONLY CALL AFTER ALL PUSHBACKS. OTHERWISE THE VECTOR CONTAINER WILL CALL THE DTOR.
 	void Update();
-	bool OnClick(void);
 	void Render();
 	void Set_Position(const AEVec2 pos);
+	void SetBtnType(ButtonType Type);
 	void Set_Text(std::string text);
 	void Set_TextColor(Color color);
 	void ChangeStateColor(ButtonState state, Color color);
 	void Load_Texture(const char* pFile);
 	void FreeTexture();
 	void RandomizeAllStateColor();
+	bool OnClick(void);
 	bool GetHoveredStatus();
-	// ONLY CALL AFTER ALL PUSHBACKS. OTHERWISE THE VECTOR CONTAINER WILL CALL THE DTOR.
-	void SetBtnType(ButtonType Type);
 
 	inline int GetID() const { return ID; }
 	inline void SetID(unsigned short x) { ID = x; }

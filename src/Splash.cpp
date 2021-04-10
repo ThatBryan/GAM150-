@@ -20,37 +20,69 @@ rights reserved.
 #include "GameStateManager.h"
 #include "AEEngine.h"
 
-#include <vector>
+#include <array>
+#include <iostream>
 
 Image splash;
 
+enum ImageIdx { DigiPen = 0,
+				FMod   = 1,
+				Max    = 2};
 
-static float splashLife, alpha;
-static const float splashDuration = 3.0f;
+std::array <Image, ImageIdx::Max> Splashes;
+
+static float splashDurationCurr, alpha;
+static const float splashDurationDesired = 3.0f;
+static int splashFrame;
+static bool FlipAlpha; // For fade in and out effect
 
 void Splash::Init() {
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
-	if (Utils::RandomRangeInt(0, 1))
-		splash.Init(FP::DigipenLogoRed, 800.0f, 194.0f,Utils::GetScreenMiddle());
-	else
-		splash.Init(FP::DigipenLogoWhite, 800.0f, 194.0f, Utils::GetScreenMiddle());
 
-	splashLife = splashDuration;
-	alpha = 255.0f;
+	splashDurationCurr = 0.0f;
+	splashFrame = ImageIdx::DigiPen;
+	alpha = 0.0f;
+	FlipAlpha = false;
 }
 void Splash::Update() {
-	splashLife -= g_dt;
-	alpha = (splashLife / splashDuration) * 255.0f;
-	if (splashLife <= 0) {
-		gamestateNext = GS_MAINMENU;
+
+	if (!FlipAlpha) {
+		if(splashDurationCurr >= splashDurationDesired / 2.0f)
+			FlipAlpha = true;
+
+		splashDurationCurr += g_dt;
+	}
+	else{
+		splashDurationCurr -= g_dt;
+	}
+									
+	alpha = (splashDurationCurr / splashDurationDesired) * 255.0f;
+
+	if (splashDurationCurr <= 0) {
+
+		splashFrame < ImageIdx::Max - 1 ? ++splashFrame : gamestateNext = GS_MAINMENU;
+		FlipAlpha = false;
+		splashDurationCurr = 0.0f;
+		alpha = 0.0f;
 	}
 }
 void Splash::Render() {
-	splash.Draw_Texture(alpha);
+	Splashes[splashFrame].Draw_Texture(fabsf(alpha));
 }
 void Splash::Load() {
+	AEVec2 ScreenMid{ Utils::GetScreenMiddle() };
+	const float splashWidth{ 800.0f }, splashHeight{ 194.0f }; // After applying aspect ratio to original image. 
 
+	if (Utils::RandomRangeInt(0, 1))
+		Splashes[ImageIdx::DigiPen].Init(FP::DigipenLogoRed, splashWidth, splashHeight, ScreenMid);
+	else
+		Splashes[ImageIdx::DigiPen].Init(FP::DigipenLogoWhite, splashWidth, splashHeight, ScreenMid);
+
+	Splashes[ImageIdx::FMod].Init(FP::FModLogo, splashWidth, splashHeight, ScreenMid);
 }
 void Splash::Unload() {
 	splash.Free();
+	for (size_t i = 0; i < Splashes.size(); ++i) {
+		Splashes[i].Free();
+	}
 }
