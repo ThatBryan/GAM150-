@@ -69,7 +69,7 @@ void AudioManager::playAudio(AudioClass& Sound, AudioID ID, bool bLoop) {
 void AudioManager::update() {
 	m_pSystem->update();
 	for (AudioID i = static_cast<AudioID>(0); i < AudioID::Max; ++i) {
-		if (i == AudioID::PlayerDeath)
+		if (i == AudioID::PlayerDeath && !globalMute)
 			continue;
 		soundData[static_cast<int>(i)].channel->setPaused(GAMEPLAY_MISC::PAUSED);
 		soundData[static_cast<int>(i)].channel->setMute(soundData[static_cast<int>(i)].mute);

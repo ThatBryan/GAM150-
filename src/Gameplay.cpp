@@ -209,7 +209,7 @@ void Gameplay::Load()
 	}
 	Mesh::PlayerCurr = Mesh::Anim;
 
-	assert(Map_Height > 0 && Map_Width > 0);
+	assert(Map_Height > 0 && Map_Width > 0); // Prevent division by 0 later.
 
 	Tiles::LoadTex();
 	Particles::Load();

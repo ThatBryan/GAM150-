@@ -132,7 +132,6 @@ AEVec2 Utils::GetMousePos(void)
 void Utils::TogglePause(void)
 {
 	GAMEPLAY_MISC::PAUSED = !GAMEPLAY_MISC::PAUSED;
-
 	if (!GAMEPLAY_MISC::PAUSED) {
 		GAMEPLAY_MISC::DISPLAY_QUIT_UI = false;
 	}
