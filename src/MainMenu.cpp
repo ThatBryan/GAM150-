@@ -84,7 +84,8 @@ void MainMenu::Init(void)
 	count = 0;
 
 	const float TileWidth{ 80.0f }, TileHeight{ 100.0f },
-				EnemyWidth{ 60.0f }, EnemyHeight{ 60.0f };
+				EnemyWidth{ 60.0f }, EnemyHeight{ 60.0f },
+				playerWidth{ 50.0f }, playerHeight{ 50.0f };
 
 	const int TilesNum = static_cast<int>(WindowWidth / TileWidth);
 
@@ -93,8 +94,9 @@ void MainMenu::Init(void)
 	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2{ 520.0f, tiles[0].image.pos.y - TileHeight / 2.0f }, EnemyWidth, EnemyHeight);
 	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2{ 710.0f, tiles[0].image.pos.y - TileHeight / 2.0f }, EnemyWidth, EnemyHeight);
 
-	player.push_back(Player(Player::playerTex, PLAYER_CONST::WIDTH, PLAYER_CONST::HEIGHT));
-	player[0].SetPos(AEVec2Set(PLAYER_CONST::WIDTH / 2.0f, tiles[0].image.pos.y - TileHeight - 10.0f));
+
+	player.push_back(Player(Player::playerTex, playerWidth, playerHeight));
+	player[0].SetPos(AEVec2Set(playerWidth / 2.0f, tiles[0].image.pos.y - TileHeight - 10.0f));
 
 	background.Set(Color{ 51.0f, 215.0f, 255.0f, 255.0f });
 

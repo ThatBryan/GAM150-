@@ -69,13 +69,12 @@ namespace FP = FILE_PATHS; // Short hand
 namespace PLAYER_CONST {
 	extern const float SPEED;
 	extern const float DEBUGSPEED;
-	extern const float WIDTH;
-	extern const float HEIGHT;
 	extern const float JUMPVEL;
 	extern const float CHARGED_JUMPVEL;
 	extern const short HP_MAX;
 	extern const float CHARGEDJUMP_COUNTER;
-	extern const float COLLIDER_OFFSET_X;
+	extern const float COLLIDER_BTM_OFFSET_X;
+	extern const float COLLIDER_SIDE_OFFSET_X;
 	extern const float PLAYER_IDLE_OFFSET_X;
 	extern const float PLAYER_RUN_OFFSET_X;
 }

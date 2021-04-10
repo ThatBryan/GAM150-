@@ -46,8 +46,8 @@ collider()
 	static const float ColliderAllowance{ 4.0f };
 	collider.SetWidthHeight(collider.sprite, width, height);
 	collider.SetWidthHeight(collider.top, width - ColliderAllowance, 5.0f);
-	collider.SetWidthHeight(collider.left, 30, height - ColliderAllowance);
-	collider.SetWidthHeight(collider.right, 30, height - ColliderAllowance);
+	collider.SetWidthHeight(collider.left, width / 2.0f, height - ColliderAllowance);
+	collider.SetWidthHeight(collider.right, width / 2.0f, height - ColliderAllowance);
 	collider.SetWidthHeight(collider.bottom, width - ColliderAllowance, 5.0f);
 }
 
@@ -86,8 +86,8 @@ void Tiles::CheckPos(void) {
 	{
 		collider.sprite.pos = image.pos;
 		collider.bottom.pos = AEVec2Set(image.pos.x, image.pos.y + image.height / 2.0f);
-		collider.right.pos = AEVec2Set(image.pos.x + abs(image.width) / 2.0f - collider.right.width / 2.0f, image.pos.y);
-		collider.left.pos = AEVec2Set(image.pos.x - abs(image.width) / 2.0f + collider.left.width / 2.0f, image.pos.y);
+		collider.right.pos = AEVec2Set(image.pos.x + collider.right.width / 2.0f, image.pos.y);//+ abs(image.width) / 2.0f 
+		collider.left.pos = AEVec2Set(image.pos.x - collider.left.width / 2.0f, image.pos.y); //- abs(image.width) / 2.0f
 		
 		if (type == TileType::Grass) 
 			collider.top.pos = AEVec2Set(image.pos.x, 

@@ -21,7 +21,6 @@ rights reserved.
 #include "AEEngine.h"
 
 #include <array>
-#include <iostream>
 
 Image splash;
 
@@ -58,7 +57,7 @@ void Splash::Update() {
 									
 	alpha = (splashDurationCurr / splashDurationDesired) * 255.0f;
 
-	if (splashDurationCurr <= 0) {
+	if (splashDurationCurr <= 0 || AEInputCheckReleased(AEVK_LBUTTON)) {
 
 		splashFrame < ImageIdx::Max - 1 ? ++splashFrame : gamestateNext = GS_MAINMENU;
 		FlipAlpha = false;

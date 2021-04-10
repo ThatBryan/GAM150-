@@ -38,6 +38,9 @@ private:
 	float jumpvel, chargedjumpvel, chargedjump_counter;
 	static f32 gravityStrength;
 	void Update_Position(void);
+	void UpdateColliders();
+	void DebugMovements();
+	void CheckJumpInputs();
 	void CheckOutOfBound(void);
 	void ChangeDirection(void);
 	void Respawn(void);

@@ -65,13 +65,12 @@ namespace FILE_PATHS {
 namespace PLAYER_CONST {
 	const float SPEED = 150.0f;
 	const float DEBUGSPEED = 300.0f;
-	const float WIDTH = 45.0f;
-	const float HEIGHT = 50.0f;
 	const float JUMPVEL = 3.5f;
 	const float CHARGED_JUMPVEL = 8.0f;
 	const short HP_MAX = 3U;
 	const float CHARGEDJUMP_COUNTER = 1.0f;
-	const float COLLIDER_OFFSET_X = 2.0f;
+	const float COLLIDER_BTM_OFFSET_X = 2.0f;
+	const float COLLIDER_SIDE_OFFSET_X = 5.0f;
 	const float PLAYER_IDLE_OFFSET_X = 0.2f;
 	const float PLAYER_RUN_OFFSET_X = 0.125f;
 }
