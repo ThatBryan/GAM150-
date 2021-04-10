@@ -17,7 +17,7 @@
 
 
 
-All content © 2021 DigiPen Institute of Technology Singapore. All
+All content ï¿½ 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.
 
  */
@@ -36,21 +36,20 @@ rights reserved.
 #include <fstream>
 #include <sstream>   
 #include <cstring>
-
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> AudioArray;
 extern AudioManager Audio;
 extern LevelSystem LevelSys;
 
-static f32 maxY;
-static f32 maxX;
+static f32 maxY, maxX;
 AEGfxTexture* Player::playerTex{ nullptr };
 AEGfxTexture* Player::playerMovTex{ nullptr };
 AEGfxTexture* Player::playerParticle{ nullptr };
 float Player::gravityStrength = 20.0f;
 static const char* UsernameFile{ "./Assets/Username/username.txt" };
+static bool isSoundPlayed;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::PlayerCurr, width, height), lose{ false },
-active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL },
+active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, playerWin{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL },
 hp(), direction{ SpriteDirection::Right }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL }, gravityMultiplier{ GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER },
 chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider(), playerscore { 0 }, playername{"Jumperman"}
 {
@@ -62,7 +61,7 @@ chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider(), playerscor
 }
 
 Player::Player() : lose{ false }, active{ true }, gravity{ false }, jump{ false }, chargedjump{ false },
-win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL },
+playerWin{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL },
 hp(), direction{ SpriteDirection::Right }, gravityMultiplier{ GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER }, chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }
 , collider(), playerscore{ 0 }, playername{ "Jumperman" }{
 
@@ -80,10 +79,13 @@ void Player::Reset(void)
 }
 
 void Player::Update() {
-	CheckOutOfBound();
-	Update_Position();
-	if (hp.current <= 0)
+	if (hp.current <= 0) 
 		SetPlayerLose();
+	if(!lose)
+		CheckOutOfBound();
+	CheckJumpInputs();
+	Update_Position();
+	UpdateColliders();
 	GravityManager();
 }
 void Player::Render(void)
@@ -104,13 +106,22 @@ void Player::Render(void)
 		collider.Draw();
 	}
 }
+void Player::SetPlayerLose(void)
+{
+	active = false; 
+	lose = true;
+	if (!isSoundPlayed) {
+		Audio.playAudio(AudioArray[static_cast<int>(AudioID::PlayerDeath)], AudioID::PlayerDeath);
+		isSoundPlayed = true;
+	}
+}
 void Player::LoadTex(void) {
-	playerTex = AEGfxTextureLoad(FP::PlayerSpriteSheetIdle);
-	playerMovTex = AEGfxTextureLoad(FP::PlayerSpriteSheetRun);
-	playerParticle = AEGfxTextureLoad(FP::PlayerSprite);
-	AE_ASSERT_MESG(playerTex, "Failed to create texture!");
-	AE_ASSERT_MESG(playerMovTex, "Failed to create texture!");
-	AE_ASSERT_MESG(playerParticle, "Failed to create texture!");
+	playerTex = AEGfxTextureLoad(FP::PLAYER::SpriteSheetIdle);
+	playerMovTex = AEGfxTextureLoad(FP::PLAYER::SpriteSheetRun);
+	playerParticle = AEGfxTextureLoad(FP::PLAYER::Sprite);
+	AE_ASSERT_MESG(playerTex, "Failed to create Player spirte sheet Idle");
+	AE_ASSERT_MESG(playerMovTex, "Failed to create Player sprite sheet run!");
+	AE_ASSERT_MESG(playerParticle, "Failed to create Player Particle texture!");
 }
 
 void Player::Unload(void) {
@@ -129,61 +140,9 @@ void Player::Unload(void) {
 }
 void Player::Update_Position(void)
 {
-	if (!jump && !gravity){
-		if (AEInputCheckCurr(AEVK_SPACE)){
-			chargedjump_counter -= g_dt;
-			// Prevent the particles from spawning when doing a regular jump
-			if (chargedjump_counter < (0.8f * PLAYER_CONST::CHARGEDJUMP_COUNTER)) {
-				AEVec2 Min = AEVec2Sub(collider.bottom.pos, AEVec2{ sprite.width, 25.0f });
-				AEVec2 Max = AEVec2Add(collider.bottom.pos, AEVec2{ sprite.width, 25.0f });
-				AEVec2 Destination = AEVec2Add(sprite.pos, AEVec2{ 0, sprite.height / 2.0f });
-				Particles::CreateReverseParticles(Destination, Min, Max, Color{ 255.0f, 255.0f, 0, 255.0f }, 1, Utils::RandomRangeFloat(10.0f, 100.0f), 50.0f, 3.0f, 1.0f);
-			}
-		}
-		else if (AEInputCheckReleased(AEVK_SPACE)){
-			jump = true;
-			Audio.playAudio(AudioArray[static_cast<int>(AudioID::Jump)], AudioID::Jump);
-		}
-		if (chargedjump_counter < 0.0f) {
-			chargedjump = true;
-			chargedjump_counter = PLAYER_CONST::CHARGEDJUMP_COUNTER;
-		}
-	} // end if !jump && !gravity
-	if (chargedjump)
-	{
-		jump = false;
-		if (sprite.pos.y + sprite.height / 2 <= maxY)
-		{
-			sprite.pos.y -= chargedjumpvel;
-
-			chargedjumpvel -= 0.2f; // velocity decrease as y increases
-			if (chargedjumpvel < 0.0f)
-			{
-				chargedjump = false;
-				chargedjumpvel = PLAYER_CONST::CHARGED_JUMPVEL;
-			}
-		}
-	}
 	if (jump)
-	{
-		chargedjump_counter = PLAYER_CONST::CHARGEDJUMP_COUNTER;
-		if (sprite.pos.y + sprite.height / 2 <= maxY)
-		{
-			sprite.pos.y -= jumpvel;
-			jumpvel -= 0.1f; // velocity decrease as y increases
-			if (jumpvel <= 0)
-			{
-				jump = false;
-				jumpvel = PLAYER_CONST::JUMPVEL;
-			}
-		}
-	}
+		ApplyJump();
 
-	if (!gravity) // reset counter if player's feet touches the ground
-	{
-		jumpvel = PLAYER_CONST::JUMPVEL;
-		chargedjumpvel = PLAYER_CONST::CHARGED_JUMPVEL;
-	}
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
 	{
 		if (sprite.pos.x + sprite.width / 2 <= maxX || GAMEPLAY_MISC::DEBUG_MODE) {
@@ -215,36 +174,97 @@ void Player::Update_Position(void)
 		}
 
 	}
-
-	// Debug movements
 	if (GAMEPLAY_MISC::DEBUG_MODE) {
-		AEVec2 Mouse = Utils::GetMousePos();
-		if (AETestPointToRect(&Mouse, &sprite.pos, sprite.width, sprite.height))
-		{
-			if (AEInputCheckCurr(AEVK_LBUTTON))
-				sprite.pos = Mouse;
-		}
-		if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN)) {
-			if (sprite.pos.y + sprite.height / 2 <= maxY) {
-				sprite.pos.y += PLAYER_CONST::DEBUGSPEED  *  g_dt;
-			}
-		}
-		if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP)) {
-			if (sprite.pos.y - sprite.height / 2 >= 0) {
-				sprite.pos.y -= PLAYER_CONST::DEBUGSPEED * g_dt;
-			}
-		}
+		ApplyDebugMovements();
 	}
+}
+
+void Player::UpdateColliders()
+{
 	collider.sprite.pos = sprite.pos;
 	if (direction == SpriteDirection::Left) {
-		collider.bottom.pos = AEVec2Set(sprite.pos.x - PLAYER_CONST::COLLIDER_OFFSET_X, sprite.pos.y + +sprite.height / 2.0f - collider.bottom.height / 2.0f);
+		collider.bottom.pos = AEVec2Set(sprite.pos.x - PLAYER_CONST::COLLIDER_BTM_OFFSET_X, sprite.pos.y + +sprite.height / 2.0f - collider.bottom.height / 2.0f);
 	}
 	else {
-		collider.bottom.pos = AEVec2Set(sprite.pos.x + PLAYER_CONST::COLLIDER_OFFSET_X, sprite.pos.y + sprite.height / 2.0f - collider.bottom.height / 2.0f);
+		collider.bottom.pos = AEVec2Set(sprite.pos.x + PLAYER_CONST::COLLIDER_BTM_OFFSET_X, sprite.pos.y + sprite.height / 2.0f - collider.bottom.height / 2.0f);
 	}
 	collider.top.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0f + collider.top.height / 2.0f);
-	collider.right.pos = AEVec2Set(sprite.pos.x + abs(sprite.width) / 4.0f, sprite.pos.y);
-	collider.left.pos = AEVec2Set(sprite.pos.x - abs(sprite.width) / 4.0f, sprite.pos.y);
+	collider.right.pos = AEVec2Set(sprite.pos.x + fabsf(sprite.width / 4.0f), sprite.pos.y);
+	collider.left.pos = AEVec2Set(sprite.pos.x - fabsf(sprite.width / 4.0f), sprite.pos.y);
+}
+
+void Player::ApplyDebugMovements()
+{
+	AEVec2 Mouse = Utils::GetMousePos();
+	if (AETestPointToRect(&Mouse, &sprite.pos, sprite.width, sprite.height))
+	{
+		if (AEInputCheckCurr(AEVK_LBUTTON))
+			sprite.pos = Mouse;
+	}
+	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN)) {
+		if (sprite.pos.y + sprite.height / 2 <= maxY) {
+			sprite.pos.y += PLAYER_CONST::DEBUGSPEED * g_dt;
+		}
+	}
+	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP)) {
+		if (sprite.pos.y - sprite.height / 2 >= 0) {
+			sprite.pos.y -= PLAYER_CONST::DEBUGSPEED * g_dt;
+		}
+	}
+}
+
+void Player::ApplyJump()
+{
+	chargedjump_counter = PLAYER_CONST::CHARGEDJUMP_COUNTER;
+	if (sprite.pos.y + sprite.height / 2 <= maxY)
+	{
+		sprite.pos.y -= jumpvel;
+		jumpvel -= 0.1f; // velocity decrease as y increases
+		if (jumpvel <= 0)
+		{
+			jump = false;
+			jumpvel = PLAYER_CONST::JUMPVEL;
+		}
+	}
+}
+
+void Player::CheckJumpInputs()
+{
+	if (!jump && !gravity) {
+		if (AEInputCheckCurr(AEVK_SPACE)) {
+			chargedjump_counter -= g_dt;
+			// Prevent the particles from spawning when doing a regular jump
+			if (chargedjump_counter < (0.8f * PLAYER_CONST::CHARGEDJUMP_COUNTER)) {
+				AEVec2 Min = AEVec2Sub(collider.bottom.pos, AEVec2{ sprite.width, 25.0f });
+				AEVec2 Max = AEVec2Add(collider.bottom.pos, AEVec2{ sprite.width, 25.0f });
+				AEVec2 Destination = AEVec2Add(sprite.pos, AEVec2{ 0, sprite.height / 2.0f });
+				Particles::CreateReverseParticles(Destination, Min, Max, Color{ 255.0f, 255.0f, 0, 255.0f }, 1, Utils::RandomRangeFloat(10.0f, 100.0f), 50.0f, 3.0f, 1.0f);
+			}
+		}
+		else if (AEInputCheckReleased(AEVK_SPACE)) {
+			jump = true;
+			Audio.playAudio(AudioArray[static_cast<int>(AudioID::Jump)], AudioID::Jump);
+		}
+		if (chargedjump_counter < 0.0f) {
+			chargedjump = true;
+			chargedjump_counter = PLAYER_CONST::CHARGEDJUMP_COUNTER;
+		}
+	} // end if !jump && !gravity
+	if (chargedjump)
+	{
+		jump = false;
+		if (sprite.pos.y + sprite.height / 2 <= maxY)
+		{
+			sprite.pos.y -= chargedjumpvel;
+
+			chargedjumpvel -= 0.2f; // velocity decrease as y increases
+			if (chargedjumpvel < 0.0f)
+			{
+				chargedjump = false;
+				chargedjumpvel = PLAYER_CONST::CHARGED_JUMPVEL;
+			}
+		}
+	}
 }
 
 void Player::ChangeDirection() {
@@ -255,7 +275,7 @@ void Player::Respawn(void)
 {
 	jump = false;
 	chargedjump = false;
-	win = false;
+	playerWin = false;
 	lose = false;
 	active = true;
 	sprite.rotation = 0;
@@ -265,23 +285,18 @@ void Player::Respawn(void)
 	chargedjumpvel = PLAYER_CONST::CHARGED_JUMPVEL;
 	chargedjump_counter = PLAYER_CONST::CHARGEDJUMP_COUNTER;
 	gravityMultiplier = GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER;
-
-	static const float spriteWidth{ fabsf(sprite.width) };
-	if (sprite.pos.x - (spriteWidth / 2.0f) <= 0) {
-		sprite.pos.x = spriteWidth / 2.0f;
-	}
 }
 
 void Player::CheckOutOfBound() {
+
 	if ((sprite.pos.y - sprite.height / 2) > maxY) {
-		--hp.current;
 		Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerParticle);
-		if(hp.current >= 1)
+		if(--hp.current)
 			Respawn();
 	}
-
-	if (sprite.pos.x - (sprite.width / 2.0f) < 0) {
-		sprite.pos.x = sprite.width / 2.0f;
+	static const float Width{ fabsf(sprite.width / 2.0f) };
+	if (sprite.pos.x - Width / 2.0f < 0) {
+		sprite.pos.x = Width / 2.0f;
 	}
 
 	if (sprite.pos.y - sprite.height / 2.0f <= 0) {
@@ -291,6 +306,12 @@ void Player::CheckOutOfBound() {
 }
 void Player::GravityManager(void)
 {
+	if (!gravity) // reset counter if player's feet touches the ground
+	{
+		jumpvel = PLAYER_CONST::JUMPVEL;
+		chargedjumpvel = PLAYER_CONST::CHARGED_JUMPVEL;
+	}
+
 	if (gravity && !jump && !chargedjump)
 	{
 		if (!GAMEPLAY_MISC::DEBUG_MODE) {
@@ -303,13 +324,12 @@ void Player::GravityManager(void)
 void Player::SetPlayerWin(void)
 {
 	static std::string str;
-	if (!win) {
+	if (!playerWin) {
 		LevelSys.UnlockNext();
-		win = true;
+		playerWin = true;
 
 		GAMEPLAY_MISC::player_score = static_cast<int>((GAMEPLAY_MISC::app_max_time - GAMEPLAY_MISC::app_time) * GAMEPLAY_MISC::app_score);
 		playerscore = GAMEPLAY_MISC::player_score;
-
 
 		std::ifstream ifs(UsernameFile);
 		static std::string line;
@@ -362,18 +382,13 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 						enemy[i].KillEnemy();
 						continue;
 					}
-					//if (GAMEPLAY_MISC::DEBUG_MODE)
-					//	printf("enemy dies\n");
 				}
 				else {
 					if (!GAMEPLAY_MISC::DEBUG_MODE) {
-						--hp.current;
 						Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerParticle);
-						if(hp.current >= 1)
+						if (--hp.current)
 							Respawn();
 					}
-					//if (GAMEPLAY_MISC::DEBUG_MODE)
-					//	printf("player dies\n");
 				}
 			}
 		}
@@ -385,12 +400,14 @@ void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, con
 	player.sprite.Set(playerTex, width, height, pos, Mesh::PlayerCurr);
 
 	player.startingPos = pos;
-	player.sprite.pos = pos;
-
+	player.sprite.pos = player.startingPos;
+	
 	player.collider.SetWidthHeight(player.collider.sprite, width, height);
-	player.collider.SetWidthHeight(player.collider.top, width - 4.0f, 5.0f);
-	player.collider.SetWidthHeight(player.collider.left, width / 2.0f, height - 10.0f);
-	player.collider.SetWidthHeight(player.collider.right, width / 2.0f, height - 10.0f);
-	player.collider.SetWidthHeight(player.collider.bottom, width / 2.0f, 5.0f);
+	player.collider.SetWidthHeight(player.collider.top, width - 4.0f, height / 4.0f);
+	player.collider.SetWidthHeight(player.collider.left, width / 2.0f - PLAYER_CONST::COLLIDER_SIDE_OFFSET_X, height - 10.0f);
+	player.collider.SetWidthHeight(player.collider.right, width / 2.0f - PLAYER_CONST::COLLIDER_SIDE_OFFSET_X, height - 10.0f);
+	player.collider.SetWidthHeight(player.collider.bottom, width /2.0f, 5.0f);
 	player.collider.SetMeshes();
+
+	isSoundPlayed = false;
 }

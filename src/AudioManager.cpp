@@ -31,7 +31,7 @@ std::array <AudioClass, static_cast<int>(AudioID::Max)> AudioArray{ NULL };
 AudioData soundData[static_cast<int>(AudioID::Max)];
 bool AudioManager::globalMute = false;
 
-AudioData::AudioData() : ID{ AudioID::None }, channel{ nullptr }, volume{ 1.0f }, mute{ false } {
+AudioData::AudioData() : ID{ static_cast<AudioID>(0) }, channel{ nullptr }, volume{ 0.5f }, mute{ false } {
 	
 }
 
@@ -68,15 +68,40 @@ void AudioManager::playAudio(AudioClass& Sound, AudioID ID, bool bLoop) {
 
 void AudioManager::update() {
 	m_pSystem->update();
-	for (int i = 0; i < static_cast<int>(AudioID::Max); ++i) {
-		soundData[i].channel->setPaused(GAMEPLAY_MISC::PAUSED);
-		soundData[i].channel->setMute(soundData[i].mute);
+	for (AudioID i = static_cast<AudioID>(0); i < AudioID::Max; ++i) {
+		if (i == AudioID::PlayerDeath)
+			continue;
+		soundData[static_cast<int>(i)].channel->setPaused(GAMEPLAY_MISC::PAUSED);
+		soundData[static_cast<int>(i)].channel->setMute(soundData[static_cast<int>(i)].mute);
 	}
 }
 
 void AudioManager::loadAsset(void) {
-	Audio.createAudio(&AudioArray[static_cast<int>(AudioID::Jump)], FP::jumpSFX);
-	Audio.createAudio(&AudioArray[static_cast<int>(AudioID::BGM)], FP::GameplayBGM);
+
+	for (AudioID i = static_cast<AudioID>(0); i < AudioID::Max; ++i) {
+		const char* pFile{ nullptr };
+		switch (i) {
+		case AudioID::Jump:
+			pFile = FP::SFX::Jump;
+			break;
+		case AudioID::BGM:
+			pFile = FP::BGM::Gameplay;
+			break;
+		case AudioID::Boink:
+			pFile = FP::SFX::Boink;
+			break;
+		case AudioID::SquirrelDeath:
+			pFile = FP::SFX::SquirrelDeath;
+			break;
+		case AudioID::SlimeDeath:
+			pFile = FP::SFX::SlimeDeath;
+			break;
+		case AudioID::PlayerDeath:
+			pFile = FP::SFX::PlayerDeath;
+			break;
+		}
+		Audio.createAudio(&AudioArray[static_cast<int>(i)], pFile);
+	}
 }
 void AudioManager::unloadAsset(void) {
 	for (int i = 0; i < AudioArray.size(); i++) {

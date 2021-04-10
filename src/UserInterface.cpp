@@ -60,7 +60,7 @@ void UI::Init() {
 	memset(strBuffer1, 0, 100 * sizeof(char));
 	memset(strBuffer2, 0, 100 * sizeof(char));
 
-	lives.Init(FP::HeartSprite, 35.0f, 35.0f, AEVec2Zero());
+	lives.Load(FP::UI::HeartSprite, 35.0f, 35.0f, AEVec2Zero());
 
 	gameMode = GameModeSetting::GetGameMode();
 }

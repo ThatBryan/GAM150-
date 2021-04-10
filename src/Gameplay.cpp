@@ -110,6 +110,7 @@ void Gameplay::Init(void)
 void Gameplay::Update()
 {
 	Utils::CursorManager();
+
 	Background::Update();
 	if (!GAMEPLAY_MISC::PAUSED) {
 		GAMEPLAY_MISC::app_time += g_dt;
@@ -141,12 +142,12 @@ void Gameplay::Render()
 		tilemap[i].Render();
 	}
 
-	Tiles::CheckPlayerCollision(tileManager, Jumperman);
-	Jumperman.Render();
+	//Tiles::CheckPlayerCollision(tileManager, Jumperman);
 	for (size_t j = 0; j < enemies.size(); ++j)
 	{
 		enemies[j].Draw();
 	}
+	Jumperman.Render();
 	Background::Render(Jumperman);
 	UI::Draw();
 	Particles::Render();
@@ -206,7 +207,6 @@ void Gameplay::Load()
 		default:
 			gamestateNext = GS_MAINMENU;
 	}
-	//Mesh::Anim = Graphics::Mesh_Animation(player_idle_anim_offset_x);
 	Mesh::PlayerCurr = Mesh::Anim;
 
 	assert(Map_Height > 0 && Map_Width > 0);
@@ -251,6 +251,7 @@ void Gameplay::UpdateManager()
 {
 	if (!GAMEPLAY_MISC::PAUSED && !Jumperman.GetLoseStatus() && !Jumperman.GetWinStatus()) {
 		Jumperman.Update();
+		Tiles::CheckPlayerCollision(tileManager, Jumperman);
 		
 		Tiles::CollapsingManager(tileManager);
 		if (!GAMEPLAY_MISC::DISABLE_COLLISION)

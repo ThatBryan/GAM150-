@@ -25,8 +25,10 @@ rights reserved.
 #include "Utilities.h"
 #include "Particles.h"
 #include "Globals.h"
+#include "AudioManager.h"
 
 #include <iostream>
+#include <array>
 
 float Enemies::baseGravityStrength = 20.0f;
 
@@ -39,6 +41,9 @@ int Enemies::jump_counter = 5;
 
 static AEGfxTexture* enemyTex[static_cast<int>(EnemyType::Max)]{ nullptr };
 static AEGfxTexture* enemyParticleTex[static_cast<int>(EnemyType::Max)]{ nullptr };
+
+extern AudioManager Audio;
+extern std::array <AudioClass, static_cast<int>(AudioID::Max)> AudioArray;
 
 Enemies::Enemies(AEGfxTexture* filepath, AEGfxVertexList* mesh, const f32 width, const f32 height) : sprite(filepath, mesh, width, height), collider(),
 spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, counter{ 0 }, jumpcounter{ 5 }, squirrelJump { false },
@@ -186,16 +191,16 @@ void Enemies::LoadTex(void) {
 		const char* pTex2 = nullptr;
 		switch (i) {
 		case EnemyType::Slime:
-			pTex = FP::SlimeSpriteSheet;
-			pTex2 = FP::WaterSlimeSprite;
+			pTex = FP::ENEMY::SlimeSpriteSheet;
+			pTex2 = FP::ENEMY::WaterSlimeSprite;
 			break;
 		case EnemyType::Bat:
-			pTex = FP::BatSpriteSheet;
-			pTex2 = FP::FlyingEnemySprite;
+			pTex = FP::ENEMY::BatSpriteSheet;
+			pTex2 = FP::ENEMY::BatSprite;
 			break;
 		case EnemyType::Squirrel:
-			pTex = FP::SquirrelSpriteSheet;
-			pTex2 = FP::SquirrelSprite;
+			pTex = FP::ENEMY::SquirrelSpriteSheet;
+			pTex2 = FP::ENEMY::SquirrelSprite;
 			break;
 		default:
 			return;
@@ -211,9 +216,24 @@ EnemyType& operator++(EnemyType& rhs) {
 	rhs = static_cast<EnemyType>((static_cast<int>(rhs) + 1));
 	return rhs;
 }
-
+void Enemies::PlayDeathSFX()
+{
+	switch (type) {
+	case EnemyType::Bat:
+		Audio.playAudio(AudioArray[static_cast<int>(AudioID::Boink)], AudioID::Boink);
+		return;
+	case EnemyType::Slime:
+		Audio.playAudio(AudioArray[static_cast<int>(AudioID::SlimeDeath)], AudioID::SlimeDeath);
+		return;
+	case EnemyType::Squirrel:
+		Audio.playAudio(AudioArray[static_cast<int>(AudioID::SquirrelDeath)], AudioID::SquirrelDeath);
+		return;
+	}
+}
 void Enemies::KillEnemy(bool status) {
 	killed = status;
+
+	PlayDeathSFX();
 	const int particleCount{ 50 };
 	if (killed) {
 		for (int i = 0; i < particleCount; ++i) {

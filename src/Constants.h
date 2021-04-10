@@ -17,65 +17,81 @@ rights reserved.
 
 
 namespace FILE_PATHS {
-	// Art
-	extern const char* Guide1;
-	extern const char* Guide2;
-	extern const char* Guide3;
-	extern const char* Guide4;
-	extern const char* Guide5;
-	extern const char* Guide6;
-	extern const char* CreditScreen1;
-	extern const char* CreditScreen2;
-	extern const char* CreditScreen3;
-	extern const char* CreditScreen4;
+	namespace LOGOS {
+		extern const char* FMod;
+		extern const char* DigipenRed;
+		extern const char* DigipenWhite;
+	}
+	namespace BACKGROUND {
+		extern const char* Pause;
+		extern const char* Victory;
+		extern const char* Gameover;
+	}
+	namespace ENEMY {
+		extern const char* BatSprite;
+		extern const char* SquirrelSprite;
+		extern const char* BatSpriteSheet;
+		extern const char* WaterSlimeSprite;
+		extern const char* SlimeSpriteSheet;
+		extern const char* SquirrelSpriteSheet;
+	}
+	namespace PLAYER {
+		extern const char* Sprite;
+		extern const char* SpriteSheetRun;
+		extern const char* SpriteSheetIdle;
+	}
+	namespace TILE {
+		extern const char* Goal;
+		extern const char* Grey;
+		extern const char* Grass;
+		extern const char* Special;
+		extern const char* Dialogue;
 
-	extern const char* DigipenLogoRed;
-	extern const char* DigipenLogoWhite;
-	extern const char* FModLogo;
-	extern const char* PauseOverlay;
-	extern const char* VictoryOverlay;
-	extern const char* GameoverOverlay;
+		extern const char* Guide1;
+		extern const char* Guide2;
+		extern const char* Guide3;
+		extern const char* Guide4;
+		extern const char* Guide5;
+		extern const char* Guide6;
+	}
+	namespace FONT {
+		extern const char* Roboto;
+		extern const char* Courier;
+		extern const char* Pixel_Digivolve;
+		extern const char* Strawberry_Muffins_Demo;
+	}
+	namespace CREDITS {
+		extern const char* Screen1;
+		extern const char* Screen2;
+		extern const char* Screen3;
+		extern const char* Screen4;
+	}
+	namespace SFX {
+		extern const char* Jump;
+		extern const char* Boink;
+		extern const char* SlimeDeath;
+		extern const char* PlayerDeath;
+		extern const char* SquirrelDeath;
+	}
+	namespace BGM {
+		extern const char* Gameplay;
+	}
+	namespace UI {
+		extern const char* HeartSprite;
+	}
 	extern const char* Black;
-	extern const char* WaterSlimeSprite;
-	extern const char* FlyingEnemySprite;
-	extern const char* SquirrelSprite;
-	extern const char* PlayerSprite;
-	extern const char* PlayerSpriteSheetIdle;
-	extern const char* PlayerSpriteSheetRun;
-	extern const char* BatSpriteSheet;
-	extern const char* SlimeSpriteSheet;
-	extern const char* SquirrelSpriteSheet;
-	extern const char* GrassTile;
-	extern const char* GoalTile;
-	extern const char* GreyTile;
-	extern const char* DialogueTile;
-	extern const char* SpecialTile;
-	extern const char* ButtonTest;
-	extern const char* ButtonTest2;
-	extern const char* HeartSprite;
-	extern const char* boi;
-
-	// Sound
-	extern const char* jumpSFX;
-	extern const char* GameplayBGM;
-
-	extern const char* Font_Roboto;
-	extern const char* Font_Strawberry_Muffins_Demo;
-	extern const char* Font_Courier;
-	extern const char* Font_Pixel_Digivolve;
 }
 namespace FP = FILE_PATHS; // Short hand 
 
 namespace PLAYER_CONST {
 	extern const float SPEED;
 	extern const float DEBUGSPEED;
-	extern const float WIDTH;
-	extern const float HEIGHT;
 	extern const float JUMPVEL;
 	extern const float CHARGED_JUMPVEL;
 	extern const short HP_MAX;
 	extern const float CHARGEDJUMP_COUNTER;
-	extern const float COLLIDER_OFFSET_X;
+	extern const float COLLIDER_BTM_OFFSET_X;
+	extern const float COLLIDER_SIDE_OFFSET_X;
 	extern const float PLAYER_IDLE_OFFSET_X;
 	extern const float PLAYER_RUN_OFFSET_X;
 }

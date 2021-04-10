@@ -13,48 +13,56 @@ rights reserved.
  /******************************************************************************/
 #include "Globals.h"
 namespace GAMEPLAY_MISC {
-	bool PAUSED = false;
-	bool DEV_MODE = false;
-	bool DEBUG_MODE = false;
-	bool FULLSCREEN = false;
-	bool DISPLAY_QUIT_UI = false;
-	bool DISABLE_COLLISION = false;
+	bool PAUSED							= false;
+	bool DEV_MODE						= false;
+	bool DEBUG_MODE						= false;
+	bool FULLSCREEN						= true;
+	bool DISPLAY_QUIT_UI				= false;
+	bool DISABLE_COLLISION				= false;
 
-	float app_time = 0, TimeAttack_remaining = 0;
-	int app_max_time = 60;
-	int app_score = 50;
-	int player_score = 0;
-	int previous_player_score = 0;
+	int app_score						= 50;
+	int player_score					= 0;
+	int app_max_time					= 60;
+	int previous_player_score			= 0;
+
+	unsigned short Level				= 0U;
+
+	float app_time						= 0.0f;
+	float TimeAttack_remaining			= 0.0f;
 	// Level tracker
-	unsigned short Level{ 0 };
 }
 namespace fontID {
-	char Roboto = 0;
-	char Strawberry_Muffins_Demo = 0;
-	char Courier = 0;
-	char Pixel_Digivolve = 0;
+	char Roboto							= 0;
+	char Courier						= 0;
+	char Pixel_Digivolve				= 0;
+	char Strawberry_Muffins_Demo		= 0;
 }
 namespace Mesh {
-	AEGfxVertexList* Rect = nullptr;
-	AEGfxVertexList* Circle = nullptr;
-	AEGfxVertexList* Anim = nullptr;
-	AEGfxVertexList* Anim2 = nullptr;
-	AEGfxVertexList* BatAnim = nullptr;
-	AEGfxVertexList* SlimeAnim = nullptr;
-	AEGfxVertexList* SquirrelAnim = nullptr;
-	AEGfxVertexList* PlayerCurr = nullptr;
+	AEGfxVertexList* Rect				= nullptr;
+	AEGfxVertexList* Circle				= nullptr;
+	AEGfxVertexList* Anim				= nullptr;
+	AEGfxVertexList* Anim2				= nullptr;
+	AEGfxVertexList* BatAnim			= nullptr;
+	AEGfxVertexList* SlimeAnim			= nullptr;
+	AEGfxVertexList* SquirrelAnim		= nullptr;
+	AEGfxVertexList* PlayerCurr			= nullptr;
 }
 namespace Tex {
 	extern AEGfxTexture* PlayerCurr;
 }
-unsigned short DialogueID = 0;
-short EnemyCount = 1;
-float g_dt = 0;
+// MISC
 
-const float bat_anim_offset_x = 0.5f;
-const float slime_anim_offset_x = 0.25f;
-const float squirrel_anim_offset_x = 0.25f;
-float player_objtexX = 0.0f;
-float bat_objtexX = 0.0f;
-float slime_objtexX = 0.0f;
-float squirrel_objtexX = 0.0f;
+float g_dt								= 0.0f;
+short EnemyCount						= 1;
+unsigned short DialogueID				= 0U;
+
+/// <summary>
+///  Animation
+/// </summary>
+const float bat_anim_offset_x			= 0.5f;
+const float slime_anim_offset_x			= 0.25f;
+const float squirrel_anim_offset_x		= 0.25f;
+float player_objtexX					= 0.0f;
+float bat_objtexX						= 0.0f;
+float slime_objtexX						= 0.0f;
+float squirrel_objtexX					= 0.0f;

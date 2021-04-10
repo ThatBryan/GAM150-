@@ -84,7 +84,8 @@ void MainMenu::Init(void)
 	count = 0;
 
 	const float TileWidth{ 80.0f }, TileHeight{ 100.0f },
-				EnemyWidth{ 60.0f }, EnemyHeight{ 60.0f };
+				EnemyWidth{ 60.0f }, EnemyHeight{ 60.0f },
+				playerWidth{ 50.0f }, playerHeight{ 50.0f };
 
 	const int TilesNum = static_cast<int>(WindowWidth / TileWidth);
 
@@ -93,8 +94,9 @@ void MainMenu::Init(void)
 	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2{ 520.0f, tiles[0].image.pos.y - TileHeight / 2.0f }, EnemyWidth, EnemyHeight);
 	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2{ 710.0f, tiles[0].image.pos.y - TileHeight / 2.0f }, EnemyWidth, EnemyHeight);
 
-	player.push_back(Player(Player::playerTex, PLAYER_CONST::WIDTH, PLAYER_CONST::HEIGHT));
-	player[0].SetPos(AEVec2Set(PLAYER_CONST::WIDTH / 2.0f, tiles[0].image.pos.y - TileHeight - 10.0f));
+
+	player.push_back(Player(Player::playerTex, playerWidth, playerHeight));
+	player[0].SetPos(AEVec2Set(playerWidth / 2.0f, tiles[0].image.pos.y - TileHeight - 10.0f));
 
 	background.Set(Color{ 51.0f, 215.0f, 255.0f, 255.0f });
 
@@ -136,7 +138,7 @@ void MainMenu::Render() {
 	}
 
 	for (int i = 0; i < enemy.size(); ++i) {
-		enemy[i].sprite.Draw_Texture(255.0f);
+		enemy[i].Draw();
 	}
 
 	player[0].sprite.Draw_Texture(255.0f);
@@ -462,10 +464,10 @@ void Credits::Init()
 {
 	const float BtnWidth{ 100.0f }, BtnHeight{ 50.0f };
 
-	Pictures[CreditScreen1].Init(FP::CreditScreen1, WindowWidth, WindowHeight, ScreenMid);
-	Pictures[CreditScreen2].Init(FP::CreditScreen2, WindowWidth, WindowHeight, ScreenMid);
-	Pictures[CreditScreen3].Init(FP::CreditScreen3, WindowWidth, WindowHeight, ScreenMid);
-	Pictures[CreditScreen4].Init(FP::CreditScreen4, WindowWidth, WindowHeight, ScreenMid);
+	Pictures[CreditScreen1].Load(FP::CREDITS::Screen1, WindowWidth, WindowHeight, ScreenMid);
+	Pictures[CreditScreen2].Load(FP::CREDITS::Screen2, WindowWidth, WindowHeight, ScreenMid);
+	Pictures[CreditScreen3].Load(FP::CREDITS::Screen3, WindowWidth, WindowHeight, ScreenMid);
+	Pictures[CreditScreen4].Load(FP::CREDITS::Screen4, WindowWidth, WindowHeight, ScreenMid);
 
 	for (int i = 0; i < 3; ++i) {
 		CreditBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));

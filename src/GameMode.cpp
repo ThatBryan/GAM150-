@@ -30,10 +30,14 @@ rights reserved.
 
 #include <vector>
 #include <array>
-std::vector<Button> Btn;
+std::vector<Button> GameModeBtn;
 extern LevelSystem LevelSys;
 
-enum TextIndex {Title = 0, Casual, TimeAttack, Max};
+enum TextIndex {Title		= 0, 
+				Casual		= 1,
+				TimeAttack	= 2,		
+				Max			= 3};
+
 static std::array <Graphics::Text, TextIndex::Max> GameModeText;
 static GameMode Mode;
 
@@ -49,33 +53,33 @@ void GameModeSetting::Load()
 
 	for (size_t i = 0; i < btnCount; ++i) {
 		if(i == 2)
-			Btn.push_back(Button(ButtonType::Texture, BtnWidth, BtnHeight, BtnTextWidth - 0.1f));
+			GameModeBtn.push_back(Button(ButtonType::Texture, BtnWidth, BtnHeight, BtnTextWidth - 0.1f));
 		else
-			Btn.push_back(Button(ButtonType::Texture, BtnWidth, BtnHeight, BtnTextWidth));
+			GameModeBtn.push_back(Button(ButtonType::Texture, BtnWidth, BtnHeight, BtnTextWidth));
 	}
 
-	Btn[0].Set_Text("Casual");
-	Btn[0].Set_Callback(GameModeSetting::SetModeCasual);
-	Btn[0].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y - BtnHeight * 1.5f));
-	Btn[0].Load_Texture("./Assets/Art/BtnTest.png");
-	Btn[0].SetFontID(fontID::Strawberry_Muffins_Demo);
+	GameModeBtn[0].Set_Text("Casual");
+	GameModeBtn[0].Set_Callback(GameModeSetting::SetModeCasual);
+	GameModeBtn[0].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y - BtnHeight * 1.5f));
+	GameModeBtn[0].Load_Texture("./Assets/Art/BtnTest.png");
+	GameModeBtn[0].SetFontID(fontID::Strawberry_Muffins_Demo);
 
-	Btn[1].Set_Callback(GameModeSetting::SetModeTimeAttack);
-	Btn[1].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y + BtnHeight / 2.0f));
-	Btn[1].SetFontID(fontID::Strawberry_Muffins_Demo);
+	GameModeBtn[1].Set_Callback(GameModeSetting::SetModeTimeAttack);
+	GameModeBtn[1].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y + BtnHeight / 2.0f));
+	GameModeBtn[1].SetFontID(fontID::Strawberry_Muffins_Demo);
 
 	if (LevelSys.GetKey() == LevelSys.GetMaxLevel()) {
-		Btn[1].Load_Texture("./Assets/Art/BtnTest.png");
-		Btn[1].Set_Text("TimeAttack");
+		GameModeBtn[1].Load_Texture("./Assets/Art/BtnTest.png");
+		GameModeBtn[1].Set_Text("TimeAttack");
 	}
 	else 
-		Btn[1].Load_Texture("./Assets/Art/Locked.png");
+		GameModeBtn[1].Load_Texture("./Assets/Art/Locked.png");
 	
-	Btn[2].Set_Text("Exit to Main Menu");
-	Btn[2].Set_Callback(MainMenu::SwitchToMainMenu);
-	Btn[2].Set_Position(AEVec2Set(ScreenMid.x, static_cast<float>(AEGetWindowHeight()) - BtnHeight / 2.0f));
-	Btn[2].Load_Texture("./Assets/Art/BtnTest.png");
-	Btn[2].SetFontID(fontID::Strawberry_Muffins_Demo);
+	GameModeBtn[2].Set_Text("Exit to Main Menu");
+	GameModeBtn[2].Set_Callback(MainMenu::SwitchToMainMenu);
+	GameModeBtn[2].Set_Position(AEVec2Set(ScreenMid.x, static_cast<float>(AEGetWindowHeight()) - BtnHeight / 2.0f));
+	GameModeBtn[2].Load_Texture("./Assets/Art/BtnTest.png");
+	GameModeBtn[2].SetFontID(fontID::Strawberry_Muffins_Demo);
 
 	for (unsigned int i = 0; i < TextIndex::Max; i++) {
 		GameModeText[i].SetTextColor(Color{ 255.0f, 0.0f, 0.0f, 255.0f });
@@ -90,12 +94,12 @@ void GameModeSetting::Load()
 	GameModeText[TextIndex::Title].SetText("Select Game Mode");
 	GameModeText[TextIndex::Title].SetPos(AEVec2Set(ScreenMid.x, ScreenMid.y / 10.0f));
 
-	AEVec2 Pos = Btn[0].GetPos();
+	AEVec2 Pos = GameModeBtn[0].GetPos();
 	GameModeText[TextIndex::Casual].SetText("Play at your own pace!");
 	GameModeText[TextIndex::Casual].SetPos(AEVec2Set(Pos.x, Pos.y + BtnHeight));
 
-	Pos = Btn[1].GetPos();
-	LevelSys.GetKey() == 9 ? GameModeText[TextIndex::TimeAttack].SetText("Race against the clock to earn a spot on the leaderboard!")
+	Pos = GameModeBtn[1].GetPos();
+	LevelSys.GetUnlockedLevels() == 9 ? GameModeText[TextIndex::TimeAttack].SetText("Race against the clock to earn a spot on the leaderboard!")
 						   : GameModeText[TextIndex::TimeAttack].SetText("Complete All Levels in Casual Mode to Unlock TimeAttack Mode");
 
 	GameModeText[TextIndex::TimeAttack].SetPos(AEVec2Set(Pos.x, Pos.y + BtnHeight));
@@ -108,8 +112,8 @@ void GameModeSetting::Init()
 
 void GameModeSetting::Update()
 {
-	for (size_t i = 0; i < Btn.size(); ++i) {
-		Btn[i].Update();
+	for (size_t i = 0; i < GameModeBtn.size(); ++i) {
+		GameModeBtn[i].Update();
 	}
 
 	if (AEInputCheckTriggered(AEVK_ESCAPE))
@@ -118,22 +122,22 @@ void GameModeSetting::Update()
 
 void GameModeSetting::Render()
 {
-	for (size_t i = 0; i < Btn.size(); ++i) {
-		Btn[i].Render();
+	for (size_t i = 0; i < GameModeBtn.size(); ++i) {
+		GameModeBtn[i].Render();
 	}
 	GameModeText[TextIndex::Title].Draw_Wrapped(GameModeText[TextIndex::Title].pos);
 
-	if (Btn[0].GetHoveredStatus())
+	if (GameModeBtn[0].GetHoveredStatus())
 		GameModeText[TextIndex::Casual].Draw_Wrapped(GameModeText[TextIndex::Casual].pos);
 
-	if (Btn[1].GetHoveredStatus())
+	if (GameModeBtn[1].GetHoveredStatus())
 		GameModeText[TextIndex::TimeAttack].Draw_Wrapped(GameModeText[TextIndex::TimeAttack].pos);
 
 }
 
 void GameModeSetting::Unload()
 {
-	Btn.clear();
+	GameModeBtn.clear();
 }
 
 void GameModeSetting::SetModeCasual()

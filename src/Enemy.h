@@ -50,6 +50,7 @@ private:
 	void Squirrel_Movement(f32 maxX);
 	void Slime_Movement(f32 maxX);
 	void DecreaseAlpha(void);
+	void PlayDeathSFX();
 
 public:
 	Enemies(AEGfxTexture* filepath, AEGfxVertexList* mesh, const f32 width, const f32 height);

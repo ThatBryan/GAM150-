@@ -14,8 +14,8 @@ rights reserved.
  /******************************************************************************/
 #pragma once
 
-enum class GameMode{Casual = 0, 
-					TimeAttack};
+enum class GameMode{Casual		= 0, 
+					TimeAttack	= 1};
 
 namespace GameModeSetting {
 
@@ -32,9 +32,7 @@ namespace GameModeSetting {
 	void SetModeTimeAttack();
 	void SwitchToModeSetting();
 	GameMode GetGameMode();
-
 }
-
 // For TimeAttack stuff.
 namespace TimeAttackGameMode {
 	void CheckTimer();
