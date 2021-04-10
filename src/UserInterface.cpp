@@ -40,6 +40,7 @@ static std::vector <Button> QuitBtn;
 static Graphics::Text QuitText;
 static AEVec2 ScreenMid;
 static Image lives;
+static GameMode gameMode;
 
 extern Player Jumperman;
 
@@ -60,6 +61,8 @@ void UI::Init() {
 	memset(strBuffer2, 0, 100 * sizeof(char));
 
 	lives.Init(FP::HeartSprite, 35.0f, 35.0f, AEVec2Zero());
+
+	gameMode = GameModeSetting::GetGameMode();
 }
 
 const size_t pauseButtonIdx{ 1 };
@@ -71,10 +74,12 @@ void UI::Update() {
 
 	sprintf_s(strBuffer, "FPS: %.2f", AEFrameRateControllerGetFrameRate());
 
-	if (GameModeSetting::GetGameMode() == GameMode::TimeAttack) {
+	if (gameMode == GameMode::TimeAttack) {
 		sprintf_s(strBuffer2, "Time Remaining: %.2f", GAMEPLAY_MISC::TimeAttack_remaining);
 		if(!GAMEPLAY_MISC::PAUSED)
 			GAMEPLAY_MISC::TimeAttack_remaining -= g_dt;
+
+		TimeAttackGameMode::CheckTimer();
 	}
 	else
 		sprintf_s(strBuffer2, "Time Elapsed: %.2f", GAMEPLAY_MISC::app_time);

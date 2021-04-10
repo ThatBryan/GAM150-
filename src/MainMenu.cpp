@@ -139,7 +139,6 @@ void MainMenu::Render() {
 		enemy[i].sprite.Draw_Texture(255.0f);
 	}
 
-
 	player[0].sprite.Draw_Texture(255.0f);
 
 	Title.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - WindowHeight / 3.0f));
@@ -149,6 +148,8 @@ void MainMenu::Render() {
 		UI::QuitRender();
 	else {
 		for (size_t i = 0; i < MenuBtn.size(); ++i) {
+			if (i == 2)
+				continue;
 			MenuBtn[i].Render();
 		}
 		UsernameBtn[0].Render();
@@ -157,9 +158,7 @@ void MainMenu::Render() {
 
 void MainMenu::Load(void)
 {
-	//Mesh::Anim = Graphics::Mesh_Animation(player_idle_anim_offset_x);
 	Mesh::PlayerCurr = Mesh::Anim;
-	//Tex::PlayerCurr = 
 	AudioManager::loadAsset();
 	AudioManager::SetVolume(AudioID::BGM, 0.5f);
 	AudioManager::SetVolume(AudioID::Jump, 0.2f);
@@ -176,7 +175,6 @@ void MainMenu::Load(void)
 
 void MainMenu::Unload(void)
 {
-	//AEGfxMeshFree(Mesh::Anim);
 	Enemies::Unload();
 	Tiles::Unload();
 	Player::Unload();
@@ -202,12 +200,7 @@ void MainMenu::Unload(void)
 	Background::ObjectsUnload();
 }
 
-void MainMenu::StartGame(void) {
-	if (GAMEPLAY_MISC::Level == 0)
-		GAMEPLAY_MISC::Level = LevelSys.GetKey();
-	gamestateNext = GS_GAMEPLAY2;
-}
-void MainMenu::QuitGame(void) {
+void MainMenu::Quit(void) {
 	Utils::ToggleQuitUI();
 }
 
@@ -237,7 +230,7 @@ void MainMenu::Buttons_Init() {
 
 	}
 	LevelSys.GetKey() == 1 ? MenuBtn[0].Set_Text("Start") : MenuBtn[0].Set_Text("Play");
-	MenuBtn[0].Set_Callback(GameModeSetting::SwitchModeSetting);
+	MenuBtn[0].Set_Callback(GameModeSetting::SwitchToModeSetting);
 
 	MenuBtn[1].Set_Text("Credits");
 	MenuBtn[1].Set_Callback(MainMenu::SwitchToCreditScreen);
@@ -253,7 +246,7 @@ void MainMenu::Buttons_Init() {
 	MenuBtn[4].Set_Callback(MainMenu::SwitchToSettings);
 
 	MenuBtn[5].Set_Text("Quit Game");
-	MenuBtn[5].Set_Callback(QuitGame);
+	MenuBtn[5].Set_Callback(Quit);
 	for (int i = 0; i < MenuBtn.size(); ++i) {
 		MenuBtn[i].SetFontID(fontID::Strawberry_Muffins_Demo);
 	}
@@ -311,100 +304,85 @@ void MainMenu::PlayerMovement() {
 void LevelSelection::Init(void)
 {
 	const unsigned short LevelBtnCount{ 10 };
+	const float BtnWidth{ 150.0f }, BtnHeight{ 75.0f }, BtnTextScale{ 0.5f };
 	for (unsigned short i = 0; i < LevelBtnCount; ++i) {
-		if (i == 9) {
-			LevelBtn.push_back(Button(ButtonType::Texture, 150.0, 75.0f, 0.4f));
-			break;
-		}
-		LevelBtn.push_back(Button(ButtonType::Texture, 150.0, 75.0f, 0.5f));
-
-	}
-	for (unsigned short i = 0; i < LevelBtnCount; ++i) {
+		LevelBtn.push_back(Button(ButtonType::Texture, BtnWidth, BtnHeight, BtnTextScale));
 		LevelBtn[i].SetID(i);
 		LevelBtn[i].Set_TextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 		LevelBtn[i].SetFontID(fontID::Strawberry_Muffins_Demo);
-		LevelBtn[i].Load_Texture("./Assets/Art/BtnTest3.png");
 		LevelBtn[i].ChangeStateColor(ButtonState::Hovered, Color{ 247.0f, 161.0f, 187.0f, 255.0f });
 	}
+	// For Unlocked levels
+	for (unsigned short i = 0; i < LevelSys.GetUnlockedLevels(); ++i) {
+		LevelBtn[i].Load_Texture("./Assets/Art/BtnTest3.png");
+		LevelBtn[i].Set_Callback(LevelSystem::SetLevel);
 
-	for (size_t i = 0; i < 3; ++i) {
-		for (size_t j = 0; j < 3; ++j) {
-			size_t BtnIndex{ i * 3 + j };
-
-			LevelBtn[BtnIndex].Set_Position(AEVec2Set(175.0f + 225.0f * j, 162.5f + 150.0f * i));// Mid = 400. 400 - 75, 325. 325 - 150 175.0f // 600 / 3, 200 - 37.5 = 162.5f
-
-			if (LevelBtn[BtnIndex].GetID() > LevelSys.GetKey()) {
-				LevelBtn[BtnIndex].ChangeStateColor(ButtonState::Idle, Color(255.0f, 255.0f, 255.0f, 150.0f));
-			}
+		std::string LevelCount{ "Level " + std::to_string(i) };
+		LevelBtn[i].Set_Text(LevelCount.c_str());
+	}
+	LevelBtn[0].Set_Text("Tutorial");
+	// For locked levels
+	for (unsigned short i = LevelSys.GetUnlockedLevels(); i < LevelBtnCount - 1; ++i) {
+		LevelBtn[i].Load_Texture("./Assets/Art/Locked.png");
+		LevelBtn[i].ChangeStateColor(ButtonState::Idle, Color(255.0f, 255.0f, 255.0f, 150.0f));
+	}
+	// Assigning position
+	for (unsigned short i = 0; i < 3; ++i) {
+		for (unsigned short j = 0; j < 3; ++j) {
+			unsigned short BtnIndex{ i * 3U + j };
+			// x = 400(mid) - 75 - 150 = 175.0f // y = 600(height) / 3 - btnheight / 2 = 162.5f
+			static const float BtnPosX{ 175.0f }, PerOffsetX{ 225.0f }, BtnPosY{ 162.5f }, PerOffsetY{ 150.0f };
+			LevelBtn[BtnIndex].Set_Position(AEVec2Set(BtnPosX + PerOffsetX * j,
+													  BtnPosY + PerOffsetY * i));
 		}
 	}
-	for (unsigned short i = LevelSys.GetKey() + 1; i < LevelBtnCount - 1; ++i) {
-		LevelBtn[i].Load_Texture("./Assets/Art/Locked.png");
-	}
+	if(LevelSys.GetKey() < LevelSys.GetMaxLevel())
+		LevelBtn[LevelSys.GetKey()].ChangeStateColor(ButtonState::Idle, Color{ 200.0f, 0.0f, 0.0f, 255.0f });
 
+	LevelBtn[9].Load_Texture("./Assets/Art/BtnTest3.png");
 	LevelBtn[9].Set_Position(AEVec2Set(ScreenMid.x, WindowHeight - LevelBtn[9].GetHeight() / 2.0f));
-	LevelBtn[9].Set_Text("Exit to Main Menu");
-	LevelBtn[9].Set_Callback(MainMenu::SwitchToMainMenu);
+	LevelBtn[9].Set_Text("Back");
+	LevelBtn[9].Set_Callback(GameModeSetting::SwitchToModeSetting);
 }
-
 void MainMenu::SwitchToLevelSelection(void)
 {
-	for (unsigned short i = 0; i < LevelSys.GetUnlockedLevels(); ++i) { //eg: Key = 3. so Level 3 is unlocked. 3 + 1 = Loop Indexing up to 3
-		LevelBtn[i].Set_Callback(LevelSystem::SetLevel);
-		
-		std::string LevelCount{ "Level " + std::to_string(i) };
-
-		i == 0 ? LevelBtn[i].Set_Text("Tutorial")
-			   : LevelBtn[i].Set_Text(LevelCount.c_str());
-	}
-
 	GameStateUpdate = LevelSelection::Update;
 	GameStateDraw = LevelSelection::Render;
 }
-
 void MainMenu::SwitchToCreditScreen(void)
 {
 	GameStateUpdate = Credits::Update;
 	GameStateDraw = Credits::Render;
 }
-
 void MainMenu::SwitchToSettings()
 {
 	GameStateUpdate = Options::Update;
 	GameStateDraw = Options::Render;
 }
-
 void MainMenu::SwitchToLeaderboard(void)
 {
 	GameStateUpdate = Leaderboard::Update;
 	GameStateDraw = Leaderboard::Render;
 }
-
 void MainMenu::SwitchToUsername(void)
 {
 	GameStateUpdate = Username::Update;
 	GameStateDraw = Username::Render;
 }
-
-
 void MainMenu::SwitchToMainMenu(void)
 {
 	count = 0;
 	GameStateUpdate = MainMenu::Update;
 	GameStateDraw = MainMenu::Render;
 }
-
 void LevelSelection::Update(void)
 {
 	for (int i = 0; i < LevelBtn.size(); ++i) {
 		LevelBtn[i].Update();
 	}
-
 	if (AEInputCheckReleased(AEVK_ESCAPE))
 		MainMenu::SwitchToMainMenu();
 }
-
-
 void LevelSelection::Render(void)
 {
 	static Graphics::Text LevelSelectionText;
@@ -565,4 +543,3 @@ void Credits::DecrementOverlay()
 	if (count >= 0)
 		count--;
 }
-

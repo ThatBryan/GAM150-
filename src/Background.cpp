@@ -30,6 +30,7 @@ rights reserved.
 #include "Particles.h"
 #include "Leaderboard.h"
 #include "LevelSystem.h"
+#include "GameMode.h"
 
 #include <array>
 #include <vector>
@@ -57,6 +58,8 @@ static SceneType CurrentScene, NextScene;
 static float  WindowWidth, WindowHeight, tLerp;
 static bool isScoreInserted;
 
+static GameMode gameMode;
+
 extern LevelSystem LevelSys;
 
 SceneType& operator++(SceneType& rhs) {
@@ -79,7 +82,7 @@ void Background::Load()
 	MenuBtn[0].Set_Text("Menu");
 
 	GAMEPLAY_MISC::Level != 9 ? MenuBtn[1].Set_Text("Next Level")
-		: MenuBtn[1].Set_Text("Menu");
+							  : MenuBtn[1].Set_Text("Menu");
 
 	MenuBtn[1].Set_Callback(LevelSystem::SetNextLevel);
 
@@ -97,7 +100,7 @@ void Background::Load()
 	}
 
 	if (GAMEPLAY_MISC::Level == LevelSys.GetMaxLevel() - 1)
-		MenuBtn[0].Set_Position(AEVec2Set(Midpt.x, WindowHeight - BtnHeight / 2.0f));
+		MenuBtn[0].Set_Position(AEVec2Set(Midpt.x, WindowHeight - MenuBtn[0].GetHeight() / 2.0f));
 
 	const float TextPosYOffset{ 100.0f }, TitleTextScale{ 0.9f };
 
@@ -115,6 +118,10 @@ void Background::Init()
 {
 	ObjectsInit();
 	isScoreInserted = false;
+	gameMode = GameModeSetting::GetGameMode();
+
+	if (gameMode == GameMode::TimeAttack)
+		MenuBtn[2].Set_Position(AEVec2Set(Midpt.x, WindowHeight - MenuBtn[2].GetHeight() / 2.0f));
 }
 
 void Background::Update()
@@ -137,13 +144,11 @@ void Background::Render(const Player& player)//, const Leaders& leader)
 		if(!GAMEPLAY_MISC::PAUSED)
 			Utils::TogglePause();
 
-		BgOverlayArr[BackgroundIndex::Defeat].Draw_Texture(150.0f);
-		text.SetText(const_cast<s8*>("YOU LOSE"));
-		text.Draw_Wrapped(text.pos);
-		for (int i = 2; i < MenuBtn.size(); ++i) {
-			MenuBtn[i].Update();
-			MenuBtn[i].Render();
-		}
+		if (gameMode == GameMode::Casual)
+			RenderCasual();
+		else
+			RenderTimeAttack();
+
 	}
 	else if (player.GetWinStatus())
 	{	
@@ -156,10 +161,13 @@ void Background::Render(const Player& player)//, const Leaders& leader)
 			text.SetText(const_cast<s8*>("Congratulations!! you beat the game!"))
 		  : text.SetText(const_cast<s8*>("YOU WIN"));
 		
-		text.Draw_Wrapped({ text.pos.x, text.pos.y - 50.0f });
+		
+		text.Draw_Wrapped({ text.pos.x, text.pos.y - 120.0f });
 		text.SetText("YOUR SCORE: ");
-		text.Draw_Wrapped({ text.pos.x, text.pos.y - 100.0f });
+		
+		text.Draw_Wrapped({ text.pos.x, text.pos.y - 50.0f });
 		text.SetText(std::to_string(player.GetScore()));
+		
 
 
 		Leaders L = Leaderboard::GetLastPlacement();
@@ -177,7 +185,7 @@ void Background::Render(const Player& player)//, const Leaders& leader)
 		int btnNum; // Only update one button at level 8 since last level.
 
 		GAMEPLAY_MISC::Level == LevelSys.GetMaxLevel() - 1 ? btnNum = 1 
-								  : btnNum = 2;
+														   : btnNum = 2;
 
 		for (int i = 0; i < btnNum; ++i) {
 			MenuBtn[i].Update();
@@ -195,6 +203,27 @@ void Background::Render(const Player& player)//, const Leaders& leader)
 			}
 		}
 	} // end if player win
+}
+
+void Background::RenderCasual()
+{
+	BgOverlayArr[BackgroundIndex::Defeat].Draw_Texture(150.0f);
+	text.SetText(const_cast<s8*>("YOU LOSE"));
+	text.Draw_Wrapped(text.pos);
+	for (int i = 2; i < MenuBtn.size(); ++i) {
+		MenuBtn[i].Update();
+		MenuBtn[i].Render();
+	}
+
+}
+
+void Background::RenderTimeAttack()
+{
+	BgOverlayArr[BackgroundIndex::Defeat].Draw_Texture(150.0f);
+	text.SetText(const_cast<s8*>("TIME ATTACK MODE FAIL"));
+	text.Draw_Wrapped(text.pos);
+	MenuBtn[2].Update();
+	MenuBtn[2].Render();
 }
 
 void Background::Unload()
