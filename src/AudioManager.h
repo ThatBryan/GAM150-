@@ -21,7 +21,14 @@ rights reserved.
 
 using AudioClass = FMOD::Sound*;
 
-enum class AudioID {BGM = 0, Jump, Max, None };
+enum class AudioID {BGM = 0, 
+					Jump = 1,
+					Boink = 2,
+					SquirrelDeath = 3,
+					SlimeDeath = 4,
+					PlayerDeath = 5,
+					Max };
+
 AudioID& operator++(AudioID& rhs);
 
 struct AudioData {

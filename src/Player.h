@@ -69,7 +69,7 @@ public:
 	
 	inline void SetPos(AEVec2 pos) { this->sprite.pos = pos; this->startingPos = pos; }
 	inline bool GetWinStatus(void) const { return playerWin; }
-	inline void SetPlayerLose(void) { active = false; lose = true; }
+	void SetPlayerLose(void);
 	inline bool GetLoseStatus(void) const { return lose; }
 
 	static void LoadTex(void);

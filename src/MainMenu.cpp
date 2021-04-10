@@ -138,7 +138,7 @@ void MainMenu::Render() {
 	}
 
 	for (int i = 0; i < enemy.size(); ++i) {
-		enemy[i].sprite.Draw_Texture(255.0f);
+		enemy[i].Draw();
 	}
 
 	player[0].sprite.Draw_Texture(255.0f);

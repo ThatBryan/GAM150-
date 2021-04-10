@@ -36,18 +36,17 @@ rights reserved.
 #include <fstream>
 #include <sstream>   
 #include <cstring>
-
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> AudioArray;
 extern AudioManager Audio;
 extern LevelSystem LevelSys;
 
-static f32 maxY;
-static f32 maxX;
+static f32 maxY, maxX;
 AEGfxTexture* Player::playerTex{ nullptr };
 AEGfxTexture* Player::playerMovTex{ nullptr };
 AEGfxTexture* Player::playerParticle{ nullptr };
 float Player::gravityStrength = 20.0f;
 static const char* UsernameFile{ "./Assets/Username/username.txt" };
+static bool isSoundPlayed;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::PlayerCurr, width, height), lose{ false },
 active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, playerWin{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL },
@@ -105,6 +104,15 @@ void Player::Render(void)
 
 	if (GAMEPLAY_MISC::DEBUG_MODE) {
 		collider.Draw();
+	}
+}
+void Player::SetPlayerLose(void)
+{
+	active = false; 
+	lose = true;
+	if (!isSoundPlayed) {
+		Audio.playAudio(AudioArray[static_cast<int>(AudioID::PlayerDeath)], AudioID::PlayerDeath);
+		isSoundPlayed = true;
 	}
 }
 void Player::LoadTex(void) {
@@ -403,4 +411,6 @@ void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, con
 	player.collider.SetWidthHeight(player.collider.right, width / 2.0f - PLAYER_CONST::COLLIDER_SIDE_OFFSET_X, height - 10.0f);
 	player.collider.SetWidthHeight(player.collider.bottom, width /2.0f, 5.0f);
 	player.collider.SetMeshes();
+
+	isSoundPlayed = false;
 }

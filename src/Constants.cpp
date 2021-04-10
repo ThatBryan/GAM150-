@@ -66,6 +66,10 @@ namespace FILE_PATHS {
 	}
 	namespace SFX {
 		const char* Jump					= "./Assets/Audio/SFX/powerup.wav";
+		const char* Boink					= "./Assets/Audio/SFX/BoingCartoon CTE01_38.2.wav";
+		const char* SlimeDeath				= "./Assets/Audio/SFX/SquirtCartoon CTE02_63.5.wav";
+		const char* PlayerDeath				= "./Assets/Audio/SFX/COMEDY-WHISTLE_GEN-HDF-08162.wav";
+		const char* SquirrelDeath			= "./Assets/Audio/SFX/SqueakToy CTE02_62.2.wav";
 	}
 	namespace BGM {
 		const char* Gameplay				= "./Assets/Audio/BGM/gg.wav";

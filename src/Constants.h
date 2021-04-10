@@ -68,6 +68,10 @@ namespace FILE_PATHS {
 	}
 	namespace SFX {
 		extern const char* Jump;
+		extern const char* Boink;
+		extern const char* SlimeDeath;
+		extern const char* PlayerDeath;
+		extern const char* SquirrelDeath;
 	}
 	namespace BGM {
 		extern const char* Gameplay;
