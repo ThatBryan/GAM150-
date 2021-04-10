@@ -52,18 +52,19 @@ static const char* UsernameFile{ "./Assets/Username/username.txt" };
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::PlayerCurr, width, height), lose{ false },
 active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL },
 hp(), direction{ SpriteDirection::Right }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL }, gravityMultiplier{ GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER },
-chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider(), playerscore { 0 }, playername{}
+chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider(), playerscore { 0 }, playername{"Jumperman"}
 {
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
 	hp.max = PLAYER_CONST::HP_MAX;
 	hp.current = PLAYER_CONST::HP_MAX;
+
 }
 
 Player::Player() : lose{ false }, active{ true }, gravity{ false }, jump{ false }, chargedjump{ false },
 win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL },
 hp(), direction{ SpriteDirection::Right }, gravityMultiplier{ GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER }, chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }
-, collider(), playerscore{ 0 }{
+, collider(), playerscore{ 0 }, playername{ "Jumperman" }{
 
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
@@ -185,8 +186,13 @@ void Player::Update_Position(void)
 	}
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
 	{
-		if (sprite.pos.x + sprite.width / 2 <= maxX)
-			sprite.pos.x += PLAYER_CONST::SPEED * g_dt;
+		if (sprite.pos.x + sprite.width / 2 <= maxX || GAMEPLAY_MISC::DEBUG_MODE) {
+
+			if(GAMEPLAY_MISC::DEBUG_MODE)
+				sprite.pos.x += PLAYER_CONST::DEBUGSPEED * g_dt;
+			else
+				sprite.pos.x += PLAYER_CONST::SPEED * g_dt;
+		}
 
 		if (direction != SpriteDirection::Right) {
 			sprite.ReflectAboutYAxis();
@@ -195,8 +201,13 @@ void Player::Update_Position(void)
 	}
 	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
 	{
-		if (sprite.pos.x >= 0 - sprite.width / 2.0f)
-			sprite.pos.x -= PLAYER_CONST::SPEED * g_dt;
+		if (sprite.pos.x >= 0 - sprite.width / 2.0f || GAMEPLAY_MISC::DEBUG_MODE) {
+
+			if (GAMEPLAY_MISC::DEBUG_MODE)
+				sprite.pos.x -= PLAYER_CONST::DEBUGSPEED * g_dt;
+			else
+				sprite.pos.x -= PLAYER_CONST::SPEED * g_dt;
+		}
 
 		if (direction != SpriteDirection::Left) {
 			sprite.ReflectAboutYAxis();
@@ -215,12 +226,12 @@ void Player::Update_Position(void)
 		}
 		if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN)) {
 			if (sprite.pos.y + sprite.height / 2 <= maxY) {
-				sprite.pos.y += PLAYER_CONST::SPEED * g_dt;
+				sprite.pos.y += PLAYER_CONST::DEBUGSPEED  *  g_dt;
 			}
 		}
 		if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP)) {
 			if (sprite.pos.y - sprite.height / 2 >= 0) {
-				sprite.pos.y -= PLAYER_CONST::SPEED * g_dt;
+				sprite.pos.y -= PLAYER_CONST::DEBUGSPEED * g_dt;
 			}
 		}
 	}
@@ -342,8 +353,6 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 			if (Utils::ColliderAABB(enemy[i].collider.sprite.pos, enemy[i].collider.sprite.width, enemy[i].collider.sprite.height, 
 				collider.sprite.pos, collider.sprite.width, collider.sprite.height))
 			{
-			std::cout << enemy[i].collider.top.pos.x << "\t" << enemy[i].collider.top.pos.y << std::endl;
-			std::cout << collider.bottom.pos.x << "\t" << collider.bottom.pos.y << std::endl;
 				if (Utils::ColliderAABB(enemy[i].collider.top.pos, enemy[i].collider.top.width, enemy[i].collider.top.height, 
 					collider.bottom.pos, collider.bottom.width, collider.bottom.height)) {
 					if (!GAMEPLAY_MISC::DEBUG_MODE) {
@@ -353,8 +362,8 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 						enemy[i].KillEnemy();
 						continue;
 					}
-					if (GAMEPLAY_MISC::DEBUG_MODE)
-						printf("enemy dies\n");
+					//if (GAMEPLAY_MISC::DEBUG_MODE)
+					//	printf("enemy dies\n");
 				}
 				else {
 					if (!GAMEPLAY_MISC::DEBUG_MODE) {
@@ -363,8 +372,8 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 						if(hp.current >= 1)
 							Respawn();
 					}
-					if (GAMEPLAY_MISC::DEBUG_MODE)
-						printf("player dies\n");
+					//if (GAMEPLAY_MISC::DEBUG_MODE)
+					//	printf("player dies\n");
 				}
 			}
 		}

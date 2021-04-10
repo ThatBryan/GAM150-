@@ -79,7 +79,8 @@ void Gameplay::Init(void)
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::JUMPERMAN))
 			{
-				Player::CreatePlayer(Jumperman, AEVec2Set(j * grid_width, i * grid_height), EntitySizeArray[static_cast<int>(EntitySizes::PLAYER)].x, EntitySizeArray[static_cast<int>(EntitySizes::PLAYER)].y);
+				Player::CreatePlayer(Jumperman, AEVec2Set(j * grid_width, i * grid_height), 
+				EntitySizeArray[static_cast<int>(EntitySizes::PLAYER)].x, EntitySizeArray[static_cast<int>(EntitySizes::PLAYER)].y);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SLIME))
 			{	
@@ -89,12 +90,12 @@ void Gameplay::Init(void)
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::BAT))
 			{
 				Enemies::AddNew(enemies, EnemyType::Bat, AEVec2Set(j * grid_width, i * grid_height),
-					EntitySizeArray[static_cast<int>(EntitySizes::BAT)].x, EntitySizeArray[static_cast<int>(EntitySizes::BAT)].y);
+				EntitySizeArray[static_cast<int>(EntitySizes::BAT)].x, EntitySizeArray[static_cast<int>(EntitySizes::BAT)].y);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::SQUIRREL))
 			{
 				Enemies::AddNew(enemies, EnemyType::Squirrel, AEVec2Set(j * grid_width, i * grid_height),
-					EntitySizeArray[static_cast<int>(EntitySizes::SQUIRREL)].x, EntitySizeArray[static_cast<int>(EntitySizes::SQUIRREL)].y);
+				EntitySizeArray[static_cast<int>(EntitySizes::SQUIRREL)].x, EntitySizeArray[static_cast<int>(EntitySizes::SQUIRREL)].y);
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::DIALOGUE))
 			{
@@ -104,7 +105,6 @@ void Gameplay::Init(void)
 	}
 	tileManager.push_back(&tilemap);
 	UI::Init();
-	//ShowCursor(false);
 }
 
 void Gameplay::Update()
@@ -151,9 +151,6 @@ void Gameplay::Render()
 	UI::Draw();
 	Particles::Render();
 	UI::Update();
-	/*Leaderboard::GetUserInfo(Jumperman);*/
-	//Leaders::PrintContainer();
-
 }
 
 void Gameplay::Load()
@@ -161,47 +158,47 @@ void Gameplay::Load()
 	Leaderboard::GetUserInfo(Jumperman);
 	switch (GAMEPLAY_MISC::Level)
 	{
-		case 1:
+	case GameLevel::TUTORIAL:
 		{
 			ImportMapDataFromFile("./Assets/Levels/Tutorial.txt");
 			break;
 		}
-		case 2:
+	case GameLevel::LEVEL1:
 		{
 			ImportMapDataFromFile("./Assets/Levels/Level1.txt");
 			break;
 		}
-		case 3:
+	case GameLevel::LEVEL2:
 		{
 			ImportMapDataFromFile("./Assets/Levels/Level2.txt");
 			break;
 		}
-		case 4:
+	case GameLevel::LEVEL3:
 		{
 			ImportMapDataFromFile("./Assets/Levels/Level3.txt");
 			break;
 		}
-		case 5:
+	case GameLevel::LEVEL4:
 		{
 			ImportMapDataFromFile("./Assets/Levels/Level4.txt");
 			break;
 		}
-		case 6:
+	case GameLevel::LEVEL5:
 		{
 			ImportMapDataFromFile("./Assets/Levels/Level5.txt");
 			break;
 		}
-		case 7:
+	case GameLevel::LEVEL6:
 		{
 			ImportMapDataFromFile("./Assets/Levels/Level6.txt");
 			break;
 		}
-		case 8:
+	case GameLevel::LEVEL7:
 		{
 			ImportMapDataFromFile("./Assets/Levels/Level7.txt");
 			break;
 		}
-		case 9:
+	case GameLevel::LEVEL8:
 		{
 			ImportMapDataFromFile("./Assets/Levels/Level8.txt");
 			break;

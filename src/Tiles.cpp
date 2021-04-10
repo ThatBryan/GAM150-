@@ -28,6 +28,7 @@ rights reserved.
 #include "Utilities.h"
 #include "GameStateManager.h"
 #include "Globals.h"
+#include "Gameplay.h"
 
 #include <iostream>
 #include <array>
@@ -251,9 +252,9 @@ void Tiles::LoadTex() {
 			return;
 		}
 		tileTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex);
-		AE_ASSERT_MESG(pTex, "Failed to create texture!");
+		//AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	}
-	if (GAMEPLAY_MISC::Level == 1 && (gamestateCurr == GS_GAMEPLAY || gamestateCurr == GS_GAMEPLAY2)) {
+	if (GAMEPLAY_MISC::Level == Gameplay::GameLevel::TUTORIAL) {
 		//std::cout << "Loaded Tutorial Textures\n";
 		isTutorialLevel = true;
 		LoadTutorialTexture();
@@ -267,7 +268,7 @@ void Tiles::Unload()
 		AEGfxTextureUnload(tileTex[i]);
 	}
 	if (isTutorialLevel) {
-		//std::cout << "Freed Tutorial Textures\n";
+		std::cout << "Freed Tutorial Textures\n";
 		FreeTutorialTexture();
 	}
 }

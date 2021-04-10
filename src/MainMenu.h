@@ -24,8 +24,7 @@ namespace MainMenu
 	void Unload(void);
 	void Render(void);
 
-	void StartGame();
-	void QuitGame();
+	void Quit();
 
 	inline void LockedLevel(void) { std::cout << "Level is locked!\n"; }
 

@@ -20,7 +20,7 @@ namespace GAMEPLAY_MISC {
 	bool DISPLAY_QUIT_UI = false;
 	bool DISABLE_COLLISION = false;
 
-	float app_time = 0;
+	float app_time = 0, TimeAttack_remaining = 0;
 	int app_max_time = 60;
 	int app_score = 50;
 	int player_score = 0;
@@ -40,6 +40,7 @@ namespace Mesh {
 	AEGfxVertexList* Anim = nullptr;
 	AEGfxVertexList* Anim2 = nullptr;
 	AEGfxVertexList* BatAnim = nullptr;
+	AEGfxVertexList* SlimeAnim = nullptr;
 	AEGfxVertexList* PlayerCurr = nullptr;
 }
 namespace Tex {
@@ -50,5 +51,7 @@ short EnemyCount = 1;
 float g_dt = 0;
 
 const float bat_anim_offset_x = 0.5f;
+const float slime_anim_offset_x = 0.25f;
 float player_objtexX = 0.0f;
 float bat_objtexX = 0.0f;
+float slime_objtexX = 0.0f;

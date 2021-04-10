@@ -21,6 +21,7 @@ rights reserved.
 #include "MainMenu.h"
 #include "Player.h"
 #include "Globals.h"
+#include "GameMode.h"
 
 #include <fstream>
 #include <string>
@@ -39,6 +40,7 @@ static std::vector <Button> QuitBtn;
 static Graphics::Text QuitText;
 static AEVec2 ScreenMid;
 static Image lives;
+static GameMode gameMode;
 
 extern Player Jumperman;
 
@@ -59,17 +61,28 @@ void UI::Init() {
 	memset(strBuffer2, 0, 100 * sizeof(char));
 
 	lives.Init(FP::HeartSprite, 35.0f, 35.0f, AEVec2Zero());
+
+	gameMode = GameModeSetting::GetGameMode();
 }
 
 const size_t pauseButtonIdx{ 1 };
 void UI::Update() {
 
 	
-	GAMEPLAY_MISC::Level == 1 ? sprintf_s(strBuffer1, "Current Level: Tutorial")
-							  : sprintf_s(strBuffer1, "Current Level: %d", GAMEPLAY_MISC::Level - 1);
+	GAMEPLAY_MISC::Level == 0 ? sprintf_s(strBuffer1, "Current Level: Tutorial")
+							  : sprintf_s(strBuffer1, "Current Level: %d", GAMEPLAY_MISC::Level);
 
 	sprintf_s(strBuffer, "FPS: %.2f", AEFrameRateControllerGetFrameRate());
-	sprintf_s(strBuffer2, "Time Elapsed: %.2f", GAMEPLAY_MISC::app_time);
+
+	if (gameMode == GameMode::TimeAttack) {
+		sprintf_s(strBuffer2, "Time Remaining: %.2f", GAMEPLAY_MISC::TimeAttack_remaining);
+		if(!GAMEPLAY_MISC::PAUSED)
+			GAMEPLAY_MISC::TimeAttack_remaining -= g_dt;
+
+		TimeAttackGameMode::CheckTimer();
+	}
+	else
+		sprintf_s(strBuffer2, "Time Elapsed: %.2f", GAMEPLAY_MISC::app_time);
 
 	FPS_Display.SetText(strBuffer);
 	LevelDisplay.SetText(strBuffer1);
@@ -111,8 +124,6 @@ void UI::PausedInit()
 	static const float WindHeight{ static_cast<float>(AEGetWindowHeight()) };
 	for (size_t i = 0; i < btnCount; ++i) {
 		PausedBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtnTextScale));
-
-		//PausedBtn[i].RandomizeAllStateColor();
 	}
 	PausedBtn[0].Set_Callback(Utils::TogglePause);
 	PausedBtn[0].Set_Text("Resume");

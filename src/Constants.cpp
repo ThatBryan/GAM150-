@@ -29,6 +29,7 @@ namespace FILE_PATHS {
 	const char* PlayerSpriteSheetIdle = "./Assets/Art/Jumperman_Idle_Spritesheet.png";
 	const char* PlayerSpriteSheetRun = "./Assets/Art/Jumperman_Run_Spritesheet.png";
 	const char* BatSpriteSheet = "./Assets/Art/BatSprite.png";
+	const char* SlimeSpriteSheet = "./Assets/Art/SlimeSpriteSheet.png";
 	const char* GrassTile = "./Assets/Art/Grass_Tile.png";
 	const char* GoalTile = "./Assets/Art/Goal.png";
 	const char* SpecialTile = "./Assets/Art/Special_Tile.png";
@@ -61,6 +62,7 @@ namespace FILE_PATHS {
 }
 namespace PLAYER_CONST {
 	const float SPEED = 150.0f;
+	const float DEBUGSPEED = 300.0f;
 	const float WIDTH = 45.0f;
 	const float HEIGHT = 50.0f;
 	const float JUMPVEL = 3.5f;

@@ -26,6 +26,8 @@ rights reserved.
 #include <iostream>
 
 int count = 0;
+int slimeCount = 0;
+int batCount = 0;
 
 Image::Image(const AEGfxTexture* pTex, AEGfxVertexList* Mesh, const f32 width, const f32 height, const f32 dir)
 	: rotation{dir}, width{width}, height{height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color(), transformMtx{NULL}
@@ -140,8 +142,8 @@ void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const
 	}
 	else if (mesh == Mesh::BatAnim)
 	{
-		++count;
-		if (count < counter)
+		++batCount;
+		if (batCount < counter)
 		{
 			AEGfxTextureSet(pTex, bat_objtexX, 0);
 		}
@@ -149,11 +151,29 @@ void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const
 		{
 			bat_objtexX += offset;
 			AEGfxTextureSet(pTex, bat_objtexX, 0);
-			count = 0;
+			batCount = 0;
 		}
 		if (bat_objtexX == 1.0f)
 		{
 			bat_objtexX = 0.0f;
+		}
+	}
+	else if (mesh == Mesh::SlimeAnim)
+	{
+		++slimeCount;
+		if (slimeCount < counter)
+		{
+			AEGfxTextureSet(pTex, slime_objtexX, 0);
+		}
+		else
+		{
+			slime_objtexX += offset;
+			AEGfxTextureSet(pTex, slime_objtexX, 0);
+			slimeCount = 0;
+		}
+		if (slime_objtexX == 1.0f)
+		{
+			slime_objtexX = 0.0f;
 		}
 	}
 	pMesh = mesh;

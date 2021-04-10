@@ -22,7 +22,7 @@ namespace GAMEPLAY_MISC {
 	extern bool DISPLAY_QUIT_UI;
 	extern bool DISABLE_COLLISION;
 
-	extern float app_time;
+	extern float app_time, TimeAttack_remaining;
 	extern int app_max_time;
 	extern int app_score;
 	extern int player_score;
@@ -42,6 +42,7 @@ namespace Mesh { // Base Meshes
 	extern AEGfxVertexList* Anim;
 	extern AEGfxVertexList* Anim2;
 	extern AEGfxVertexList* BatAnim;
+	extern AEGfxVertexList* SlimeAnim;
 	extern AEGfxVertexList* PlayerCurr;
 }
 extern unsigned short DialogueID;
@@ -50,5 +51,7 @@ extern short EnemyCount;
 extern float g_dt;
 
 extern const float bat_anim_offset_x;
+extern const float slime_anim_offset_x;
 extern float player_objtexX;
 extern float bat_objtexX;
+extern float slime_objtexX;
