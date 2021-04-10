@@ -34,12 +34,13 @@ class Player
 private:
 	SpriteDirection direction;
 	Health hp;
-	bool win, lose;
+	bool playerWin, lose;
 	float jumpvel, chargedjumpvel, chargedjump_counter;
 	static f32 gravityStrength;
 	void Update_Position(void);
 	void UpdateColliders();
-	void DebugMovements();
+	void ApplyDebugMovements();
+	void ApplyJump();
 	void CheckJumpInputs();
 	void CheckOutOfBound(void);
 	void ChangeDirection(void);
@@ -67,7 +68,7 @@ public:
 	void SetPlayerWin(void);
 	
 	inline void SetPos(AEVec2 pos) { this->sprite.pos = pos; this->startingPos = pos; }
-	inline bool GetWinStatus(void) const { return win; }
+	inline bool GetWinStatus(void) const { return playerWin; }
 	inline void SetPlayerLose(void) { active = false; lose = true; }
 	inline bool GetLoseStatus(void) const { return lose; }
 

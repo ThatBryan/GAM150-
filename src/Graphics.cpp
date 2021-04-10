@@ -115,6 +115,7 @@ void Graphics::Free() {
 	AEGfxDestroyFont(fontID::Courier);
 	AEGfxDestroyFont(fontID::Strawberry_Muffins_Demo);
 	AEGfxDestroyFont(fontID::Pixel_Digivolve);
+
 	AEGfxMeshFree(Mesh::Rect);
 	AEGfxMeshFree(Mesh::Circle);
 	AEGfxMeshFree(Mesh::Anim);

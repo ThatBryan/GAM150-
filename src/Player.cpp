@@ -50,7 +50,7 @@ float Player::gravityStrength = 20.0f;
 static const char* UsernameFile{ "./Assets/Username/username.txt" };
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::PlayerCurr, width, height), lose{ false },
-active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL },
+active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, playerWin{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL },
 hp(), direction{ SpriteDirection::Right }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL }, gravityMultiplier{ GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER },
 chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider(), playerscore { 0 }, playername{"Jumperman"}
 {
@@ -62,7 +62,7 @@ chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider(), playerscor
 }
 
 Player::Player() : lose{ false }, active{ true }, gravity{ false }, jump{ false }, chargedjump{ false },
-win{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL },
+playerWin{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL },
 hp(), direction{ SpriteDirection::Right }, gravityMultiplier{ GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER }, chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }
 , collider(), playerscore{ 0 }, playername{ "Jumperman" }{
 
@@ -80,12 +80,13 @@ void Player::Reset(void)
 }
 
 void Player::Update() {
+	if (hp.current <= 0)
+		SetPlayerLose();
+
 	CheckOutOfBound();
 	CheckJumpInputs();
 	Update_Position();
 	UpdateColliders();
-	if (hp.current <= 0)
-		SetPlayerLose();
 	GravityManager();
 }
 void Player::Render(void)
@@ -110,9 +111,9 @@ void Player::LoadTex(void) {
 	playerTex = AEGfxTextureLoad(FP::PLAYER::SpriteSheetIdle);
 	playerMovTex = AEGfxTextureLoad(FP::PLAYER::SpriteSheetRun);
 	playerParticle = AEGfxTextureLoad(FP::PLAYER::Sprite);
-	AE_ASSERT_MESG(playerTex, "Failed to create texture!");
-	AE_ASSERT_MESG(playerMovTex, "Failed to create texture!");
-	AE_ASSERT_MESG(playerParticle, "Failed to create texture!");
+	AE_ASSERT_MESG(playerTex, "Failed to create Player spirte sheet Idle");
+	AE_ASSERT_MESG(playerMovTex, "Failed to create Player sprite sheet run!");
+	AE_ASSERT_MESG(playerParticle, "Failed to create Player Particle texture!");
 }
 
 void Player::Unload(void) {
@@ -132,19 +133,8 @@ void Player::Unload(void) {
 void Player::Update_Position(void)
 {
 	if (jump)
-	{
-		chargedjump_counter = PLAYER_CONST::CHARGEDJUMP_COUNTER;
-		if (sprite.pos.y + sprite.height / 2 <= maxY)
-		{
-			sprite.pos.y -= jumpvel;
-			jumpvel -= 0.1f; // velocity decrease as y increases
-			if (jumpvel <= 0)
-			{
-				jump = false;
-				jumpvel = PLAYER_CONST::JUMPVEL;
-			}
-		}
-	}
+		ApplyJump();
+
 	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
 	{
 		if (sprite.pos.x + sprite.width / 2 <= maxX || GAMEPLAY_MISC::DEBUG_MODE) {
@@ -177,7 +167,7 @@ void Player::Update_Position(void)
 
 	}
 	if (GAMEPLAY_MISC::DEBUG_MODE) {
-		DebugMovements();
+		ApplyDebugMovements();
 	}
 }
 
@@ -195,7 +185,7 @@ void Player::UpdateColliders()
 	collider.left.pos = AEVec2Set(sprite.pos.x - fabsf(sprite.width / 4.0f), sprite.pos.y);
 }
 
-void Player::DebugMovements()
+void Player::ApplyDebugMovements()
 {
 	AEVec2 Mouse = Utils::GetMousePos();
 	if (AETestPointToRect(&Mouse, &sprite.pos, sprite.width, sprite.height))
@@ -211,6 +201,21 @@ void Player::DebugMovements()
 	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP)) {
 		if (sprite.pos.y - sprite.height / 2 >= 0) {
 			sprite.pos.y -= PLAYER_CONST::DEBUGSPEED * g_dt;
+		}
+	}
+}
+
+void Player::ApplyJump()
+{
+	chargedjump_counter = PLAYER_CONST::CHARGEDJUMP_COUNTER;
+	if (sprite.pos.y + sprite.height / 2 <= maxY)
+	{
+		sprite.pos.y -= jumpvel;
+		jumpvel -= 0.1f; // velocity decrease as y increases
+		if (jumpvel <= 0)
+		{
+			jump = false;
+			jumpvel = PLAYER_CONST::JUMPVEL;
 		}
 	}
 }
@@ -262,7 +267,7 @@ void Player::Respawn(void)
 {
 	jump = false;
 	chargedjump = false;
-	win = false;
+	playerWin = false;
 	lose = false;
 	active = true;
 	sprite.rotation = 0;
@@ -312,13 +317,12 @@ void Player::GravityManager(void)
 void Player::SetPlayerWin(void)
 {
 	static std::string str;
-	if (!win) {
+	if (!playerWin) {
 		LevelSys.UnlockNext();
-		win = true;
+		playerWin = true;
 
 		GAMEPLAY_MISC::player_score = static_cast<int>((GAMEPLAY_MISC::app_max_time - GAMEPLAY_MISC::app_time) * GAMEPLAY_MISC::app_score);
 		playerscore = GAMEPLAY_MISC::player_score;
-
 
 		std::ifstream ifs(UsernameFile);
 		static std::string line;
@@ -371,8 +375,6 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 						enemy[i].KillEnemy();
 						continue;
 					}
-					//if (GAMEPLAY_MISC::DEBUG_MODE)
-					//	printf("enemy dies\n");
 				}
 				else {
 					if (!GAMEPLAY_MISC::DEBUG_MODE) {
@@ -382,8 +384,6 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 							Respawn();
 						}
 					}
-					//if (GAMEPLAY_MISC::DEBUG_MODE)
-					//	printf("player dies\n");
 				}
 			}
 		}

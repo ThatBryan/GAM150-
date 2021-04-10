@@ -18,9 +18,9 @@ rights reserved.
 
 namespace FILE_PATHS {
 	namespace LOGOS {
+		extern const char* FMod;
 		extern const char* DigipenRed;
 		extern const char* DigipenWhite;
-		extern const char* FMod;
 	}
 	namespace BACKGROUND {
 		extern const char* Pause;
@@ -28,23 +28,23 @@ namespace FILE_PATHS {
 		extern const char* Gameover;
 	}
 	namespace ENEMY {
-		extern const char* WaterSlimeSprite;
 		extern const char* BatSprite;
 		extern const char* SquirrelSprite;
 		extern const char* BatSpriteSheet;
+		extern const char* WaterSlimeSprite;
 		extern const char* SlimeSpriteSheet;
 		extern const char* SquirrelSpriteSheet;
 	}
 	namespace PLAYER {
 		extern const char* Sprite;
-		extern const char* SpriteSheetIdle;
 		extern const char* SpriteSheetRun;
+		extern const char* SpriteSheetIdle;
 	}
 	namespace TILE {
-		extern const char* Grass;
 		extern const char* Goal;
-		extern const char* Special;
 		extern const char* Grey;
+		extern const char* Grass;
+		extern const char* Special;
 		extern const char* Dialogue;
 
 		extern const char* Guide1;
@@ -56,9 +56,9 @@ namespace FILE_PATHS {
 	}
 	namespace FONT {
 		extern const char* Roboto;
-		extern const char* Strawberry_Muffins_Demo;
 		extern const char* Courier;
 		extern const char* Pixel_Digivolve;
+		extern const char* Strawberry_Muffins_Demo;
 	}
 	namespace CREDITS {
 		extern const char* Screen1;
@@ -76,7 +76,6 @@ namespace FILE_PATHS {
 		extern const char* HeartSprite;
 	}
 	extern const char* Black;
-	extern const char* boi;
 }
 namespace FP = FILE_PATHS; // Short hand 
 
