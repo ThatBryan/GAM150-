@@ -17,7 +17,7 @@
 
 
 
-All content © 2021 DigiPen Institute of Technology Singapore. All
+All content ï¿½ 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.
 
  */

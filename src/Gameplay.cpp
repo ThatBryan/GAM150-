@@ -63,7 +63,7 @@ void Gameplay::Init(void)
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::COLLAPSIBLE))
 			{
-				Tiles::AddTile(tilemap, TileType::Grass, grid_width, grid_height, AEVec2Set( j * grid_width, i * grid_height ));
+				Tiles::AddTile(tilemap, TileType::Grass, grid_width, grid_height, AEVec2Set( j * grid_width, i  * grid_height));
 			}
 			else if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::NON_COLLAPSIBLE))
 			{
