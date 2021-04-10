@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 score:2064username:
+=======
+score:2895username:min
+>>>>>>> min
