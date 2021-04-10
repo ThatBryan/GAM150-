@@ -79,10 +79,10 @@ void Player::Reset(void)
 }
 
 void Player::Update() {
-	if (hp.current <= 0)
+	if (hp.current <= 0) 
 		SetPlayerLose();
-
-	CheckOutOfBound();
+	if(!lose)
+		CheckOutOfBound();
 	CheckJumpInputs();
 	Update_Position();
 	UpdateColliders();
@@ -288,13 +288,12 @@ void Player::Respawn(void)
 }
 
 void Player::CheckOutOfBound() {
+
 	if ((sprite.pos.y - sprite.height / 2) > maxY) {
-		--hp.current;
 		Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerParticle);
-		if(hp.current >= 1)
+		if(--hp.current)
 			Respawn();
 	}
-
 	static const float Width{ fabsf(sprite.width / 2.0f) };
 	if (sprite.pos.x - Width / 2.0f < 0) {
 		sprite.pos.x = Width / 2.0f;
@@ -386,11 +385,9 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 				}
 				else {
 					if (!GAMEPLAY_MISC::DEBUG_MODE) {
-						--hp.current;
 						Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerParticle);
-						if (hp.current >= 1) {
+						if (--hp.current)
 							Respawn();
-						}
 					}
 				}
 			}
