@@ -186,16 +186,16 @@ void Enemies::LoadTex(void) {
 		const char* pTex2 = nullptr;
 		switch (i) {
 		case EnemyType::Slime:
-			pTex = FP::SlimeSpriteSheet;
-			pTex2 = FP::WaterSlimeSprite;
+			pTex = FP::ENEMY::SlimeSpriteSheet;
+			pTex2 = FP::ENEMY::WaterSlimeSprite;
 			break;
 		case EnemyType::Bat:
-			pTex = FP::BatSpriteSheet;
-			pTex2 = FP::FlyingEnemySprite;
+			pTex = FP::ENEMY::BatSpriteSheet;
+			pTex2 = FP::ENEMY::BatSprite;
 			break;
 		case EnemyType::Squirrel:
-			pTex = FP::SquirrelSpriteSheet;
-			pTex2 = FP::SquirrelSprite;
+			pTex = FP::ENEMY::SquirrelSpriteSheet;
+			pTex2 = FP::ENEMY::SquirrelSprite;
 			break;
 		default:
 			return;

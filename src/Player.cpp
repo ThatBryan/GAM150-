@@ -107,9 +107,9 @@ void Player::Render(void)
 	}
 }
 void Player::LoadTex(void) {
-	playerTex = AEGfxTextureLoad(FP::PlayerSpriteSheetIdle);
-	playerMovTex = AEGfxTextureLoad(FP::PlayerSpriteSheetRun);
-	playerParticle = AEGfxTextureLoad(FP::PlayerSprite);
+	playerTex = AEGfxTextureLoad(FP::PLAYER::SpriteSheetIdle);
+	playerMovTex = AEGfxTextureLoad(FP::PLAYER::SpriteSheetRun);
+	playerParticle = AEGfxTextureLoad(FP::PLAYER::Sprite);
 	AE_ASSERT_MESG(playerTex, "Failed to create texture!");
 	AE_ASSERT_MESG(playerMovTex, "Failed to create texture!");
 	AE_ASSERT_MESG(playerParticle, "Failed to create texture!");
@@ -398,7 +398,7 @@ void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, con
 	player.sprite.pos = player.startingPos;
 	
 	player.collider.SetWidthHeight(player.collider.sprite, width, height);
-	player.collider.SetWidthHeight(player.collider.top, width - 4.0f, 5.0f);
+	player.collider.SetWidthHeight(player.collider.top, width - 4.0f, height / 4.0f);
 	player.collider.SetWidthHeight(player.collider.left, width / 2.0f - PLAYER_CONST::COLLIDER_SIDE_OFFSET_X, height - 10.0f);
 	player.collider.SetWidthHeight(player.collider.right, width / 2.0f - PLAYER_CONST::COLLIDER_SIDE_OFFSET_X, height - 10.0f);
 	player.collider.SetWidthHeight(player.collider.bottom, width /2.0f, 5.0f);

@@ -36,7 +36,7 @@ Image::Image(const AEGfxTexture* pTex, AEGfxVertexList* Mesh, const f32 width, c
 Image::Image() : rotation{0}, width{0}, height{0}, pTex{ nullptr }, 
 pMesh{ nullptr }, pos{ 0, 0 }, transformMtx{ NULL }{}
 
-void Image::Init(const char* pFile, const f32 Width, const f32 Height, const AEVec2 Pos, const f32 Rotation, AEGfxVertexList* Mesh){
+void Image::Load(const char* pFile, const f32 Width, const f32 Height, const AEVec2 Pos, const f32 Rotation, AEGfxVertexList* Mesh){
 	pTex = AEGfxTextureLoad(pFile);
 	AE_ASSERT_MESG(pTex, "Failed to create texture!");
 	pMesh = const_cast<AEGfxVertexList*>(Mesh);
@@ -138,7 +138,8 @@ void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const
 		{
 			player_objtexX = 0;
 		}
-		++count;
+		if(!GAMEPLAY_MISC::PAUSED)
+			++count;
 		if (count < counter)
 		{
 			AEGfxTextureSet(pTex, player_objtexX, 0);
@@ -156,7 +157,8 @@ void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const
 	}
 	else if (mesh == Mesh::BatAnim)
 	{
-		++batCount;
+		if (!GAMEPLAY_MISC::PAUSED)
+			++batCount;
 		if (batCount < counter)
 		{
 			AEGfxTextureSet(pTex, bat_objtexX, 0);
@@ -174,7 +176,8 @@ void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const
 	}
 	else if (mesh == Mesh::SlimeAnim)
 	{
-		++slimeCount;
+		if (!GAMEPLAY_MISC::PAUSED)
+			++slimeCount;
 		if (slimeCount < counter)
 		{
 			AEGfxTextureSet(pTex, slime_objtexX, 0);
@@ -192,7 +195,8 @@ void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const
 	}
 	else if(mesh== Mesh::SquirrelAnim)
 	{
-		++squirrelCount;
+		if (!GAMEPLAY_MISC::PAUSED)
+			++squirrelCount;
 		if (squirrelCount < counter)
 		{
 			AEGfxTextureSet(pTex, squirrel_objtexX, 0);

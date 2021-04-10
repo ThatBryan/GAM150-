@@ -32,7 +32,7 @@ void Username::Init()
 {
 	ScreenMid = Utils::GetScreenMiddle();
 	CursorPos = ScreenMid;
-	BgOverlayArr[CursorRect].Init(FP::Black, cursorWidth, cursorHeight, CursorPos);
+	BgOverlayArr[CursorRect].Load(FP::Black, cursorWidth, cursorHeight, CursorPos);
 
 	InputBtn.push_back(Button(ButtonType::Color, width, height, 0.7f));
 	InputBtn[0].ChangeStateColor(ButtonState::Hovered, Color{ 255.0f, 0, 0, 255.0f });

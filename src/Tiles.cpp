@@ -230,29 +230,29 @@ void Tiles::UpdateManager(std::vector <Tiles>& tiles, Player& ThePlayer, std::ve
 bool Tiles::isTutorialLevel = false;
 
 void Tiles::LoadTex() {
-	for (TileType i = TileType::Grass; i < TileType::Max; ++i) {
+	for (TileType i = static_cast<TileType>(0); i < TileType::Max; ++i) {
 		const char* pTex{ nullptr };
 		switch (i) {
 		case TileType::Grass:
-			pTex = FP::GrassTile;
+			pTex = FP::TILE::Grass;
 			break;
 		case TileType::Goal:
-			pTex = FP::GoalTile;
+			pTex = FP::TILE::Goal;
 			break;
 		case TileType::Safe:
-			pTex = FP::GreyTile;
+			pTex = FP::TILE::Grey;
 			break;
 		case TileType::Special:
-			pTex = FP::SpecialTile;
+			pTex = FP::TILE::Special;
 			break;
 		case TileType::Dialogue:
-			pTex = FP::DialogueTile;
+			pTex = FP::TILE::Dialogue;
 			break;
 		default:
 			return;
 		}
 		tileTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex);
-		//AE_ASSERT_MESG(pTex, "Failed to create texture!");
+		AE_ASSERT_MESG(pTex, "Failed to create Tile texture!");
 	}
 	if (GAMEPLAY_MISC::Level == Gameplay::GameLevel::TUTORIAL) {
 		//std::cout << "Loaded Tutorial Textures\n";
@@ -285,12 +285,12 @@ void Tiles::TileShake(void) {
 
 void Tiles::LoadTutorialTexture(void)
 {
-	BgOverlayArr[Guide1].Init(FP::Guide1, 200.0f, 150.0f, { 0.0f, 0.0f });
-	BgOverlayArr[Guide2].Init(FP::Guide2, 200.0f, 150.0f, { 0.0f, 0.0f });
-	BgOverlayArr[Guide3].Init(FP::Guide3, 200.0f, 150.0f, { 0.0f, 0.0f });
-	BgOverlayArr[Guide4].Init(FP::Guide4, 200.0f, 100.0f, { 0.0f, 0.0f });
-	BgOverlayArr[Guide5].Init(FP::Guide5, 200.0f, 150.0f, { 0.0f, 0.0f });
-	BgOverlayArr[Guide6].Init(FP::Guide6, 150.0f, 125.0f, { 0.0f, 0.0f });
+	BgOverlayArr[Guide1].Load(FP::TILE::Guide1, 200.0f, 150.0f, { 0.0f, 0.0f });
+	BgOverlayArr[Guide2].Load(FP::TILE::Guide2, 200.0f, 150.0f, { 0.0f, 0.0f });
+	BgOverlayArr[Guide3].Load(FP::TILE::Guide3, 200.0f, 150.0f, { 0.0f, 0.0f });
+	BgOverlayArr[Guide4].Load(FP::TILE::Guide4, 200.0f, 100.0f, { 0.0f, 0.0f });
+	BgOverlayArr[Guide5].Load(FP::TILE::Guide5, 200.0f, 150.0f, { 0.0f, 0.0f });
+	BgOverlayArr[Guide6].Load(FP::TILE::Guide6, 150.0f, 125.0f, { 0.0f, 0.0f });
 }
 
 void Tiles::FreeTutorialTexture(void)
@@ -353,14 +353,17 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 			}
 			if (GAMEPLAY_MISC::DISABLE_COLLISION)
 				return;
-			if (Utils::ColliderAABB(TheTile.collider.bottom.pos, TheTile.collider.bottom.width, TheTile.collider.bottom.height,
-				ThePlayer.collider.top.pos, ThePlayer.collider.top.width, ThePlayer.collider.top.height)){
-					ThePlayer.gravity = true;
-					ThePlayer.jump = false;
-					ThePlayer.chargedjump = false;
-				}
+
 			if (TheTile.type == TileType::Goal)
 				continue;
+
+			if (Utils::ColliderAABB(TheTile.collider.bottom.pos, TheTile.collider.bottom.width, TheTile.collider.bottom.height,
+				ThePlayer.collider.top.pos, ThePlayer.collider.top.width, ThePlayer.collider.top.height)) {
+				ThePlayer.gravity = true;
+				ThePlayer.jump = false;
+				ThePlayer.chargedjump = false;
+				continue;
+			}
 			if (Utils::ColliderAABB(TheTile.collider.right.pos, TheTile.collider.right.width, TheTile.collider.right.height,
 				ThePlayer.collider.left.pos, ThePlayer.collider.left.width, ThePlayer.collider.left.height)){
 				if (TheTile.type != TileType::Dialogue)
@@ -372,7 +375,6 @@ void Tiles::CheckPlayerCollision(const TileMgr TileManager, Player& ThePlayer)
 				if (TheTile.type != TileType::Dialogue)
 					ThePlayer.sprite.pos.x = TheTile.image.pos.x - TheTile.image.width / 2.0f - abs(ThePlayer.sprite.width) / 2.0f;
 				}
-
 		}
 	}
 }

@@ -104,10 +104,10 @@ void Graphics::Load_Meshes(void)
 
 void Graphics::Load_Fonts(void)
 {
-	fontID::Strawberry_Muffins_Demo = AEGfxCreateFont(FP::Font_Strawberry_Muffins_Demo, 40);
-	fontID::Roboto = AEGfxCreateFont(FP::Font_Roboto, 40);
-	fontID::Courier = AEGfxCreateFont(FP::Font_Courier, 40);
-	fontID::Pixel_Digivolve = AEGfxCreateFont(FP::Font_Pixel_Digivolve, 40);
+	fontID::Strawberry_Muffins_Demo = AEGfxCreateFont(FP::FONT::Strawberry_Muffins_Demo, 40);
+	fontID::Roboto = AEGfxCreateFont(FP::FONT::Roboto, 40);
+	fontID::Courier = AEGfxCreateFont(FP::FONT::Courier, 40);
+	fontID::Pixel_Digivolve = AEGfxCreateFont(FP::FONT::Pixel_Digivolve, 40);
 }
 
 void Graphics::Free() {

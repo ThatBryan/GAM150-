@@ -75,8 +75,8 @@ void AudioManager::update() {
 }
 
 void AudioManager::loadAsset(void) {
-	Audio.createAudio(&AudioArray[static_cast<int>(AudioID::Jump)], FP::jumpSFX);
-	Audio.createAudio(&AudioArray[static_cast<int>(AudioID::BGM)], FP::GameplayBGM);
+	Audio.createAudio(&AudioArray[static_cast<int>(AudioID::Jump)], FP::SFX::Jump);
+	Audio.createAudio(&AudioArray[static_cast<int>(AudioID::BGM)], FP::BGM::Gameplay);
 }
 void AudioManager::unloadAsset(void) {
 	for (int i = 0; i < AudioArray.size(); i++) {

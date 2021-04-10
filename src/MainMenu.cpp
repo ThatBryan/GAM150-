@@ -464,10 +464,10 @@ void Credits::Init()
 {
 	const float BtnWidth{ 100.0f }, BtnHeight{ 50.0f };
 
-	Pictures[CreditScreen1].Init(FP::CreditScreen1, WindowWidth, WindowHeight, ScreenMid);
-	Pictures[CreditScreen2].Init(FP::CreditScreen2, WindowWidth, WindowHeight, ScreenMid);
-	Pictures[CreditScreen3].Init(FP::CreditScreen3, WindowWidth, WindowHeight, ScreenMid);
-	Pictures[CreditScreen4].Init(FP::CreditScreen4, WindowWidth, WindowHeight, ScreenMid);
+	Pictures[CreditScreen1].Load(FP::CREDITS::Screen1, WindowWidth, WindowHeight, ScreenMid);
+	Pictures[CreditScreen2].Load(FP::CREDITS::Screen2, WindowWidth, WindowHeight, ScreenMid);
+	Pictures[CreditScreen3].Load(FP::CREDITS::Screen3, WindowWidth, WindowHeight, ScreenMid);
+	Pictures[CreditScreen4].Load(FP::CREDITS::Screen4, WindowWidth, WindowHeight, ScreenMid);
 
 	for (int i = 0; i < 3; ++i) {
 		CreditBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, 0.7f));

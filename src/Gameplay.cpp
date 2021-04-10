@@ -207,7 +207,6 @@ void Gameplay::Load()
 		default:
 			gamestateNext = GS_MAINMENU;
 	}
-	//Mesh::Anim = Graphics::Mesh_Animation(player_idle_anim_offset_x);
 	Mesh::PlayerCurr = Mesh::Anim;
 
 	assert(Map_Height > 0 && Map_Width > 0);

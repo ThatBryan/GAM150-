@@ -66,18 +66,18 @@ void Splash::Update() {
 	}
 }
 void Splash::Render() {
-	Splashes[splashFrame].Draw_Texture(fabsf(alpha));
+	Splashes[splashFrame].Draw_Texture(alpha);
 }
 void Splash::Load() {
 	AEVec2 ScreenMid{ Utils::GetScreenMiddle() };
 	const float splashWidth{ 800.0f }, splashHeight{ 194.0f }; // After applying aspect ratio to original image. 
 
 	if (Utils::RandomRangeInt(0, 1))
-		Splashes[ImageIdx::DigiPen].Init(FP::DigipenLogoRed, splashWidth, splashHeight, ScreenMid);
+		Splashes[ImageIdx::DigiPen].Load(FP::LOGOS::DigipenRed, splashWidth, splashHeight, ScreenMid);
 	else
-		Splashes[ImageIdx::DigiPen].Init(FP::DigipenLogoWhite, splashWidth, splashHeight, ScreenMid);
+		Splashes[ImageIdx::DigiPen].Load(FP::LOGOS::DigipenWhite, splashWidth, splashHeight, ScreenMid);
 
-	Splashes[ImageIdx::FMod].Init(FP::FModLogo, splashWidth, splashHeight, ScreenMid);
+	Splashes[ImageIdx::FMod].Load(FP::LOGOS::FMod, splashWidth, splashHeight, ScreenMid);
 }
 void Splash::Unload() {
 	splash.Free();
