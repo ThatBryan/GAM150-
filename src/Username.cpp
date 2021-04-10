@@ -59,6 +59,9 @@ void Username::Update()
 
 void Username::Render()
 {
+	// Draw Input Rect
+	InputBtn[0].Render();
+
 	// Draw Username Title
 	static Graphics::Text UsernameTxt;
 	UsernameTxt.SetTextScale(1.0f);
@@ -73,9 +76,6 @@ void Username::Render()
 	WarningTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	WarningTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() * 0.4)));
 
-
-	// Draw Input Rect
-	InputBtn[0].Render();
 
 	// Draw Username text
 	static Graphics::Text UsernameInputTxt;
