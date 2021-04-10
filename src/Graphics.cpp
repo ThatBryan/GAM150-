@@ -95,6 +95,9 @@ void Graphics::Load_Meshes(void)
 	Mesh::SlimeAnim = Graphics::Mesh_Animation(slime_anim_offset_x);
 	AE_ASSERT_MESG(Mesh::SlimeAnim, "fail to create object!!");
 
+	Mesh::SquirrelAnim = Graphics::Mesh_Animation(squirrel_anim_offset_x);
+	AE_ASSERT_MESG(Mesh::SquirrelAnim, "fail to create object!!");
+
 	Mesh::Circle = Graphics::Mesh_Circle();
 	AE_ASSERT_MESG(Mesh::Circle, "fail to create object!!");
 }
@@ -118,6 +121,7 @@ void Graphics::Free() {
 	AEGfxMeshFree(Mesh::Anim2);
 	AEGfxMeshFree(Mesh::BatAnim);
 	AEGfxMeshFree(Mesh::SlimeAnim);
+	AEGfxMeshFree(Mesh::SquirrelAnim);
 	//AEGfxMeshFree(Mesh::PlayerCurr);
 }
 

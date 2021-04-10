@@ -170,12 +170,18 @@ void Enemies::Draw()
 {
 	if (active)
 	{
-		if (type == EnemyType::Bat)
-			sprite.Draw_Texture(20, bat_anim_offset_x, Mesh::BatAnim, alpha);
-		else if(type == EnemyType::Slime)
-			sprite.Draw_Texture(10, slime_anim_offset_x, Mesh::SlimeAnim, alpha);
-		else
-			sprite.Draw_Texture(alpha);
+		switch (type)
+		{
+			case EnemyType::Bat:
+				sprite.Draw_Texture(20, bat_anim_offset_x, Mesh::BatAnim, alpha);
+				break;
+			case EnemyType::Slime:
+				sprite.Draw_Texture(10, slime_anim_offset_x, Mesh::SlimeAnim, alpha);
+				break;
+			case EnemyType::Squirrel:
+				sprite.Draw_Texture(20, squirrel_anim_offset_x, Mesh::SquirrelAnim, alpha);
+				break;
+		}
 		if (GAMEPLAY_MISC::DEBUG_MODE) {
 			collider.Draw();
 		}
@@ -201,7 +207,7 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 		vel = Enemies::squirrel_speed;
 		jumpcounter = Enemies::jump_counter;
 		jumpvel = Enemies::squirrel_jumpspeed;
-		currMesh = Mesh::Rect;
+		currMesh = Mesh::SquirrelAnim;
 		break;
 	case EnemyType::Slime:
 		counter = Enemies::slime_counter;
@@ -272,7 +278,7 @@ void Enemies::LoadTex(void) {
 			pTex = FP::BatSpriteSheet;
 			break;
 		case EnemyType::Squirrel:
-			pTex = FP::SquirrelSprite;
+			pTex = FP::SquirrelSpriteSheet;
 			break;
 		default:
 			return;

@@ -41,6 +41,7 @@ namespace Mesh {
 	AEGfxVertexList* Anim2 = nullptr;
 	AEGfxVertexList* BatAnim = nullptr;
 	AEGfxVertexList* SlimeAnim = nullptr;
+	AEGfxVertexList* SquirrelAnim = nullptr;
 	AEGfxVertexList* PlayerCurr = nullptr;
 }
 namespace Tex {
@@ -52,6 +53,8 @@ float g_dt = 0;
 
 const float bat_anim_offset_x = 0.5f;
 const float slime_anim_offset_x = 0.25f;
+const float squirrel_anim_offset_x = 0.25f;
 float player_objtexX = 0.0f;
 float bat_objtexX = 0.0f;
 float slime_objtexX = 0.0f;
+float squirrel_objtexX = 0.0f;

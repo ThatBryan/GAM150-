@@ -28,6 +28,7 @@ rights reserved.
 int count = 0;
 int slimeCount = 0;
 int batCount = 0;
+int squirrelCount = 0;
 
 Image::Image(const AEGfxTexture* pTex, AEGfxVertexList* Mesh, const f32 width, const f32 height, const f32 dir)
 	: rotation{dir}, width{width}, height{height}, pTex{nullptr}, pMesh{nullptr}, pos{0, 0}, color(), transformMtx{NULL}
@@ -174,6 +175,24 @@ void Image::Draw_Texture(int counter, float offset, AEGfxVertexList* mesh, const
 		if (slime_objtexX == 1.0f)
 		{
 			slime_objtexX = 0.0f;
+		}
+	}
+	else if(mesh== Mesh::SquirrelAnim)
+	{
+		++squirrelCount;
+		if (squirrelCount < counter)
+		{
+			AEGfxTextureSet(pTex, squirrel_objtexX, 0);
+		}
+		else
+		{
+			squirrel_objtexX += offset;
+			AEGfxTextureSet(pTex, squirrel_objtexX, 0);
+			squirrelCount = 0;
+		}
+		if (squirrel_objtexX == 1.0f)
+		{
+			squirrel_objtexX = 0.0f;
 		}
 	}
 	pMesh = mesh;
