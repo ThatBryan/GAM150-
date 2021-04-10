@@ -21,9 +21,6 @@ namespace GAMEPLAY_MISC {
 	bool DISABLE_COLLISION				= false;
 
 	int app_score						= 50;
-	int player_score					= 0;
-	int app_max_time					= 60;
-	int previous_player_score			= 0;
 
 	unsigned short Level				= 0U;
 

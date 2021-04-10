@@ -328,9 +328,6 @@ void Player::SetPlayerWin(void)
 		LevelSys.UnlockNext();
 		playerWin = true;
 
-		GAMEPLAY_MISC::player_score = static_cast<int>((GAMEPLAY_MISC::app_max_time - GAMEPLAY_MISC::app_time) * GAMEPLAY_MISC::app_score);
-		playerscore = GAMEPLAY_MISC::player_score;
-
 		std::ifstream ifs(UsernameFile);
 		static std::string line;
 		static std::string data;

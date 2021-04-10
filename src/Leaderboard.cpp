@@ -1,3 +1,27 @@
+﻿/******************************************************************************/
+/*!
+\file				Leaderboard.cpp
+\primary author: 	Seet Min Yi
+\secondary author:	Bryan Koh Yan Wei
+\par    			email: minyi.seet@digipen.edu
+\date   			April 6, 2021
+
+\brief				Source file which contains the definitions for Leaderboard. 
+					This Leaderboard displays the top 5 highest scores and 
+					players' name from highest to lowest.
+
+					Functionalities include:
+					Loading/Initializing of variables.
+					Freeing of texture pointers.
+					Rendering of images.
+					Animating the images and changing meshes and images.
+
+
+All content � 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+
+ */
+/******************************************************************************/
 #include "Leaderboard.h"
 #include "MainMenu.h"
 #include "Image.h"
@@ -5,6 +29,7 @@
 #include "Graphics.h"
 #include "Utilities.h"
 #include "Username.h"
+#include "Button.h"
 
 #include <iostream>
 #include <algorithm>
@@ -16,6 +41,7 @@
 Player jumperman;
 static AEVec2 ScreenMid;
 
+std::vector<Button> LeaderboardBtn;
 static std::vector<Leaders> L(Leaders::MaxLeaders);
 static const char* LeaderBoardFile{ "./Assets/Leaderboard/leaderboard.txt" };
 static const char* UsernameFile{ "./Assets/Username/username.txt" };
@@ -26,6 +52,18 @@ Leaders(user);
 void Leaderboard::Init()
 {
 	ScreenMid = Utils::GetScreenMiddle();
+
+	// Leaderboard Button
+	const float BtnCount{ 6 }, BtnWidth{ 100.0f }, BtnHeight{ 50.0f }, BtntextScale{ 0.7f };
+	LeaderboardBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtntextScale));
+
+	LeaderboardBtn[0].Set_Position(AEVec2Set(ScreenMid.x, AEGetWindowHeight() * 0.85));
+	LeaderboardBtn[0].Set_Text("Back");
+	LeaderboardBtn[0].SetBtnType(ButtonType::Texture);
+	LeaderboardBtn[0].Load_Texture("./Assets/Art/BtnTest.png");
+	LeaderboardBtn[0].ChangeStateColor(ButtonState::Hovered, Color{ 0.0f, 255.0f, 255.0f, 255.0f });
+	LeaderboardBtn[0].SetFontID(fontID::Strawberry_Muffins_Demo);
+	LeaderboardBtn[0].Set_Callback(MainMenu::SwitchToMainMenu);
 }
 
 void Leaderboard::Load()
@@ -39,6 +77,7 @@ void Leaderboard::Update()
 	if (AEInputCheckReleased(AEVK_ESCAPE))
 		MainMenu::SwitchToMainMenu();
 	Leaderboard::Render();	
+	LeaderboardBtn[0].Update();
 }
 
 void Leaderboard::Save()
@@ -48,20 +87,28 @@ void Leaderboard::Save()
 
 void Leaderboard::Render()
 {
+	
+	// Leaderboard Button
+	LeaderboardBtn[0].Render();
+
+	// Leaderboard Title
 	static std::string scoreStr;
 	static Graphics::Text LeaderboardTxt;
 	static Graphics::Text NameTxt; static Graphics::Text ScoreTxt;
-	
-	// Leaderboard Title
+
 	LeaderboardTxt.SetTextScale(1.0f);
 	LeaderboardTxt.SetText("Leaderboard");
-	LeaderboardTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
-	LeaderboardTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() / 10)));
+	LeaderboardTxt.SetTextColor(Color{ 255.0f, 0.0f, 0.0f, 255.0f });
+	LeaderboardTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() * 0.2)));
+	LeaderboardTxt.SetFontID(fontID::Strawberry_Muffins_Demo);
 	
+	// Names and Scores
 	NameTxt.SetTextScale(1.0f);
 	NameTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	NameTxt.SetFontID(fontID::Strawberry_Muffins_Demo);
 	ScoreTxt.SetTextScale(1.0f);
 	ScoreTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	ScoreTxt.SetFontID(fontID::Strawberry_Muffins_Demo);
 
 	for (size_t i = 0; i < L.size(); ++i)
 	{
@@ -70,9 +117,14 @@ void Leaderboard::Render()
 		scoreStr.resize(5);
 		
 		ScoreTxt.SetText(scoreStr);
-		NameTxt.Draw_Wrapped(AEVec2Set(300.0f, static_cast<f32>(AEGetWindowHeight() * 0.4) + i * 50.0f ));
-		ScoreTxt.Draw_Wrapped(AEVec2Set(500.0f, static_cast<f32>(AEGetWindowHeight() * 0.4) + i * 50.0f ));
+		NameTxt.Draw_Wrapped(AEVec2Set(300.0f, static_cast<f32>(AEGetWindowHeight() * 0.35) + i * 50.0f ));
+		ScoreTxt.Draw_Wrapped(AEVec2Set(500.0f, static_cast<f32>(AEGetWindowHeight() * 0.35) + i * 50.0f ));
 	}
+}
+
+void Leaderboard::Unload()
+{
+	LeaderboardBtn.clear();
 }
 
 
@@ -104,7 +156,6 @@ void Leaderboard::GetUserInfo(const Player& player)
 
 		user.score = stoi(userscore);
 		user.name = username;
-
 	}
 }
 

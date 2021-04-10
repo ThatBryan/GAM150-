@@ -29,6 +29,7 @@ namespace Leaderboard{
 	void Update();
 	void Save();
 	void Render();
+	void Unload();
 	void GetUserInfo(const Player& player);
 	Leaders& GetLastPlacement();
 }

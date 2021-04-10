@@ -199,6 +199,7 @@ void MainMenu::Unload(void)
 	EnemyCount = 0;
 	GameModeSetting::Unload();
 	Background::ObjectsUnload();
+	Leaderboard::Unload();
 }
 
 void MainMenu::Quit(void) {
