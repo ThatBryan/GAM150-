@@ -179,7 +179,7 @@ void Enemies::Draw()
 				sprite.Draw_Texture(10, slime_anim_offset_x, Mesh::SlimeAnim, alpha);
 				break;
 			case EnemyType::Squirrel:
-				sprite.Draw_Texture(20, squirrel_anim_offset_x, Mesh::SquirrelAnim, alpha);
+				sprite.Draw_Texture(10, squirrel_anim_offset_x, Mesh::SquirrelAnim, alpha);
 				break;
 		}
 		if (GAMEPLAY_MISC::DEBUG_MODE) {
