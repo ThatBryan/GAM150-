@@ -59,6 +59,7 @@ public:
 	float gravityMultiplier;
 
 	void Update(void);
+	void UpdatePlayerAnimationMesh();
 	void Render(void);
 	void Reset(void);
 	void CheckEnemyCollision(std::vector <Enemies>& enemy);

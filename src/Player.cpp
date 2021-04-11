@@ -74,17 +74,32 @@ void Player::Update() {
 	CheckOutOfBound();
 	CheckJumpInputs();
 	Update_Position();
+	UpdatePlayerAnimationMesh();
 	UpdateColliders();
 	GravityManager();
-
 	if (hp.current <= 0 && GameModeSetting::GetGameMode() == GameMode::Casual) 
 		SetPlayerLose();
+}
+void Player::UpdatePlayerAnimationMesh()
+{
+	if (GAMEPLAY_MISC::ARROW_KEYS) {
+		if (AEInputCheckCurr(AEVK_LEFT) || AEInputCheckCurr(AEVK_RIGHT)) {
+			Mesh::PlayerCurr = Mesh::Anim2;
+			return;
+		}
+	}
+	if (GAMEPLAY_MISC::AWSD_KEYS) {
+		if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_D)) {
+			Mesh::PlayerCurr = Mesh::Anim2;
+			return;
+		}
+	}
+	Mesh::PlayerCurr = Mesh::Anim;
 }
 void Player::Render(void)
 {
 	if (!active)
 		return;
-
 	if (Mesh::PlayerCurr == Mesh::Anim)
 	{
 		sprite.Set_Texture(playerTex);

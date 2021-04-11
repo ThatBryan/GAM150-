@@ -115,10 +115,10 @@ void Gameplay::Update()
 	Audio.update();
 	Utils::DebugKeysManager();
 
-	if (AEInputCheckCurr(AEVK_LEFT) || AEInputCheckCurr(AEVK_RIGHT) || AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_D))
-		Mesh::PlayerCurr = Mesh::Anim2;
-	else
-		Mesh::PlayerCurr = Mesh::Anim;
+	//if (AEInputCheckCurr(AEVK_LEFT) || AEInputCheckCurr(AEVK_RIGHT) || AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_D))
+	//	Mesh::PlayerCurr = Mesh::Anim2;
+	//else
+	//	Mesh::PlayerCurr = Mesh::Anim;
 
 	if (AEInputCheckReleased(AEVK_R))
 	{
