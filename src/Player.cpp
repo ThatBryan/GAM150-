@@ -52,7 +52,7 @@ static bool isSoundPlayed;
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::PlayerCurr, width, height), lose{ false },
 active{ true }, gravity{ false }, jump{ false }, chargedjump{ false }, playerWin{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL },
 hp(), direction{ SpriteDirection::Right }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL }, gravityMultiplier{ GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER },
-chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider(), playerscore { 0 }, playername{"Jumperman"}
+chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider()
 {
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
@@ -61,11 +61,10 @@ chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider(), playerscor
 Player::Player() : lose{ false }, active{ true }, gravity{ false }, jump{ false }, chargedjump{ false },
 playerWin{ false }, startingPos{ 0, 0 }, vel{ 0, 0 }, jumpvel{ PLAYER_CONST::JUMPVEL }, chargedjumpvel{ PLAYER_CONST::CHARGED_JUMPVEL },
 hp(), direction{ SpriteDirection::Right }, gravityMultiplier{ GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER }, chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }
-, collider(), playerscore{ 0 }, playername{ "Jumperman" }{
-
+, collider()
+{
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
-
 }
 void Player::Update() {
 
@@ -115,9 +114,9 @@ void Player::LoadTex(void) {
 	playerTex		= AEGfxTextureLoad(FP::PLAYER::SpriteSheetIdle);
 	playerMovTex	= AEGfxTextureLoad(FP::PLAYER::SpriteSheetRun);
 	playerParticle	= AEGfxTextureLoad(FP::PLAYER::Sprite);
-	AE_ASSERT_MESG(playerTex, "Failed to create Player spirte sheet Idle");
-	AE_ASSERT_MESG(playerMovTex, "Failed to create Player sprite sheet run!");
-	AE_ASSERT_MESG(playerParticle, "Failed to create Player Particle texture!");
+	AE_ASSERT_MESG(playerTex,		"Failed to create Player spirte sheet Idle");
+	AE_ASSERT_MESG(playerMovTex,	"Failed to create Player sprite sheet run!");
+	AE_ASSERT_MESG(playerParticle,	"Failed to create Player Particle texture!");
 }
 
 void Player::Unload(void) {

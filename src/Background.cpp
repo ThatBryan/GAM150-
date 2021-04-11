@@ -155,7 +155,6 @@ void Background::Render(const Player& player)
 		if (!GAMEPLAY_MISC::PAUSED)
 			Utils::TogglePause();
 		BgOverlayArr[BackgroundIndex::Victory].Draw_Texture(50.0f);
-		//text.Draw_Wrapped(text.pos);
 
 		GAMEPLAY_MISC::Level == LevelSys.GetMaxLevel() - 1 ? 
 			text.SetText("Congratulations!! you beat the game!")

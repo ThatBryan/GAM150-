@@ -3,7 +3,19 @@ Name: Bryan Koh Yan Wei
 Role : Technical Director
 
 Main contributions:
-Code, Button & Background design
+- Audio System
+- Background design
+- UI Systems(Buttons, Pause)
+- Graphics System (Text, Basic shapes, image)
+- Player, tile, enemy objects 
+- Particle system
+- Level system
+- Main Menu 
+- Splash screen
+- Utility library
+- Game loop logic
+- Game Mode system
+
 
 Files worked on: 
 

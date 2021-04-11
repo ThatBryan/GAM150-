@@ -57,8 +57,6 @@ public:
 	AEVec2 startingPos, vel;
 	bool active, jump, gravity, chargedjump;
 	float gravityMultiplier;
-	int playerscore;
-	std::string playername;
 
 	void Update(void);
 	void Render(void);
@@ -77,8 +75,4 @@ public:
 	static void CreatePlayer(Player& player, const AEVec2 pos, const f32 width, const f32 height);
 
 	friend void UI::DisplayLife(short liveCount);
-
-	// testing
-	inline int GetScore(void) const { return playerscore; };
-	inline std::string GetName(void)  const { return playername; };
 };
