@@ -18,4 +18,5 @@ namespace Username {
 
 	void SaveToFile(const char* filepath = UsernameFile);
 	void GetUsernameFromFile(const char* filepath = UsernameFile);
+	std::string GetUsername();
 }

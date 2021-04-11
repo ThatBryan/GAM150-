@@ -35,5 +35,5 @@ namespace Gameplay {
 	void Restart();
 	void Unload();
 
-	void UpdateManager(void);
+	void EntitiesUpdate(void);
 }

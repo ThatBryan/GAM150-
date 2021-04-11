@@ -187,6 +187,11 @@ void Username::GetUsernameFromFile(const char* filepath)
 	}
 }
 
+std::string Username::GetUsername()
+{
+	return username;
+}
+
 void Username::SaveToFile(const char* filepath)
 {
 	std::ofstream ofs(filepath);

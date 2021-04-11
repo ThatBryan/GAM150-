@@ -110,15 +110,11 @@ void Gameplay::Init(void)
 void Gameplay::Update()
 {
 	Utils::CursorManager();
-
 	Background::Update();
-	if (!GAMEPLAY_MISC::PAUSED) {
-		GAMEPLAY_MISC::app_time += g_dt;
+	EntitiesUpdate();
+	Audio.update();
+	Utils::ToggleKeyManager();
 
-		if (IsIconic(AESysGetWindowHandle())) {
-			Utils::TogglePause();
-		}
-	}
 
 	if (AEInputCheckCurr(AEVK_LEFT) || AEInputCheckCurr(AEVK_RIGHT) || AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_D))
 		Mesh::PlayerCurr = Mesh::Anim2;
@@ -129,14 +125,20 @@ void Gameplay::Update()
 	{
 		gamestateNext = GS_RESTART;
 	}
-	UpdateManager();
-	Audio.update();
+	if (!GAMEPLAY_MISC::PAUSED) {
+		GAMEPLAY_MISC::app_time += g_dt;
+
+		if (IsIconic(AESysGetWindowHandle())) {
+			Utils::TogglePause();
+		}
+	}
 	if (AEInputCheckReleased(AEVK_ESCAPE))
 		Utils::TogglePause();
 }
 
 void Gameplay::Render()
 {
+	Background::ObjectsRender();
 	for (size_t i = 0; i < tilemap.size(); ++i)
 	{
 		tilemap[i].Render();
@@ -145,8 +147,8 @@ void Gameplay::Render()
 	{
 		enemies[j].Draw();
 	}
-	Jumperman.Render();
 	Background::Render(Jumperman);
+	Jumperman.Render();
 	UI::Draw();
 	Particles::Render();
 	UI::Update();
@@ -246,7 +248,7 @@ void Gameplay::Restart()
 	UI::Unload();
 }
 
-void Gameplay::UpdateManager()
+void Gameplay::EntitiesUpdate()
 {
 	if (!GAMEPLAY_MISC::PAUSED && !Jumperman.GetLoseStatus() && !Jumperman.GetWinStatus()) {
 		Jumperman.Update();

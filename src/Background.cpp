@@ -31,6 +31,7 @@ rights reserved.
 #include "Leaderboard.h"
 #include "LevelSystem.h"
 #include "GameMode.h"
+#include "Username.h"
 
 #include <array>
 #include <vector>
@@ -132,7 +133,6 @@ void Background::Update()
 
 void Background::Render(const Player& player)//, const Leaders& leader)
 {
-	ObjectsRender();
 	if (!GAMEPLAY_MISC::DISPLAY_QUIT_UI && (GAMEPLAY_MISC::PAUSED && player.active && !player.GetWinStatus()))
 	{
 		BgOverlayArr[BackgroundIndex::Pause].Draw_Texture(100.0f);
@@ -174,7 +174,7 @@ void Background::Render(const Player& player)//, const Leaders& leader)
 			if (!isScoreInserted && L.score < GAMEPLAY_MISC::TimeAttack_remaining)
 			{
 				Leaders newleader;
-				newleader.name = player.GetName();
+				newleader.name = Username::GetUsername();
 				newleader.score = static_cast<int>(GAMEPLAY_MISC::TimeAttack_remaining);
 				L.InsertNewLeader(newleader);
 				isScoreInserted = true;

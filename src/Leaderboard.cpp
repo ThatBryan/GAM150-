@@ -44,7 +44,7 @@ static AEVec2 ScreenMid;
 std::vector<Button> LeaderboardBtn;
 static std::vector<Leaders> L(Leaders::MaxLeaders);
 static const char* LeaderBoardFile{ "./Assets/Leaderboard/leaderboard.txt" };
-static const char* UsernameFile{ "./Assets/Username/username.txt" };
+//static const char* UsernameFile{ "./Assets/Username/username.txt" };s
 static Graphics::Text stringBuffer;
 std::string username; static std::string userscore;
 Leaders(user);
@@ -113,8 +113,8 @@ void Leaderboard::Render()
 	for (size_t i = 0; i < L.size(); ++i)
 	{
 		NameTxt.SetText(L[i].name);
-		scoreStr = std::to_string(L[i].score);
-		scoreStr.resize(5);
+		L[i].score == 0 ? scoreStr = ""
+						: scoreStr = std::to_string(L[i].score); // empty string if no score.
 		
 		ScoreTxt.SetText(scoreStr);
 		NameTxt.Draw_Wrapped(AEVec2Set(300.0f, static_cast<f32>(AEGetWindowHeight() * 0.35) + i * 50.0f ));
@@ -130,42 +130,44 @@ void Leaderboard::Unload()
 
 void Leaderboard::GetUserInfo(const Player& player)
 {
-	UNREFERENCED_PARAMETER(player);
-	std::ifstream ifs(UsernameFile);
+	//std::ifstream ifs(UsernameFile);
 	static std::string line;
 	static std::string data;
 	std::string word = "username:"; std::string word2 = "score:";
 	size_t pos = 0; size_t pos2 = 0;
-	
 
-	if (ifs.is_open()) {
+	UNREFERENCED_PARAMETER(player);
+	UNREFERENCED_PARAMETER(line);
+	UNREFERENCED_PARAMETER(data);
+	UNREFERENCED_PARAMETER(pos);
+	UNREFERENCED_PARAMETER(pos2);
+	//if (ifs.is_open()) {
 
-		getline(ifs, line);
+	//	getline(ifs, line);
 
-		pos = line.find(word);
-		pos2 = line.find(word2);
-		if (pos != std::string::npos)
-		{
-			pos += word.length();
-			pos2 += word2.length();
-			username = line.substr(pos, line.size() - 1);		
-			userscore = line.substr(pos2, 4);
-		}
+	//	pos = line.find(word);
+	//	pos2 = line.find(word2);
+	//	if (pos != std::string::npos)
+	//	{
+	//		pos += word.length();
+	//		pos2 += word2.length();
+	//		username = line.substr(pos, line.size() - 1);		
+	//		userscore = line.substr(pos2, 4);
+	//	}
 
-		ifs.close();
+	//	ifs.close();
 
-		user.score = stoi(userscore);
-		user.name = username;
-	}
+	//	user.score = stoi(userscore);
+	//	user.name = username;
+	//}
 }
 
-Leaders& Leaderboard::GetLastPlacement()
-{
+Leaders& Leaderboard::GetLastPlacement(){
 	return L.back();
 }
 
 
-Leaders::Leaders() : score{0}, name()
+Leaders::Leaders() : score{}, name()
 {
 
 }
@@ -183,6 +185,10 @@ void Leaders::ReadFromFile(const char* filePath)
 			if (count >= Leaders::MaxLeaders)
 				break;
 			ifs >> L[count].name >> L[count].score;
+
+			if (L[count].name == "0")
+				L[count].name = " ";
+
 			count++;
 		}
 		ifs.close();
@@ -202,6 +208,9 @@ void Leaders::WriteToFile(const char* filePath)
 		// Write the values into text file.
 		for (size_t i = 0; i < L.size(); ++i)
 		{
+			if (L[i].name.empty())
+				L[i].name = "0";
+
 			ofs << L[i].name << " " << L[i].score << std::endl;
 		}
 		
@@ -227,7 +236,7 @@ void Leaders::InsertNewLeader(const Leaders& newLeader)
 	kickout = newLeader;
 	SortLeaders(L);
 
-	//Leaders::PrintContainer();
+	Leaders::PrintContainer();
 
 	// Call SortLeaders after modifying to reorganize the container from new highest to lowest.
 	// Might want to call PrintContainer to check.
