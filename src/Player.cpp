@@ -167,12 +167,10 @@ void Player::Update_Position(void)
 			else
 				sprite.pos.x -= PLAYER_CONST::SPEED * g_dt;
 		}
-
 		if (direction != SpriteDirection::Left) {
 			sprite.ReflectAboutYAxis();
 			direction = SpriteDirection::Left;
 		}
-
 	}
 	if (GAMEPLAY_MISC::DEBUG_MODE) {
 		ApplyDebugMovements();
@@ -328,35 +326,35 @@ void Player::SetPlayerWin(void)
 		LevelSys.UnlockNext();
 		playerWin = true;
 
-		std::ifstream ifs(UsernameFile);
-		static std::string line;
-		static std::string data;
-		std::string word = "score:"; std::string word2 = "username:";
-		size_t pos = 0; size_t pos2 = 0;
-		std::string replace = std::to_string(playerscore);
+		////std::ifstream ifs(UsernameFile);
+		////static std::string line;
+		////static std::string data;
+		////std::string word = "score:"; std::string word2 = "username:";
+		////size_t pos = 0; size_t pos2 = 0;
+		////std::string replace = std::to_string(playerscore);
 
-		if (ifs.is_open()) {
-			getline(ifs, line);
+		////if (ifs.is_open()) {
+		////	getline(ifs, line);
 
-			pos = line.find(word);
-			pos2 = line.find(word2);
-			if (pos != std::string::npos)
-			{
-				pos += word.length();
-				pos2 += word2.length();
-				playername = line.substr(pos2, line.size() - 1);
-				line.replace(pos, replace.length(), std::to_string(playerscore));
-			}
-			ifs.close();
-		}
+		////	pos = line.find(word);
+		////	pos2 = line.find(word2);
+		////	if (pos != std::string::npos)
+		////	{
+		////		pos += word.length();
+		////		pos2 += word2.length();
+		////		playername = line.substr(pos2, line.size() - 1);
+		////		line.replace(pos, replace.length(), std::to_string(playerscore));
+		////	}
+		////	ifs.close();
+		////}
 
-		std::ofstream ofs(UsernameFile);
+		////std::ofstream ofs(UsernameFile);
 
-		if (ofs.is_open())
-		{
-			ofs << line;
-			ofs.close();
-		}
+		////if (ofs.is_open())
+		////{
+		////	ofs << line;
+		////	ofs.close();
+		////}
 	}
 }
 
@@ -377,7 +375,7 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 						jumpvel = bounceVelocity;
 						gravityMultiplier = GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER;
 						enemy[i].KillEnemy();
-						continue;
+						return;
 					}
 				}
 				else {

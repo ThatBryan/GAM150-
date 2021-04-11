@@ -24,6 +24,8 @@ enum class EntitySizes {
 	MAX
 };
 
+EntitySizes& operator++(EntitySizes& rhs);
+
 extern int** MapData;
 extern int Map_Width;
 extern int Map_Height;

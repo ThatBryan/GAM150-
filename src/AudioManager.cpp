@@ -38,13 +38,13 @@ AudioData::AudioData() : ID{ static_cast<AudioID>(0) }, channel{ nullptr }, volu
 AudioManager::AudioManager() {
 	if (FMOD::System_Create(&m_pSystem) != FMOD_OK)
 	{
-		AE_ASSERT_MESG(&m_pSystem, "Constructor failed on AudioManager.cpp line 6\n");
+		AE_ASSERT_MESG(&m_pSystem, "Sound system create failed\n");
 	}
 	int driverCount = 0;
 	m_pSystem->getNumDrivers(&driverCount);
 	if (driverCount == 0)
 	{
-	AE_ASSERT_MESG(driverCount, "Driver count = 0, AudioManager.cpp line 12\n");
+	AE_ASSERT_MESG(driverCount, "Driver count = 0");
 	}
 	m_pSystem->init(36, FMOD_INIT_NORMAL, NULL);
 }
@@ -100,7 +100,6 @@ void AudioManager::loadAsset(void) {
 			pFile = FP::SFX::PlayerDeath;
 			break;
 		default:
-			throw "invalid AudioID!!!";
 			return;
 		}
 		Audio.createAudio(&AudioArray[static_cast<int>(i)], pFile);

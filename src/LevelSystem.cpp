@@ -51,7 +51,7 @@ void LevelSystem::Init()
 	}
 	else {
 		File >> key;
-		if (key > maxLevel)
+		if (key > maxLevel) // guard against exception thrown
 			key = maxLevel;
 		File.close();
 	}

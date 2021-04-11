@@ -135,7 +135,6 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 		currMesh = Mesh::SlimeAnim;
 		break;
 	default:
-		throw "invalid enemy type!!";
 		return;
 	}
 	enemy.push_back(Enemies(enemyTex[static_cast<int>(type)], currMesh, width, height));

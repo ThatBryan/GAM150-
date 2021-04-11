@@ -88,7 +88,7 @@ namespace PLAYER_CONST {
 	const float CHARGEDJUMP_COUNTER			= 0.5f;
 	const float PLAYER_RUN_OFFSET_X			= 0.125f;
 	const float PLAYER_IDLE_OFFSET_X		= 0.2f;
-	const float COLLIDER_BTM_OFFSET_X		= 2.0f;
+	const float COLLIDER_BTM_OFFSET_X		= 3.0f;
 	const float COLLIDER_SIDE_OFFSET_X		= 5.0f;
 }
 namespace TILE_CONST {

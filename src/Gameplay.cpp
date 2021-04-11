@@ -157,57 +157,13 @@ void Gameplay::Render()
 void Gameplay::Load()
 {
 	Leaderboard::GetUserInfo(Jumperman);
-	bool isError = 0;
-	switch (GAMEPLAY_MISC::Level)
-	{
-	case GameLevel::TUTORIAL:
-		{
-			ImportMapDataFromFile("./Assets/Levels/Tutorial.txt");
-			break;
-		}
-	case GameLevel::LEVEL1:
-		{
-			ImportMapDataFromFile("./Assets/Levels/Level1.txt");
-			break;
-		}
-	case GameLevel::LEVEL2:
-		{
-			ImportMapDataFromFile("./Assets/Levels/Level2.txt");
-			break;
-		}
-	case GameLevel::LEVEL3:
-		{
-			ImportMapDataFromFile("./Assets/Levels/Level3.txt");
-			break;
-		}
-	case GameLevel::LEVEL4:
-		{
-			ImportMapDataFromFile("./Assets/Levels/Level4.txt");
-			break;
-		}
-	case GameLevel::LEVEL5:
-		{
-			ImportMapDataFromFile("./Assets/Levels/Level5.txt");
-			break;
-		}
-	case GameLevel::LEVEL6:
-		{
-			ImportMapDataFromFile("./Assets/Levels/Level6.txt");
-			break;
-		}
-	case GameLevel::LEVEL7:
-		{
-			ImportMapDataFromFile("./Assets/Levels/Level7.txt");
-			break;
-		}
-	case GameLevel::LEVEL8:
-		{
-			ImportMapDataFromFile("./Assets/Levels/Level8.txt");
-			break;
-		}
-		default:
-			gamestateNext = GS_MAINMENU;
-	}
+	static const std::string BaseLevelString{ "./Assets/Levels/Level" };
+
+	std::string File = BaseLevelString + std::to_string(GAMEPLAY_MISC::Level) + ".txt";
+	
+	if(!ImportMapDataFromFile(File.c_str()))
+		gamestateNext = GS_MAINMENU;
+
 	Mesh::PlayerCurr = Mesh::Anim;
 
 	assert(Map_Height > 0 && Map_Width > 0); // Prevent division by 0 later.

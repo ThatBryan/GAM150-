@@ -49,6 +49,12 @@ in MapData is 1, it represents a collision cell, any other value is a non-collis
 cell*/
 
 
+EntitySizes& operator++(EntitySizes& rhs)
+{
+	rhs = static_cast<EntitySizes>((int)rhs + 1);
+	return rhs;
+}
+
 /******************************************************************************/
 /*!
 	This function opens the file name "FileName" and retrieves all the map data.
@@ -116,8 +122,8 @@ int ImportMapDataFromFile(const char* FileName)
 		else if (i == 1)     //loop 1 will read Map_Height
 			Map_Height = std::stoi(Map);
 	}
-	for (size_t i = 0; i < 4; ++i) {
-		ifs >> EntitySizeArray[i].x >> EntitySizeArray[i].y;
+	for (EntitySizes i = static_cast<EntitySizes>(0); i < EntitySizes::MAX; ++i) {
+		ifs >> EntitySizeArray[static_cast<int>(i)].x >> EntitySizeArray[static_cast<int>(i)].y;
 	}
 
 
@@ -152,3 +158,4 @@ void FreeMapData(void)
 	}
 	delete[] MapData;
 }
+
