@@ -53,6 +53,7 @@ namespace FILE_PATHS {
 		const char* Guide4					= "./Assets/Art/Guide/Guide4.png";
 		const char* Guide5					= "./Assets/Art/Guide/Guide5.png";
 		const char* Guide6					= "./Assets/Art/Guide/Guide6.png";
+		const char* Guide7					= "./Assets/Art/Guide/Guide7.png";
 	}
 	namespace CREDITS {
 		const char* Screen1					= "./Assets/Art/Credits/CreditScreen1.jpg";

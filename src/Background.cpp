@@ -136,7 +136,7 @@ void Background::Render(const Player& player)
 	if (!GAMEPLAY_MISC::DISPLAY_QUIT_UI && (GAMEPLAY_MISC::PAUSED && player.active && !player.GetWinStatus()))
 	{
 		BgOverlayArr[BackgroundIndex::Pause].Draw_Texture(100.0f);
-		text.SetText(const_cast<s8*>("PAUSED"));
+		text.SetText("PAUSED");
 		text.Draw_Wrapped(text.pos);
 	}
 	else if (player.GetLoseStatus())
@@ -158,12 +158,13 @@ void Background::Render(const Player& player)
 		//text.Draw_Wrapped(text.pos);
 
 		GAMEPLAY_MISC::Level == LevelSys.GetMaxLevel() - 1 ? 
-			text.SetText(const_cast<s8*>("Congratulations!! you beat the game!"))
-		  : text.SetText(const_cast<s8*>("YOU WIN"));
+			text.SetText("Congratulations!! you beat the game!")
+		  : text.SetText("Level cleared");
+
+		text.Draw_Wrapped({ text.pos.x, text.pos.y - 120.0f });
 		
 		if (gameMode == GameMode::TimeAttack && GAMEPLAY_MISC::Level == 8)
 		{
-			text.Draw_Wrapped({ text.pos.x, text.pos.y - 120.0f });
 			int time_remaining = static_cast<int>(GAMEPLAY_MISC::TimeAttack_remaining);
 			text.SetText(std::to_string(time_remaining));
 			text.SetText("YOUR SCORE: " + std::to_string(time_remaining));
@@ -219,7 +220,6 @@ void Background::RenderCasual()
 		MenuBtn[i].Update();
 		MenuBtn[i].Render();
 	}
-
 }
 
 void Background::RenderTimeAttack()

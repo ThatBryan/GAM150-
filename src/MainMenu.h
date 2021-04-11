@@ -12,7 +12,6 @@ rights reserved.
  */
  /******************************************************************************/
 #pragma once
-#include <iostream>
 
 namespace MainMenu
 {
@@ -25,8 +24,6 @@ namespace MainMenu
 	void Render(void);
 
 	void Quit();
-
-	inline void LockedLevel(void) { std::cout << "Level is locked!\n"; }
 
 	void EnemyMovement(void);
 	void PlayerMovement(void);

@@ -105,7 +105,6 @@ void MainMenu::Init(void)
 	Title.SetFontID(fontID::Courier);
 	Title.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	Title.SetTextScale(1.0f);
-	ShowCursor(true);
 }
 
 void MainMenu::Update(void)
@@ -480,10 +479,12 @@ void Credits::Init()
 	CreditBtn[0].Set_Position(AEVec2Set(WindowWidth - 80.0f, WindowHeight - 120.0f));
 	CreditBtn[0].Set_Text("Back");
 	CreditBtn[0].Set_Callback(Credits::DecrementOverlay);
+
 	CreditBtn[1].Set_Position(AEVec2Set(WindowWidth - 80.0f, WindowHeight - 60.0f));
 	CreditBtn[1].Set_Text("More");
 	CreditBtn[1].Set_Callback(Credits::IncrementOverlay);
-	CreditBtn[2].Set_Position(AEVec2Set(80.0f, WindowWidth - 60.0f));
+
+	CreditBtn[2].Set_Position(AEVec2Set(80.0f, WindowHeight - 60.0f));
 	CreditBtn[2].Set_Text("Exit");
 	CreditBtn[2].Set_Callback(MainMenu::SwitchToMainMenu);
 }
@@ -540,8 +541,9 @@ void Credits::Unload()
 
 void Credits::IncrementOverlay()
 {
-	if (count < MAX_PICTURES - 1)
+	if (count < MAX_PICTURES - 1) {
 		count++;
+	}
 }
 
 void Credits::DecrementOverlay()

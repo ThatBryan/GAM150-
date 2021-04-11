@@ -55,6 +55,7 @@ namespace FILE_PATHS {
 		extern const char* Guide4;
 		extern const char* Guide5;
 		extern const char* Guide6;
+		extern const char* Guide7;
 	}
 	namespace BUTTONS {
 		extern const char* RedBtn;

@@ -105,7 +105,6 @@ void Gameplay::Init(void)
 	}
 	tileManager.push_back(&tilemap);
 	UI::Init();
-	ShowCursor(false);
 }
 
 void Gameplay::Update()
@@ -114,7 +113,7 @@ void Gameplay::Update()
 	Background::Update();
 	EntitiesUpdate();
 	Audio.update();
-	Utils::ToggleKeyManager();
+	Utils::DebugKeysManager();
 
 	if (AEInputCheckCurr(AEVK_LEFT) || AEInputCheckCurr(AEVK_RIGHT) || AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_D))
 		Mesh::PlayerCurr = Mesh::Anim2;
