@@ -131,7 +131,7 @@ void Background::Update()
 	ObjectsUpdate();
 }
 
-void Background::Render(const Player& player)//, const Leaders& leader)
+void Background::Render(const Player& player)
 {
 	if (!GAMEPLAY_MISC::DISPLAY_QUIT_UI && (GAMEPLAY_MISC::PAUSED && player.active && !player.GetWinStatus()))
 	{

@@ -123,7 +123,7 @@ void Gameplay::Update()
 
 	if (AEInputCheckReleased(AEVK_R))
 	{
-		gamestateNext = GS_RESTART;
+		Utils::RestartLevel();
 	}
 	if (!GAMEPLAY_MISC::PAUSED) {
 		GAMEPLAY_MISC::app_time += g_dt;

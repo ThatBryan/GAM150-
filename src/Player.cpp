@@ -30,6 +30,7 @@ rights reserved.
 #include "UserInterface.h"
 #include "LevelSystem.h"
 #include "Globals.h"
+#include "GameMode.h"
 
 #include <array>
 #include <iostream>
@@ -73,23 +74,30 @@ hp(), direction{ SpriteDirection::Right }, gravityMultiplier{ GAMEPLAY_CONST::BA
 
 void Player::Reset(void)
 {
-	Respawn();
+	lose = false;
+	playerWin = false;
 	hp.current = hp.max;
-	direction = SpriteDirection::Right;
 }
 
 void Player::Update() {
-	if (hp.current <= 0) 
-		SetPlayerLose();
-	if(!lose)
-		CheckOutOfBound();
+
+	if (lose | playerWin)
+		return;
+
+	CheckOutOfBound();
 	CheckJumpInputs();
 	Update_Position();
 	UpdateColliders();
 	GravityManager();
+
+	if (hp.current <= 0) 
+		SetPlayerLose();
 }
 void Player::Render(void)
 {
+	if (lose)
+		return;
+
 	if (Mesh::PlayerCurr == Mesh::Anim)
 	{
 		sprite.Set_Texture(playerTex);
@@ -108,17 +116,17 @@ void Player::Render(void)
 }
 void Player::SetPlayerLose(void)
 {
-	active = false; 
 	lose = true;
+	active = false; 
 	if (!isSoundPlayed) {
 		Audio.playAudio(AudioArray[static_cast<int>(AudioID::PlayerDeath)], AudioID::PlayerDeath);
 		isSoundPlayed = true;
 	}
 }
 void Player::LoadTex(void) {
-	playerTex = AEGfxTextureLoad(FP::PLAYER::SpriteSheetIdle);
-	playerMovTex = AEGfxTextureLoad(FP::PLAYER::SpriteSheetRun);
-	playerParticle = AEGfxTextureLoad(FP::PLAYER::Sprite);
+	playerTex		= AEGfxTextureLoad(FP::PLAYER::SpriteSheetIdle);
+	playerMovTex	= AEGfxTextureLoad(FP::PLAYER::SpriteSheetRun);
+	playerParticle	= AEGfxTextureLoad(FP::PLAYER::Sprite);
 	AE_ASSERT_MESG(playerTex, "Failed to create Player spirte sheet Idle");
 	AE_ASSERT_MESG(playerMovTex, "Failed to create Player sprite sheet run!");
 	AE_ASSERT_MESG(playerParticle, "Failed to create Player Particle texture!");
@@ -186,9 +194,10 @@ void Player::UpdateColliders()
 	else {
 		collider.bottom.pos = AEVec2Set(sprite.pos.x + PLAYER_CONST::COLLIDER_BTM_OFFSET_X, sprite.pos.y + sprite.height / 2.0f - collider.bottom.height / 2.0f);
 	}
-	collider.top.pos = AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0f + collider.top.height / 2.0f);
-	collider.right.pos = AEVec2Set(sprite.pos.x + fabsf(sprite.width / 4.0f), sprite.pos.y);
-	collider.left.pos = AEVec2Set(sprite.pos.x - fabsf(sprite.width / 4.0f), sprite.pos.y);
+
+	collider.top.pos		= AEVec2Set(sprite.pos.x, sprite.pos.y - sprite.height / 2.0f + collider.top.height / 2.0f);
+	collider.left.pos		= AEVec2Set(sprite.pos.x - fabsf(sprite.width / 4.0f), sprite.pos.y);
+	collider.right.pos		= AEVec2Set(sprite.pos.x + fabsf(sprite.width / 4.0f), sprite.pos.y);
 }
 
 void Player::ApplyDebugMovements()
@@ -271,25 +280,29 @@ void Player::ChangeDirection() {
 
 void Player::Respawn(void)
 {
-	jump = false;
-	chargedjump = false;
-	playerWin = false;
-	lose = false;
-	active = true;
-	sprite.rotation = 0;
-	sprite.pos = startingPos;
-	sprite.Set_Texture(playerTex);
-	jumpvel = PLAYER_CONST::JUMPVEL;
-	chargedjumpvel = PLAYER_CONST::CHARGED_JUMPVEL;
+	if (GameModeSetting::GetGameMode() == GameMode::TimeAttack) {
+		Utils::RestartLevel();
+		return;
+	}
+	if (--hp.current <= 0)
+		return;
+
+	jump				= false;
+	//active				= true;
+	jumpvel				= PLAYER_CONST::JUMPVEL;
+	sprite.pos			= startingPos;
+	chargedjump			= false;
+	chargedjumpvel		= PLAYER_CONST::CHARGED_JUMPVEL;
+	sprite.rotation		= 0;
+	gravityMultiplier	= GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER;
 	chargedjump_counter = PLAYER_CONST::CHARGEDJUMP_COUNTER;
-	gravityMultiplier = GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER;
+						  sprite.Set_Texture(playerTex);
 }
 
 void Player::CheckOutOfBound() {
 
 	if ((sprite.pos.y - sprite.height / 2) > maxY) {
 		Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerParticle);
-		if(--hp.current)
 			Respawn();
 	}
 	static const float Width{ fabsf(sprite.width / 2.0f) };
@@ -322,6 +335,7 @@ void Player::GravityManager(void)
 void Player::SetPlayerWin(void)
 {
 	static std::string str;
+	UNREFERENCED_PARAMETER(str);
 	if (!playerWin) {
 		LevelSys.UnlockNext();
 		playerWin = true;
@@ -381,7 +395,6 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 				else {
 					if (!GAMEPLAY_MISC::DEBUG_MODE) {
 						Particles::Create(sprite.pos, AEVec2{ 0, -1 }, Color{ 255.0f, 255.0f, 255.0f, 255.0f }, 1, 250.0f, 150.0f, 40.0f, 5.0f, playerParticle);
-						if (--hp.current)
 							Respawn();
 					}
 				}

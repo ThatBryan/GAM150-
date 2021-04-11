@@ -85,9 +85,9 @@ void Tiles::CheckPos(void) {
 	if (active)
 	{
 		collider.sprite.pos = image.pos;
+		collider.left.pos	= AEVec2Set(image.pos.x - collider.left.width / 2.0f, image.pos.y); //- abs(image.width) / 2.0f
+		collider.right.pos	= AEVec2Set(image.pos.x + collider.right.width / 2.0f, image.pos.y);//+ abs(image.width) / 2.0f 
 		collider.bottom.pos = AEVec2Set(image.pos.x, image.pos.y + image.height / 2.0f);
-		collider.right.pos = AEVec2Set(image.pos.x + collider.right.width / 2.0f, image.pos.y);//+ abs(image.width) / 2.0f 
-		collider.left.pos = AEVec2Set(image.pos.x - collider.left.width / 2.0f, image.pos.y); //- abs(image.width) / 2.0f
 		
 		if (type == TileType::Grass) 
 			collider.top.pos = AEVec2Set(image.pos.x, 
@@ -134,11 +134,11 @@ void Tiles::CheckPlayerGravity(const TileMgr TileManager, Player& ThePlayer)
 			if(Utils::ColliderAABB(Tile.collider.top.pos, Tile.collider.top.width, Tile.collider.top.height,
 				ThePlayer.collider.bottom.pos, ThePlayer.collider.bottom.width, ThePlayer.collider.bottom.height)
 				&& Tile.type != TileType::Dialogue){
-				ThePlayer.jump = false;
-				ThePlayer.gravity = false;
-				ThePlayer.chargedjump = false;
-				ThePlayer.gravityMultiplier = GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER;
-				ThePlayer.sprite.pos.y = Tile.collider.top.pos.y - Tile.collider.top.height / 2.0f - ThePlayer.sprite.height / 2.0f;
+				ThePlayer.jump					= false;
+				ThePlayer.gravity				= false;
+				ThePlayer.chargedjump			= false;
+				ThePlayer.sprite.pos.y			= Tile.collider.top.pos.y - Tile.collider.top.height / 2.0f - ThePlayer.sprite.height / 2.0f;
+				ThePlayer.gravityMultiplier		= GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER;
 				return;
 			}
 		}
@@ -154,9 +154,9 @@ void Tiles::AddTileRow(std::vector <Tiles>& tile, TileType type, const int count
 	for (int i = VectorSize; i < VectorSize + count; i++)
 	{
 		tile.push_back(Tiles(temp, width, height));
-		tile[i].type = type;
-		tile[i].spawnPos = AEVec2Set(pos.x + width * i, (pos.y + height / 2));
-		tile[i].image.pos = tile[i].spawnPos;
+		tile[i].type		= type;
+		tile[i].spawnPos	= AEVec2Set(pos.x + width * i, (pos.y + height / 2));
+		tile[i].image.pos	= tile[i].spawnPos;
 	}
 
 }
@@ -181,8 +181,8 @@ void Tiles::AddTile(std::vector<Tiles>& tile, TileType type, const f32 width, co
 	{
 		Tile.ID = DialogueID++;
 	}
-	Tile.image.pos = AEVec2Set(pos.x + Tile.image.width / 2.0f, pos.y + height / 2.0f - Height / 2.0f);
-	Tile.spawnPos = Tile.image.pos;
+	Tile.spawnPos	= Tile.image.pos;
+	Tile.image.pos	= AEVec2Set(pos.x + Tile.image.width / 2.0f, pos.y + height / 2.0f - Height / 2.0f);
 }
 
 void Tiles::Reset(std::vector <Tiles>& tiles)
