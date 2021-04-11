@@ -1,28 +1,26 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "Player.h"
 
-struct Leaders {
+struct Leader {
 	static const int MaxLength{ 20 };
 	static const int MaxLeaders{ 5 };
 	std::string name;
 	int score;
 
-	Leaders();
+	Leader();
 	// Call during init.
 	static void ReadFromFile(const char* filePath );
 	static void WriteToFile(const char* filePath);
-	static void SortLeaders(std::vector<Leaders>& leaders);
-	static bool Cmp_Scores(const Leaders& lhs, const Leaders& rhs);
+	static void SortLeaders(std::vector<Leader>& leaders);
+	static bool Cmp_Scores(const Leader& lhs, const Leader& rhs);
 
 	// Add a new leader into the vector
-	static void InsertNewLeader(const Leaders& newLeader);
+	static void InsertNewLeader(const Leader& newLeader);
 	// For debugging to check the container.
 	static void PrintContainer();
 };
 
-class Player;
 namespace Leaderboard{
 	void Init();
 	void Load();
@@ -30,6 +28,5 @@ namespace Leaderboard{
 	void Save();
 	void Render();
 	void Unload();
-	void GetUserInfo(const Player& player);
-	Leaders& GetLastPlacement();
+	Leader& GetLastPlacement();
 }

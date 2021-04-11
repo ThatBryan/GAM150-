@@ -71,6 +71,7 @@ extern AudioManager Audio;
 
 void MainMenu::Init(void)
 {
+	GAMEPLAY_MISC::DEBUG_MODE = false;
 	ScreenMid = Utils::GetScreenMiddle();
 	MainMenu::Buttons_Init();
 	LevelSelection::Init();
@@ -90,8 +91,8 @@ void MainMenu::Init(void)
 	const int TilesNum = static_cast<int>(WindowWidth / TileWidth);
 
 	Tiles::AddTileRow(tiles, TileType::Grass, TilesNum + 1, TileWidth, TileHeight, AEVec2{ TileWidth / 2.0f, WindowHeight - TileHeight });
-	Enemies::AddNew(enemy, EnemyType::Slime, AEVec2{ 260.0f, tiles[0].image.pos.y - TileHeight / 2.0f }, EnemyWidth, EnemyHeight);
-	Enemies::AddNew(enemy, EnemyType::Bat, AEVec2{ 520.0f, tiles[0].image.pos.y - TileHeight / 2.0f }, EnemyWidth, EnemyHeight);
+	Enemies::AddNew(enemy, EnemyType::Slime,	AEVec2{ 260.0f, tiles[0].image.pos.y - TileHeight / 2.0f }, EnemyWidth, EnemyHeight);
+	Enemies::AddNew(enemy, EnemyType::Bat,		AEVec2{ 520.0f, tiles[0].image.pos.y - TileHeight / 2.0f }, EnemyWidth, EnemyHeight);
 	Enemies::AddNew(enemy, EnemyType::Squirrel, AEVec2{ 710.0f, tiles[0].image.pos.y - TileHeight / 2.0f }, EnemyWidth, EnemyHeight);
 
 
@@ -322,7 +323,9 @@ void LevelSelection::Init(void)
 		std::string LevelCount{ "Level " + std::to_string(i) };
 		LevelBtn[i].Set_Text(LevelCount.c_str());
 	}
+
 	LevelBtn[0].Set_Text("Tutorial");
+
 	// For locked levels
 	for (unsigned short i = LevelSys.GetUnlockedLevels(); i < LevelBtnCount - 1; ++i) {
 		LevelBtn[i].Load_Texture("./Assets/Art/Locked.png");

@@ -24,6 +24,7 @@ rights reserved.
 #include "Constants.h"
 #include "AudioManager.h"
 #include "Globals.h"
+#include "LevelSystem.h"
 
 #include <iostream>
 #include <fstream>
@@ -145,15 +146,13 @@ void Utils::ToggleDevMode(void)
 
 	if (GAMEPLAY_MISC::DEV_MODE && !isFirstTime) { // Only ever print once
 		std::cout << "\nUse F1 to toggle Debug Mode\n";
-		std::cout << "While in Debug Mode, Use F2 to toggle player collision\n";
+		std::cout << "	Use F2 to toggle player collision\n";
 		isFirstTime = true;
 	}
 }
 
 void Utils::ToggleDebugMode(void)
 {
-	//if (!GAMEPLAY_MISC::DEV_MODE) // Exit if dev mode is not enabled. disabled for now. 
-	//	return;
 	if (AEInputCheckTriggered(DEBUG_KEY))
 		GAMEPLAY_MISC::DEBUG_MODE = !GAMEPLAY_MISC::DEBUG_MODE;
 
@@ -173,8 +172,26 @@ void Utils::ToggleCollisionOff(void)
 
 void Utils::ToggleKeyManager()
 {
+	//if (!GAMEPLAY_MISC::DEV_MODE) // Exit if dev mode is not enabled. disabled for now. 
+	//	return;
 	ToggleCollisionOff();
 	ToggleDebugMode();
+}
+
+void Utils::DebugHelper()
+{
+	if (AEInputCheckCurr(FASTFOWARD_TIME_KEY)) {
+		static const float TimeSkipAmount = 5.0f;
+		GAMEPLAY_MISC::TimeAttack_remaining -= TimeSkipAmount;
+	}
+	if (AEInputCheckReleased(NEXT_LEVEL_KEY)) {
+		LevelSystem::SetNextLevel();
+	}
+	if (AEInputCheckReleased(PREV_LEVEL_KEY)) {
+		GAMEPLAY_MISC::Level == 0	? Utils::ReturnToMenu()
+									: LevelSystem::SetLevel(GAMEPLAY_MISC::Level - 1);
+	}
+	
 }
 
 void Utils::CursorManager()
@@ -182,13 +199,11 @@ void Utils::CursorManager()
 	static bool CursorDisplay{ true };
 
 	if (GAMEPLAY_MISC::PAUSED && CursorDisplay == false) {
-			std::cout << "Show cursor\n";
 			ShowCursor(true);
 			CursorDisplay = true;
 	}
 
 	if (!GAMEPLAY_MISC::PAUSED && CursorDisplay == true) {
-		std::cout << "Hide cursor \n";
 		ShowCursor(false);
 		CursorDisplay = false;
 	}
@@ -196,6 +211,7 @@ void Utils::CursorManager()
 
 void Utils::ReturnToMenu(void) {
 	gamestateNext = GS_MAINMENU;
+	ShowCursor(true);
 }
 
 void Utils::RestartLevel(void)

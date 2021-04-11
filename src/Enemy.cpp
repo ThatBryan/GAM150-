@@ -31,11 +31,11 @@ rights reserved.
 #include <array>
 
 
+float Enemies::baseGravityStrength	= 20.0f;
 float Enemies::bat_counter			= 5.0f, Enemies::bat_speed			= 100.0f, Enemies::batBBOffset		= 9.0f;
 float Enemies::slime_counter		= 2.0f, Enemies::slime_speed		= 50.0f,  Enemies::slimeBBOffset	= 22.0f;
 float Enemies::squirrel_counter		= 4.0f, Enemies::squirrel_speed		= 110.0f, Enemies::squirrelBBOffset = 20.0f;
 float Enemies::squirrel_offset_x	= 10.0f,Enemies::squirrel_jumpspeed = 100.0f;
-float Enemies::baseGravityStrength	= 20.0f;
 
 int Enemies::jump_counter = 5;
 
@@ -115,24 +115,24 @@ void Enemies::AddNew(std::vector <Enemies>& enemy, EnemyType type, const AEVec2 
 	AEGfxVertexList* currMesh = nullptr;
 	switch (type) {
 	case EnemyType::Bat:
-		vel			= Enemies::bat_speed;
-		counter		= Enemies::bat_counter;
-		bbHeight	= height;
-		currMesh	= Mesh::BatAnim;
+		vel				= Enemies::bat_speed;
+		counter			= Enemies::bat_counter;
+		bbHeight		= height;
+		currMesh		= Mesh::BatAnim;
 		break;
 	case EnemyType::Squirrel:
-		vel = Enemies::squirrel_speed;
-		counter		= Enemies::squirrel_counter;
-		jumpvel		= Enemies::squirrel_jumpspeed;
-		bbHeight	= squirrelOffset;
-		currMesh	= Mesh::SquirrelAnim;
-		jumpcounter = Enemies::jump_counter;
+		vel				= Enemies::squirrel_speed;
+		counter			= Enemies::squirrel_counter;
+		jumpvel			= Enemies::squirrel_jumpspeed;
+		bbHeight		= squirrelOffset;
+		currMesh		= Mesh::SquirrelAnim;
+		jumpcounter		= Enemies::jump_counter;
 		break;
 	case EnemyType::Slime:
-		vel			= Enemies::slime_speed;
-		counter		= Enemies::slime_counter;
-		bbHeight	= height - height / 5.0f;
-		currMesh	= Mesh::SlimeAnim;
+		vel				= Enemies::slime_speed;
+		counter			= Enemies::slime_counter;
+		bbHeight		= height - height / 5.0f;
+		currMesh		= Mesh::SlimeAnim;
 		break;
 	default:
 		return;

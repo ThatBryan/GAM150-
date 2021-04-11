@@ -145,7 +145,7 @@ void Username::ReadUsernameInput(void)
 		}
 		
 		for (unsigned char i = AEVK_0; i < AEVK_Z; ++i) {
-			// Skip captial letters and weird symbols.
+			// Skip captial letters and symbols.
 			if (i > AEVK_9 && i < AEVK_A)
 				continue;
 
@@ -172,16 +172,13 @@ void Username::ReadUsernameInput(void)
 void Username::GetUsernameFromFile(const char* filepath)
 {
 	std::ifstream ifs;
-	std::cout << "Trying to open username file\n";
 	ifs.open(filepath);
 	if (ifs.is_open()) {
-		std::cout << "Username file opened successfully\n";
 		ifs >> username;
 		ifs.close();
 	}
 	// Easy check if file does not exist
 	else if (username.empty()){
-		std::cout << "File reading problem, give default name to username\n";
 		username = "Jumperman";
 	}
 }
@@ -200,25 +197,3 @@ void Username::SaveToFile(const char* filepath)
 		ofs.close();
 	}
 }
-	//static std::string line;
-	//static std::string data;
-	//std::string word = "username:";
-	//size_t pos = 0;
-	//std::string replace = username;
-
-	//std::ifstream ifs(filepath);
-	//if (ifs.is_open()) {
-
-	//
-	//	getline(ifs, line);
-
-	//	pos = line.find(word);
-	//	if (pos != std::string::npos)
-	//	{
-	//		pos += word.length();
-	//		line.replace(pos, word.length(), username);
-	//	}
-	//	
-	//	ifs.close();
-	//}
-	//

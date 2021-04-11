@@ -155,7 +155,7 @@ void Background::Render(const Player& player)
 		if (!GAMEPLAY_MISC::PAUSED)
 			Utils::TogglePause();
 		BgOverlayArr[BackgroundIndex::Victory].Draw_Texture(50.0f);
-		text.Draw_Wrapped(text.pos);
+		//text.Draw_Wrapped(text.pos);
 
 		GAMEPLAY_MISC::Level == LevelSys.GetMaxLevel() - 1 ? 
 			text.SetText(const_cast<s8*>("Congratulations!! you beat the game!"))
@@ -164,16 +164,21 @@ void Background::Render(const Player& player)
 		if (gameMode == GameMode::TimeAttack && GAMEPLAY_MISC::Level == 8)
 		{
 			text.Draw_Wrapped({ text.pos.x, text.pos.y - 120.0f });
-			text.SetText("YOUR SCORE: ");
-			text.Draw_Wrapped({ text.pos.x, text.pos.y - 50.0f });
 			int time_remaining = static_cast<int>(GAMEPLAY_MISC::TimeAttack_remaining);
 			text.SetText(std::to_string(time_remaining));
+			text.SetText("YOUR SCORE: " + std::to_string(time_remaining));
+			text.Draw_Wrapped({ text.pos.x, text.pos.y - 50.0f });
 
-			Leaders L = Leaderboard::GetLastPlacement();
+			if (isScoreInserted) {
+				text.SetText("You won a place on the leaderboard!");
+				text.Draw_Wrapped({ text.pos.x, text.pos.y + 50.0f });
+			}
+
+			Leader L = Leaderboard::GetLastPlacement();
 
 			if (!isScoreInserted && L.score < GAMEPLAY_MISC::TimeAttack_remaining)
 			{
-				Leaders newleader;
+				Leader newleader;
 				newleader.name = Username::GetUsername();
 				newleader.score = static_cast<int>(GAMEPLAY_MISC::TimeAttack_remaining);
 				L.InsertNewLeader(newleader);

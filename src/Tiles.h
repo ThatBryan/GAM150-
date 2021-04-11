@@ -39,7 +39,8 @@ private:
 	static bool isTutorialLevel;
 
 	void Update(Player& player);
-	void CheckPos(void);
+	void CheckOutOfBound(void);
+	void SetColliders();
 	void TileShake(void);
 	void Collapse(const Player& player);
 	void CheckPlayerGoal(Player& player);
