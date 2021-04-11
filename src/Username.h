@@ -5,13 +5,17 @@
 #pragma once
 
 namespace Username {
+
+	static const char* UsernameFile{ "./Assets/Username/username.txt" };
 	void Init();
+	void Load();
 	void Update();
 	void Render();
 	void Unload();
 	void DrawCursor(void);
 
 	void ReadUsernameInput(void);
-	static void WriteToFile(const char* filepath);
-	//static void ReadFromFile(const char* filepath);
+
+	void SaveToFile(const char* filepath = UsernameFile);
+	void GetUsernameFromFile(const char* filepath = UsernameFile);
 }

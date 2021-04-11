@@ -169,7 +169,7 @@ void MainMenu::Load(void)
 	Player::LoadTex();
 	GameModeSetting::Load();
 	Background::ObjectsLoad();
-
+	Username::Load();
 	WindowWidth = static_cast<float>(AEGetWindowWidth());
 	WindowHeight = static_cast<float>(AEGetWindowHeight());
 }

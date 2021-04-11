@@ -26,17 +26,19 @@ static bool clicked = false;
 static float width{ 500.0f }; static float height{ 50.0f }; static float cursorWidth{ 5.0f }; static float cursorHeight{ 35.0f };
 static float fontSize{ 13.0f };
 
-static const char* UsernameFile{ "./Assets/Username/username.txt" };
-
 void Username::Init()
 {
 	ScreenMid = Utils::GetScreenMiddle();
-	CursorPos = ScreenMid;
+	CursorPos = AEVec2Set(ScreenMid.x + username.length() * fontSize, ScreenMid.y);
 	BgOverlayArr[CursorRect].Load(FP::Black, cursorWidth, cursorHeight, CursorPos);
 
 	InputBtn.push_back(Button(ButtonType::Color, width, height, 0.7f));
 	InputBtn[0].ChangeStateColor(ButtonState::Hovered, Color{ 255.0f, 0, 0, 255.0f });
 	InputBtn[0].Set_Position(AEVec2Set(ScreenMid.x, 300.0f));
+}
+void Username::Load()
+{
+	Username::GetUsernameFromFile();
 }
 void Username::Update()
 {
@@ -44,7 +46,7 @@ void Username::Update()
 	if (AEInputCheckReleased(AEVK_ESCAPE))
 	{
 		MainMenu::SwitchToMainMenu();
-		Username::WriteToFile(UsernameFile);
+		Username::SaveToFile(UsernameFile);
 		clicked = false;
 	}
 
@@ -95,6 +97,7 @@ void Username::Unload()
 {
 	BgOverlayArr[0].Free();
 	InputBtn.clear();
+	Username::SaveToFile();
 }
 
 void Username::DrawCursor(void)
@@ -167,35 +170,51 @@ void Username::ReadUsernameInput(void)
 }
 
 
-void Username::WriteToFile(const char* filepath)
+void Username::GetUsernameFromFile(const char* filepath)
 {
-	std::ifstream ifs(filepath);
-	static std::string line;
-	static std::string data;
-	std::string word = "username:";
-	size_t pos = 0;
-	std::string replace = username;
-
+	std::ifstream ifs;
+	std::cout << "Trying to open username file\n";
+	ifs.open(filepath);
 	if (ifs.is_open()) {
-
-	
-		getline(ifs, line);
-
-		pos = line.find(word);
-		if (pos != std::string::npos)
-		{
-			pos += word.length();
-			line.replace(pos, word.length(), username);
-		}
-		
+		std::cout << "Username file opened successfully\n";
+		ifs >> username;
 		ifs.close();
 	}
-	
-	std::ofstream ofs(filepath);
+	// Easy check if file does not exist
+	else if (username.empty()){
+		std::cout << "File reading problem, give default name to username\n";
+		username = "Jumperman";
+	}
+}
 
+void Username::SaveToFile(const char* filepath)
+{
+	std::ofstream ofs(filepath);
 	if (ofs.is_open()) 
 	{
-		ofs << line;
+		ofs << username;
 		ofs.close();
 	}
 }
+	//static std::string line;
+	//static std::string data;
+	//std::string word = "username:";
+	//size_t pos = 0;
+	//std::string replace = username;
+
+	//std::ifstream ifs(filepath);
+	//if (ifs.is_open()) {
+
+	//
+	//	getline(ifs, line);
+
+	//	pos = line.find(word);
+	//	if (pos != std::string::npos)
+	//	{
+	//		pos += word.length();
+	//		line.replace(pos, word.length(), username);
+	//	}
+	//	
+	//	ifs.close();
+	//}
+	//
