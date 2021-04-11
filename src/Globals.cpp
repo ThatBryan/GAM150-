@@ -19,13 +19,15 @@ namespace GAMEPLAY_MISC {
 	bool FULLSCREEN						= false;
 	bool DISPLAY_QUIT_UI				= false;
 	bool DISABLE_COLLISION				= false;
-
+	bool AWSD_KEYS						= true;
+	bool ARROW_KEYS						= false;
 	int app_score						= 50;
 
 	unsigned short Level				= 0U;
 
 	float app_time						= 0.0f;
 	float TimeAttack_remaining			= 0.0f;
+	
 	// Level tracker
 }
 namespace fontID {

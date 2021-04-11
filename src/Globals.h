@@ -21,6 +21,8 @@ namespace GAMEPLAY_MISC {
 	extern bool FULLSCREEN;
 	extern bool DISPLAY_QUIT_UI;
 	extern bool DISABLE_COLLISION;
+	extern bool AWSD_KEYS;
+	extern bool ARROW_KEYS;
 
 	extern float app_time, TimeAttack_remaining;
 	extern int app_max_time;

@@ -139,7 +139,7 @@ void Player::Update_Position(void)
 	if (jump)
 		ApplyJump();
 
-	if (AEInputCheckCurr(AEVK_D) || AEInputCheckCurr(AEVK_RIGHT))
+	if (AEInputCheckCurr(AEVK_D) && GAMEPLAY_MISC::AWSD_KEYS || AEInputCheckCurr(AEVK_RIGHT) && GAMEPLAY_MISC::ARROW_KEYS)
 	{
 		if (sprite.pos.x + sprite.width / 2 <= maxX || GAMEPLAY_MISC::DEBUG_MODE) {
 
@@ -154,7 +154,8 @@ void Player::Update_Position(void)
 			direction = SpriteDirection::Right;
 		}
 	}
-	if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_LEFT))
+	if (AEInputCheckCurr(AEVK_A) && GAMEPLAY_MISC::AWSD_KEYS || AEInputCheckCurr(AEVK_LEFT) && GAMEPLAY_MISC::ARROW_KEYS)
+	if (AEInputCheckCurr(AEVK_A) && GAMEPLAY_MISC::AWSD_KEYS || AEInputCheckCurr(AEVK_LEFT) && GAMEPLAY_MISC::ARROW_KEYS)
 	{
 		if (sprite.pos.x >= 0 - sprite.width / 2.0f || GAMEPLAY_MISC::DEBUG_MODE) {
 
@@ -196,12 +197,12 @@ void Player::ApplyDebugMovements()
 		if (AEInputCheckCurr(AEVK_LBUTTON))
 			sprite.pos = Mouse;
 	}
-	if (AEInputCheckCurr(AEVK_S) || AEInputCheckCurr(AEVK_DOWN)) {
+	if (AEInputCheckCurr(AEVK_S) && GAMEPLAY_MISC::AWSD_KEYS || AEInputCheckCurr(AEVK_DOWN) && GAMEPLAY_MISC::ARROW_KEYS) {
 		if (sprite.pos.y + sprite.height / 2 <= maxY) {
 			sprite.pos.y += PLAYER_CONST::DEBUGSPEED * g_dt;
 		}
 	}
-	if (AEInputCheckCurr(AEVK_W) || AEInputCheckCurr(AEVK_UP)) {
+	if (AEInputCheckCurr(AEVK_W) && GAMEPLAY_MISC::AWSD_KEYS || AEInputCheckCurr(AEVK_UP) && GAMEPLAY_MISC::ARROW_KEYS) {
 		if (sprite.pos.y - sprite.height / 2 >= 0) {
 			sprite.pos.y -= PLAYER_CONST::DEBUGSPEED * g_dt;
 		}

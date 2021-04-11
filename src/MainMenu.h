@@ -37,6 +37,7 @@ namespace MainMenu
 	void SwitchToSettings();
 	void SwitchToLeaderboard(void);
 	void SwitchToUsername(void);
+	void SwitchToControl(void);
 }
 
 namespace LevelSelection {

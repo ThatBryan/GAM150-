@@ -40,6 +40,7 @@ rights reserved.
 #include "Username.h"
 #include "GameMode.h"
 #include "Background.h"
+#include "Control.h"
 
 #include <array>
 #include <vector>
@@ -80,6 +81,7 @@ void MainMenu::Init(void)
 	Credits::Init();
 	Username::Init();
 	Leaderboard::Init();
+	Control::Init();
 	GameModeSetting::Init();
 	Background::ObjectsInit();
 	count = 0;
@@ -151,8 +153,6 @@ void MainMenu::Render() {
 		UI::QuitRender();
 	else {
 		for (size_t i = 0; i < MenuBtn.size(); ++i) {
-			if (i == 2)
-				continue;
 			MenuBtn[i].Render();
 		}
 		UsernameBtn[0].Render();
@@ -201,6 +201,7 @@ void MainMenu::Unload(void)
 	GameModeSetting::Unload();
 	Background::ObjectsUnload();
 	Leaderboard::Unload();
+	Control::Unload();
 }
 
 void MainMenu::Quit(void) {
@@ -238,8 +239,8 @@ void MainMenu::Buttons_Init() {
 	MenuBtn[1].Set_Text("Credits");
 	MenuBtn[1].Set_Callback(MainMenu::SwitchToCreditScreen);
 
-	MenuBtn[2].Set_Text("Level selection");
-	MenuBtn[2].Set_Callback(MainMenu::SwitchToLevelSelection);
+	MenuBtn[2].Set_Text("Control");
+	MenuBtn[2].Set_Callback(MainMenu::SwitchToControl);
 
 	MenuBtn[3].Set_Text("Leaderboards");
 	MenuBtn[3].Set_Callback(MainMenu::SwitchToLeaderboard);
@@ -258,8 +259,8 @@ void MainMenu::Buttons_Init() {
 	UsernameBtn.push_back(Button(ButtonType::Color, BtnWidth * 0.5f, BtnHeight, 0.5f));
 	UsernameBtn[0].Set_Position(AEVec2Set(WindowWidth * 0.93f, WindowHeight * 0.05f));
 	UsernameBtn[0].Set_Text("Username");
-	UsernameBtn[0].SetBtnType(ButtonType::Texture);
-	UsernameBtn[0].Load_Texture("./Assets/Art/BtnTest.png");
+	UsernameBtn[0].SetBtnType(ButtonType::Color);
+	UsernameBtn[0].ChangeStateColor(ButtonState::Idle, Color{ 66.0f, 96.0f, 245.0f, 255.0f });
 	UsernameBtn[0].ChangeStateColor(ButtonState::Hovered, Color{ 0.0f, 255.0f, 255.0f, 255.0f });
 	UsernameBtn[0].Set_Callback(MainMenu::SwitchToUsername);
 	UsernameBtn[0].SetFontID(fontID::Strawberry_Muffins_Demo);
@@ -373,6 +374,11 @@ void MainMenu::SwitchToUsername(void)
 {
 	GameStateUpdate = Username::Update;
 	GameStateDraw = Username::Render;
+}
+void MainMenu::SwitchToControl(void)
+{
+	GameStateUpdate = Control::Update;
+	GameStateDraw = Control::Render;
 }
 void MainMenu::SwitchToMainMenu(void)
 {
