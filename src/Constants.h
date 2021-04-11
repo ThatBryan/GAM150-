@@ -54,6 +54,12 @@ namespace FILE_PATHS {
 		extern const char* Guide5;
 		extern const char* Guide6;
 	}
+	namespace BUTTONS {
+		extern const char* RedBtn;
+		extern const char* BlueBtn;
+		extern const char* GreenBtn;
+		extern const char* LockedBtn;
+	}
 	namespace FONT {
 		extern const char* Roboto;
 		extern const char* Courier;

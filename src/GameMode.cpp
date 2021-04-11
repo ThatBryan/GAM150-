@@ -61,7 +61,7 @@ void GameModeSetting::Load()
 	GameModeBtn[0].Set_Text("Casual");
 	GameModeBtn[0].Set_Callback(GameModeSetting::SetModeCasual);
 	GameModeBtn[0].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y - BtnHeight * 1.5f));
-	GameModeBtn[0].Load_Texture("./Assets/Art/BtnTest.png");
+	GameModeBtn[0].Load_Texture(FP::BUTTONS::BlueBtn);
 	GameModeBtn[0].SetFontID(fontID::Strawberry_Muffins_Demo);
 
 	GameModeBtn[1].Set_Callback(GameModeSetting::SetModeTimeAttack);
@@ -69,16 +69,16 @@ void GameModeSetting::Load()
 	GameModeBtn[1].SetFontID(fontID::Strawberry_Muffins_Demo);
 
 	if (LevelSys.GetKey() == LevelSys.GetMaxLevel()) {
-		GameModeBtn[1].Load_Texture("./Assets/Art/BtnTest.png");
+		GameModeBtn[1].Load_Texture(FP::BUTTONS::BlueBtn);
 		GameModeBtn[1].Set_Text("TimeAttack");
 	}
 	else 
-		GameModeBtn[1].Load_Texture("./Assets/Art/Locked.png");
+		GameModeBtn[1].Load_Texture(FP::BUTTONS::LockedBtn);
 	
 	GameModeBtn[2].Set_Text("Exit to Main Menu");
 	GameModeBtn[2].Set_Callback(MainMenu::SwitchToMainMenu);
 	GameModeBtn[2].Set_Position(AEVec2Set(ScreenMid.x, static_cast<float>(AEGetWindowHeight()) - BtnHeight / 2.0f));
-	GameModeBtn[2].Load_Texture("./Assets/Art/BtnTest.png");
+	GameModeBtn[2].Load_Texture(FP::BUTTONS::BlueBtn);
 	GameModeBtn[2].SetFontID(fontID::Strawberry_Muffins_Demo);
 
 	for (unsigned int i = 0; i < TextIndex::Max; i++) {

@@ -74,12 +74,10 @@ void LevelSystem::SetLevel(unsigned short new_level)
 	GAMEPLAY_MISC::Level = new_level;
 
 	switch (gamestateCurr) {
+
 	case GS_GAMEPLAY:
 		gamestateNext = GS_GAMEPLAY2;
 		return;
-	//case GS_GAMEPLAY2:
-	//	gamestateNext = GS_GAMEPLAY;
-	//	return;
 	default:
 		gamestateNext = GS_GAMEPLAY;
 		return;

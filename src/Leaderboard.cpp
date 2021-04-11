@@ -59,7 +59,7 @@ void Leaderboard::Init()
 	LeaderboardBtn[0].Set_Position(AEVec2Set(ScreenMid.x, WindowHeight * 0.85f));
 	LeaderboardBtn[0].Set_Text("Back");
 	LeaderboardBtn[0].SetBtnType(ButtonType::Texture);
-	LeaderboardBtn[0].Load_Texture("./Assets/Art/BtnTest.png");
+	LeaderboardBtn[0].Load_Texture(FP::BUTTONS::BlueBtn);
 	LeaderboardBtn[0].ChangeStateColor(ButtonState::Hovered, Color{ 0.0f, 255.0f, 255.0f, 255.0f });
 	LeaderboardBtn[0].SetFontID(fontID::Strawberry_Muffins_Demo);
 	LeaderboardBtn[0].Set_Callback(MainMenu::SwitchToMainMenu);

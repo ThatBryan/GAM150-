@@ -38,16 +38,16 @@ private:
 	bool active, isCollapsing;
 	static bool isTutorialLevel;
 
-	void Update(Player& player);
-	void CheckOutOfBound(void);
 	void SetColliders();
 	void TileShake(void);
+	void CheckOutOfBound(void);
+	void DecreaseLifespan(void);
+	void Update(Player& player);
 	void Collapse(const Player& player);
 	void CheckPlayerGoal(Player& player);
-	void CheckEnemyDeath(std::vector <Enemies>& enemy);
-	void DecreaseLifespan(void);
 	static void LoadTutorialTexture(void);
 	static void FreeTutorialTexture(void);
+	void CheckEnemyDeath(std::vector <Enemies>& enemy);
 
 public:
 	Tiles(AEGfxTexture*, const f32 width, const f32 height);
