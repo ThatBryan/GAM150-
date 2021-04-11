@@ -45,10 +45,11 @@ private:
 	static float baseGravityStrength;
 
 	void Update_Position(void);
+	void Set_Collders();
 	void ApplyGravity(void);
-	void Bat_Movement(f32 maxX);
-	void Squirrel_Movement(f32 maxX);
-	void Slime_Movement(f32 maxX);
+	void Bat_Movement(const f32 maxX);
+	void Squirrel_Movement(const f32 maxX);
+	void Slime_Movement(const f32 maxX);
 	void DecreaseAlpha(void);
 	void PlayDeathSFX();
 	void CheckOutOfBound();

@@ -45,6 +45,7 @@ std::vector<Button> LeaderboardBtn;
 static std::vector<Leaders> L(Leaders::MaxLeaders);
 static const char* LeaderBoardFile{ "./Assets/Leaderboard/leaderboard.txt" };
 //static const char* UsernameFile{ "./Assets/Username/username.txt" };s
+static float WindowHeight;
 static Graphics::Text stringBuffer;
 std::string username; static std::string userscore;
 Leaders(user);
@@ -57,7 +58,7 @@ void Leaderboard::Init()
 	const float BtnCount{ 6 }, BtnWidth{ 100.0f }, BtnHeight{ 50.0f }, BtntextScale{ 0.7f };
 	LeaderboardBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtntextScale));
 
-	LeaderboardBtn[0].Set_Position(AEVec2Set(ScreenMid.x, AEGetWindowHeight() * 0.85));
+	LeaderboardBtn[0].Set_Position(AEVec2Set(ScreenMid.x, WindowHeight * 0.85f));
 	LeaderboardBtn[0].Set_Text("Back");
 	LeaderboardBtn[0].SetBtnType(ButtonType::Texture);
 	LeaderboardBtn[0].Load_Texture("./Assets/Art/BtnTest.png");
@@ -70,6 +71,7 @@ void Leaderboard::Load()
 {
 	Leaders::ReadFromFile(LeaderBoardFile);
 	Leaders::SortLeaders(L);
+	WindowHeight = static_cast<float>(AEGetWindowHeight());
 }
 
 void Leaderboard::Update()
@@ -93,16 +95,17 @@ void Leaderboard::Render()
 
 	// Leaderboard Title
 	static std::string scoreStr;
-	static Graphics::Text LeaderboardTxt;
-	static Graphics::Text NameTxt; static Graphics::Text ScoreTxt;
-
+	static Graphics::Text LeaderboardTxt, Index, NameTxt, ScoreTxt;
 	LeaderboardTxt.SetTextScale(1.0f);
 	LeaderboardTxt.SetText("Leaderboard");
 	LeaderboardTxt.SetTextColor(Color{ 255.0f, 0.0f, 0.0f, 255.0f });
-	LeaderboardTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() * 0.2)));
+	LeaderboardTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(WindowHeight * 0.2)));
 	LeaderboardTxt.SetFontID(fontID::Strawberry_Muffins_Demo);
 	
 	// Names and Scores
+	Index.SetTextScale(1.0f);
+	Index.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	Index.SetFontID(fontID::Strawberry_Muffins_Demo);
 	NameTxt.SetTextScale(1.0f);
 	NameTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	NameTxt.SetFontID(fontID::Strawberry_Muffins_Demo);
@@ -112,13 +115,15 @@ void Leaderboard::Render()
 
 	for (size_t i = 0; i < L.size(); ++i)
 	{
+		Index.SetText(std::to_string(i + 1) + " : ");
 		NameTxt.SetText(L[i].name);
-		L[i].score == 0 ? scoreStr = ""
-						: scoreStr = std::to_string(L[i].score); // empty string if no score.
+		L[i].score == 0 ? scoreStr = "" // empty string if no score.
+						: scoreStr = std::to_string(L[i].score);
 		
 		ScoreTxt.SetText(scoreStr);
-		NameTxt.Draw_Wrapped(AEVec2Set(300.0f, static_cast<f32>(AEGetWindowHeight() * 0.35) + i * 50.0f ));
-		ScoreTxt.Draw_Wrapped(AEVec2Set(500.0f, static_cast<f32>(AEGetWindowHeight() * 0.35) + i * 50.0f ));
+		Index.Draw_Wrapped(AEVec2Set(ScreenMid.x - 120.0f, WindowHeight * 0.35f + i * 50.0f));
+		NameTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, WindowHeight * 0.35f + i * 50.0f ));
+		ScoreTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x + 150.0f, WindowHeight * 0.35f + i * 50.0f ));
 	}
 }
 

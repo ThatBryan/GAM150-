@@ -122,7 +122,7 @@ void Username::DrawCursor(void)
 
 void Username::ReadUsernameInput(void)
 {
-	static const float DeleteTimerMax{ 0.1f };
+	static const float DeleteTimerMax{ 0.2f };
 	static float DeleteTimer = DeleteTimerMax;
 	if (clicked)
 	{

@@ -57,7 +57,7 @@ void Gameplay::Init(void)
 	{
 		for (int j = 0; j < Map_Width; ++j)
 		{ // Iterate through mapdata array and construct objects at position [i][j] (Y/X)
-			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::EMPTY))
+			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::EMPTY) || MapData[i][j] >= static_cast<int>(TYPE_OBJECT::MAX))
 			{
 				continue;
 			}
@@ -157,6 +157,7 @@ void Gameplay::Render()
 void Gameplay::Load()
 {
 	Leaderboard::GetUserInfo(Jumperman);
+	bool isError = 0;
 	switch (GAMEPLAY_MISC::Level)
 	{
 	case GameLevel::TUTORIAL:

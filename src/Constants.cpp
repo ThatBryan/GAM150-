@@ -85,7 +85,7 @@ namespace PLAYER_CONST {
 	const float JUMPVEL						= 3.5f;
 	const float DEBUGSPEED					= 300.0f;
 	const float CHARGED_JUMPVEL				= 8.0f;
-	const float CHARGEDJUMP_COUNTER			= 1.0f;
+	const float CHARGEDJUMP_COUNTER			= 0.5f;
 	const float PLAYER_RUN_OFFSET_X			= 0.125f;
 	const float PLAYER_IDLE_OFFSET_X		= 0.2f;
 	const float COLLIDER_BTM_OFFSET_X		= 2.0f;

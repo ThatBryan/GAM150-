@@ -16,7 +16,7 @@ namespace GAMEPLAY_MISC {
 	bool PAUSED							= false;
 	bool DEV_MODE						= false;
 	bool DEBUG_MODE						= false;
-	bool FULLSCREEN						= true;
+	bool FULLSCREEN						= false;
 	bool DISPLAY_QUIT_UI				= false;
 	bool DISABLE_COLLISION				= false;
 

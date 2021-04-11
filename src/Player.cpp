@@ -234,7 +234,7 @@ void Player::CheckJumpInputs()
 		if (AEInputCheckCurr(AEVK_SPACE)) {
 			chargedjump_counter -= g_dt;
 			// Prevent the particles from spawning when doing a regular jump
-			if (chargedjump_counter < (0.8f * PLAYER_CONST::CHARGEDJUMP_COUNTER)) {
+			if (chargedjump_counter < (0.7f * PLAYER_CONST::CHARGEDJUMP_COUNTER)) {
 				AEVec2 Min = AEVec2Sub(collider.bottom.pos, AEVec2{ sprite.width, 25.0f });
 				AEVec2 Max = AEVec2Add(collider.bottom.pos, AEVec2{ sprite.width, 25.0f });
 				AEVec2 Destination = AEVec2Add(sprite.pos, AEVec2{ 0, sprite.height / 2.0f });

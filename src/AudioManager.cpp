@@ -99,6 +99,9 @@ void AudioManager::loadAsset(void) {
 		case AudioID::PlayerDeath:
 			pFile = FP::SFX::PlayerDeath;
 			break;
+		default:
+			throw "invalid AudioID!!!";
+			return;
 		}
 		Audio.createAudio(&AudioArray[static_cast<int>(i)], pFile);
 	}

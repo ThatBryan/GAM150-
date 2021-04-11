@@ -249,6 +249,7 @@ void Tiles::LoadTex() {
 			pTex = FP::TILE::Dialogue;
 			break;
 		default:
+			throw "invalid tile type!";
 			return;
 		}
 		tileTex[static_cast<int>(i)] = AEGfxTextureLoad(pTex);
@@ -386,7 +387,7 @@ void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy)
 			if (!Tile.active)
 				continue;
 
-			if (Utils::ColliderAABB(enemy.collider.sprite.pos, enemy.collider.sprite.width, enemy.collider.sprite.height,
+			if (Utils::ColliderAABB(enemy.collider.sprite.pos, enemy.sprite.width, enemy.sprite.height,
 				Tile.collider.top.pos, Tile.collider.top.width, Tile.collider.top.height)) {
 
 				enemy.SetGravity(false);

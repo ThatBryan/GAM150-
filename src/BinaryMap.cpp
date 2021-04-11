@@ -28,6 +28,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include <fstream>
 #include <vector>
 #include <array>
+#include <cassert>
 #include <stdlib.h>
 
 /*The number of horizontal elements*/
@@ -133,8 +134,6 @@ int ImportMapDataFromFile(const char* FileName)
 		}
 	}
 	ifs.close();
-	
-
 	return 1;
 }
 
