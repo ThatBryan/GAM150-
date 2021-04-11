@@ -51,6 +51,7 @@ namespace FILE_PATHS {
 		const char* Guide4					= "./Assets/Art/Guide4.png";
 		const char* Guide5					= "./Assets/Art/Guide5.png";
 		const char* Guide6					= "./Assets/Art/Guide6.png";
+		const char* Guide7					= "./Assets/Art/Guide7.png";
 	}
 	namespace FONT {
 		const char* Roboto					= "./Assets/Font/Roboto-Regular.ttf";

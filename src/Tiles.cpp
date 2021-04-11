@@ -36,7 +36,7 @@ rights reserved.
 static AEGfxTexture* tileTex[static_cast<int>(TileType::Max)]{ nullptr };
 
 
-enum GuideOverlay{Guide1 = 0, Guide2, Guide3, Guide4, Guide5, Guide6, MAX_IMAGE };
+enum GuideOverlay{Guide1 = 0, Guide2, Guide3, Guide4, Guide5, Guide6, Guide7, MAX_IMAGE };
 std::array <Image, GuideOverlay::MAX_IMAGE> BgOverlayArr;
 
 Tiles::Tiles(AEGfxTexture* filepath,  const f32 width, const f32 height) : image(filepath, Mesh::Rect, width, height),
@@ -290,6 +290,7 @@ void Tiles::LoadTutorialTexture(void)
 	BgOverlayArr[Guide4].Load(FP::TILE::Guide4, 200.0f, 100.0f, { 0.0f, 0.0f });
 	BgOverlayArr[Guide5].Load(FP::TILE::Guide5, 200.0f, 150.0f, { 0.0f, 0.0f });
 	BgOverlayArr[Guide6].Load(FP::TILE::Guide6, 150.0f, 125.0f, { 0.0f, 0.0f });
+	BgOverlayArr[Guide7].Load(FP::TILE::Guide7, 150.0f, 125.0f, { 0.0f, 0.0f });
 }
 
 void Tiles::FreeTutorialTexture(void)
@@ -447,14 +448,14 @@ void Tiles::CreateDialogue(const short ID, const AEVec2 tilePos)
 		case 0:
 			BgOverlayArr[Guide1].Draw_Texture({tilePos.x + 150.0f, tilePos.y - 60.0f}, Color::RGBA_MAX);
 			break;
-		case 2:
-			BgOverlayArr[Guide4].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
-			break;
 		case 1:
-			BgOverlayArr[Guide2].Draw_Texture({ tilePos.x - 70.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
+			BgOverlayArr[Guide5].Draw_Texture({ tilePos.x - 70.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
+			break;
+		case 2:
+			BgOverlayArr[Guide2].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
 			break;
 		case 3:
-			BgOverlayArr[Guide5].Draw_Texture({ tilePos.x + 70.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
+			BgOverlayArr[Guide4].Draw_Texture({ tilePos.x + 70.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
 			break;
 		case 4:
 			BgOverlayArr[Guide6].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 40.0f }, Color::RGBA_MAX);
@@ -462,6 +463,8 @@ void Tiles::CreateDialogue(const short ID, const AEVec2 tilePos)
 		case 5:
 			BgOverlayArr[Guide3].Draw_Texture({ tilePos.x + 60.0f, tilePos.y - 80.0f }, Color::RGBA_MAX);
 			break;
-
+		case 6:
+			BgOverlayArr[Guide7].Draw_Texture({ tilePos.x + 60.0f, tilePos.y - 80.0f }, Color::RGBA_MAX);
+			break;
 	}
 }
