@@ -81,23 +81,27 @@ void Tiles::CheckPlayerGoal(Player& ThePlayer)
 	}
 }
 
-void Tiles::CheckPos(void) {
+void Tiles::CheckOutOfBound(void) {
 	if (active)
 	{
-		collider.sprite.pos = image.pos;
-		collider.left.pos	= AEVec2Set(image.pos.x - collider.left.width / 2.0f, image.pos.y); //- abs(image.width) / 2.0f
-		collider.right.pos	= AEVec2Set(image.pos.x + collider.right.width / 2.0f, image.pos.y);//+ abs(image.width) / 2.0f 
-		collider.bottom.pos = AEVec2Set(image.pos.x, image.pos.y + image.height / 2.0f);
-		
-		if (type == TileType::Grass) 
-			collider.top.pos = AEVec2Set(image.pos.x, 
-			image.pos.y - image.height / 2.0f + collider.top.height / 2.0f + (5.5f / TILE_CONST::GRASS_SPRITE_HEIGHT * image.height));	
-		else 
-			collider.top.pos = AEVec2Set(image.pos.x, image.pos.y - image.height / 2.0f + collider.top.height / 2.0f);
-
+		SetColliders();
 		if (image.pos.y >= static_cast <f32> (AEGetWindowHeight())) 
 			active = false;
 	}
+}
+void Tiles::SetColliders()
+{
+	collider.sprite.pos = image.pos;
+	collider.left.pos = AEVec2Set(image.pos.x - collider.left.width / 2.0f, image.pos.y);
+	collider.right.pos = AEVec2Set(image.pos.x + collider.right.width / 2.0f, image.pos.y);
+	collider.bottom.pos = AEVec2Set(image.pos.x, image.pos.y + image.height / 2.0f);
+
+	if (type == TileType::Grass)
+		collider.top.pos = AEVec2Set(image.pos.x,
+			image.pos.y - image.height / 2.0f + collider.top.height / 2.0f + (5.5f / TILE_CONST::GRASS_SPRITE_HEIGHT * image.height));
+	else
+		collider.top.pos = AEVec2Set(image.pos.x, image.pos.y - image.height / 2.0f + collider.top.height / 2.0f);
+
 }
 void Tiles::DecreaseLifespan(void)
 {
@@ -197,7 +201,7 @@ void Tiles::Reset(std::vector <Tiles>& tiles)
 
 void Tiles::Update(Player& ThePlayer)
 {
-	CheckPos();
+	CheckOutOfBound();
 	Collapse(ThePlayer);
 	DecreaseLifespan();
 	if (isCollapsing)

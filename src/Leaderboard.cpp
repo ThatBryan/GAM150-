@@ -38,17 +38,15 @@ rights reserved.
 #include <cstring>
 #include <cmath>
 
-Player jumperman;
 static AEVec2 ScreenMid;
 
 std::vector<Button> LeaderboardBtn;
-static std::vector<Leaders> L(Leaders::MaxLeaders);
+static std::vector<Leader> L(Leader::MaxLeaders);
 static const char* LeaderBoardFile{ "./Assets/Leaderboard/leaderboard.txt" };
-//static const char* UsernameFile{ "./Assets/Username/username.txt" };s
 static float WindowHeight;
 static Graphics::Text stringBuffer;
 std::string username; static std::string userscore;
-Leaders(user);
+Leader(user);
 
 void Leaderboard::Init()
 {
@@ -69,8 +67,8 @@ void Leaderboard::Init()
 
 void Leaderboard::Load()
 {
-	Leaders::ReadFromFile(LeaderBoardFile);
-	Leaders::SortLeaders(L);
+	Leader::ReadFromFile(LeaderBoardFile);
+	Leader::SortLeaders(L);
 	WindowHeight = static_cast<float>(AEGetWindowHeight());
 }
 
@@ -84,12 +82,11 @@ void Leaderboard::Update()
 
 void Leaderboard::Save()
 {
-	Leaders::WriteToFile(LeaderBoardFile);
+	Leader::WriteToFile(LeaderBoardFile);
 }
 
 void Leaderboard::Render()
 {
-	
 	// Leaderboard Button
 	LeaderboardBtn[0].Render();
 
@@ -132,62 +129,25 @@ void Leaderboard::Unload()
 	LeaderboardBtn.clear();
 }
 
-
-void Leaderboard::GetUserInfo(const Player& player)
-{
-	//std::ifstream ifs(UsernameFile);
-	static std::string line;
-	static std::string data;
-	std::string word = "username:"; std::string word2 = "score:";
-	size_t pos = 0; size_t pos2 = 0;
-
-	UNREFERENCED_PARAMETER(player);
-	UNREFERENCED_PARAMETER(line);
-	UNREFERENCED_PARAMETER(data);
-	UNREFERENCED_PARAMETER(pos);
-	UNREFERENCED_PARAMETER(pos2);
-	//if (ifs.is_open()) {
-
-	//	getline(ifs, line);
-
-	//	pos = line.find(word);
-	//	pos2 = line.find(word2);
-	//	if (pos != std::string::npos)
-	//	{
-	//		pos += word.length();
-	//		pos2 += word2.length();
-	//		username = line.substr(pos, line.size() - 1);		
-	//		userscore = line.substr(pos2, 4);
-	//	}
-
-	//	ifs.close();
-
-	//	user.score = stoi(userscore);
-	//	user.name = username;
-	//}
-}
-
-Leaders& Leaderboard::GetLastPlacement(){
+Leader& Leaderboard::GetLastPlacement(){
 	return L.back();
 }
 
 
-Leaders::Leaders() : score{}, name()
+Leader::Leader() : score{}, name()
 {
 
 }
-void Leaders::ReadFromFile(const char* filePath)
+void Leader::ReadFromFile(const char* filePath)
 {
 	std::ifstream ifs(filePath);
 	std::string name;
 	int count = 0;
 
 	if (ifs.is_open()) {
-		// Read values from a text file into your struct. Sample code available below if you get stuck
-
 		while (!ifs.eof())
 		{
-			if (count >= Leaders::MaxLeaders)
+			if (count >= Leader::MaxLeaders)
 				break;
 			ifs >> L[count].name >> L[count].score;
 
@@ -198,19 +158,14 @@ void Leaders::ReadFromFile(const char* filePath)
 		}
 		ifs.close();
 	}
-
-	Leaders::PrintContainer();
 }
 
-void Leaders::WriteToFile(const char* filePath)
+void Leader::WriteToFile(const char* filePath)
 {
 	std::ofstream ofs;
-	
-
 	ofs.open(filePath);
 
 	if (ofs.is_open()) {
-		// Write the values into text file.
 		for (size_t i = 0; i < L.size(); ++i)
 		{
 			if (L[i].name.empty())
@@ -223,35 +178,31 @@ void Leaders::WriteToFile(const char* filePath)
 	}
 }
 
-void Leaders::SortLeaders(std::vector<Leaders>& leaders)
+void Leader::SortLeaders(std::vector<Leader>& leaders)
 {
-	std::sort(leaders.begin(), leaders.end(), Leaders::Cmp_Scores);
+	std::sort(leaders.begin(), leaders.end(), Leader::Cmp_Scores);
 }
 
-bool Leaders::Cmp_Scores(const Leaders& lhs, const Leaders& rhs)
+bool Leader::Cmp_Scores(const Leader& lhs, const Leader& rhs)
 {
 	return lhs.score > rhs.score;
 }
 
 
-void Leaders::InsertNewLeader(const Leaders& newLeader)
+void Leader::InsertNewLeader(const Leader& newLeader)
 {
-	// Since score is sorted from highest to lowest. Add new leader to the tail of the vector.
-	Leaders& kickout = L.back();
-	kickout = newLeader;
+	Leader& lastLeader = L.back();
+	lastLeader = newLeader;
 	SortLeaders(L);
 
-	Leaders::PrintContainer();
-
-	// Call SortLeaders after modifying to reorganize the container from new highest to lowest.
-	// Might want to call PrintContainer to check.
+	//Leaders::PrintContainer();
 }
 
-void Leaders::PrintContainer()
+void Leader::PrintContainer()
 {
 	std::cout << std::endl;
 
-	for (int i = 0; i < Leaders::MaxLeaders; ++i) {
+	for (int i = 0; i < Leader::MaxLeaders; ++i) {
 		std::cout << "name: " << L[i].name << " Score: " << L[i].score << std::endl;
 	}
 }

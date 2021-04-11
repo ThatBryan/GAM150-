@@ -65,7 +65,6 @@ void UI::Init() {
 	gameMode = GameModeSetting::GetGameMode();
 }
 
-const size_t pauseButtonIdx{ 1 };
 void UI::Update() {
 
 	
@@ -117,7 +116,7 @@ void UI::PausedInit()
 {
 	ScreenMid = Utils::GetScreenMiddle();
 
-	const size_t btnCount{6};
+	const size_t btnCount{ 6 };
 	const float BtnHeight{ 50.0f }, BtnWidth{ 150.0f }, BtnTextScale{ 0.45f };
 	static const float WindHeight{ static_cast<float>(AEGetWindowHeight()) };
 	for (size_t i = 0; i < btnCount; ++i) {
@@ -201,17 +200,18 @@ void UI::QuitInit()
 	for (size_t i = 0; i < QuitBtnCount; ++i) {
 		QuitBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtnTextScale));
 	}
-	QuitBtn[0].Set_Text("Cancel");
-	QuitBtn[0].Set_Callback(Utils::ToggleQuitUI);
+	QuitBtn[0].Set_Text("Quit");
+	QuitBtn[0].ChangeStateColor(ButtonState::Idle, Color{ 255.0f, 0.0f, 0.0f, 255.0f });
+	QuitBtn[0].Set_Callback(Utils::ExitGame);
 	QuitBtn[0].Set_Position(AEVec2Set(ScreenMid.x - BtnWidth, ScreenMid.y + BtnYOffset));
 
-	QuitBtn[1].Set_Text("Quit");
-	QuitBtn[1].Set_Callback(Utils::ExitGame);
+	QuitBtn[1].Set_Text("Cancel");
+	QuitBtn[1].Set_Callback(Utils::ToggleQuitUI);
 	QuitBtn[1].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth, ScreenMid.y + BtnYOffset));
 
 	QuitText.SetText("Do you want to exit the game?");
 	QuitText.SetFontID(fontID::Roboto);
-	QuitText.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	QuitText.SetTextColor(Color{ 255.0f, 0.0f, 0.0f, 255.0f });
 	QuitText.SetTextScale(1.0f);
 }
 

@@ -99,8 +99,8 @@ void GameModeSetting::Load()
 	GameModeText[TextIndex::Casual].SetPos(AEVec2Set(Pos.x, Pos.y + BtnHeight));
 
 	Pos = GameModeBtn[1].GetPos();
-	LevelSys.GetUnlockedLevels() == 9 ? GameModeText[TextIndex::TimeAttack].SetText("Race against the clock to earn a spot on the leaderboard!")
-						   : GameModeText[TextIndex::TimeAttack].SetText("Complete All Levels in Casual Mode to Unlock TimeAttack Mode");
+	LevelSys.GetUnlockedLevels() == 9? GameModeText[TextIndex::TimeAttack].SetText("Complete all levels before the time runs out to earn a spot on the leaderboard!")
+									 : GameModeText[TextIndex::TimeAttack].SetText("Complete All Levels in Casual Mode to Unlock TimeAttack Mode");
 
 	GameModeText[TextIndex::TimeAttack].SetPos(AEVec2Set(Pos.x, Pos.y + BtnHeight));
 }

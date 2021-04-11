@@ -53,9 +53,8 @@ float g_dt								= 0.0f;
 short EnemyCount						= 1;
 unsigned short DialogueID				= 0U;
 
-/// <summary>
-///  Animation
-/// </summary>
+// Animation
+
 const float bat_anim_offset_x			= 0.5f;
 const float slime_anim_offset_x			= 0.25f;
 const float squirrel_anim_offset_x		= 0.25f;

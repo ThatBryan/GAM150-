@@ -41,7 +41,7 @@ std::vector<Tiles> tilemap;
 std::vector<Enemies> enemies;
 std::vector <std::vector <Tiles>*> tileManager;
 Player Jumperman;
-Leaders Leader;
+//Leader leader;
 static std::string name;
 extern AudioManager Audio;
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
@@ -115,7 +115,6 @@ void Gameplay::Update()
 	Audio.update();
 	Utils::ToggleKeyManager();
 
-
 	if (AEInputCheckCurr(AEVK_LEFT) || AEInputCheckCurr(AEVK_RIGHT) || AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_D))
 		Mesh::PlayerCurr = Mesh::Anim2;
 	else
@@ -131,6 +130,9 @@ void Gameplay::Update()
 		if (IsIconic(AESysGetWindowHandle())) {
 			Utils::TogglePause();
 		}
+	}
+	if (GAMEPLAY_MISC::DEBUG_MODE) {
+		Utils::DebugHelper();
 	}
 	if (AEInputCheckReleased(AEVK_ESCAPE))
 		Utils::TogglePause();
@@ -156,7 +158,6 @@ void Gameplay::Render()
 
 void Gameplay::Load()
 {
-	Leaderboard::GetUserInfo(Jumperman);
 	static const std::string BaseLevelString{ "./Assets/Levels/Level" };
 
 	std::string File = BaseLevelString + std::to_string(GAMEPLAY_MISC::Level) + ".txt";
@@ -189,7 +190,6 @@ void Gameplay::Unload()
 	AudioManager::unloadAsset();
 	FreeMapData();
 	Background::Unload();
-	GAMEPLAY_MISC::DEBUG_MODE = false;
 }
 
 void Gameplay::Restart()

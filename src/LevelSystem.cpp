@@ -77,11 +77,11 @@ void LevelSystem::SetLevel(unsigned short new_level)
 	case GS_GAMEPLAY:
 		gamestateNext = GS_GAMEPLAY2;
 		return;
-	case GS_GAMEPLAY2:
-		gamestateNext = GS_GAMEPLAY;
-		return;
+	//case GS_GAMEPLAY2:
+	//	gamestateNext = GS_GAMEPLAY;
+	//	return;
 	default:
-		gamestateNext = GS_GAMEPLAY2;
+		gamestateNext = GS_GAMEPLAY;
 		return;
 	}
 }
@@ -111,7 +111,6 @@ void LevelSystem::SetNextLevel(void)
 			gamestateNext = GS_GAMEPLAY;
 		}
 	}
-
 	else
 		gamestateNext = GS_MAINMENU;
 }

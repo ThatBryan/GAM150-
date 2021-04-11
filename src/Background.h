@@ -20,7 +20,7 @@ namespace Background {
 	void Load();
 	void Init();
 	void Update();
-	void Render(const Player& player);// , const Leaders& leader)
+	void Render(const Player& player);
 
 	// Render loop for the different Gamemode
 	void RenderCasual();

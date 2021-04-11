@@ -36,6 +36,7 @@ namespace Utils
 	void ToggleDebugMode(void);		// F1 to enter debug mode
 	void ToggleCollisionOff(void);	// F2 to enter debug mode
 	void ToggleKeyManager();
+	void DebugHelper();
 	void CursorManager();
 	void ReturnToMenu(void);
 	void RestartLevel(void);
