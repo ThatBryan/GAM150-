@@ -30,12 +30,12 @@ void Control::Init()
 	for (int i = 0; i < ControlBtn.size(); ++i) {
 		if (i % 2 == 0) {
 			ControlBtn[i].SetBtnType(ButtonType::Texture);
-			ControlBtn[i].Load_Texture("./Assets/Art/BtnTest.png");
+			ControlBtn[i].Load_Texture(FP::BUTTONS::BlueBtn);
 			ControlBtn[i].ChangeStateColor(ButtonState::Hovered, Color{ 0.0f, 255.0f, 255.0f, 255.0f });
 		}
 		else {
 			ControlBtn[i].SetBtnType(ButtonType::Texture);
-			ControlBtn[i].Load_Texture("./Assets/Art/BtnTest2.png");
+			ControlBtn[i].Load_Texture(FP::BUTTONS::GreenBtn);
 			ControlBtn[i].ChangeStateColor(ButtonState::Hovered, Color{ 255.0f, 255.0f, 0.0f, 255.0f });
 		}
 	}
