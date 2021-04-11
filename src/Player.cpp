@@ -56,9 +56,6 @@ chargedjump_counter{ PLAYER_CONST::CHARGEDJUMP_COUNTER }, collider(), playerscor
 {
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
-	hp.max = PLAYER_CONST::HP_MAX;
-	hp.current = PLAYER_CONST::HP_MAX;
-
 }
 
 Player::Player() : lose{ false }, active{ true }, gravity{ false }, jump{ false }, chargedjump{ false },
@@ -68,17 +65,8 @@ hp(), direction{ SpriteDirection::Right }, gravityMultiplier{ GAMEPLAY_CONST::BA
 
 	maxY = static_cast<f32>(AEGetWindowHeight());
 	maxX = static_cast<f32>(AEGetWindowWidth());
-	hp.max = PLAYER_CONST::HP_MAX;
-	hp.current = PLAYER_CONST::HP_MAX;
-}
 
-void Player::Reset(void)
-{
-	lose = false;
-	playerWin = false;
-	hp.current = hp.max;
 }
-
 void Player::Update() {
 
 	if (lose | playerWin)
@@ -90,12 +78,12 @@ void Player::Update() {
 	UpdateColliders();
 	GravityManager();
 
-	if (hp.current <= 0) 
+	if (hp.current <= 0 && GameModeSetting::GetGameMode() == GameMode::Casual) 
 		SetPlayerLose();
 }
 void Player::Render(void)
 {
-	if (lose)
+	if (!active)
 		return;
 
 	if (Mesh::PlayerCurr == Mesh::Anim)
@@ -280,15 +268,10 @@ void Player::ChangeDirection() {
 
 void Player::Respawn(void)
 {
-	if (GameModeSetting::GetGameMode() == GameMode::TimeAttack) {
-		Utils::RestartLevel();
-		return;
-	}
-	if (--hp.current <= 0)
-		return;
+	if(--hp.current <= 0)
+	active				= false;
 
 	jump				= false;
-	//active				= true;
 	jumpvel				= PLAYER_CONST::JUMPVEL;
 	sprite.pos			= startingPos;
 	chargedjump			= false;
@@ -296,7 +279,21 @@ void Player::Respawn(void)
 	sprite.rotation		= 0;
 	gravityMultiplier	= GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER;
 	chargedjump_counter = PLAYER_CONST::CHARGEDJUMP_COUNTER;
+
 						  sprite.Set_Texture(playerTex);
+
+	if (GameModeSetting::GetGameMode() == GameMode::TimeAttack) {
+		Utils::RestartLevel();
+		return;
+	}
+}
+void Player::Reset(void) // For level restart.
+{
+	lose		= false;
+	active		= true;
+	playerWin	= false;
+	hp.current	= hp.max;
+	direction	= SpriteDirection::Right;
 }
 
 void Player::CheckOutOfBound() {
@@ -406,7 +403,6 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, const f32 height)
 {
 	player.sprite.Set(playerTex, width, height, pos, Mesh::PlayerCurr);
-
 	player.startingPos = pos;
 	player.sprite.pos = player.startingPos;
 	
@@ -416,6 +412,12 @@ void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, con
 	player.collider.SetWidthHeight(player.collider.right, width / 2.0f - PLAYER_CONST::COLLIDER_SIDE_OFFSET_X, height - 10.0f);
 	player.collider.SetWidthHeight(player.collider.bottom, width /2.0f, 5.0f);
 	player.collider.SetMeshes();
+
+	if (GameModeSetting::GetGameMode() == GameMode::Casual)
+		player.hp.max = PLAYER_CONST::CASUAL_MODE_HP_MAX;
+	else
+		player.hp.max = PLAYER_CONST::TIMEATK_MODE_HP_MAX;
+	player.hp.current = player.hp.max;
 
 	isSoundPlayed = false;
 }

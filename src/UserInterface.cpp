@@ -76,7 +76,7 @@ void UI::Update() {
 
 	if (gameMode == GameMode::TimeAttack) {
 		sprintf_s(strBuffer2, "Time Remaining: %.2f", GAMEPLAY_MISC::TimeAttack_remaining);
-		if(!GAMEPLAY_MISC::PAUSED)
+		if(!GAMEPLAY_MISC::PAUSED && GAMEPLAY_MISC::TimeAttack_remaining >= 0.0f)
 			GAMEPLAY_MISC::TimeAttack_remaining -= g_dt;
 
 		TimeAttackGameMode::CheckTimer();

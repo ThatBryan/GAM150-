@@ -78,7 +78,6 @@ void Username::Render()
 	WarningTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	WarningTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() * 0.4)));
 
-
 	// Draw Username text
 	static Graphics::Text UsernameInputTxt;
 	UsernameInputTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
