@@ -35,5 +35,6 @@ namespace Gameplay {
 	void Restart();
 	void Unload();
 
+	// For player, tiles, enemy
 	void EntitiesUpdate(void);
 }

@@ -170,7 +170,7 @@ void Utils::ToggleCollisionOff(void)
 	}
 }
 
-void Utils::ToggleKeyManager()
+void Utils::DebugKeysManager()
 {
 	//if (!GAMEPLAY_MISC::DEV_MODE) // Exit if dev mode is not enabled. disabled for now. 
 	//	return;
@@ -199,8 +199,8 @@ void Utils::CursorManager()
 	static bool CursorDisplay{ true };
 
 	if (GAMEPLAY_MISC::PAUSED && CursorDisplay == false) {
-			ShowCursor(true);
-			CursorDisplay = true;
+		ShowCursor(true);
+		CursorDisplay = true;
 	}
 
 	if (!GAMEPLAY_MISC::PAUSED && CursorDisplay == true) {
@@ -211,7 +211,6 @@ void Utils::CursorManager()
 
 void Utils::ReturnToMenu(void) {
 	gamestateNext = GS_MAINMENU;
-	ShowCursor(true);
 }
 
 void Utils::RestartLevel(void)

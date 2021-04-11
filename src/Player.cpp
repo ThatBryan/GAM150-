@@ -414,10 +414,9 @@ void Player::CreatePlayer(Player& player, const AEVec2 pos, const f32 width, con
 	player.collider.SetWidthHeight(player.collider.bottom, width /2.0f, 5.0f);
 	player.collider.SetMeshes();
 
-	if (GameModeSetting::GetGameMode() == GameMode::Casual)
-		player.hp.max = PLAYER_CONST::CASUAL_MODE_HP_MAX;
-	else
-		player.hp.max = PLAYER_CONST::TIMEATK_MODE_HP_MAX;
+	player.hp.max = GameModeSetting::GetGameMode() == GameMode::Casual	? PLAYER_CONST::CASUAL_MODE_HP_MAX
+																		: PLAYER_CONST::TIMEATK_MODE_HP_MAX;
+
 	player.hp.current = player.hp.max;
 
 	isSoundPlayed = false;

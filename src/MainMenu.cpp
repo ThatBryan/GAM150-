@@ -223,12 +223,12 @@ void MainMenu::Buttons_Init() {
 	for (int i = 0; i < MenuBtn.size(); ++i) {
 		if (i % 2 == 0) {
 			MenuBtn[i].SetBtnType(ButtonType::Texture);
-			MenuBtn[i].Load_Texture("./Assets/Art/BtnTest.png");
+			MenuBtn[i].Load_Texture(FP::BUTTONS::BlueBtn);
 			MenuBtn[i].ChangeStateColor(ButtonState::Hovered, Color{ 0.0f, 255.0f, 255.0f, 255.0f });
 		}
 		else {
 			MenuBtn[i].SetBtnType(ButtonType::Texture);
-			MenuBtn[i].Load_Texture("./Assets/Art/BtnTest2.png");
+			MenuBtn[i].Load_Texture(FP::BUTTONS::GreenBtn);
 			MenuBtn[i].ChangeStateColor(ButtonState::Hovered, Color{ 255.0f, 255.0f, 0.0f, 255.0f });
 		}
 
@@ -318,7 +318,7 @@ void LevelSelection::Init(void)
 	}
 	// For Unlocked levels
 	for (unsigned short i = 0; i < LevelSys.GetUnlockedLevels(); ++i) {
-		LevelBtn[i].Load_Texture("./Assets/Art/BtnTest3.png");
+		LevelBtn[i].Load_Texture(FP::BUTTONS::RedBtn);
 		LevelBtn[i].Set_Callback(LevelSystem::SetLevel);
 
 		std::string LevelCount{ "Level " + std::to_string(i) };
@@ -329,7 +329,7 @@ void LevelSelection::Init(void)
 
 	// For locked levels
 	for (unsigned short i = LevelSys.GetUnlockedLevels(); i < LevelBtnCount - 1; ++i) {
-		LevelBtn[i].Load_Texture("./Assets/Art/Locked.png");
+		LevelBtn[i].Load_Texture(FP::BUTTONS::LockedBtn);
 		LevelBtn[i].ChangeStateColor(ButtonState::Idle, Color(255.0f, 255.0f, 255.0f, 150.0f));
 	}
 	// Assigning position
@@ -345,7 +345,7 @@ void LevelSelection::Init(void)
 	if(LevelSys.GetKey() < LevelSys.GetMaxLevel())
 		LevelBtn[LevelSys.GetKey()].ChangeStateColor(ButtonState::Idle, Color{ 200.0f, 0.0f, 0.0f, 255.0f });
 
-	LevelBtn[9].Load_Texture("./Assets/Art/BtnTest3.png");
+	LevelBtn[9].Load_Texture(FP::BUTTONS::RedBtn);
 	LevelBtn[9].Set_Position(AEVec2Set(ScreenMid.x, WindowHeight - LevelBtn[9].GetHeight() / 2.0f));
 	LevelBtn[9].Set_Text("Back");
 	LevelBtn[9].Set_Callback(GameModeSetting::SwitchToModeSetting);
@@ -485,10 +485,12 @@ void Credits::Init()
 	CreditBtn[0].Set_Position(AEVec2Set(WindowWidth - 80.0f, WindowHeight - 120.0f));
 	CreditBtn[0].Set_Text("Back");
 	CreditBtn[0].Set_Callback(Credits::DecrementOverlay);
+
 	CreditBtn[1].Set_Position(AEVec2Set(WindowWidth - 80.0f, WindowHeight - 60.0f));
 	CreditBtn[1].Set_Text("More");
 	CreditBtn[1].Set_Callback(Credits::IncrementOverlay);
-	CreditBtn[2].Set_Position(AEVec2Set(80.0f, WindowWidth - 60.0f));
+
+	CreditBtn[2].Set_Position(AEVec2Set(80.0f, WindowHeight - 60.0f));
 	CreditBtn[2].Set_Text("Exit");
 	CreditBtn[2].Set_Callback(MainMenu::SwitchToMainMenu);
 }
@@ -545,8 +547,9 @@ void Credits::Unload()
 
 void Credits::IncrementOverlay()
 {
-	if (count < MAX_PICTURES - 1)
+	if (count < MAX_PICTURES - 1) {
 		count++;
+	}
 }
 
 void Credits::DecrementOverlay()

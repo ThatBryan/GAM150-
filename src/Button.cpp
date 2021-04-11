@@ -73,6 +73,7 @@ void Button::Load_Texture(const char* pFile)
 		pTex = nullptr;
 	}
 	pTex = AEGfxTextureLoad(pFile);
+	AE_ASSERT_MESG(pTex, "Failed to load button texture");
 }
 
 void Button::RandomizeAllStateColor()
