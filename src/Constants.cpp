@@ -21,9 +21,11 @@ namespace FILE_PATHS {
 		const char* DigipenWhite			= "./Assets/Logo/DigiPen_WHITE.png";
 	}
 	namespace BACKGROUND {
-		const char* Pause					= "./Assets/Art/pause_temp.png";
-		const char* Victory					= "./Assets/Art/throwaway.png";
-		const char* Gameover				= "./Assets/Art/throwaway2.png";
+		const char* Pause					= "./Assets/Art/background/pause_overlay.png";
+		const char* Victory					= "./Assets/Art/background/win_overlay.png";
+		const char* Gameover				= "./Assets/Art/background/lose_overlay.png";
+		const char* Moon					= "./Assets/Art/background/moon.png";
+		const char* Cloud					= "./Assets/Art/background/cloud.png";
 	}
 	namespace ENEMY {
 		const char* BatSprite				= "./Assets/Art/Enemy/bat.png";
@@ -34,9 +36,9 @@ namespace FILE_PATHS {
 		const char* SquirrelSpriteSheet		= "./Assets/Art/Enemy/SquirrelSpriteSheet.png";
 	}
 	namespace PLAYER {
-		const char* Sprite					= "./Assets/Art/Jumperman.png";
-		const char* SpriteSheetRun			= "./Assets/Art/Jumperman_Run_Spritesheet.png";
-		const char* SpriteSheetIdle			= "./Assets/Art/Jumperman_Idle_Spritesheet.png";
+		const char* Sprite					= "./Assets/Art/Player/Jumperman.png";
+		const char* SpriteSheetRun			= "./Assets/Art/Player/Jumperman_Run_Spritesheet.png";
+		const char* SpriteSheetIdle			= "./Assets/Art/Player/Jumperman_Idle_Spritesheet.png";
 	}
 	namespace TILE {
 		const char* Grey					= "./Assets/Art/Tiles/Safe_Tile.png";

@@ -203,11 +203,11 @@ void UI::QuitInit()
 	QuitBtn[0].Set_Text("Quit");
 	QuitBtn[0].ChangeStateColor(ButtonState::Idle, Color{ 255.0f, 0.0f, 0.0f, 255.0f });
 	QuitBtn[0].Set_Callback(Utils::ExitGame);
-	QuitBtn[0].Set_Position(AEVec2Set(ScreenMid.x - BtnWidth, ScreenMid.y + BtnYOffset));
+	QuitBtn[0].Set_Position(AEVec2Set(ScreenMid.x - BtnWidth, ScreenMid.y + BtnHeight + BtnYOffset));
 
 	QuitBtn[1].Set_Text("Cancel");
 	QuitBtn[1].Set_Callback(Utils::ToggleQuitUI);
-	QuitBtn[1].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth, ScreenMid.y + BtnYOffset));
+	QuitBtn[1].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth, ScreenMid.y + BtnHeight + BtnYOffset));
 
 	QuitText.SetText("Do you want to exit the game?");
 	QuitText.SetFontID(fontID::Roboto);
@@ -227,7 +227,7 @@ void UI::QuitRender()
 	for (size_t i = 0; i < QuitBtn.size(); ++i) {
 		QuitBtn[i].Render();
 	}
-	QuitText.Draw_Wrapped(AEVec2Set(ScreenMid.x, ScreenMid.y - 50.0f));
+	QuitText.Draw_Wrapped(ScreenMid);
 }
 
 void UI::QuitUnload()

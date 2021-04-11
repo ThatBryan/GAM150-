@@ -105,6 +105,7 @@ void Gameplay::Init(void)
 	}
 	tileManager.push_back(&tilemap);
 	UI::Init();
+	ShowCursor(false);
 }
 
 void Gameplay::Update()

@@ -211,7 +211,6 @@ void Utils::CursorManager()
 
 void Utils::ReturnToMenu(void) {
 	gamestateNext = GS_MAINMENU;
-	ShowCursor(true);
 }
 
 void Utils::RestartLevel(void)

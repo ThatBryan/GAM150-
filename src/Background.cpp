@@ -272,11 +272,11 @@ void Background::ObjectsLoad()
 	WindowHeight = static_cast<f32>(AEGetWindowHeight());
 
 	for (int i = 0; i < LastCloudIdx; ++i) {
-		BgObj[i].Load("./Assets/Art/cloud.png", Utils::RandomRangeFloat(50.0f, 100.0f), Utils::RandomRangeFloat(20.0f, 40.0f),
+		BgObj[i].Load(FP::BACKGROUND::Cloud, Utils::RandomRangeFloat(50.0f, 100.0f), Utils::RandomRangeFloat(20.0f, 40.0f),
 			AEVec2Set(i * 100.0f + Utils::RandomRangeFloat(-50.0f, 50.0f), Utils::RandomRangeFloat(25.0f, 50.0f)));
 	}
-	BgObj[5].Load("./Assets/Art/moon.png", 50.0f, 50.0f, AEVec2{ 40, 30.0f });
-	BgObj[6].Load("./Assets/Art/moon.png", 50.0f, 50.0f, AEVec2{ 760, 30.0f });
+	BgObj[5].Load(FP::BACKGROUND::Moon, 50.0f, 50.0f, AEVec2{ 40, 30.0f });
+	BgObj[6].Load(FP::BACKGROUND::Moon, 50.0f, 50.0f, AEVec2{ 760, 30.0f });
 	BgObj[6].ReflectAboutYAxis();
 
 	SceneColors[static_cast<int>(SceneType::Day)] = Color{ 51.0f, 215.0f, 255.0f, 255.0f };

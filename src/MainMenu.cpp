@@ -105,6 +105,7 @@ void MainMenu::Init(void)
 	Title.SetFontID(fontID::Courier);
 	Title.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	Title.SetTextScale(1.0f);
+	ShowCursor(true);
 }
 
 void MainMenu::Update(void)

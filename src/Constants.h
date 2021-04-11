@@ -26,6 +26,8 @@ namespace FILE_PATHS {
 		extern const char* Pause;
 		extern const char* Victory;
 		extern const char* Gameover;
+		extern const char* Moon;
+		extern const char* Cloud;
 	}
 	namespace ENEMY {
 		extern const char* BatSprite;

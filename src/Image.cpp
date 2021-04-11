@@ -38,7 +38,7 @@ pMesh{ nullptr }, pos{ 0, 0 }, transformMtx{ NULL }{}
 
 void Image::Load(const char* pFile, const f32 Width, const f32 Height, const AEVec2 Pos, const f32 Rotation, AEGfxVertexList* Mesh){
 	pTex = AEGfxTextureLoad(pFile);
-	AE_ASSERT_MESG(pTex, "Failed to create texture!");
+	AE_ASSERT_MESG(pTex, "Failed to create image texture!");
 	pMesh = const_cast<AEGfxVertexList*>(Mesh);
 	width = Width;
 	height = Height;
@@ -49,7 +49,7 @@ void Image::Load(const char* pFile, const f32 Width, const f32 Height, const AEV
 void Image::Set(const AEGfxTexture* texture, const f32 Width, const f32 Height, const AEVec2 Pos, 
 	AEGfxVertexList* Mesh, const f32 Rotation) {
 	pTex = const_cast<AEGfxTexture*>(texture);
-	AE_ASSERT_MESG(pTex, "Failed to create texture!");
+	AE_ASSERT_MESG(pTex, "Failed to set texture!");
 	pMesh = const_cast<AEGfxVertexList*>(Mesh);
 	width = Width;
 	height = Height;
