@@ -154,17 +154,27 @@ void Utils::ToggleDebugMode(void)
 {
 	//if (!GAMEPLAY_MISC::DEV_MODE) // Exit if dev mode is not enabled. disabled for now. 
 	//	return;
-
 	if (AEInputCheckTriggered(DEBUG_KEY))
 		GAMEPLAY_MISC::DEBUG_MODE = !GAMEPLAY_MISC::DEBUG_MODE;
 
-	if (GAMEPLAY_MISC::DEBUG_MODE && AEInputCheckTriggered(COLLISION_OFF_KEY)) {
-		GAMEPLAY_MISC::DISABLE_COLLISION = !GAMEPLAY_MISC::DISABLE_COLLISION;
-		GAMEPLAY_MISC::DISABLE_COLLISION == false ? std::cout << "Collision turned on \n" : std::cout << "Collision turned off \n";
-	}
 	if (!GAMEPLAY_MISC::DEBUG_MODE) {
 		GAMEPLAY_MISC::DISABLE_COLLISION = false;
 	}
+}
+
+void Utils::ToggleCollisionOff(void)
+{
+	if (AEInputCheckTriggered(COLLISION_OFF_KEY)) {
+		GAMEPLAY_MISC::DEBUG_MODE = true;
+		GAMEPLAY_MISC::DISABLE_COLLISION = !GAMEPLAY_MISC::DISABLE_COLLISION;
+		GAMEPLAY_MISC::DISABLE_COLLISION == false ? std::cout << "Collision turned on \n" : std::cout << "Collision turned off \n";
+	}
+}
+
+void Utils::ToggleKeyManager()
+{
+	ToggleCollisionOff();
+	ToggleDebugMode();
 }
 
 void Utils::CursorManager()

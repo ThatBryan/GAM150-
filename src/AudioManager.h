@@ -21,7 +21,7 @@ rights reserved.
 
 using AudioClass = FMOD::Sound*;
 
-enum class AudioID {BGM = 0, 
+enum class AudioID{ BGM = 0, 
 					Jump = 1,
 					Boink = 2,
 					SquirrelDeath = 3,

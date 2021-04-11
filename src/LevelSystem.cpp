@@ -48,12 +48,12 @@ void LevelSystem::Init()
 		File.open("./Assets/Level_System/Key.txt", std::fstream::in | std::fstream::out | std::fstream::trunc);
 		File << 0 << std::endl;
 		File.close();
-		//std::cout << "\nFailed to open key file, A new file with '0' will be created\n";
 	}
 	else {
 		File >> key;
+		if (key > maxLevel) // guard against exception thrown
+			key = maxLevel;
 		File.close();
-		//std::cout << "\nKey file opened successfully, key is: " << key << std::endl << std::endl;
 	}
 }
 
@@ -93,7 +93,6 @@ void LevelSystem::SaveKeyToFile(void)
 	if (File.is_open()) {
 		File << key << std::endl;
 		File.close();
-		//std::cout << "\nKey successfully saved\n";
 	}
 }
 

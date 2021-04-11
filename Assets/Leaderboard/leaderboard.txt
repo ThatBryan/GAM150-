@@ -1,5 +1,5 @@
-min 976
-min 972
-min 559
-tom1 0
-tom2 0
+Jumperman 581
+Jumperman 579
+Jumperman 578
+Sleep 578
+min 577

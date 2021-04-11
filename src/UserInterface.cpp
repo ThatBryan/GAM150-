@@ -76,7 +76,7 @@ void UI::Update() {
 
 	if (gameMode == GameMode::TimeAttack) {
 		sprintf_s(strBuffer2, "Time Remaining: %.2f", GAMEPLAY_MISC::TimeAttack_remaining);
-		if(!GAMEPLAY_MISC::PAUSED)
+		if(!GAMEPLAY_MISC::PAUSED && GAMEPLAY_MISC::TimeAttack_remaining >= 0.0f)
 			GAMEPLAY_MISC::TimeAttack_remaining -= g_dt;
 
 		TimeAttackGameMode::CheckTimer();
@@ -87,8 +87,6 @@ void UI::Update() {
 	FPS_Display.SetText(strBuffer);
 	LevelDisplay.SetText(strBuffer1);
 	TimerDisplay.SetText(strBuffer2);
-
-	Utils::ToggleDebugMode();
 
 	if (GAMEPLAY_MISC::PAUSED && !Jumperman.GetWinStatus() && !Jumperman.GetLoseStatus())
 		UI::PausedUpdate();

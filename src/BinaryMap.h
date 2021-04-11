@@ -12,7 +12,8 @@ enum class TYPE_OBJECT
 	SLIME,						//6
 	BAT,						//7	
 	SQUIRREL,					//8
-	DIALOGUE					//9
+	DIALOGUE,					//9
+	MAX							//10
 };
 
 enum class EntitySizes {
@@ -22,6 +23,8 @@ enum class EntitySizes {
 	PLAYER,
 	MAX
 };
+
+EntitySizes& operator++(EntitySizes& rhs);
 
 extern int** MapData;
 extern int Map_Width;

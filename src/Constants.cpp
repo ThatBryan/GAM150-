@@ -81,21 +81,24 @@ namespace FILE_PATHS {
 }
 namespace PLAYER_CONST {
 	const float SPEED						= 150.0f;
-	const short HP_MAX						= 3U;
+	const short CASUAL_MODE_HP_MAX			= 3U;
+	const short TIMEATK_MODE_HP_MAX			= 1U;
 	const float JUMPVEL						= 3.5f;
 	const float DEBUGSPEED					= 300.0f;
 	const float CHARGED_JUMPVEL				= 8.0f;
-	const float CHARGEDJUMP_COUNTER			= 1.0f;
+	const float CHARGEDJUMP_COUNTER			= 0.5f;
 	const float PLAYER_RUN_OFFSET_X			= 0.125f;
 	const float PLAYER_IDLE_OFFSET_X		= 0.2f;
-	const float COLLIDER_BTM_OFFSET_X		= 2.0f;
+	const float COLLIDER_BTM_OFFSET_X		= 3.0f;
 	const float COLLIDER_SIDE_OFFSET_X		= 5.0f;
 }
+
 namespace TILE_CONST {
 	const float COLLAPSE_DELAY				= 0.5f;
 	const float COLLAPSE_SPEED				= 250.0f;
 	const float GRASS_SPRITE_HEIGHT			= 32.0f;
 }
+
 namespace GAMEPLAY_CONST {
 	const float BASE_GRAVITY_MULTIPLIER		= 2.0f;
 }

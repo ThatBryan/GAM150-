@@ -44,7 +44,8 @@ static AEVec2 ScreenMid;
 std::vector<Button> LeaderboardBtn;
 static std::vector<Leaders> L(Leaders::MaxLeaders);
 static const char* LeaderBoardFile{ "./Assets/Leaderboard/leaderboard.txt" };
-static const char* UsernameFile{ "./Assets/Username/username.txt" };
+//static const char* UsernameFile{ "./Assets/Username/username.txt" };s
+static float WindowHeight;
 static Graphics::Text stringBuffer;
 std::string username; static std::string userscore;
 Leaders(user);
@@ -57,7 +58,7 @@ void Leaderboard::Init()
 	const float BtnCount{ 6 }, BtnWidth{ 100.0f }, BtnHeight{ 50.0f }, BtntextScale{ 0.7f };
 	LeaderboardBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtntextScale));
 
-	LeaderboardBtn[0].Set_Position(AEVec2Set(ScreenMid.x, AEGetWindowHeight() * 0.85));
+	LeaderboardBtn[0].Set_Position(AEVec2Set(ScreenMid.x, WindowHeight * 0.85f));
 	LeaderboardBtn[0].Set_Text("Back");
 	LeaderboardBtn[0].SetBtnType(ButtonType::Texture);
 	LeaderboardBtn[0].Load_Texture("./Assets/Art/BtnTest.png");
@@ -70,6 +71,7 @@ void Leaderboard::Load()
 {
 	Leaders::ReadFromFile(LeaderBoardFile);
 	Leaders::SortLeaders(L);
+	WindowHeight = static_cast<float>(AEGetWindowHeight());
 }
 
 void Leaderboard::Update()
@@ -93,16 +95,17 @@ void Leaderboard::Render()
 
 	// Leaderboard Title
 	static std::string scoreStr;
-	static Graphics::Text LeaderboardTxt;
-	static Graphics::Text NameTxt; static Graphics::Text ScoreTxt;
-
+	static Graphics::Text LeaderboardTxt, Index, NameTxt, ScoreTxt;
 	LeaderboardTxt.SetTextScale(1.0f);
 	LeaderboardTxt.SetText("Leaderboard");
 	LeaderboardTxt.SetTextColor(Color{ 255.0f, 0.0f, 0.0f, 255.0f });
-	LeaderboardTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(AEGetWindowHeight() * 0.2)));
+	LeaderboardTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, static_cast<f32>(WindowHeight * 0.2)));
 	LeaderboardTxt.SetFontID(fontID::Strawberry_Muffins_Demo);
 	
 	// Names and Scores
+	Index.SetTextScale(1.0f);
+	Index.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
+	Index.SetFontID(fontID::Strawberry_Muffins_Demo);
 	NameTxt.SetTextScale(1.0f);
 	NameTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	NameTxt.SetFontID(fontID::Strawberry_Muffins_Demo);
@@ -112,13 +115,15 @@ void Leaderboard::Render()
 
 	for (size_t i = 0; i < L.size(); ++i)
 	{
+		Index.SetText(std::to_string(i + 1) + " : ");
 		NameTxt.SetText(L[i].name);
-		scoreStr = std::to_string(L[i].score);
-		scoreStr.resize(5);
+		L[i].score == 0 ? scoreStr = "" // empty string if no score.
+						: scoreStr = std::to_string(L[i].score);
 		
 		ScoreTxt.SetText(scoreStr);
-		NameTxt.Draw_Wrapped(AEVec2Set(300.0f, static_cast<f32>(AEGetWindowHeight() * 0.35) + i * 50.0f ));
-		ScoreTxt.Draw_Wrapped(AEVec2Set(500.0f, static_cast<f32>(AEGetWindowHeight() * 0.35) + i * 50.0f ));
+		Index.Draw_Wrapped(AEVec2Set(ScreenMid.x - 120.0f, WindowHeight * 0.35f + i * 50.0f));
+		NameTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, WindowHeight * 0.35f + i * 50.0f ));
+		ScoreTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x + 150.0f, WindowHeight * 0.35f + i * 50.0f ));
 	}
 }
 
@@ -130,42 +135,44 @@ void Leaderboard::Unload()
 
 void Leaderboard::GetUserInfo(const Player& player)
 {
-	UNREFERENCED_PARAMETER(player);
-	std::ifstream ifs(UsernameFile);
+	//std::ifstream ifs(UsernameFile);
 	static std::string line;
 	static std::string data;
 	std::string word = "username:"; std::string word2 = "score:";
 	size_t pos = 0; size_t pos2 = 0;
-	
 
-	if (ifs.is_open()) {
+	UNREFERENCED_PARAMETER(player);
+	UNREFERENCED_PARAMETER(line);
+	UNREFERENCED_PARAMETER(data);
+	UNREFERENCED_PARAMETER(pos);
+	UNREFERENCED_PARAMETER(pos2);
+	//if (ifs.is_open()) {
 
-		getline(ifs, line);
+	//	getline(ifs, line);
 
-		pos = line.find(word);
-		pos2 = line.find(word2);
-		if (pos != std::string::npos)
-		{
-			pos += word.length();
-			pos2 += word2.length();
-			username = line.substr(pos, line.size() - 1);		
-			userscore = line.substr(pos2, 4);
-		}
+	//	pos = line.find(word);
+	//	pos2 = line.find(word2);
+	//	if (pos != std::string::npos)
+	//	{
+	//		pos += word.length();
+	//		pos2 += word2.length();
+	//		username = line.substr(pos, line.size() - 1);		
+	//		userscore = line.substr(pos2, 4);
+	//	}
 
-		ifs.close();
+	//	ifs.close();
 
-		user.score = stoi(userscore);
-		user.name = username;
-	}
+	//	user.score = stoi(userscore);
+	//	user.name = username;
+	//}
 }
 
-Leaders& Leaderboard::GetLastPlacement()
-{
+Leaders& Leaderboard::GetLastPlacement(){
 	return L.back();
 }
 
 
-Leaders::Leaders() : score{0}, name()
+Leaders::Leaders() : score{}, name()
 {
 
 }
@@ -183,6 +190,10 @@ void Leaders::ReadFromFile(const char* filePath)
 			if (count >= Leaders::MaxLeaders)
 				break;
 			ifs >> L[count].name >> L[count].score;
+
+			if (L[count].name == "0")
+				L[count].name = " ";
+
 			count++;
 		}
 		ifs.close();
@@ -202,6 +213,9 @@ void Leaders::WriteToFile(const char* filePath)
 		// Write the values into text file.
 		for (size_t i = 0; i < L.size(); ++i)
 		{
+			if (L[i].name.empty())
+				L[i].name = "0";
+
 			ofs << L[i].name << " " << L[i].score << std::endl;
 		}
 		
@@ -227,7 +241,7 @@ void Leaders::InsertNewLeader(const Leaders& newLeader)
 	kickout = newLeader;
 	SortLeaders(L);
 
-	//Leaders::PrintContainer();
+	Leaders::PrintContainer();
 
 	// Call SortLeaders after modifying to reorganize the container from new highest to lowest.
 	// Might want to call PrintContainer to check.

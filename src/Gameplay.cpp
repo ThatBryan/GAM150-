@@ -57,7 +57,7 @@ void Gameplay::Init(void)
 	{
 		for (int j = 0; j < Map_Width; ++j)
 		{ // Iterate through mapdata array and construct objects at position [i][j] (Y/X)
-			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::EMPTY))
+			if (MapData[i][j] == static_cast<int>(TYPE_OBJECT::EMPTY) || MapData[i][j] >= static_cast<int>(TYPE_OBJECT::MAX))
 			{
 				continue;
 			}
@@ -110,15 +110,11 @@ void Gameplay::Init(void)
 void Gameplay::Update()
 {
 	Utils::CursorManager();
-
 	Background::Update();
-	if (!GAMEPLAY_MISC::PAUSED) {
-		GAMEPLAY_MISC::app_time += g_dt;
+	EntitiesUpdate();
+	Audio.update();
+	Utils::ToggleKeyManager();
 
-		if (IsIconic(AESysGetWindowHandle())) {
-			Utils::TogglePause();
-		}
-	}
 
 	if (AEInputCheckCurr(AEVK_LEFT) || AEInputCheckCurr(AEVK_RIGHT) || AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_D))
 		Mesh::PlayerCurr = Mesh::Anim2;
@@ -127,16 +123,22 @@ void Gameplay::Update()
 
 	if (AEInputCheckReleased(AEVK_R))
 	{
-		gamestateNext = GS_RESTART;
+		Utils::RestartLevel();
 	}
-	UpdateManager();
-	Audio.update();
+	if (!GAMEPLAY_MISC::PAUSED) {
+		GAMEPLAY_MISC::app_time += g_dt;
+
+		if (IsIconic(AESysGetWindowHandle())) {
+			Utils::TogglePause();
+		}
+	}
 	if (AEInputCheckReleased(AEVK_ESCAPE))
 		Utils::TogglePause();
 }
 
 void Gameplay::Render()
 {
+	Background::ObjectsRender();
 	for (size_t i = 0; i < tilemap.size(); ++i)
 	{
 		tilemap[i].Render();
@@ -145,8 +147,8 @@ void Gameplay::Render()
 	{
 		enemies[j].Draw();
 	}
-	Jumperman.Render();
 	Background::Render(Jumperman);
+	Jumperman.Render();
 	UI::Draw();
 	Particles::Render();
 	UI::Update();
@@ -155,56 +157,13 @@ void Gameplay::Render()
 void Gameplay::Load()
 {
 	Leaderboard::GetUserInfo(Jumperman);
-	switch (GAMEPLAY_MISC::Level)
-	{
-	case GameLevel::TUTORIAL:
-		{
-			ImportMapDataFromFile("./Assets/Levels/Tutorial.txt");
-			break;
-		}
-	case GameLevel::LEVEL1:
-		{
-			ImportMapDataFromFile("./Assets/Levels/Level1.txt");
-			break;
-		}
-	case GameLevel::LEVEL2:
-		{
-			ImportMapDataFromFile("./Assets/Levels/Level2.txt");
-			break;
-		}
-	case GameLevel::LEVEL3:
-		{
-			ImportMapDataFromFile("./Assets/Levels/Level3.txt");
-			break;
-		}
-	case GameLevel::LEVEL4:
-		{
-			ImportMapDataFromFile("./Assets/Levels/Level4.txt");
-			break;
-		}
-	case GameLevel::LEVEL5:
-		{
-			ImportMapDataFromFile("./Assets/Levels/Level5.txt");
-			break;
-		}
-	case GameLevel::LEVEL6:
-		{
-			ImportMapDataFromFile("./Assets/Levels/Level6.txt");
-			break;
-		}
-	case GameLevel::LEVEL7:
-		{
-			ImportMapDataFromFile("./Assets/Levels/Level7.txt");
-			break;
-		}
-	case GameLevel::LEVEL8:
-		{
-			ImportMapDataFromFile("./Assets/Levels/Level8.txt");
-			break;
-		}
-		default:
-			gamestateNext = GS_MAINMENU;
-	}
+	static const std::string BaseLevelString{ "./Assets/Levels/Level" };
+
+	std::string File = BaseLevelString + std::to_string(GAMEPLAY_MISC::Level) + ".txt";
+	
+	if(!ImportMapDataFromFile(File.c_str()))
+		gamestateNext = GS_MAINMENU;
+
 	Mesh::PlayerCurr = Mesh::Anim;
 
 	assert(Map_Height > 0 && Map_Width > 0); // Prevent division by 0 later.
@@ -246,7 +205,7 @@ void Gameplay::Restart()
 	UI::Unload();
 }
 
-void Gameplay::UpdateManager()
+void Gameplay::EntitiesUpdate()
 {
 	if (!GAMEPLAY_MISC::PAUSED && !Jumperman.GetLoseStatus() && !Jumperman.GetWinStatus()) {
 		Jumperman.Update();

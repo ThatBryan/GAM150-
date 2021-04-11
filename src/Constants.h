@@ -88,7 +88,8 @@ namespace PLAYER_CONST {
 	extern const float DEBUGSPEED;
 	extern const float JUMPVEL;
 	extern const float CHARGED_JUMPVEL;
-	extern const short HP_MAX;
+	extern const short CASUAL_MODE_HP_MAX;
+	extern const short TIMEATK_MODE_HP_MAX;
 	extern const float CHARGEDJUMP_COUNTER;
 	extern const float COLLIDER_BTM_OFFSET_X;
 	extern const float COLLIDER_SIDE_OFFSET_X;

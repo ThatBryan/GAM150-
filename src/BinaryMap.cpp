@@ -28,6 +28,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include <fstream>
 #include <vector>
 #include <array>
+#include <cassert>
 #include <stdlib.h>
 
 /*The number of horizontal elements*/
@@ -47,6 +48,12 @@ AEVec2 EntitySizeArray[static_cast<int>(EntitySizes::MAX)];
 in MapData is 1, it represents a collision cell, any other value is a non-collision
 cell*/
 
+
+EntitySizes& operator++(EntitySizes& rhs)
+{
+	rhs = static_cast<EntitySizes>((int)rhs + 1);
+	return rhs;
+}
 
 /******************************************************************************/
 /*!
@@ -115,8 +122,8 @@ int ImportMapDataFromFile(const char* FileName)
 		else if (i == 1)     //loop 1 will read Map_Height
 			Map_Height = std::stoi(Map);
 	}
-	for (size_t i = 0; i < 4; ++i) {
-		ifs >> EntitySizeArray[i].x >> EntitySizeArray[i].y;
+	for (EntitySizes i = static_cast<EntitySizes>(0); i < EntitySizes::MAX; ++i) {
+		ifs >> EntitySizeArray[static_cast<int>(i)].x >> EntitySizeArray[static_cast<int>(i)].y;
 	}
 
 
@@ -133,8 +140,6 @@ int ImportMapDataFromFile(const char* FileName)
 		}
 	}
 	ifs.close();
-	
-
 	return 1;
 }
 
@@ -153,3 +158,4 @@ void FreeMapData(void)
 	}
 	delete[] MapData;
 }
+
