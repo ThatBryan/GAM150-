@@ -67,12 +67,26 @@ AEVec2 AEVec2Sub(const AEVec2 vec1, const AEVec2 vec2)
 	return AEVec2{ vec1.x - vec2.x, vec1.y - vec2.y };
 }
 
-void Utils::CheckFullScreenKeyInput(void)
+void Utils::CheckKeyBindInputs(void)
 {
 	if (AEInputCheckCurr(FULLSCREEN_KEY1) && AEInputCheckTriggered(FULLSCREEN_KEY2))
 	{
 		Utils::ToggleFullscreen();
 	}
+	CheckMinimizeConditions();
+}
+
+void Utils::CheckMinimizeConditions()
+{
+	if (GetAsyncKeyState(AEVK_LALT)) {
+		if (GetAsyncKeyState(AEVK_TAB))
+			ShowWindow(AESysGetWindowHandle(), SW_MINIMIZE);
+
+		if (GetAsyncKeyState(AEVK_LCTRL) && GetAsyncKeyState(VK_DELETE))
+			ShowWindow(AESysGetWindowHandle(), SW_MINIMIZE);
+	}
+	if (GetFocus() == NULL)
+		ShowWindow(AESysGetWindowHandle(), SW_MINIMIZE);
 }
 
 void Utils::ToggleFullscreen()
@@ -177,6 +191,7 @@ void Utils::DebugKeysManager()
 	ToggleCollisionOff();
 	ToggleDebugMode();
 }
+
 
 void Utils::DebugHelper()
 {

@@ -28,7 +28,7 @@ namespace Utils
 	//Returns the position of the mouse in window coordinates.
 	AEVec2 GetMousePos(void);
 
-	void CheckFullScreenKeyInput(void);// Set window to full screen with L ALT + Enter.
+	void CheckKeyBindInputs(void);// Set window to full screen with L ALT + Enter.
 	void ToggleFullscreen();
 	bool GetFullscreenStatus();
 	void TogglePause(void); 	// Press Tab to pause the game.
@@ -36,6 +36,7 @@ namespace Utils
 	void ToggleDebugMode(void);		// F1 to enter debug mode
 	void ToggleCollisionOff(void);	// F2 to enter debug mode
 	void DebugKeysManager();
+	void CheckMinimizeConditions();
 	void DebugHelper();
 	void CursorManager();
 	void ReturnToMenu(void);
