@@ -73,10 +73,11 @@ namespace FILE_PATHS {
 		const char* Strawberry_Muffins_Demo = "./Assets/Font/Strawberry_Muffins_Demo.ttf";
 	}
 	namespace SFX {
-		const char* Jump					= "./Assets/Audio/SFX/powerup.wav";
+		const char* Jump					= "./Assets/Audio/SFX/COMEDY-WHISTLE_GEN-HDF-08150.wav";
 		const char* Boink					= "./Assets/Audio/SFX/BoingCartoon CTE01_38.2.wav";
 		const char* SlimeDeath				= "./Assets/Audio/SFX/SquirtCartoon CTE02_63.5.wav";
-		const char* PlayerDeath				= "./Assets/Audio/SFX/COMEDY-WHISTLE_GEN-HDF-08162.wav";
+		const char* PlayerLose				= "./Assets/Audio/SFX/COMEDY-WHISTLE_GEN-HDF-08162.wav";
+		const char* PlayerDeath				= "./Assets/Audio/SFX/COMEDY-WHISTLE_GEN-HDF-08158.wav";
 		const char* SquirrelDeath			= "./Assets/Audio/SFX/SqueakToy CTE02_62.2.wav";
 	}
 
@@ -88,7 +89,7 @@ namespace FILE_PATHS {
 	}
 
 	namespace BGM {
-		const char* Gameplay				= "./Assets/Audio/BGM/gg.wav";
+		const char* Gameplay				= "./Assets/Audio/BGM/Gameplay.wav";
 	}
 }
 namespace PLAYER_CONST {

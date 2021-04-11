@@ -66,9 +66,9 @@ public:
 	void GravityManager(void);
 	void SetPlayerWin(void);
 	
+	void		SetPlayerLose(void);
 	inline void SetPos(AEVec2 pos) { this->sprite.pos = pos; this->startingPos = pos; }
 	inline bool GetWinStatus(void) const { return playerWin; }
-	void SetPlayerLose(void);
 	inline bool GetLoseStatus(void) const { return lose; }
 
 	static void LoadTex(void);

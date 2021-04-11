@@ -80,6 +80,7 @@ namespace FILE_PATHS {
 		extern const char* Boink;
 		extern const char* SlimeDeath;
 		extern const char* PlayerDeath;
+		extern const char* PlayerLose;
 		extern const char* SquirrelDeath;
 	}
 	namespace BGM {

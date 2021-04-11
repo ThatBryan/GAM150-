@@ -27,6 +27,7 @@ enum class AudioID{ BGM = 0,
 					SquirrelDeath = 3,
 					SlimeDeath = 4,
 					PlayerDeath = 5,
+					PlayerLose = 6,
 					Max };
 
 AudioID& operator++(AudioID& rhs);

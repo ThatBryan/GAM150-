@@ -10,7 +10,7 @@
 static AEVec2 ScreenMid;
 std::vector<Button> ControlBtn;
 static float WindowHeight;
-enum ControlButton {AWSD = 0, ARROW, MAX_BUTTON};
+enum ControlButton {WASD = 0, ARROW, MAX_BUTTON};
 
 
 void Control::Init()
@@ -39,8 +39,8 @@ void Control::Init()
 			ControlBtn[i].ChangeStateColor(ButtonState::Hovered, Color{ 255.0f, 255.0f, 0.0f, 255.0f });
 		}
 	}
-	ControlBtn[AWSD].Set_Text("AWSD Keys");
-	ControlBtn[AWSD].Set_Callback(MainMenu::SwitchToCreditScreen);
+	ControlBtn[WASD].Set_Text("WASD Keys");
+	ControlBtn[WASD].Set_Callback(MainMenu::SwitchToCreditScreen);
 
 	ControlBtn[ARROW].Set_Text("Arrow Keys");
 	ControlBtn[ARROW].Set_Callback(MainMenu::SwitchToCreditScreen);
@@ -78,7 +78,7 @@ void Control::Update()
 		GAMEPLAY_MISC::ARROW_KEYS = true;
 		GAMEPLAY_MISC::AWSD_KEYS = false;
 	}
-	if (ControlBtn[AWSD].OnClick())
+	if (ControlBtn[WASD].OnClick())
 	{
 		GAMEPLAY_MISC::AWSD_KEYS = true;
 		GAMEPLAY_MISC::ARROW_KEYS = false;
@@ -115,7 +115,7 @@ void Control::Render()
 
 	PreferredControlTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	PreferredControlTxt.SetTextScale(1.0f);
-	GAMEPLAY_MISC::ARROW_KEYS == true ? PreferredControlTxt.SetText("Arrow Keys") : PreferredControlTxt.SetText("AWSD Keys");
+	GAMEPLAY_MISC::ARROW_KEYS == true ? PreferredControlTxt.SetText("Arrow Keys") : PreferredControlTxt.SetText("WASD Keys");
 	PreferredControlTxt.SetFontID(fontID::Courier);
 	PreferredControlTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, 300.0f));
 

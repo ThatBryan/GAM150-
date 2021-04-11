@@ -121,7 +121,7 @@ void Player::SetPlayerLose(void)
 	lose = true;
 	active = false; 
 	if (!isSoundPlayed) {
-		Audio.playAudio(AudioArray[static_cast<int>(AudioID::PlayerDeath)], AudioID::PlayerDeath);
+		Audio.playAudio(AudioArray[static_cast<int>(AudioID::PlayerLose)], AudioID::PlayerLose);
 		isSoundPlayed = true;
 	}
 }
@@ -283,9 +283,8 @@ void Player::ChangeDirection() {
 
 void Player::Respawn(void)
 {
-	if(--hp.current <= 0)
+	if (--hp.current <= 0) 
 	active				= false;
-
 	jump				= false;
 	jumpvel				= PLAYER_CONST::JUMPVEL;
 	sprite.pos			= startingPos;
@@ -295,9 +294,12 @@ void Player::Respawn(void)
 	gravityMultiplier	= GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER;
 	chargedjump_counter = PLAYER_CONST::CHARGEDJUMP_COUNTER;
 
-						  sprite.Set_Texture(playerTex);
+	sprite.Set_Texture(playerTex);
+	if(active)
+		Audio.playAudio(AudioArray[static_cast<int>(AudioID::PlayerDeath)], AudioID::PlayerDeath);
 
 	if (GameModeSetting::GetGameMode() == GameMode::TimeAttack) {
+		Audio.playAudio(AudioArray[static_cast<int>(AudioID::PlayerDeath)], AudioID::PlayerDeath);
 		Utils::RestartLevel();
 		return;
 	}
