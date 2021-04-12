@@ -1,52 +1,52 @@
-language,filename,blank,comment,code,"github.com/AlDanial/cloc v 1.82  T=0.87 s (57.6 files/s, 7849.3 lines/s)"
-C++,./MainMenu.cpp,87,21,451
-C++,./Tiles.cpp,52,20,402
-C++,./Player.cpp,45,43,351
-C++,./Enemy.cpp,37,22,286
-C++,./Graphics.cpp,48,19,247
-C++,./Background.cpp,61,15,241
-C++,./Utilities.cpp,41,20,201
-C++,./Gameplay.cpp,22,17,189
-C++,./Particles.cpp,33,21,189
-C++,./Image.cpp,16,20,185
-C++,./UserInterface.cpp,48,12,183
-C++,./Username.cpp,31,18,162
-C++,./Leaderboard.cpp,38,23,146
-C++,./GameMode.cpp,34,17,123
-C++,./Button.cpp,20,20,111
-C++,./AudioManager.cpp,18,18,107
-C/C++ Header,./Constants.h,7,14,107
-C++,./Control.cpp,22,19,99
-C++,./Constants.cpp,8,13,96
-C++,./LevelSystem.cpp,19,18,78
-C/C++ Header,./Graphics.h,22,22,74
-C++,./GameStateManager.cpp,12,16,74
-C++,./Main.cpp,21,25,74
-C++,./BinaryMap.cpp,26,66,69
-C++,./Splash.cpp,16,13,59
-C/C++ Header,./Player.h,10,14,55
-C/C++ Header,./Enemy.h,11,14,52
-C/C++ Header,./Tiles.h,7,18,50
-C/C++ Header,./Button.h,6,14,45
-C++,./Globals.cpp,7,15,44
-C/C++ Header,./Globals.h,4,14,44
-C/C++ Header,./MainMenu.h,10,12,40
-C/C++ Header,./AudioManager.h,7,14,38
-C/C++ Header,./Utilities.h,11,20,36
-C/C++ Header,./Particles.h,9,12,33
-C/C++ Header,./BinaryMap.h,5,0,29
-C++,./Collider.cpp,8,14,29
-C/C++ Header,./Image.h,8,15,27
-C/C++ Header,./Leaderboard.h,6,16,25
-C/C++ Header,./GameStateManager.h,8,17,24
-C/C++ Header,./Gameplay.h,6,13,21
-C/C++ Header,./GameMode.h,6,15,18
-C/C++ Header,./Username.h,4,0,18
-C/C++ Header,./LevelSystem.h,6,14,18
-C/C++ Header,./Background.h,7,13,17
-C/C++ Header,./UserInterface.h,3,14,16
-C/C++ Header,./Collider.h,6,13,10
-C/C++ Header,./Splash.h,2,13,8
-C/C++ Header,./Control.h,2,12,7
-C/C++ Header,./PlayerHp.h,2,11,5
-SUM,,945,859,5013
+language,primary contributor,filename,blank,comment,code,"github.com/AlDanial/cloc v 1.82  T=1.29 s (38.8 files/s, 5284.4 lines/s)"
+C++,yanweibryan.koh@digipen.edu,./MainMenu.cpp,88,21,455,
+C++,yanweibryan.koh@digipen.edu,./Tiles.cpp,52,19,402,
+C++,yanweibryan.koh@digipen.edu,./Player.cpp,45,43,352,
+C++,yanweibryan.koh@digipen.edu,./Enemy.cpp,37,22,285,
+C++,yanweibryan.koh@digipen.edu,./Graphics.cpp,48,19,247,
+C++,yanweibryan.koh@digipen.edu,./Background.cpp,59,15,241,
+C++,yanweibryan.koh@digipen.edu,./Utilities.cpp,40,20,197,
+C++,l.cheongkindallas@digipen.edu,./Particles.cpp,33,20,189,
+C++,yanweibryan.koh@digipen.edu,./Gameplay.cpp,20,12,187,
+C++,yanweibryan.koh@digipen.edu,./Image.cpp,16,20,185,
+C++,yanweibryan.koh@digipen.edu,./UserInterface.cpp,48,12,183,
+C++,minyi.seet@digipen.edu,./Username.cpp,31,18,162,
+C++,minyi.seet@digipen.edu,./Leaderboard.cpp,36,17,145,
+C++,yanweibryan.koh@digipen.edu,./GameMode.cpp,34,17,123,
+C++,yanweibryan.koh@digipen.edu,./Button.cpp,20,20,111,
+C++,yanweibryan.koh@digipen.edu,./AudioManager.cpp,18,18,107,
+C/C++ Header,yanweibryan.koh@digipen.edu,./Constants.h,7,14,107,
+C++,minyi.seet@digipen.edu,./Control.cpp,21,19,99,
+C++,yanweibryan.koh@digipen.edu,./Constants.cpp,8,13,96,
+C++,yanweibryan.koh@digipen.edu,./LevelSystem.cpp,19,18,78,
+C/C++ Header,yanweibryan.koh@digipen.edu,./Graphics.h,22,22,74,
+C++,l.weeboon@digipen.edu,./GameStateManager.cpp,12,16,74,
+C++,yanweibryan.koh@digipen.edu,./Main.cpp,21,25,74,
+C++,l.cheongkindallas@digipen.edu,./BinaryMap.cpp,26,65,69,
+C++,yanweibryan.koh@digipen.edu,./Splash.cpp,16,13,59,
+C/C++ Header,yanweibryan.koh@digipen.edu,./Player.h,10,14,55,
+C/C++ Header,yanweibryan.koh@digipen.edu,./Enemy.h,11,14,52,
+C/C++ Header,yanweibryan.koh@digipen.edu,./Tiles.h,7,18,50,
+C/C++ Header,yanweibryan.koh@digipen.edu,./Button.h,6,14,45,
+C/C++ Header,yanweibryan.koh@digipen.edu,./Globals.h,4,14,43,
+C++,yanweibryan.koh@digipen.edu,./Globals.cpp,7,15,42,
+C/C++ Header,yanweibryan.koh@digipen.edu,./MainMenu.h,10,13,40,
+C/C++ Header,yanweibryan.koh@digipen.edu,./AudioManager.h,7,14,38,
+C/C++ Header,yanweibryan.koh@digipen.edu,./Utilities.h,11,20,36,
+C/C++ Header,yanweibryan.koh@digipen.edu,./Particles.h,9,12,33,
+C/C++ Header,l.cheongkindallas@digipen.edu,./BinaryMap.h,7,12,29,
+C++,yanweibryan.koh@digipen.edu,./Collider.cpp,8,14,29,
+C/C++ Header,yanweibryan.koh@digipen.edu,./Image.h,8,15,27,
+C/C++ Header,minyi.seet@digipen.edu,./GameStateManager.h,8,17,24,
+C/C++ Header,l.weeboon@digipen.edu,./Leaderboard.h,6,14,24,
+C/C++ Header,l.cheongkindallas@digipen.edu,./GameMode.h,6,15,18,
+C/C++ Header,minyi.seet@digipen.edu,./LevelSystem.h,6,14,18,
+C/C++ Header,yanweibryan.koh@digipen.edu,./Username.h,5,12,18,
+C/C++ Header,yanweibryan.koh@digipen.edu,./Background.h,7,13,17,
+C/C++ Header,yanweibryan.koh@digipen.edu,./UserInterface.h,3,14,16,
+C/C++ Header,yanweibryan.koh@digipen.edu,./Gameplay.h,5,13,13,
+C/C++ Header,yanweibryan.koh@digipen.edu,./Collider.h,6,13,10,
+C/C++ Header,yanweibryan.koh@digipen.edu,./Splash.h,2,13,8,
+C/C++ Header,minyi.seet@digipen.edu,./Control.h,2,12,7,
+C/C++ Header,yanweibryan.koh@digipen.edu,./PlayerHp.h,2,11,5,
+SUM,,,940,868,4998,
