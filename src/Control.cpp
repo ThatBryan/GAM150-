@@ -6,29 +6,41 @@
 #include "Utilities.h"
 #include <vector>
 #include "Globals.h"
- std::vector<Button> btn;
+std::vector<Button> btn;
 static AEVec2 ScreenMid;
 std::vector<Button> ControlBtn;
 static float WindowHeight;
-enum ControlButton {WASD = 0, ARROW, MAX_BUTTON};
+enum ControlButton { WASD = 0, ARROW, BACK, MAX_BUTTON };
 
 
 void Control::Init()
 {
 	ScreenMid = Utils::GetScreenMiddle();
 
-	const float BtnCount{ 2 }, BtnWidth{ 200.0f }, BtnHeight{ 50.0f }, BtntextScale{ 0.7f };
+	const float BtnCount{ 3 }, BtnWidth{ 200.0f }, BtnHeight{ 50.0f }, BtntextScale{ 0.7f };
 	for (int i = 0; i < BtnCount; ++i) {
-		ControlBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtntextScale));
+		if (i == BACK) {
+			ControlBtn.push_back(Button(ButtonType::Color, BtnWidth * 0.5f, BtnHeight, BtntextScale));
+			ControlBtn[i].Set_Position(AEVec2Set(ScreenMid.x, AEGetWindowHeight() * 0.9f));
+		}
+		else if (i % 2 == 0) {
+			ControlBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtntextScale));
+			ControlBtn[i].Set_Position(AEVec2Set(ScreenMid.x - BtnWidth * 0.7f, AEGetWindowHeight() * 0.75f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
+		}
+		else {
+			ControlBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtntextScale));
+			ControlBtn[i].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth * 0.7f, AEGetWindowHeight() * 0.75f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
+		}
 
-		if (i % 2 == 0)
-			ControlBtn[i].Set_Position(AEVec2Set(ScreenMid.x - BtnWidth * 0.7f, AEGetWindowHeight() * 0.8f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
-		else
-			ControlBtn[i].Set_Position(AEVec2Set(ScreenMid.x + BtnWidth * 0.7f, AEGetWindowHeight() * 0.8f - BtnHeight + BtnHeight * i - (i % 2 * 50)));
 	}
 
 	for (int i = 0; i < ControlBtn.size(); ++i) {
-		if (i % 2 == 0) {
+		if (i == BACK) {
+			ControlBtn[i].SetBtnType(ButtonType::Color);
+			ControlBtn[i].ChangeStateColor(ButtonState::Idle, Color{ 66.0f, 96.0f, 245.0f, 255.0f });
+			ControlBtn[i].ChangeStateColor(ButtonState::Hovered, Color{ 0.0f, 255.0f, 255.0f, 255.0f });
+		}
+		else if (i % 2 == 0) {
 			ControlBtn[i].SetBtnType(ButtonType::Texture);
 			ControlBtn[i].Load_Texture(FP::BUTTONS::BlueBtn);
 			ControlBtn[i].ChangeStateColor(ButtonState::Hovered, Color{ 0.0f, 255.0f, 255.0f, 255.0f });
@@ -38,30 +50,17 @@ void Control::Init()
 			ControlBtn[i].Load_Texture(FP::BUTTONS::GreenBtn);
 			ControlBtn[i].ChangeStateColor(ButtonState::Hovered, Color{ 255.0f, 255.0f, 0.0f, 255.0f });
 		}
+
 	}
 	ControlBtn[WASD].Set_Text("WASD Keys");
-	ControlBtn[WASD].Set_Callback(MainMenu::SwitchToCreditScreen);
+	ControlBtn[BACK].Set_Text("Back");
+	ControlBtn[BACK].Set_Callback(MainMenu::SwitchToMainMenu);
 
 	ControlBtn[ARROW].Set_Text("Arrow Keys");
-	ControlBtn[ARROW].Set_Callback(MainMenu::SwitchToCreditScreen);
 
-	for (int i = 0; i < ControlBtn.size(); ++i) {
+	for (size_t i = 0; i < ControlBtn.size(); ++i) {
 		ControlBtn[i].SetFontID(fontID::Courier);
 	}
-
-	//// Button
-
-	//btn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtntextScale));
-
-	//btn[0].Set_Position(AEVec2Set(ScreenMid.x, WindowHeight * 0.85f));
-	//btn[0].Set_Text("Back");
-	//btn[0].SetBtnType(ButtonType::Texture);
-	//btn[0].Load_Texture("./Assets/Art/BtnTest.png");
-	//btn[0].ChangeStateColor(ButtonState::Hovered, Color{ 0.0f, 255.0f, 255.0f, 255.0f });
-	//btn[0].SetFontID(fontID::Strawberry_Muffins_Demo);
-	//btn[0].Set_Callback(MainMenu::SwitchToMainMenu);
-
-
 }
 
 void Control::Load()
@@ -72,7 +71,9 @@ void Control::Update()
 {
 	if (AEInputCheckReleased(AEVK_ESCAPE))
 		MainMenu::SwitchToMainMenu();
-	
+	for (size_t i = 0; i < ControlBtn.size(); ++i) {
+		ControlBtn[i].Update();
+	}
 	if (ControlBtn[ARROW].OnClick())
 	{
 		GAMEPLAY_MISC::ARROW_KEYS = true;
@@ -83,15 +84,12 @@ void Control::Update()
 		GAMEPLAY_MISC::AWSD_KEYS = true;
 		GAMEPLAY_MISC::ARROW_KEYS = false;
 	}
-		
-	
-	
-	//btn[0].Update();
 }
 
 
 void Control::Render()
 {
+	//Draw Buttons
 	for (size_t i = 0; i < ControlBtn.size(); ++i) {
 		ControlBtn[i].Render();
 	}
@@ -104,26 +102,23 @@ void Control::Render()
 	ControlTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, AEGetWindowHeight() * 0.15f));
 	ControlTxt.SetFontID(fontID::Strawberry_Muffins_Demo);
 
-	
+
 	// Preferred Control text
 	static Graphics::Text PreferredControlTxt;
 
 	PreferredControlTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	PreferredControlTxt.SetText("Current Control:");
-	PreferredControlTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, 250.0f));
+	PreferredControlTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, 220.0f));
 
 
 	PreferredControlTxt.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	PreferredControlTxt.SetTextScale(1.0f);
 	GAMEPLAY_MISC::ARROW_KEYS == true ? PreferredControlTxt.SetText("Arrow Keys") : PreferredControlTxt.SetText("WASD Keys");
 	PreferredControlTxt.SetFontID(fontID::Courier);
-	PreferredControlTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, 300.0f));
-
-	//btn[0].Render();
+	PreferredControlTxt.Draw_Wrapped(AEVec2Set(ScreenMid.x, 270.0f));
 }
 
 void Control::Unload()
 {
 	ControlBtn.clear();
-	//btn.clear();
 }
