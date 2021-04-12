@@ -311,6 +311,8 @@ void Player::Reset(void) // For level restart.
 	playerWin	= false;
 	hp.current	= hp.max;
 	direction	= SpriteDirection::Right;
+	chargedjumpvel = 0;
+	jumpvel = 0;
 }
 
 void Player::CheckOutOfBound() {
@@ -397,13 +399,13 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 				collider.sprite.pos, collider.sprite.width, collider.sprite.height))
 			{
 				if (Utils::ColliderAABB(enemy[i].collider.top.pos, enemy[i].collider.top.width, enemy[i].collider.top.height, 
-					collider.bottom.pos, collider.bottom.width, collider.bottom.height)) {
+					collider.bottom.pos, sprite.width, collider.bottom.height)) {
 					if (!GAMEPLAY_MISC::DEBUG_MODE) {
 						jump = true;
 						jumpvel = bounceVelocity;
 						gravityMultiplier = GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER;
 						enemy[i].KillEnemy();
-						return;
+						continue;
 					}
 				}
 				else {
