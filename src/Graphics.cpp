@@ -1,8 +1,8 @@
 /******************************************************************************/
 /*!
 \file				Graphics.cpp
-\primary author: 	Bryan Koh Yan Wei
-\secondary authors: Lim Wee Boon 
+\primary author: 	Bryan Koh Yan Wei (80%)
+\secondary authors: Lim Wee Boon (20%)
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Source file for the implementation of graphics related
@@ -13,7 +13,7 @@
 					Drawing of the type.
 					Accessors/Modifiers
 
-All content © 2021 DigiPen Institute of Technology Singapore. All
+All content ï¿½ 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.
  */
  /******************************************************************************/

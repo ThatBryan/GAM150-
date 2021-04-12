@@ -2,7 +2,7 @@
 /*!
 \file				Image.h
 \primary author: 	Bryan Koh Yan Wei
-\secondary authors: Lim Wee Boon
+\secondary authors: Lim Wee Boon (3%)
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Header file which contains the type definition of an Image class used

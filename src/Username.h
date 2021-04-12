@@ -1,3 +1,16 @@
+/******************************************************************************/
+/*!
+\file				Username.h
+\primary author: 	Seet Min Yi
+\par    			email: minyi.seet@digipen.edu
+\date   			April 6, 2021
+\brief				Header file which contains the function declarations and variables
+					for the user to input their username
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
 #include "MainMenu.h"
 #include "Image.h"
 #include "Constants.h"

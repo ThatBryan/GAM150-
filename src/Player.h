@@ -2,7 +2,7 @@
 /*!
 \file				Player.h
 \primary author: 	Bryan Koh Yan Wei
-\secondary author:	Seet Min Yi, Lim Wee Boon
+\secondary author:	Seet Min Yi, Lim Wee Boon (1%), Dallas Lau (1%)
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Type definition for player object.

@@ -1,3 +1,17 @@
+/******************************************************************************/
+/*!
+\file				BinaryMap.h
+\primary author: 	Dallas Lau
+\par    	email: l.cheongkindallas@digipen.edu
+\date   			February 28, 2021
+\brief				Header file which contains the variables for the
+					map information.
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+ /******************************************************************************/
+
 #pragma once
 #include "AEEngine.h"
 

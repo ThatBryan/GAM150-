@@ -2,7 +2,7 @@
 /*!
 \file				Image.cpp
 \primary author: 	Bryan Koh Yan Wei
-\secondary authors: Lim Wee Boon
+\secondary authors: Lim Wee Boon (48%)
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Source file which contains the definition of an Image class used

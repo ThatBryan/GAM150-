@@ -1,9 +1,8 @@
 /******************************************************************************/
 /*!
 \file				Gameplay.h
-\primary author: 	Bryan Koh Yan Wei
-\secondary authors: Dallas Cheong, Seet Min Yi
-
+\primary author: 	Dallas Lau
+\par    	email: l.cheongkindallas@digipen.edu
 \date   			April 6, 2021
 \brief				Header file which contains the Game loop for the 
 					actual Jumperman gameplay.
@@ -17,15 +16,7 @@ rights reserved.
 namespace Gameplay {
 
 	enum GameLevel {
-		TUTORIAL = 0,
-		LEVEL1	 = 1,
-		LEVEL2	 = 2,
-		LEVEL3	 = 3,
-		LEVEL4	 = 4,
-		LEVEL5	 = 5,
-		LEVEL6	 = 6,
-		LEVEL7	 = 7,
-		LEVEL8	 = 8,
+		TUTORIAL = 0
 	};
 
 	void Init();
