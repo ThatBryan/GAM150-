@@ -1,10 +1,10 @@
 /******************************************************************************/
 /*!
 \file				Main.cpp
-\primary author: 	Team Only4
+\primary author: 	Team Only4 (25% each)
 
 \date   			February 28, 2021
-\brief
+\brief				Main entry point of the program. 
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.

@@ -1,12 +1,10 @@
 /******************************************************************************/
 /*!
 \file		Leaderboard.h
-\author 	Bryan Koh Yan Wei
-\secondary	Seet Min Yi
-author 
-\par    	email: yanweibryan.koh@digipen.edu
+\ author: 	Seet Min Yi
+\par    	email: minyi.seet@digipen.edu
 \date   	April 6, 2021
-\brief		Header file of an Leaderboard class implementation.
+\brief		Header file of an Leaderboard type implementation.
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.

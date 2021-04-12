@@ -5,8 +5,7 @@
 \par    	email: l.cheongkindallas@digipen.edu
 \date   	February 28, 2021
 \brief		Source file for a reading a BinaryMap from a text
-			file. This program assumes that the map provided
-			is a normalized system.
+			file.
 
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior

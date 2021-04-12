@@ -1,19 +1,13 @@
 ﻿/******************************************************************************/
 /*!
 \file				Leaderboard.cpp
-\primary author: 	Seet Min Yi
+\author: 			Seet Min Yi
 \par    			email: minyi.seet@digipen.edu
 \date   			April 6, 2021
 
 \brief				Source file which contains the definitions for Leaderboard. 
 					This Leaderboard displays the top 5 highest scores and 
 					players' name from highest to lowest.
-
-					Functionalities include:
-					Loading/Initializing of variables.
-					Freeing of texture pointers.
-					Rendering of images.
-					Animating the images and changing meshes and images.
 
 
 All content � 2021 DigiPen Institute of Technology Singapore. All

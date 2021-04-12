@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*!
 \file		Collider.cpp
-\author 	Bryan Koh Yan Wei, yanweibryan.koh, 390001520
+\author 	Bryan Koh Yan Wei
 \par    	email: yanweibryan.koh@digipen.edu
 \date   	February 28, 2021
 \brief		Source file for a user defined type which contains 5 rectangles.

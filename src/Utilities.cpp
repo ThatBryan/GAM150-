@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file				Utilities.h
+\file				Utilities.cpp
 \author: 			Bryan Koh Yan Wei
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
@@ -13,6 +13,8 @@
 					Lerping of float.
 					Function overloading for AEVec2 type.
 					Toggling of pause/fullscreen.
+					Toggling of debug mode
+					Checking for minimize conditions.
 					etc.
 
 All content © 2021 DigiPen Institute of Technology Singapore. All

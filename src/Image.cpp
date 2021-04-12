@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*!
 \file				Image.cpp
-\primary author: 	Bryan Koh Yan Wei
+\primary author: 	Bryan Koh Yan Wei(52%)
 \secondary authors: Lim Wee Boon (48%)
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
