@@ -6,6 +6,8 @@ Main Contributions:
 - Enemy Design
 - Tutorial Level
 - Collision 
+- Leaderboard
+- Username Input
 
 Files worked on: 
 
@@ -33,6 +35,7 @@ Tiles.cpp
 Username.cpp
 Leaderboard.vpp
 Control.cpp
+Background.cpp
 
 Lines of code contributed:
 
