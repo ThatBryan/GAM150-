@@ -1,8 +1,8 @@
 /******************************************************************************/
 /*!
 \file				Globals.h
-\primary author: 	Bryan Koh Yan Wei 
-\Secondary authors:	Lim Wee Boon , Dallas Cheong
+\primary author: 	Bryan Koh Yan Wei (58%)
+\Secondary authors:	Lim Wee Boon (39%), Dallas Cheong (1%), Seet Min Yi (2%)
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Contains declaration of global variables 
@@ -21,7 +21,7 @@ namespace GAMEPLAY_MISC {
 	extern bool FULLSCREEN;
 	extern bool DISPLAY_QUIT_UI;
 	extern bool DISABLE_COLLISION;
-	extern bool AWSD_KEYS;
+	extern bool WASD_KEYS;
 	extern bool ARROW_KEYS;
 
 	extern float app_time, TimeAttack_remaining;

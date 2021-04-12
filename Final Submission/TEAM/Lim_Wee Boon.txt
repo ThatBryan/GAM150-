@@ -21,5 +21,15 @@ Files:
 - Image.cpp
 - Player.cpp
 - Enemy.cpp
-- Gameplay.cpp
-- MainMenu.cpp
+
+Code:
+- GameStateManager.h - 28
+- GameStateManager.cpp - 74
+- Constant.cpp (1%)
+- Constant.h (1%)
+- Global.h (39%)
+- Global.cpp (39%)
+- Graphics.h (1%)
+- Graphics.cpp (20%)
+- Image.h (
+- Image.cpp

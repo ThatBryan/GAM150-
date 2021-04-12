@@ -77,11 +77,11 @@ void Control::Update()
 	if (ControlBtn[ARROW].OnClick())
 	{
 		GAMEPLAY_MISC::ARROW_KEYS = true;
-		GAMEPLAY_MISC::AWSD_KEYS = false;
+		GAMEPLAY_MISC::WASD_KEYS = false;
 	}
 	if (ControlBtn[WASD].OnClick())
 	{
-		GAMEPLAY_MISC::AWSD_KEYS = true;
+		GAMEPLAY_MISC::WASD_KEYS = true;
 		GAMEPLAY_MISC::ARROW_KEYS = false;
 	}
 }

@@ -2,7 +2,7 @@
 /*!
 \file				Player.cpp
 \primary author: 	Bryan Koh Yan Wei
-\secondary author:	Seet Min Yi, Lim Wee Boon
+\secondary author:	Seet Min Yi, Lim Wee Boon (1%), Dallas Lau (4%)
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 
@@ -88,7 +88,7 @@ void Player::UpdatePlayerAnimationMesh()
 			return;
 		}
 	}
-	if (GAMEPLAY_MISC::AWSD_KEYS) {
+	if (GAMEPLAY_MISC::WASD_KEYS) {
 		if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_D)) {
 			Mesh::PlayerCurr = Mesh::Anim2;
 			return;
@@ -153,7 +153,7 @@ void Player::Update_Position(void)
 	if (jump)
 		ApplyJump();
 
-	if (AEInputCheckCurr(AEVK_D) && GAMEPLAY_MISC::AWSD_KEYS || AEInputCheckCurr(AEVK_RIGHT) && GAMEPLAY_MISC::ARROW_KEYS)
+	if (AEInputCheckCurr(AEVK_D) && GAMEPLAY_MISC::WASD_KEYS || AEInputCheckCurr(AEVK_RIGHT) && GAMEPLAY_MISC::ARROW_KEYS)
 	{
 		if (sprite.pos.x + sprite.width / 2 <= maxX || GAMEPLAY_MISC::DEBUG_MODE) {
 
@@ -168,8 +168,8 @@ void Player::Update_Position(void)
 			direction = SpriteDirection::Right;
 		}
 	}
-	if (AEInputCheckCurr(AEVK_A) && GAMEPLAY_MISC::AWSD_KEYS || AEInputCheckCurr(AEVK_LEFT) && GAMEPLAY_MISC::ARROW_KEYS)
-	if (AEInputCheckCurr(AEVK_A) && GAMEPLAY_MISC::AWSD_KEYS || AEInputCheckCurr(AEVK_LEFT) && GAMEPLAY_MISC::ARROW_KEYS)
+	if (AEInputCheckCurr(AEVK_A) && GAMEPLAY_MISC::WASD_KEYS || AEInputCheckCurr(AEVK_LEFT) && GAMEPLAY_MISC::ARROW_KEYS)
+	if (AEInputCheckCurr(AEVK_A) && GAMEPLAY_MISC::WASD_KEYS || AEInputCheckCurr(AEVK_LEFT) && GAMEPLAY_MISC::ARROW_KEYS)
 	{
 		if (sprite.pos.x >= 0 - sprite.width / 2.0f || GAMEPLAY_MISC::DEBUG_MODE) {
 
@@ -211,12 +211,12 @@ void Player::ApplyDebugMovements()
 		if (AEInputCheckCurr(AEVK_LBUTTON))
 			sprite.pos = Mouse;
 	}
-	if (AEInputCheckCurr(AEVK_S) && GAMEPLAY_MISC::AWSD_KEYS || AEInputCheckCurr(AEVK_DOWN) && GAMEPLAY_MISC::ARROW_KEYS) {
+	if (AEInputCheckCurr(AEVK_S) && GAMEPLAY_MISC::WASD_KEYS || AEInputCheckCurr(AEVK_DOWN) && GAMEPLAY_MISC::ARROW_KEYS) {
 		if (sprite.pos.y + sprite.height / 2 <= maxY) {
 			sprite.pos.y += PLAYER_CONST::DEBUGSPEED * g_dt;
 		}
 	}
-	if (AEInputCheckCurr(AEVK_W) && GAMEPLAY_MISC::AWSD_KEYS || AEInputCheckCurr(AEVK_UP) && GAMEPLAY_MISC::ARROW_KEYS) {
+	if (AEInputCheckCurr(AEVK_W) && GAMEPLAY_MISC::WASD_KEYS || AEInputCheckCurr(AEVK_UP) && GAMEPLAY_MISC::ARROW_KEYS) {
 		if (sprite.pos.y - sprite.height / 2 >= 0) {
 			sprite.pos.y -= PLAYER_CONST::DEBUGSPEED * g_dt;
 		}
