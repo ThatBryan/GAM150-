@@ -1,9 +1,8 @@
 /******************************************************************************/
 /*!
 \file				Gameplay.h
-\primary author: 	Bryan Koh Yan Wei
-\secondary authors: Dallas Cheong, Seet Min Yi
-
+\primary author: 	Dallas Lau
+\par    	email: l.cheongkindallas@digipen.edu
 \date   			April 6, 2021
 \brief				Header file which contains the Game loop for the 
 					actual Jumperman gameplay.

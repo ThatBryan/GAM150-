@@ -20,16 +20,20 @@ Files:
 - Graphics.cpp
 - Image.cpp
 - Player.cpp
-- Enemy.cpp
 
 Code:
 - GameStateManager.h - 28
 - GameStateManager.cpp - 74
-- Constant.cpp (1%)
-- Constant.h (1%)
-- Global.h (39%)
-- Global.cpp (39%)
-- Graphics.h (1%)
-- Graphics.cpp (20%)
-- Image.h (
-- Image.cpp
+- Constant.cpp (1%) - 1
+- Constant.h (1%) - 1
+- Global.h (39%) - 17
+- Global.cpp (39%) - 17
+- Graphics.h (1%) - 1
+- Graphics.cpp (20%) - 49
+- Image.h (3%) - 1
+- Image.cpp (48%) - 88
+- Player.h (1%) - 1
+- Player.cpp (3%) - 14
+- Main (25%) - 18
+
+Total LOC: 310
