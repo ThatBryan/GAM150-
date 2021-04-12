@@ -1,3 +1,18 @@
+/******************************************************************************/
+/*!
+\file		Leaderboard.h
+\author 	Bryan Koh Yan Wei
+\secondary	Seet Min Yi
+author 
+\par    	email: yanweibryan.koh@digipen.edu
+\date   	April 6, 2021
+\brief		Header file of an Leaderboard class implementation.
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+
+ */
+/******************************************************************************/
 #pragma once
 #include <vector>
 #include <string>
