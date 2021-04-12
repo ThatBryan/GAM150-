@@ -1,11 +1,6 @@
-o Summary <a header block containing the following information>
-Game name : JumperMan
-
 Team name : Only4
 
 ▪ CSD1450s21
-
-▪ High concept (optional)
 
 ▪ Copyright notice
 
@@ -18,6 +13,9 @@ Navigate into "INSTALLATION" folder
 From there, navigate to "INSTALLER" folder
 Run "JumperMan_Setup.exe"
 Select desired filepath to install the game.
+
+GAME DOESN'T SAVE .TXT FILES AFTER USING INSTALLER
+UNLESS RAN AS ADMINSTRATOR
 
 o “How To Play” instructions
 
@@ -32,8 +30,6 @@ o Cheat codes:
 Turn on Developer Mode under options
 accessible from main menu. 
 
-After which, use
-'F1' key to toggle debug mode which gives draws the colliders, 
-gives free movement and disable player enemy collision.
-While in Debug Mode, use 'F2' key to toggle player
-Tile collision.
+After which, 
+use 'F1' key to toggle debug mode which gives draws the colliders. 
+use 'F2' key to toggle player Tile collision.
