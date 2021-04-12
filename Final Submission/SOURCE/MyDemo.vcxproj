@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\AudioManager.cpp" />
+    <ClCompile Include="src\BinaryMap.cpp" />
+    <ClCompile Include="src\Button.cpp" />
+    <ClCompile Include="src\Collider.cpp" />
+    <ClCompile Include="src\Constants.cpp" />
+    <ClCompile Include="src\Control.cpp" />
+    <ClCompile Include="src\Enemy.cpp" />
+    <ClCompile Include="src\GameMode.cpp" />
+    <ClCompile Include="src\Gameplay.cpp" />
+    <ClCompile Include="src\GameStateManager.cpp" />
+    <ClCompile Include="src\Globals.cpp" />
+    <ClCompile Include="src\Graphics.cpp" />
+    <ClCompile Include="src\Image.cpp" />
+    <ClCompile Include="src\Leaderboard.cpp" />
+    <ClCompile Include="src\LevelSystem.cpp" />
+    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\MainMenu.cpp" />
+    <ClCompile Include="src\Background.cpp" />
+    <ClCompile Include="src\Particles.cpp" />
+    <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\Splash.cpp" />
+    <ClCompile Include="src\Tiles.cpp" />
+    <ClCompile Include="src\UserInterface.cpp" />
+    <ClCompile Include="src\Username.cpp" />
+    <ClCompile Include="src\Utilities.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="src\AudioManager.h" />
+    <ClInclude Include="src\Background.h" />
+    <ClInclude Include="src\BinaryMap.h" />
+    <ClInclude Include="src\Button.h" />
+    <ClInclude Include="src\Collider.h" />
+    <ClInclude Include="src\Constants.h" />
+    <ClInclude Include="src\Control.h" />
+    <ClInclude Include="src\Enemy.h" />
+    <ClInclude Include="src\GameMode.h" />
+    <ClInclude Include="src\Gameplay.h" />
+    <ClInclude Include="src\GameStateManager.h" />
+    <ClInclude Include="src\Globals.h" />
+    <ClInclude Include="src\Graphics.h" />
+    <ClInclude Include="src\Image.h" />
+    <ClInclude Include="src\Leaderboard.h" />
+    <ClInclude Include="src\LevelSystem.h" />
+    <ClInclude Include="src\MainMenu.h" />
+    <ClInclude Include="src\Particles.h" />
+    <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\PlayerHp.h" />
+    <ClInclude Include="src\Splash.h" />
+    <ClInclude Include="src\Tiles.h" />
+    <ClInclude Include="src\UserInterface.h" />
+    <ClInclude Include="src\Username.h" />
+    <ClInclude Include="src\Utilities.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GAM150.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Final Submission\INSTALLATION\INSTALLERFILES\Icon.ico" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{51846dd3-1d22-45b7-bff5-0cffa7af78dc}</ProjectGuid>
+    <RootNamespace>MyDemo</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>GAM150</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)\.tmp\$(Configuration)-$(Platform)\</IntDir>
+    <IncludePath>$(SolutionDir)header;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Extern\AlphaEngine_V3.08\include;$(SolutionDir)Extern\core\inc</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(SolutionDir)Extern\AlphaEngine_V3.08\lib;$(SolutionDir)Extern\core\lib\x64</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(WindowsSDK_IncludePath);$(VC_IncludePath);$(SolutionDir)header;$(SolutionDir)Extern\core\inc;$(SolutionDir)Extern\AlphaEngine_V3.08\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(WindowsSDK_LibraryPath_x64);$(VC_LibraryPath_x64);$(SolutionDir)Extern\AlphaEngine_V3.08\lib;$(SolutionDir)Extern\core\lib\x64;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)\.tmp\$(Configuration)-$(Platform)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Alpha_EngineD.lib;fmodL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(SolutionDir)\Extern\lib" "$(OutDir)"
+xcopy /y /d /i /s "$(SolutionDir)\Assets" "$(OutDir)\Assets"</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copying dlls and resources into exe file directory</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Alpha_Engine.lib;fmodL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(SolutionDir)\Extern\lib" "$(OutDir)"
+xcopy /y /d /i /s "$(SolutionDir)\Assets" "$(OutDir)\Assets"</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copy assets and dlls into exe folder</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
