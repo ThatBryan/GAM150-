@@ -38,6 +38,7 @@
     <ClCompile Include="src\Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="src\AudioManager.h" />
     <ClInclude Include="src\Background.h" />
     <ClInclude Include="src\BinaryMap.h" />
@@ -63,6 +64,12 @@
     <ClInclude Include="src\UserInterface.h" />
     <ClInclude Include="src\Username.h" />
     <ClInclude Include="src\Utilities.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GAM150.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Final Submission\INSTALLATION\INSTALLERFILES\Icon.ico" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
