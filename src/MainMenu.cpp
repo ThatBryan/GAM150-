@@ -1,8 +1,8 @@
 /******************************************************************************/
 /*!
 \file				MainMenu.cpp
-\primary author: 	Bryan Koh Yan Wei
-\secondary author: 	Seet Min Yi
+\primary author: 	Bryan Koh Yan Wei (80%)
+\secondary author: 	Seet Min Yi (20%)
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Handles the GameState MainMenu

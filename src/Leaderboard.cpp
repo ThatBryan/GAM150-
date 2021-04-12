@@ -2,7 +2,6 @@
 /*!
 \file				Leaderboard.cpp
 \primary author: 	Seet Min Yi
-\secondary author:	Bryan Koh Yan Wei
 \par    			email: minyi.seet@digipen.edu
 \date   			April 6, 2021
 

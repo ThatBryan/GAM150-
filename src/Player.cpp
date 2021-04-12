@@ -1,8 +1,8 @@
 /******************************************************************************/
 /*!
 \file				Player.cpp
-\primary author: 	Bryan Koh Yan Wei
-\secondary author:	Seet Min Yi, Lim Wee Boon
+\primary author: 	Bryan Koh Yan Wei (69%)
+\secondary author:	Seet Min Yi(30%), Lim Wee Boon (1%)
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 
