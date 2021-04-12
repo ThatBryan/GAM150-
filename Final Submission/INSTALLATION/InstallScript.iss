@@ -45,7 +45,7 @@ SolidCompression=yes
 ; This allows the installer to run without admin privileges, which means you can't install
 ; in the Program Files, or change the registry. This is done to allow installation on Sandbox
 ; or other intermediate directory
-PrivilegesRequired=none
+PrivilegesRequired=admin
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
