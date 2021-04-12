@@ -87,9 +87,9 @@ Source: .\GAMEDIRECTORY\*; DestDir: {app}; Flags: ignoreversion recursesubdirs c
 ;   {group} is the start menu location that the game will install shortcuts to.
 ;   {commondesktop} is your Windows desktop directory.
 [Icons]
-Name: {group}\JumperMan; Filename: {app}\JumperMan.exe; WorkingDir: {app}; IconFilename: ".\INSTALLERFILES\Icon.ico"
+Name: {group}\JumperMan; Filename: {app}\JumperMan.exe; WorkingDir: {app}; IconFilename: "{app}\Icon.ico"
 Name: {group}\{cm:UninstallProgram,JumperMan}; Filename: {uninstallexe}
-Name: {commondesktop}\JumperMan; Filename: {app}\JumperMan.exe; Tasks: desktopicon; WorkingDir: {app}; IconFilename: ".\INSTALLERFILES\Icon.ico"
+Name: {commondesktop}\JumperMan; Filename: {app}\JumperMan.exe; Tasks: desktopicon; WorkingDir: {app}; IconFilename: "{app}\Icon.ico"
 
 ; List of items to execute in the installer.
 ; Note that this will run all executables in their silent versions as required by the TCRs.
