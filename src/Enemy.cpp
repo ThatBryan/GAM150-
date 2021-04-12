@@ -1,8 +1,8 @@
 /******************************************************************************/
 /*!
 \file				Enemy.cpp
-\primary author: 	Bryan Koh Yan Wei (??%)
-\Secondary author:	Seet Min Yi 
+\primary author: 	Bryan Koh Yan Wei (60%)
+\Secondary author:	Seet Min Yi (40%)
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Source file of an Enemy class implementation.

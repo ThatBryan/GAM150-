@@ -1,8 +1,8 @@
 /******************************************************************************/
 /*!
-\file				Tiles.cpp
-\primary author: 	Bryan Koh Yan Wei
-\secondary author:	Seet Min Yi
+\file				Tiles.cpp 
+\primary author: 	Bryan Koh Yan Wei (65%)
+\secondary author:	Seet Min Yi (35%)
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Contains the function definitions for the Tiles type.

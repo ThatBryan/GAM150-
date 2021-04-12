@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*!
 \file				Graphics.cpp
-\primary author: 	Bryan Koh Yan Wei
+\primary author: 	Bryan Koh Yan Wei (80%)
 \secondary authors: Lim Wee Boon (20%)
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
@@ -13,7 +13,7 @@
 					Drawing of the type.
 					Accessors/Modifiers
 
-All content © 2021 DigiPen Institute of Technology Singapore. All
+All content ï¿½ 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.
  */
  /******************************************************************************/

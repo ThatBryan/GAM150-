@@ -2,7 +2,7 @@
 /*!
 \file				Gameplay.cpp
 \primary author: 	Bryan Koh Yan Wei
-\secondary authors: Dallas Cheong, Seet Min Yi
+\secondary authors: Dallas Cheong
 
 \date   			April 6, 2021
 \brief				Source file which contains the Game loop for the

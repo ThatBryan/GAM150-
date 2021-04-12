@@ -1,3 +1,23 @@
+/******************************************************************************/
+/*!
+\file				Control.cpp
+\author: 			Seet Min Yi
+\par    			email: minyi.seet@digipen.edu
+\date   			April 6, 2021
+\brief				Function definitions for the particles type.
+
+					Functionalities includes:
+
+					Loading/Initialization
+					Update loop to be called every frame.
+					Render loop to be called every frame.
+					
+					Enable player to choose key control
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+/******************************************************************************/
 #include "Control.h"
 #include "MainMenu.h"
 #include "Constants.h"
@@ -61,10 +81,6 @@ void Control::Init()
 	for (size_t i = 0; i < ControlBtn.size(); ++i) {
 		ControlBtn[i].SetFontID(fontID::Courier);
 	}
-}
-
-void Control::Load()
-{
 }
 
 void Control::Update()
