@@ -1,8 +1,8 @@
 /******************************************************************************/
 /*!
 \file				Constants.cpp
-\primary author: 	Bryan Koh Yan Wei (95%)
-\Secondary authors:	Seet Min Yi (5%),
+\primary author: 	Bryan Koh Yan Wei (94%)
+\Secondary authors:	Seet Min Yi (5%), Lim Wee Boon (1%)
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Contains the definitions of the constant variables

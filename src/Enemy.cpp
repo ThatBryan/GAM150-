@@ -48,7 +48,6 @@ extern std::array <AudioClass, static_cast<int>(AudioID::Max)> AudioArray;
 Enemies::Enemies(AEGfxTexture* filepath, AEGfxVertexList* mesh, const f32 width, const f32 height) : sprite(filepath, mesh, width, height), collider(),
 spawnPos{ 0, 0 }, active{ true }, type{ EnemyType::Slime }, isGravity{ false }, counter{ 0 }, jumpcounter{ 5 }, squirrelJump { false },
 velocity{ 0 }, jumpvelocity{ 0 }, killed{ false }, alpha{ 255.0f }, alphaTimer{ 1.0f }, stepGravityMultiplier{ GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER }{
-	EnemyCount++;
 	collider.sprite.color.Set(Color{ 0, 0, 0, 100.0f });
 }
 

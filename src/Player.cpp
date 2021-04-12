@@ -1,8 +1,8 @@
 /******************************************************************************/
 /*!
 \file				Player.cpp
-\primary author: 	Bryan Koh Yan Wei (69%)
-\secondary author:	Seet Min Yi(30%), Lim Wee Boon (1%)
+\primary author: 	Bryan Koh Yan Wei (62%)
+\secondary author:	Seet Min Yi (30%), Lim Wee Boon (3%), Dallas Lau (4%)
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 
@@ -46,7 +46,6 @@ AEGfxTexture* Player::playerTex{ nullptr };
 AEGfxTexture* Player::playerMovTex{ nullptr };
 AEGfxTexture* Player::playerParticle{ nullptr };
 float Player::gravityStrength = 20.0f;
-static const char* UsernameFile{ "./Assets/Username/username.txt" };
 static bool isSoundPlayed;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::PlayerCurr, width, height), lose{ false },
@@ -88,7 +87,7 @@ void Player::UpdatePlayerAnimationMesh()
 			return;
 		}
 	}
-	if (GAMEPLAY_MISC::AWSD_KEYS) {
+	if (GAMEPLAY_MISC::WASD_KEYS) {
 		if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_D)) {
 			Mesh::PlayerCurr = Mesh::Anim2;
 			return;
@@ -153,7 +152,7 @@ void Player::Update_Position(void)
 	if (jump)
 		ApplyJump();
 
-	if (AEInputCheckCurr(AEVK_D) && GAMEPLAY_MISC::AWSD_KEYS || AEInputCheckCurr(AEVK_RIGHT) && GAMEPLAY_MISC::ARROW_KEYS)
+	if (AEInputCheckCurr(AEVK_D) && GAMEPLAY_MISC::WASD_KEYS || AEInputCheckCurr(AEVK_RIGHT) && GAMEPLAY_MISC::ARROW_KEYS)
 	{
 		if (sprite.pos.x + sprite.width / 2 <= maxX || GAMEPLAY_MISC::DEBUG_MODE) {
 
@@ -168,8 +167,8 @@ void Player::Update_Position(void)
 			direction = SpriteDirection::Right;
 		}
 	}
-	if (AEInputCheckCurr(AEVK_A) && GAMEPLAY_MISC::AWSD_KEYS || AEInputCheckCurr(AEVK_LEFT) && GAMEPLAY_MISC::ARROW_KEYS)
-	if (AEInputCheckCurr(AEVK_A) && GAMEPLAY_MISC::AWSD_KEYS || AEInputCheckCurr(AEVK_LEFT) && GAMEPLAY_MISC::ARROW_KEYS)
+	if (AEInputCheckCurr(AEVK_A) && GAMEPLAY_MISC::WASD_KEYS || AEInputCheckCurr(AEVK_LEFT) && GAMEPLAY_MISC::ARROW_KEYS)
+	if (AEInputCheckCurr(AEVK_A) && GAMEPLAY_MISC::WASD_KEYS || AEInputCheckCurr(AEVK_LEFT) && GAMEPLAY_MISC::ARROW_KEYS)
 	{
 		if (sprite.pos.x >= 0 - sprite.width / 2.0f || GAMEPLAY_MISC::DEBUG_MODE) {
 
@@ -211,12 +210,12 @@ void Player::ApplyDebugMovements()
 		if (AEInputCheckCurr(AEVK_LBUTTON))
 			sprite.pos = Mouse;
 	}
-	if (AEInputCheckCurr(AEVK_S) && GAMEPLAY_MISC::AWSD_KEYS || AEInputCheckCurr(AEVK_DOWN) && GAMEPLAY_MISC::ARROW_KEYS) {
+	if (AEInputCheckCurr(AEVK_S) && GAMEPLAY_MISC::WASD_KEYS || AEInputCheckCurr(AEVK_DOWN) && GAMEPLAY_MISC::ARROW_KEYS) {
 		if (sprite.pos.y + sprite.height / 2 <= maxY) {
 			sprite.pos.y += PLAYER_CONST::DEBUGSPEED * g_dt;
 		}
 	}
-	if (AEInputCheckCurr(AEVK_W) && GAMEPLAY_MISC::AWSD_KEYS || AEInputCheckCurr(AEVK_UP) && GAMEPLAY_MISC::ARROW_KEYS) {
+	if (AEInputCheckCurr(AEVK_W) && GAMEPLAY_MISC::WASD_KEYS || AEInputCheckCurr(AEVK_UP) && GAMEPLAY_MISC::ARROW_KEYS) {
 		if (sprite.pos.y - sprite.height / 2 >= 0) {
 			sprite.pos.y -= PLAYER_CONST::DEBUGSPEED * g_dt;
 		}
@@ -311,6 +310,8 @@ void Player::Reset(void) // For level restart.
 	playerWin	= false;
 	hp.current	= hp.max;
 	direction	= SpriteDirection::Right;
+	chargedjumpvel = 0;
+	jumpvel = 0;
 }
 
 void Player::CheckOutOfBound() {
@@ -397,13 +398,13 @@ void Player::CheckEnemyCollision(std::vector <Enemies>& enemy)
 				collider.sprite.pos, collider.sprite.width, collider.sprite.height))
 			{
 				if (Utils::ColliderAABB(enemy[i].collider.top.pos, enemy[i].collider.top.width, enemy[i].collider.top.height, 
-					collider.bottom.pos, collider.bottom.width, collider.bottom.height)) {
+					collider.bottom.pos, sprite.width, collider.bottom.height)) {
 					if (!GAMEPLAY_MISC::DEBUG_MODE) {
 						jump = true;
 						jumpvel = bounceVelocity;
 						gravityMultiplier = GAMEPLAY_CONST::BASE_GRAVITY_MULTIPLIER;
 						enemy[i].KillEnemy();
-						return;
+						continue;
 					}
 				}
 				else {

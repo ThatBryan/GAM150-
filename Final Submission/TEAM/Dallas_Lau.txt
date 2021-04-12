@@ -1,0 +1,33 @@
+Name: Dallas Lau Cheong Kin
+Role: Producer
+Main Contributions:
+- Art Assets
+- Level Design
+- Sounds
+- Gameplay State (All Levels)
+- Level Editor
+
+Files:
+- BinaryMap.h
+- BinaryMap.cpp
+- Gameplay.cpp
+- Gameplay.h
+- Globals.h
+- Globals.cpp
+- Player.h
+- Player.cp
+- Main.cpp
+
+
+Code:
+- BinaryMap.h - 29
+- BinaryMap.cpp - 69
+- Gameplay.cpp - 189
+- Gameplay.h - 21
+- Globals.h - 1
+- Globals.cpp - 1
+- Player.h - 1
+- Player.cpp - 14
+- Main (25%) - 18
+
+Total LOC: 343

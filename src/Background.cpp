@@ -36,8 +36,6 @@ rights reserved.
 #include <array>
 #include <vector>
 
-
-
 enum BackgroundIndex{ Pause = 0, Victory, Defeat, Overlay_Max };
 
 static std::array <Image, BackgroundIndex::Overlay_Max> BgOverlayArr;

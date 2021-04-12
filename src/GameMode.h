@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*!
 \file				GameMode.h
-\primary author: 	Bryan Koh Yan Wei
+\author: 			Bryan Koh Yan Wei
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 10, 2021
 \brief				Header file of GameMode implementation.

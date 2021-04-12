@@ -1,8 +1,8 @@
 /******************************************************************************/
 /*!
 \file				Graphics.h
-\primary author: 	Bryan Koh Yan Wei
-\secondary authors: Lim Wee Boon
+\primary author: 	Bryan Koh Yan Wei (99%)
+\secondary authors: Lim Wee Boon (1%)
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Contains type defintion for graphics related types

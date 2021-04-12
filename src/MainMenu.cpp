@@ -197,7 +197,6 @@ void MainMenu::Unload(void)
 	Username::Unload();
 	UI::QuitUnload();
 	Credits::Unload();
-	EnemyCount = 0;
 	GameModeSetting::Unload();
 	Background::ObjectsUnload();
 	Leaderboard::Unload();
@@ -421,16 +420,21 @@ void Options::Init()
 		SettingsBtn.push_back(Button(ButtonType::Color, BtnWidth, BtnHeight, BtnTextScale));
 		SettingsBtn[i].Set_Position(AEVec2Set(ScreenMid.x, ScreenMid.y / 2.0f - BtnHeight / 2.0f + i * BtnYOffset));
 		SettingsBtn[i].SetFontID(fontID::Strawberry_Muffins_Demo);
-		SettingsBtn[i].RandomizeAllStateColor();
+		SettingsBtn[i].Set_TextColor(Color{ 246.0f, 197.0f, 235.0f, 255.0f });
 	}
 	SettingsBtn[0].Set_Callback(Utils::ToggleFullscreen);
 
+	SettingsBtn[0].ChangeStateColor(ButtonState::Idle, Color{ 46.0f, 55.0f, 234.0f, 201.0f });
+
 	SettingsBtn[1].Set_Callback(AudioManager::ToggleMuteAll);
+	SettingsBtn[1].ChangeStateColor(ButtonState::Idle, Color{ 46.0f, 55.0f, 234.0f, 201.0f });
 
 	SettingsBtn[2].Set_Callback(Utils::ToggleDevMode);
+	SettingsBtn[2].ChangeStateColor(ButtonState::Idle, Color{ 46.0f, 55.0f, 234.0f, 201.0f });
 
 	SettingsBtn[3].Set_Text("Exit to Main Menu");
 	SettingsBtn[3].Set_Callback(MainMenu::SwitchToMainMenu);
+	SettingsBtn[3].ChangeStateColor(ButtonState::Idle, Color{ 46.0f, 55.0f, 234.0f, 201.0f });
 }
 
 void Options::Update()
@@ -454,6 +458,7 @@ void Options::Update()
 void Options::Render()
 {
 	static Graphics::Text SettingsPageText;
+	SettingsPageText.SetFontID(fontID::Strawberry_Muffins_Demo);
 	SettingsPageText.SetText("Settings");
 	SettingsPageText.SetTextColor(Color{ 0.0f, 0.0f, 0.0f, 255.0f });
 	SettingsPageText.SetTextScale(1.0f);

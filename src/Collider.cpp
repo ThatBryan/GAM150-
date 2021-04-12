@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*!
 \file		Collider.cpp
-\author 	Bryan Koh Yan Wei, yanweibryan.koh, 390001520
+\author 	Bryan Koh Yan Wei
 \par    	email: yanweibryan.koh@digipen.edu
 \date   	February 28, 2021
 \brief		Source file for a user defined type which contains 5 rectangles.
@@ -20,10 +20,10 @@ rights reserved.
 
 Collider::Collider() : sprite{ 0.0f, 0.0f }, top { 0.0f, 0.0f }, bottom{ 0.0f, 0.0f }, left{ 0.0f, 0.0f }, right{ 0.0f, 0.0f } {
 	sprite.color.Set((Color{ 150, 0, 0, 150 }));
-	bottom.color.Set(Color{ 255.0f, 255.0f, 0, 255.0f }); // yellow
-	top.color.Set(Color{ 255.0f, 0, 0, 255.0f }); // red
-	left.color.Set(Color{ 0, 255.0f, 0, 255.0f }); // green
-	right.color.Set(Color{ 0, 0, 255.0f, 255.0f }); // blue
+	bottom.color.Set(	Color{ 255.0f, 255.0f, 0, 255.0f }); // yellow
+	top.color.Set(		Color{ 255.0f, 0, 0, 255.0f }); // red
+	left.color.Set(		Color{ 0, 255.0f, 0, 255.0f }); // green
+	right.color.Set(	Color{ 0, 0, 255.0f, 255.0f }); // blue
 }
 
 void Collider::SetMeshes()

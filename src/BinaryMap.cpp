@@ -1,12 +1,11 @@
 ﻿/******************************************************************************/
 /*!
 \file		BinaryMap.cpp
-\author 	Bryan Koh Yan Wei, yanweibryan.koh, 390001520
-\par    	email: yanweibryan.koh@digipen.edu
+\author 	Dallas Lau
+\par    	email: l.cheongkindallas@digipen.edu
 \date   	February 28, 2021
 \brief		Source file for a reading a BinaryMap from a text
-			file. This program assumes that the map provided
-			is a normalized system.
+			file.
 
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior

@@ -1,9 +1,8 @@
 /******************************************************************************/
 /*!
 \file				Gameplay.cpp
-\primary author: 	Bryan Koh Yan Wei
-\secondary authors: Dallas Cheong
-
+\primary author: 	Dallas Lau
+\par    	email: l.cheongkindallas@digipen.edu
 \date   			April 6, 2021
 \brief				Source file which contains the Game loop for the
 					actual Jumperman gameplay.
@@ -41,13 +40,11 @@ std::vector<Tiles> tilemap;
 std::vector<Enemies> enemies;
 std::vector <std::vector <Tiles>*> tileManager;
 Player Jumperman;
-//Leader leader;
-static std::string name;
+
 extern AudioManager Audio;
 extern AudioData soundData[static_cast<int>(AudioID::Max)];
 extern std::array <AudioClass, static_cast<int>(AudioID::Max)> AudioArray;
 extern AEVec2 EntitySizeArray[static_cast<int>(EntitySizes::MAX)];
-static const char* UsernameFile{ "./Assets/Username/username.txt" };
 
 void Gameplay::Init(void)
 {
@@ -114,12 +111,6 @@ void Gameplay::Update()
 	EntitiesUpdate();
 	Audio.update();
 	Utils::DebugKeysManager();
-
-	//if (AEInputCheckCurr(AEVK_LEFT) || AEInputCheckCurr(AEVK_RIGHT) || AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_D))
-	//	Mesh::PlayerCurr = Mesh::Anim2;
-	//else
-	//	Mesh::PlayerCurr = Mesh::Anim;
-
 	if (AEInputCheckReleased(AEVK_R))
 	{
 		Utils::RestartLevel();

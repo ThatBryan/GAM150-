@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file				Utilities.h
+\file				Utilities.cpp
 \author: 			Bryan Koh Yan Wei
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
@@ -13,6 +13,8 @@
 					Lerping of float.
 					Function overloading for AEVec2 type.
 					Toggling of pause/fullscreen.
+					Toggling of debug mode
+					Checking for minimize conditions.
 					etc.
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
@@ -154,15 +156,8 @@ void Utils::TogglePause(void)
 
 void Utils::ToggleDevMode(void)
 {
-	static bool isFirstTime{ false };
 	GAMEPLAY_MISC::DEV_MODE = !GAMEPLAY_MISC::DEV_MODE;
 	GAMEPLAY_MISC::DEV_MODE == true ? std::cout << "\nDeveloper mode turned on\n" : std::cout << "\nDeveloper mode turned off\n";
-
-	if (GAMEPLAY_MISC::DEV_MODE && !isFirstTime) { // Only ever print once
-		std::cout << "\nUse F1 to toggle Debug Mode\n";
-		std::cout << "	Use F2 to toggle player collision\n";
-		isFirstTime = true;
-	}
 }
 
 void Utils::ToggleDebugMode(void)
@@ -186,8 +181,8 @@ void Utils::ToggleCollisionOff(void)
 
 void Utils::DebugKeysManager()
 {
-	//if (!GAMEPLAY_MISC::DEV_MODE) // Exit if dev mode is not enabled. disabled for now. 
-	//	return;
+	if (!GAMEPLAY_MISC::DEV_MODE) // Exit if dev mode is not enabled. disabled for now. 
+		return;
 	ToggleCollisionOff();
 	ToggleDebugMode();
 }

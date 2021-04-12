@@ -1,8 +1,8 @@
 /******************************************************************************/
 /*!
 \file				Globals.cpp
-\primary author: 	Bryan Koh Yan Wei
-\Secondary authors:	Lim Wee Boon, Dallas Cheong
+\primary author: 	Bryan Koh Yan Wei (58%)
+\Secondary authors:	Lim Wee Boon (39%), Dallas Cheong (1%), Seet Min Yi (2%)
 \par    			email: yanweibryan.koh@digipen.edu
 \date   			April 6, 2021
 \brief				Contains definition of global variables
@@ -19,9 +19,8 @@ namespace GAMEPLAY_MISC {
 	bool FULLSCREEN						= false;
 	bool DISPLAY_QUIT_UI				= false;
 	bool DISABLE_COLLISION				= false;
-	bool AWSD_KEYS						= true;
 	bool ARROW_KEYS						= false;
-	int app_score						= 50;
+	bool WASD_KEYS						= true;
 
 	unsigned short Level				= 0U;
 
@@ -52,7 +51,6 @@ namespace Tex {
 // MISC
 
 float g_dt								= 0.0f;
-short EnemyCount						= 1;
 unsigned short DialogueID				= 0U;
 
 // Animation
