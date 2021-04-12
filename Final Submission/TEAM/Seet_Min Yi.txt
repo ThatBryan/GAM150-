@@ -1,0 +1,40 @@
+Name: Seet Min Yi
+Role: Playtest
+Main Contributions:
+- Enemy Movement
+- Player Movement
+- Enemy Design
+- Tutorial Level
+- Collision 
+
+Files worked on: 
+
+Headers:
+
+Constants.h
+Enemy.h
+Gameplay.h
+Globals.h
+MainMenu.h
+Player.h
+Tiles.h
+Utilities.h
+Username.h
+Leaderboard.h
+Control.h 
+
+Source files:
+Constants.cpp
+Enemy.cpp
+Globals.cpp
+MainMenu.cpp
+Player.cpp
+Tiles.cpp
+Username.cpp
+Leaderboard.vpp
+Control.cpp
+
+Lines of code contributed:
+
+Total LOC: 
+
