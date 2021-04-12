@@ -4,7 +4,7 @@ Main Contributions:
 - Art Assets
 - Level Design
 - Sounds
-- Gameplay State
+- Gameplay State (All Levels)
 - Level Editor
 
 Files:
