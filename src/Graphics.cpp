@@ -73,7 +73,7 @@ Color Color::Lerp(const Color& begin, const Color& end, const float t)
 }
 
 void Color::Print(const Color& color)
-{
+{	// For debug
 	std::cout << "r: " << color.r << " g: " << color.g << " b: " << color.b << " a: " << color.alpha << std::endl;
 }
 
@@ -134,8 +134,8 @@ AEGfxVertexList* Graphics::Mesh_Rectangle(void)
 		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f); // Top vertex
 
 	AEGfxTriAdd(
-		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f, //	Bottom R
-		0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 0.0f,	 //	Top Righ
+		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f, //	Bottom Right
+		0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 0.0f,	 //	Top Right
 		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);//	Top Left
 	return AEGfxMeshEnd();
 }
@@ -149,8 +149,8 @@ AEGfxVertexList* Graphics::Mesh_Animation(float offset_X)
 		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f); // Top vertex
 
 	AEGfxTriAdd(
-		0.5f, -0.5f, 0xFFFFFFFF, offset_X, 1.0f, //	Bottom R
-		0.5f, 0.5f, 0xFFFFFFFF, offset_X, 0.0f,	 //	Top Righ
+		0.5f, -0.5f, 0xFFFFFFFF, offset_X, 1.0f, //	Bottom Right
+		0.5f, 0.5f, 0xFFFFFFFF, offset_X, 0.0f,	 //	Top Right
 		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);//	Top Left
 	return AEGfxMeshEnd();
 }

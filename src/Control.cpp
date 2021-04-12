@@ -32,7 +32,6 @@ std::vector<Button> ControlBtn;
 static float WindowHeight;
 enum ControlButton { WASD = 0, ARROW, BACK, MAX_BUTTON };
 
-
 void Control::Init()
 {
 	ScreenMid = Utils::GetScreenMiddle();

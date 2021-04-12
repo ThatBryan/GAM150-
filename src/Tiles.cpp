@@ -205,7 +205,7 @@ void Tiles::Update(Player& ThePlayer)
 	Collapse(ThePlayer);
 	DecreaseLifespan();
 	if (isCollapsing)
-		TileShake();
+		ApplyTileShake();
 	if(type == TileType::Goal)
 		CheckPlayerGoal(ThePlayer);
 }
@@ -280,7 +280,7 @@ TileType& operator++(TileType& rhs) {
 	return rhs;
 }
 
-void Tiles::TileShake(void) {
+void Tiles::ApplyTileShake(void) {
 	AEVec2 ShakeVec = Utils::GetRandomVecVel();
 	const float ShakeStrength{ 15.0f };
 	AEVec2ScaleAdd(&image.pos, &ShakeVec, &image.pos, g_dt * ShakeStrength);
@@ -406,7 +406,6 @@ void Tiles::CheckEnemyGravity(const TileMgr TileManager, Enemies& enemy)
 
 void Tiles::CheckEnemyCollision(const TileMgr TileManager, Enemies& enemy)
 {
-	// Remove or comment out to turn on collision for bats
 	if (enemy.type == EnemyType::Bat)
 		return;
 
@@ -451,24 +450,24 @@ void Tiles::CreateDialogue(const short ID, const AEVec2 tilePos)
 	{
 		case 0:
 			BgOverlayArr[Guide1].Draw_Texture({tilePos.x + 150.0f, tilePos.y - 60.0f}, Color::RGBA_MAX);
-			break;
+			return;
 		case 1:
 			BgOverlayArr[Guide5].Draw_Texture({ tilePos.x - 70.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
-			break;
+			return;
 		case 2:
 			BgOverlayArr[Guide2].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
-			break;
+			return;
 		case 3:
 			BgOverlayArr[Guide4].Draw_Texture({ tilePos.x + 70.0f, tilePos.y - 60.0f }, Color::RGBA_MAX);
-			break;
+			return;
 		case 4:
 			BgOverlayArr[Guide6].Draw_Texture({ tilePos.x - 100.0f, tilePos.y - 40.0f }, Color::RGBA_MAX);
-			break;
+			return;
 		case 5:
 			BgOverlayArr[Guide3].Draw_Texture({ tilePos.x + 60.0f, tilePos.y - 80.0f }, Color::RGBA_MAX);
-			break;
+			return;
 		case 6:
 			BgOverlayArr[Guide7].Draw_Texture({ tilePos.x + 60.0f, tilePos.y - 80.0f }, Color::RGBA_MAX);
-			break;
+			return;
 	}
 }

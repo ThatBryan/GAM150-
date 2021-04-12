@@ -44,8 +44,7 @@ static std::vector<Leader> L(Leader::MaxLeaders);
 static const char* LeaderBoardFile{ "./Assets/Leaderboard/leaderboard.txt" };
 static float WindowHeight;
 static Graphics::Text stringBuffer;
-std::string username; static std::string userscore;
-Leader(user);
+std::string username;
 
 void Leaderboard::Init()
 {
@@ -128,7 +127,7 @@ void Leaderboard::Unload()
 	LeaderboardBtn.clear();
 }
 
-Leader& Leaderboard::GetLastPlacement(){
+Leader Leaderboard::GetLastPlacement(){
 	return L.back();
 }
 
@@ -193,12 +192,10 @@ void Leader::InsertNewLeader(const Leader& newLeader)
 	Leader& lastLeader = L.back();
 	lastLeader = newLeader;
 	SortLeaders(L);
-
-	//Leaders::PrintContainer();
 }
 
 void Leader::PrintContainer()
-{
+{	// For debug
 	std::cout << std::endl;
 
 	for (int i = 0; i < Leader::MaxLeaders; ++i) {

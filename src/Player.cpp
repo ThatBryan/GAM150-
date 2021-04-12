@@ -46,7 +46,6 @@ AEGfxTexture* Player::playerTex{ nullptr };
 AEGfxTexture* Player::playerMovTex{ nullptr };
 AEGfxTexture* Player::playerParticle{ nullptr };
 float Player::gravityStrength = 20.0f;
-static const char* UsernameFile{ "./Assets/Username/username.txt" };
 static bool isSoundPlayed;
 
 Player::Player(AEGfxTexture* texture, const f32 width, const f32 height) : sprite(texture, Mesh::PlayerCurr, width, height), lose{ false },

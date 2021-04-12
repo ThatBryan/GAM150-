@@ -18,7 +18,6 @@ rights reserved.
 #include <string>
 
 struct Leader {
-	static const int MaxLength{ 20 };
 	static const int MaxLeaders{ 5 };
 	std::string name;
 	int score;
@@ -43,5 +42,5 @@ namespace Leaderboard{
 	void Save();
 	void Render();
 	void Unload();
-	Leader& GetLastPlacement();
+	Leader GetLastPlacement();
 }

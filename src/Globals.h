@@ -49,7 +49,6 @@ namespace Mesh { // Base Meshes
 	extern AEGfxVertexList* PlayerCurr;
 }
 extern unsigned short DialogueID;
-extern short EnemyCount;
 // Miscallenous
 extern float g_dt;
 

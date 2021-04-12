@@ -19,9 +19,8 @@ namespace GAMEPLAY_MISC {
 	bool FULLSCREEN						= false;
 	bool DISPLAY_QUIT_UI				= false;
 	bool DISABLE_COLLISION				= false;
-	bool WASD_KEYS						= true;
 	bool ARROW_KEYS						= false;
-	int app_score						= 50;
+	bool WASD_KEYS						= true;
 
 	unsigned short Level				= 0U;
 
@@ -52,7 +51,6 @@ namespace Tex {
 // MISC
 
 float g_dt								= 0.0f;
-short EnemyCount						= 1;
 unsigned short DialogueID				= 0U;
 
 // Animation

@@ -39,7 +39,7 @@ private:
 	static bool isTutorialLevel;
 
 	void SetColliders();
-	void TileShake(void);
+	void ApplyTileShake(void);
 	void CheckOutOfBound(void);
 	void DecreaseLifespan(void);
 	void Update(Player& player);
