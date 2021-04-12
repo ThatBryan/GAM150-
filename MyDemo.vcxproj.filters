@@ -161,5 +161,12 @@
     <ClInclude Include="src\Control.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GAM150.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Final Submission\INSTALLATION\INSTALLERFILES\Icon.ico" />
   </ItemGroup>
 </Project>

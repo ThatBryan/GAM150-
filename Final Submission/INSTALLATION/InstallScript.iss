@@ -37,6 +37,7 @@ LicenseFile=INSTALLERFILES\DigiPen_EULA.txt
 ; Path to the icon for the installer (TCR check requires custom icon)
 SetupIconFile=.\INSTALLERFILES\SetupIcon.ico
 
+
 ; Compression scheme for the installer. Check Inno Setup help files for more options.
 Compression=lzma
 SolidCompression=yes
@@ -52,7 +53,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Tasks]
 ; Creates an installer option to allow/disallow desktop shortcut
 ; Checked by default
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{app}\Icon.ico}"
 
 ;
 ; !!NOTE!!: Your game may not require the VC or DX redistributable installers.
