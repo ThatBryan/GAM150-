@@ -37,7 +37,7 @@ Leaderboard.vpp
 Control.cpp
 Background.cpp
 
-Lines of code contributed:
+Lines of code contributed: 1053
 
-Total LOC: 
+
 
