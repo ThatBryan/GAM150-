@@ -4,7 +4,8 @@
 \primary author: 	Seet Min Yi
 \par    			email: minyi.seet@digipen.edu
 \date   			April 6, 2021
-\brief				Header file of an Control class implementation.
+\brief				Header file which contains the function declaration for
+					the user to choose player control
 
 All content © 2021 DigiPen Institute of Technology Singapore. All
 rights reserved.
