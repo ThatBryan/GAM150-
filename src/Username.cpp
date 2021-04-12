@@ -203,9 +203,6 @@ std::string Username::GetUsername()
 void Username::SaveToFile(const char* filepath)
 {
 	std::ofstream ofs(filepath);
-	if (ofs.is_open()) 
-	{
-		ofs << username;
-		ofs.close();
-	}
+	ofs << username;
+	ofs.close();
 }
