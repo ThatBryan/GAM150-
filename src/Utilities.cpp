@@ -181,8 +181,8 @@ void Utils::ToggleCollisionOff(void)
 
 void Utils::DebugKeysManager()
 {
-	if (!GAMEPLAY_MISC::DEV_MODE) // Exit if dev mode is not enabled. disabled for now. 
-		return;
+	//if (!GAMEPLAY_MISC::DEV_MODE) // Exit if dev mode is not enabled. disabled for now. 
+	//	return;
 	ToggleCollisionOff();
 	ToggleDebugMode();
 }
