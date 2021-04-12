@@ -1,3 +1,15 @@
+/******************************************************************************/
+/*!
+\file				Username.cpp
+\author: 			Seet Min Yi
+\par    			email: minyi.seet@digipen.edu
+\date   			April 6, 2021
+\brief				Enable player to key in his username
+
+All content © 2021 DigiPen Institute of Technology Singapore. All
+rights reserved.
+ */
+/******************************************************************************/
 #include "Username.h"
 #include "MainMenu.h"
 #include "Image.h"
